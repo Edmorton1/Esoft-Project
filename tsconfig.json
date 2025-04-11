@@ -1,0 +1,24 @@
+{
+    "compilerOptions": {
+      "allowSyntheticDefaultImports": true,
+      "esModuleInterop": true,
+      "outDir": "./dist/",
+      "noImplicitAny": true,
+      "module": "ESNext",
+      "target": "ESNext",
+      "jsx": "react-jsx",
+      "allowJs": true,
+      "moduleResolution": "node",
+      // "resolveJsonModule": true,
+      "baseUrl": ".",
+      "paths": {
+        "@/*": ["./src/*"],
+        "@s/*": ["./server/*"]
+      }
+    },
+    "ts-node": {
+      "compilerOptions": {
+        "module": "CommonJS"
+      }
+    }
+  }
