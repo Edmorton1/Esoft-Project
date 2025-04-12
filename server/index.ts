@@ -17,6 +17,8 @@ app.use(cors({
   credentials: true
 }))
 
+app.use(express.json())
+
 app.use('/', router)
 
 server.listen(PORT, () => console.log(`СЕРВЕР ЗАПУЩЕН НА ПОРТУ: ${PORT}, НА САЙТЕ: ${process.env.URL_SERVER}`))
