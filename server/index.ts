@@ -4,6 +4,7 @@ import router from "@s/router"
 import cors from "cors"
 import http from "http"
 import createWebSocketServer from "@s/socket"
+import cookieParser from "cookie-parser"
 dotenv.config()
 
 const app = express()
@@ -16,6 +17,8 @@ app.use(cors({
   origin: ['http://localhost:5000'],
   credentials: true
 }))
+
+app.use(cookieParser())
 
 app.use(express.json())
 

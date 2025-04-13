@@ -12,6 +12,11 @@ export class CRUDController {
     const response = await this.CRUD.get(this.table)
     res.json(response)
   }
+  async getById(req: Request, res: Response) {
+    const {id} = req.params
+    const request = await this.CRUD.getById(id, this.table)
+    res.json(request)
+  }
   async post(req: Request, res: Response) {
     console.log(req.body)
     const dto = req.body

@@ -28,7 +28,7 @@ export class Form {
 
 export class Message {
   constructor(
-    readonly msgId: number,
+    readonly id: number,
     readonly fromId: number,
     readonly toId: number,
     readonly text: string,
@@ -38,7 +38,7 @@ export class Message {
 
 export class Likes {
   constructor(
-    readonly likeId: number,
+    readonly id: number,
     readonly userId: number,
     readonly liked_userId: number,
   ) {}
@@ -46,37 +46,29 @@ export class Likes {
 
 export class Tags {
   constructor(
-    readonly tagId: number,
+    readonly id: number,
     readonly tag: string,
   ) {}
 }
 
 export class DataRes {
   constructor(
-    readonly resId: number,
+    readonly id: number,
     readonly userId: number,
     readonly res_userId: number,
   ) {}
 }
 
-// export class User {
-//   id: string;
-//   email: string;
-//   password: string;
-//   role: 'user' | 'admin';
-//   created_at: Date
+export class Token {
+  constructor(
+    readonly id: number,
+    readonly token: string
+  ) {}
+}
 
-//   constructor(
-//     id: string,
-//     email: string,
-//     password: string,
-//     role: 'user' | 'admin',
-//     created_at: Date
-//   ) {
-//     this.id = id
-//     this.email = email,
-//     this.password = password,
-//     this.role = role,
-//     this.created_at = created_at
-//   }
-// }
+export class UserTags {
+  constructor(
+    readonly id: number,
+    readonly tagId: number
+  ) {}
+}
