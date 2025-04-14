@@ -1,5 +1,8 @@
+import { toCl } from "@/store/Mappers";
+import { responseInterface } from "@/store/store-authorization";
 import { URL_SERVER } from "@/URLS";
 import axios from "axios";
+import { error } from "console";
 
 const $api = axios.create({
   baseURL: URL_SERVER,
@@ -13,5 +16,48 @@ $api.interceptors.request.use((config => {
   }
   return config
 }))
+
+$api.interceptors.request.use((async config => {
+  if (
+    config.url.includes('/registration') ||
+    config.url.includes('/login') ||
+    config.url.includes('/logout')
+  ) return config
+
+  const request: responseInterface = toCl(
+    await axios.get(`${URL_SERVER}/refresh`, {
+
+    withCredentials: true,
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+    }
+  }))
+  localStorage.setItem("accessToken", request.accessToken)
+  return config
+}))
+
+export const noAuthorizeErrorAxios = (setErr: Function) => {
+  return $api.interceptors.response.use(
+    response => response,
+    error => {
+      if (error.response) {
+        console.log(error)
+        setErr(true)
+        setTimeout(() => setErr(false), 1000)
+        return Promise.resolve(error)
+      }
+    }
+  )
+}
+
+// $api.interceptors.response.use(
+//   response => response,
+//   error => {
+//     if (error.response) {
+//       // console.log(error)
+//       return Promise.resolve(error)
+//     }
+//   }
+// )
 
 export default $api

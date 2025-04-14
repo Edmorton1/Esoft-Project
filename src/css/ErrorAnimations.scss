@@ -1,0 +1,16 @@
+$time: 300ms;
+
+.enter {
+  transform: translateY(-100%);
+}
+.enterActive {
+  transform: translateY(0);
+  transition: opacity $time, transform $time;
+}
+.exit {
+  transform: translateY(0);
+}
+.exitActive {
+  transform: translateY(-100%);
+  transition: opacity $time, transform $time;
+}

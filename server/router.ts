@@ -24,5 +24,6 @@ tablesArr.forEach(table => {
 router.post('/registration', tokenController('registartion'))
 router.post('/login', tokenController('login'))
 router.get('/logout/:id', tokenController('logout'))
+router.get('/refresh', tokenController('refresh'))
 
 export default router
