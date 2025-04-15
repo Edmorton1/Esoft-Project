@@ -1,6 +1,6 @@
 import express from "express"
 import { tables } from "@s/core/domain/types"
-import { tokenController, universalController } from "@s/controllers"
+import { formController, tokenController, universalController } from "@s/controllers"
 const router = express.Router()
 
 // const httpUserController = (method: keyof HttpUserController) => {
@@ -11,7 +11,7 @@ const router = express.Router()
 
 
 
-const tablesArr: tables[] = ['users', 'form', 'likes', 'message', 'data_res', 'tags', 'user_tags', 'tokens']
+const tablesArr: tables[] = ['users', 'forms', 'likes', 'messages', 'data_res', 'tags', 'user_tags', 'tokens']
 
 tablesArr.forEach(table => {
   router.get(`/${table}`, universalController('get', table))
@@ -25,5 +25,7 @@ router.post('/registration', tokenController('registartion'))
 router.post('/login', tokenController('login'))
 router.get('/logout/:id', tokenController('logout'))
 router.get('/refresh', tokenController('refresh'))
+
+router.post('/createForm', formController("postForm"))
 
 export default router

@@ -1,13 +1,11 @@
-import { JWTDTO, PayloadDTO, UserDTO } from "@s/core/repositories/dto/dtoObjects";
-import { TokenRepository } from "@s/core/repositories/TokensRepository";
+import { JWTDTO, PayloadDTO, UserDTO } from "@s/core/dtoObjects";
 import jwt from "jsonwebtoken"
 
 export class TokenService {
-  constructor(readonly TokenRepository: TokenRepository) {}
 
   generateTokens(payload: PayloadDTO) {
-    const accessToken = jwt.sign(payload, process.env.ACCESS_PRIVATE_KEY, {expiresIn: "15m"})
-    const refreshToken = jwt.sign(payload, process.env.REFRESH_PRIVATE_KEY, {expiresIn: "1d"})
+    const accessToken = jwt.sign(payload, process.env.ACCESS_PRIVATE_KEY, {expiresIn: "10d"})
+    const refreshToken = jwt.sign(payload, process.env.REFRESH_PRIVATE_KEY, {expiresIn: "10d"})
     
     return [accessToken, refreshToken]
   }

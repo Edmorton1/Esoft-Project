@@ -1,6 +1,6 @@
-import { ORM } from "@s/core/repositories/ORM";
-import { UserDTO, PayloadDTO, TokenDTO } from "@s/core/repositories/dto/dtoObjects";
-import { TokenService } from "@s/core/services/TokenService";
+import { ORM } from "@s/infrastructure/db/ORM";
+import { UserDTO, PayloadDTO, TokenDTO } from "@s/core/dtoObjects";
+import { TokenService } from "@s/infrastructure/services/TokenService";
 import { Request, Response } from "webpack-dev-server";
 import bcrypt from "bcrypt"
 
@@ -20,7 +20,7 @@ export class HttpTokenController {
     return accessToken
   }
 
-  async returnDTO(dto: TokenDTO, res: Response) {
+  returnDTO(dto: TokenDTO, res: Response) {
     res.json({
       user: dto.user,
       accessToken: dto.accessToken
@@ -51,6 +51,7 @@ export class HttpTokenController {
     const accessToken = await this.createTokens(user.id, user.role, res)
     this.returnDTO({user, accessToken}, res)
   }
+  
   async logout(req: Request, res: Response) {
     const {id} = req.params
 
@@ -65,6 +66,7 @@ export class HttpTokenController {
     const verifyAccess = this.TokenService.validateAccess(accessToken)
     
     if (verifyAccess) {
+      console.log('access')
       const user = await this.ORM.getById(verifyAccess.id, 'users')
       return this.returnDTO({user, accessToken}, res)
     }
@@ -72,10 +74,13 @@ export class HttpTokenController {
     const verifyRefresh = this.TokenService.validateRefresh(req.cookies.refreshToken)
 
     if (!verifyAccess && verifyRefresh) {
+      console.log('refresh')
       const user = await this.ORM.getById(verifyRefresh.id, 'users')
       const accessToken = await this.createTokens(verifyRefresh.id, verifyRefresh.role, res)
       return this.returnDTO({user, accessToken}, res)
     }
+    console.log('Не прошёл')
+    res.clearCookie('refreshToken')
     res.status(401).send('Нет валидных токенов')
   }
 }

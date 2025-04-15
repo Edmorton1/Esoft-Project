@@ -1,5 +1,5 @@
 import { toCl } from "@/store/Mappers";
-import { responseInterface } from "@/store/store-authorization";
+import storeAuthorization, { responseInterface } from "@/store/store-authorization";
 import { URL_SERVER } from "@/URLS";
 import axios from "axios";
 import { error } from "console";
@@ -42,6 +42,8 @@ export const noAuthorizeErrorAxios = (setErr: Function) => {
     error => {
       if (error.response) {
         console.log(error)
+        localStorage.removeItem("accessToken")
+        storeAuthorization.user = null
         setErr(true)
         setTimeout(() => setErr(false), 1000)
         return Promise.resolve(error)
@@ -49,15 +51,5 @@ export const noAuthorizeErrorAxios = (setErr: Function) => {
     }
   )
 }
-
-// $api.interceptors.response.use(
-//   response => response,
-//   error => {
-//     if (error.response) {
-//       // console.log(error)
-//       return Promise.resolve(error)
-//     }
-//   }
-// )
 
 export default $api

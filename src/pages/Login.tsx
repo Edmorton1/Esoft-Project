@@ -1,6 +1,6 @@
 import $api from "@/store/api";
 import storeAuthorization from "@/store/store-authorization";
-import { UserDTO } from "@s/core/repositories/dto/dtoObjects";
+import { UserDTO } from "@s/core/dtoObjects";
 import { observer } from "mobx-react-lite";
 import { useForm } from "react-hook-form";
 
@@ -11,6 +11,8 @@ function Login() {
     const request = await $api.get(`/users`)
     console.log(request.status)
   }
+
+
 
   return (
     <>

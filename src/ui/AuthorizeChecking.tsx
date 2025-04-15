@@ -3,7 +3,7 @@ import storeAuthorization from "@/store/store-authorization"
 import ErrorAuthorize from "@/ui/ErrorAuthorize"
 import { useEffect, useRef, useState } from "react"
 
-function ErrorAuthorizeWrapper() {
+function AuthorizeChecking() {
   const [err, setErr] = useState(false)
   const nodeRef = useRef(null)
 
@@ -17,4 +17,4 @@ function ErrorAuthorizeWrapper() {
   )
 }
 
-export default ErrorAuthorizeWrapper
+export default AuthorizeChecking

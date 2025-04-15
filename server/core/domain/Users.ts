@@ -19,10 +19,10 @@ export class Form {
     readonly description: string,
     readonly target: string,
     readonly hood: string,
-    readonly likes: number[],
-    readonly dataRes: number[],
-    readonly tags: string[],
-    readonly message: Message[]
+    readonly likes?: number[],
+    readonly dataRes?: number[],
+    readonly tags?: string[],
+    readonly message?: Message[]
   ) {}
 }
 

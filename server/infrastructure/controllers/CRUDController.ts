@@ -1,5 +1,5 @@
 import { tables } from "@s/core/domain/types"
-import { ORM } from "@s/core/repositories/ORM"
+import { ORM } from "@s/infrastructure/db/ORM"
 import { Request, Response } from "express"
 
 export class CRUDController {

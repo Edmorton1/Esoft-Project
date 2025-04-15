@@ -1,7 +1,7 @@
 import $api from "@/store/api"
 import { toCl } from "@/store/Mappers"
 import { User } from "@s/core/domain/Users"
-import { UserDTO } from "@s/core/repositories/dto/dtoObjects"
+import { UserDTO } from "@s/core/dtoObjects"
 import { makeAutoObservable, runInAction } from "mobx"
 
 export interface responseInterface {

@@ -1,5 +1,6 @@
 import { lazy } from "react";
 
-export const LazyMain = lazy(() => import("@/components/Main"))
-export const LazyLogin = lazy(() => import("@/components/Login"))
-export const LazyRegistration = lazy(() => import("@/components/Registration"))
+export const LazyMain = lazy(() => import("@/pages/Main"))
+export const LazyLogin = lazy(() => import("@/pages/Login"))
+export const LazyRegistration = lazy(() => import("@/pages/Registration"))
+export const LazyForm = lazy(() => import('@/pages/Form'))
