@@ -3,6 +3,7 @@ import { UserDTO, PayloadDTO, TokenDTO } from "@s/core/dtoObjects";
 import { TokenService } from "@s/infrastructure/services/TokenService";
 import { Request, Response } from "webpack-dev-server";
 import bcrypt from "bcrypt"
+import { one } from "@s/infrastructure/db/Mappers";
 
 export class HttpTokenController {
   constructor(
@@ -29,7 +30,7 @@ export class HttpTokenController {
 
   async registartion(req: Request, res: Response) {
     const dto: UserDTO = req.body
-    const user = await this.ORM.post(dto, 'users')
+    const user = one(await this.ORM.post(dto, 'users'))
     const accessToken = await this.createTokens(user.id, user.role, res)
     
     this.returnDTO({user, accessToken}, res)
@@ -37,7 +38,7 @@ export class HttpTokenController {
 
   async login(req: Request, res: Response) {
     const dto: UserDTO = req.body
-    const user = await this.ORM.getByParams({email: dto.email}, 'users')
+    const user = one(await this.ORM.getByParams({email: dto.email}, 'users'))
 
     if (!user) {
       return res.status(400).json('Такой почты нет')
@@ -63,19 +64,19 @@ export class HttpTokenController {
 
   async refresh(req: Request, res: Response) {
     const accessToken = req.headers.authorization.split(' ')[1]
-    const verifyAccess = this.TokenService.validateAccess(accessToken)
+    const verifyAccess = await this.TokenService.validateAccess(accessToken)
     
     if (verifyAccess) {
       console.log('access')
-      const user = await this.ORM.getById(verifyAccess.id, 'users')
+      const user = one(await this.ORM.getById(verifyAccess.id, 'users'))
       return this.returnDTO({user, accessToken}, res)
     }
     
-    const verifyRefresh = this.TokenService.validateRefresh(req.cookies.refreshToken)
+    const verifyRefresh = await this.TokenService.validateRefresh(req.cookies.refreshToken)
 
     if (!verifyAccess && verifyRefresh) {
       console.log('refresh')
-      const user = await this.ORM.getById(verifyRefresh.id, 'users')
+      const user = one(await this.ORM.getById(verifyRefresh.id, 'users'))
       const accessToken = await this.createTokens(verifyRefresh.id, verifyRefresh.role, res)
       return this.returnDTO({user, accessToken}, res)
     }

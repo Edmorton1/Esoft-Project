@@ -13,7 +13,7 @@ export const universalController = (method: keyof CRUDController, table: tables)
 }
 
 export const tokenController = (method: keyof HttpTokenController) => {
-  const controller = new HttpTokenController(new TokenService(), new ORM())
+  const controller = new HttpTokenController(new TokenService(new ORM), new ORM())
   return (controller[method] as Function).bind(controller)
 }
 

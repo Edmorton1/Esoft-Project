@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router";
 import { LazyLogin, LazyMain, LazyMessages, LazyRegistration } from "@/index.lazy";
 import "@/css/App.scss"
-import SocketStore from "@/store/store-socket";
+import SocketStore from "@/store/Store-Socket";
 import { Suspense, useEffect } from "react";
 import AuthorizeChecking from "@/ui/AuthorizeChecking";
 import Layout from "@/Layout";

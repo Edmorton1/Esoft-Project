@@ -1,4 +1,4 @@
-import storeSocket from "@/store/store-socket"
+import storeSocket from "@/store/Store-Socket"
 import { frSO } from "@s/infrastructure/db/Mappers"
 import { Link, Outlet } from "react-router-dom"
 

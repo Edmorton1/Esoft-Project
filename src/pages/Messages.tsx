@@ -2,10 +2,12 @@ import storeAuthorization from "@/store/Store-User"
 import StoreMessages from "@/store/Store-Messages"
 import { Message } from "@s/core/domain/Users"
 import { observer } from "mobx-react-lite"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 
 function Messages() {
+  const [editMessage, setEditMessage] = useState(null)
+
   useEffect(() => {
     StoreMessages.getAllMessage()
     console.log(StoreMessages.messages)
@@ -29,8 +31,6 @@ function Messages() {
       {StoreMessages.messages?.received?.map(e => (
         <>
           <div>От {e.fromid} К {e.toid} Текст: {e.text}</div>
-          <button>Изменить</button>
-          <button>Удалить</button>
         </>
       ))}
       <br />

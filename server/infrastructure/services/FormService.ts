@@ -1,3 +1,4 @@
+import { one } from "@s/infrastructure/db/Mappers";
 import { ORM } from "@s/infrastructure/db/ORM";
 
 export class FormService {
@@ -10,12 +11,12 @@ export class FormService {
   // }
 
   async pushTag(userId: number, tag: string): Promise<void> {
-    const tagId = await (await this.ORM.getByParams({tag: tag}, 'tags'))?.id
+    const tagId = one(await (await this.ORM.getByParams({tag: tag}, 'tags')))?.id
     
     if (tagId) {
       await this.ORM.post({id: userId, tagid: tagId}, 'user_tags')
     } else {
-      const tagInDB = await this.ORM.post({tag}, 'tags')
+      const tagInDB = one(await this.ORM.post({tag}, 'tags'))
       await this.ORM.post({id: userId, tagid: tagInDB.id}, 'user_tags')
     }
   }

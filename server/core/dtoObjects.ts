@@ -7,6 +7,21 @@ export class UserDTO {
   ) {}
 }
 
+export class FormDTO {
+  constructor(
+    readonly id: number,
+    readonly name: string,
+    readonly surname: string,
+    readonly sex: boolean,
+    readonly age: number,
+    readonly avatar: string,
+    readonly description: string,
+    readonly target: string,
+    readonly hood: string,
+    public tags: string,
+  ) {}
+}
+
 export class PayloadDTO {
   constructor(
     readonly id: number,

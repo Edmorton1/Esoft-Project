@@ -19,9 +19,9 @@ export class Form {
     readonly description: string,
     readonly target: string,
     readonly hood: string,
+    public tags?: string[],
     public likes?: number[],
     public dataRes?: number[],
-    public tags?: string[],
     public message?: Message[]
   ) {}
 }

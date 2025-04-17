@@ -1,7 +1,13 @@
 import { JWTDTO, PayloadDTO, UserDTO } from "@s/core/dtoObjects";
+import { one } from "@s/infrastructure/db/Mappers";
+import { ORM } from "@s/infrastructure/db/ORM";
 import jwt from "jsonwebtoken"
 
 export class TokenService {
+  constructor(
+    readonly ORM: ORM
+  ) {}
+
 
   generateTokens(payload: PayloadDTO) {
     const accessToken = jwt.sign(payload, process.env.ACCESS_PRIVATE_KEY, {expiresIn: "10d"})
@@ -10,17 +16,27 @@ export class TokenService {
     return [accessToken, refreshToken]
   }
 
-  validateAccess(accessToken: string): JWTDTO | false {
+  async validateAccess(accessToken: string): Promise<JWTDTO | false> {
     try {
-      return jwt.verify(accessToken, process.env.ACCESS_PRIVATE_KEY) as JWTDTO
+
+      const token = jwt.verify(accessToken, process.env.ACCESS_PRIVATE_KEY) as JWTDTO
+      if (one(await this.ORM.getById(token.id, 'users'))) {
+        return token
+      } else return false
+      
     } catch {
       return false
     }
   }
   
-  validateRefresh(refreshToken: string): JWTDTO | false {
+  async validateRefresh(refreshToken: string): Promise<JWTDTO | false> {
     try {
-      return jwt.verify(refreshToken, process.env.REFRESH_PRIVATE_KEY) as JWTDTO
+      
+      const token = jwt.verify(refreshToken, process.env.REFRESH_PRIVATE_KEY) as JWTDTO
+      if (one(await this.ORM.getById(token.id, 'users'))) {
+        return token
+      } else return false
+
     } catch {
       return false
     }

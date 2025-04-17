@@ -17,7 +17,8 @@ export class HttpMessageController {
     const clientFrom = clients.get(data.fromid)
     const clientTo = clients.get(data.toid)
     clientFrom.send(frSO('message', data))
-    clientTo.send(frSO('message', data))
+    clientTo?.send(frSO('message', data))
+    await this.ORM.post(data, 'messages')
     console.log(data)
   }
 }

@@ -1,7 +1,8 @@
 import $api from "@/store/api"
-import storeSocket from "@/store/store-socket"
-import { User } from "@s/core/domain/Users"
-import { UserDTO } from "@s/core/dtoObjects"
+import StoreForm from "@/store/Store-Form"
+import storeSocket from "@/store/Store-Socket"
+import { Form, User } from "@s/core/domain/Users"
+import { FormDTO, UserDTO } from "@s/core/dtoObjects"
 import { frSO, toCl } from "@s/infrastructure/db/Mappers"
 import { makeAutoObservable, runInAction } from "mobx"
 
@@ -32,22 +33,28 @@ class StoreUser {
   //   })
   // }
   
-  registration = async (data: UserDTO) => {
-    const request: responseInterface = toCl(await $api.post(`/registration`, data))
+  registration = async (user: UserDTO): Promise<number> => {
+    const request: responseInterface = toCl((await $api.post(`/registration`, user)))
+    // StoreForm.postForm(form)
     localStorage.setItem("accessToken", request.accessToken)
+
     runInAction(() => this.user = request.user)
     console.log(request.user)
+    return request.user.id
   }
   login = async (data: UserDTO) => {
     const request: responseInterface = toCl(await $api.post(`/login`, data))
     localStorage.setItem("accessToken", request.accessToken)
+
     runInAction(() => this.user = request.user)
+    await StoreForm.getForm(request.user.id)
     console.log(request.user)
   }
   logout = async () => {
     const request = toCl(await $api.get(`/logout/${this.user.id}`))
     localStorage.removeItem("accessToken")
     this.user = null
+    StoreForm.form = null
     console.log('asdsd')
   }
   initializing = async () => {
@@ -56,11 +63,13 @@ class StoreUser {
     // console.log(request.user)
     if (request?.accessToken) {
       runInAction(() => this.user = request.user)
+      await StoreForm.getForm(request.user.id)
       localStorage.setItem("accessToken", request.accessToken)
       await storeSocket.waitSocket(storeSocket.socket)
       storeSocket.socket.send(frSO('userid', this.user.id))
     } else {
       this.user = null
+      StoreForm.form = null
     }
   }
 }

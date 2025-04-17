@@ -1,7 +1,7 @@
 import $api from "@/store/api"
 import { makeAutoObservable } from "mobx"
 import { Message } from "@s/core/domain/Users"
-import storeSocket from "@/store/store-socket"
+import StoreSocket from "@/store/Store-Socket"
 import storeAuthorization from "@/store/Store-User"
 import { toCl } from "@s/infrastructure/db/Mappers"
 import StoreUser from "@/store/Store-User"
@@ -17,8 +17,8 @@ class StoreMessages {
     // await storeAuthorization.waitUser()
     console.log('after')
     console.log(storeAuthorization.user)
-    const sent: Message[] = toCl(await $api.get(`/messages?fromid=${storeAuthorization.user.id}`))
-    const received: Message[] = toCl(await $api.get(`/messages?toid=${storeAuthorization.user.id}`))
+    const sent: Message[] = toCl(await $api.get(`/messages?fromid=${storeAuthorization.user?.id}`))
+    const received: Message[] = toCl(await $api.get(`/messages?toid=${storeAuthorization.user?.id}`))
     const msgs = {sent, received}
     console.log(msgs)
     this.messages = msgs
@@ -28,6 +28,10 @@ class StoreMessages {
     const request = await $api.post('/sendMessage', data)
     // storeSocket.socket.send(JSON.stringify(data))
     console.log(request)
+  }
+
+  changeMessage = async (data: Message) => {
+    const request = await $api.post('/sendMessage', data)
   }
   
   takeMessage = async (data: Message) => {

@@ -9,6 +9,7 @@
       "jsx": "react-jsx",
       "allowJs": true,
       "moduleResolution": "node",
+      "forceConsistentCasingInFileNames": true,
       // "resolveJsonModule": true,
       "baseUrl": ".",
       "paths": {

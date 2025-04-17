@@ -11,22 +11,22 @@ import bcrypt from "bcrypt"
 // }
 
 export class ORM {
-  async get<T extends tables>(table: T): Promise<Tables[T]> {
+  async get<T extends tables>(table: T): Promise<Tables[T][]> {
     return toTS(await pool.query(`SELECT * FROM ${table}`))
   }
-  async getById<T extends tables>(id: number | string, table: T): Promise<Tables[T]> {
+  async getById<T extends tables>(id: number | string, table: T): Promise<Tables[T][]> {
     return toTS(await pool.query(`SELECT * FROM ${table} WHERE id = $1`, [id]))
   }
 
-  async getByParams<T extends tables>(param: Partial<Tables[T]>, table: T): Promise<Tables[T]> {
+  async getByParams<T extends tables>(param: Partial<Tables[T]>, table: T): Promise<Tables[T][]> {
     // const keys = Object.keys(param)
     // const values = Object.values(param)
-    console.log(param, table)
+    // console.log(param, table)
     const [values, and] = toSQLWhere(param)
     return toTS(await pool.query(`SELECT * FROM ${table} WHERE ${and}`, [...values]))
   }
 
-  async post<T extends tables>(dto: Partial<Tables[T]>, table: T, SQLParam?: string): Promise<Tables[T]> {
+  async post<T extends tables>(dto: Partial<Tables[T]>, table: T, SQLParam?: string): Promise<Tables[T][]> {
     if ("password" in dto && typeof dto.password == "string") {
       const hashed = await bcrypt.hash(dto.password, 3)
       dto.password = hashed as Tables[T][keyof Tables[T]]
@@ -35,12 +35,12 @@ export class ORM {
     return toTS(await pool.query(`INSERT INTO ${table} (${keys}) VALUES(${dollars}) ${SQLParam ? SQLParam : ''} RETURNING *`, [...values]))
   }
 
-  async put<T extends tables>(dto: Partial<Tables[T]>, id: number | string, table: T): Promise<Tables[T]> {
+  async put<T extends tables>(dto: Partial<Tables[T]>, id: number | string, table: T): Promise<Tables[T][]> {
     const [values, dollars] = toSQLPut(dto)
     return toTS(await pool.query(`UPDATE ${table} SET ${dollars} WHERE id = ${id} RETURNING *`, [...values]))
   }
 
-  async delete<T extends tables>(id: number | string, table: T): Promise<Tables[T]> {
+  async delete<T extends tables>(id: number | string, table: T): Promise<Tables[T][]> {
     console.log(id, table)
     return toTS(await pool.query(`DELETE FROM ${table} WHERE id = $1 RETURNING *`, [id]))
   }
