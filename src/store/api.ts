@@ -1,4 +1,4 @@
-import storeAuthorization, { responseInterface } from "@/store/store-authorization";
+import storeAuthorization, { responseInterface } from "@/store/Store-User";
 import { URL_SERVER } from "@/URLS";
 import { toCl } from "@s/infrastructure/db/Mappers";
 import axios from "axios";

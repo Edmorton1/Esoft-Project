@@ -1,5 +1,5 @@
 import $api, { noAuthorizeErrorAxios } from "@/store/api"
-import storeAuthorization from "@/store/store-authorization"
+import storeAuthorization from "@/store/Store-User"
 import ErrorAuthorize from "@/ui/ErrorAuthorize"
 import { useEffect, useRef, useState } from "react"
 

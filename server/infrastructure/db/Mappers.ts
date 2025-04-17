@@ -2,6 +2,7 @@ import { msg, MsgTypes, SocketMessageInterface } from "@s/core/domain/types"
 
 export function toTS(entity: any) {
     return entity.rows.length > 1 ? entity.rows : entity.rows[0]
+    // return entity.rows
   }
 
 export function toSQL(domainModel: any) {
@@ -18,6 +19,9 @@ export function toSO(msg: any): SocketMessageInterface {
 }
 
 export const toCl = (data: any) => {
+  // if (!data.data) {
+  //   return null
+  // }
   return data.data
 }
 

@@ -1,5 +1,5 @@
 import $api from "@/store/api";
-import storeAuthorization from "@/store/store-authorization";
+import storeAuthorization from "@/store/Store-User";
 import { UserDTO } from "@s/core/dtoObjects";
 import { observer } from "mobx-react-lite";
 import { useForm } from "react-hook-form";

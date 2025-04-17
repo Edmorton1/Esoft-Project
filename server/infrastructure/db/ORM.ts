@@ -21,6 +21,7 @@ export class ORM {
   async getByParams<T extends tables>(param: Partial<Tables[T]>, table: T): Promise<Tables[T]> {
     // const keys = Object.keys(param)
     // const values = Object.values(param)
+    console.log(param, table)
     const [values, and] = toSQLWhere(param)
     return toTS(await pool.query(`SELECT * FROM ${table} WHERE ${and}`, [...values]))
   }

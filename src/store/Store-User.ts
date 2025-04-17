@@ -10,12 +10,28 @@ export interface responseInterface {
   accessToken: string
 }
 
-class AuthorizationStore {
+class StoreUser {
   constructor() {
     makeAutoObservable(this)
   }
-  user: User = null
+  user: User = undefined
 
+  // waitUser(): Promise<void> {
+  //   return new Promise(resolve => {
+  //     if (this.user !== undefined) {
+  //       resolve()
+  //     } else {
+  //       const interval = setInterval(() => {
+  //         console.log('ЖДЁМ')
+  //         if (this.user !== undefined) {
+  //           clearInterval(interval)
+  //           resolve()
+  //         }
+  //       }, 100)
+  //     }
+  //   })
+  // }
+  
   registration = async (data: UserDTO) => {
     const request: responseInterface = toCl(await $api.post(`/registration`, data))
     localStorage.setItem("accessToken", request.accessToken)
@@ -43,8 +59,10 @@ class AuthorizationStore {
       localStorage.setItem("accessToken", request.accessToken)
       await storeSocket.waitSocket(storeSocket.socket)
       storeSocket.socket.send(frSO('userid', this.user.id))
+    } else {
+      this.user = null
     }
   }
 }
 
-export default new AuthorizationStore()
+export default new StoreUser()

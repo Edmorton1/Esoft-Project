@@ -1,14 +1,9 @@
 import { BrowserRouter, Routes, Route } from "react-router";
-import { LazyForm, LazyLogin, LazyMain, LazyMessages, LazyRegistration } from "@/index.lazy";
-import { ErrorBoundary } from "react-error-boundary";
-import Fallback from "@/Fallback";
+import { LazyLogin, LazyMain, LazyMessages, LazyRegistration } from "@/index.lazy";
 import "@/css/App.scss"
 import SocketStore from "@/store/store-socket";
-import ErrorAuthorize from "@/ui/ErrorAuthorize";
-import { useEffect, useRef, useState } from "react";
-import $api from "@/store/api";
+import { Suspense, useEffect } from "react";
 import AuthorizeChecking from "@/ui/AuthorizeChecking";
-import storeAuthorization from "@/store/store-authorization";
 import Layout from "@/Layout";
 // ДЛЯ АССИНХРОННЫХ ОПЕРАЦИЙ ИСПОЛЬЗОВАТЬ suspense
 
@@ -23,13 +18,16 @@ function App() {
         <BrowserRouter>
         <Layout />
           <AuthorizeChecking/>
+          <Suspense>
             <Routes>
-                <Route index element={<LazyMain />} />
-                <Route path="/login" element={<LazyLogin />}/>
-                <Route path="/registration" element={<LazyRegistration />}/>
-                <Route path="/form" element={<LazyForm/>}></Route>
-                <Route path="/messages" element={<LazyMessages />}></Route>
-            </Routes>
+                  <Route index element={<LazyMain />} />
+                  <Route path="/login" element={<LazyLogin />}/>
+                  <Route path="/registration" element={<LazyRegistration />}/>
+                  {/* <Route path="/form" element={<LazyForm/>}></Route> */}
+                  <Route path="/messages" element={<LazyMessages />}></Route>
+                  <Route path="*" element={<div>Такой страницы нет</div>}></Route>
+              </Routes>
+          </Suspense>
         </BrowserRouter>
     // </ErrorBoundary>
   );

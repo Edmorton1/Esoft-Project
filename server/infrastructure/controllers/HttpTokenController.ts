@@ -59,7 +59,7 @@ export class HttpTokenController {
     await this.ORM.delete(id, 'tokens')
     res.status(200).send('Выход выполнен')
   }
-// ПОТОМ НАДО БУДЕТ СТИРАТЬ ТОКЕНЫ ЕСЛИ ОНИ ПРОСРОЧИЛИСЬ
+
 
   async refresh(req: Request, res: Response) {
     const accessToken = req.headers.authorization.split(' ')[1]

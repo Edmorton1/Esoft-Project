@@ -1,32 +1,20 @@
-import storeAuthorization from "@/store/store-authorization";
+import storeAuthorization from "@/store/Store-User";
 import StoreForm from "@/store/Store-Form";
 import { Form } from "@s/core/domain/Users";
-import { useForm } from "react-hook-form";
+import { useForm, UseFormHandleSubmit } from "react-hook-form";
+import { UserDTO } from "@s/core/dtoObjects";
+import handleAllSubmits, { RawForm } from "@/modules/handleSubmits";
 
-interface RawForm {
-  name: string,
-  surname: string,
-  sex: boolean,
-  age: number,
-  description: string,
-  target: string,
-  hood: string,
-  tags: string
-}
-
-function FormCreate() {
+function FormCreate({handleSubmitRegistration}: {handleSubmitRegistration: UseFormHandleSubmit<UserDTO, UserDTO>}) {
     const { register, handleSubmit } = useForm<RawForm>();
-
-  const handleForm = async (data: RawForm) => {
-    const newData: Form = {...data, id: storeAuthorization.user.id, tags: data.tags.split(',').map(e => e.toLowerCase().trim()), avatar: null}
-    StoreForm.postForm(newData)
-  }
 
   return (
     <>
     <div>Добро пожаловать, {storeAuthorization.user?.email}</div>
+    <br />
     <div>Создание анкеты</div>
-    <form onSubmit={handleSubmit((data) => handleForm(data))} style={{display: "flex", flexDirection: "column", width: "400px", gap: "20px"}}>
+    <br />
+    <form onSubmit={(e) => handleAllSubmits(handleSubmitRegistration, handleSubmit, e)} style={{display: "flex", flexDirection: "column", width: "400px", gap: "10px"}}>
       <label>Имя</label>
       <input {...register('name')} type="text" value={"Коля"} />
       <label>Фамилия</label>
