@@ -1,6 +1,6 @@
-import { toCl } from "@/store/Mappers";
 import storeAuthorization, { responseInterface } from "@/store/store-authorization";
 import { URL_SERVER } from "@/URLS";
+import { toCl } from "@s/infrastructure/db/Mappers";
 import axios from "axios";
 import { error } from "console";
 

@@ -21,6 +21,7 @@ export default (env:envTypes) => {
 			output: path.resolve(__dirname, 'dist'),
 			html: path.resolve(__dirname, 'public', 'index.html'),
 			src: path.resolve(__dirname, 'src'),
+			server: path.resolve(__dirname, 'server'),
 			public: path.resolve(__dirname, 'public')
 		},
 		analyzer: env.analyzer

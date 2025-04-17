@@ -9,8 +9,11 @@ export class CRUDController {
   ) {}
   
   async get(req: Request, res: Response) {
-    const request = await this.ORM.get(this.table)
-    res.json(request)
+    const params = req.query
+    if (Object.keys(params).length > 0) {
+      return res.json(await this.ORM.getByParams(params, this.table))
+    }
+    res.json(await this.ORM.get(this.table))
   }
   async getById(req: Request, res: Response) {
     const {id} = req.params

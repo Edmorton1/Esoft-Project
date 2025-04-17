@@ -12,3 +12,14 @@ export type Tables = {
 }
 
 export type tables = keyof Tables
+
+export type MsgTypes = {
+  userid: number,
+  message: Message
+}
+
+export type msg = keyof MsgTypes
+
+export type SocketMessageInterface= {
+  [K in keyof MsgTypes]: {type: K, data: MsgTypes[K]}
+}[keyof MsgTypes]

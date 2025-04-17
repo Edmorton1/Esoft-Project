@@ -25,13 +25,13 @@ export class ORM {
     return toTS(await pool.query(`SELECT * FROM ${table} WHERE ${and}`, [...values]))
   }
 
-  async post<T extends tables>(dto: Partial<Tables[T]>, table: T): Promise<Tables[T]> {
+  async post<T extends tables>(dto: Partial<Tables[T]>, table: T, SQLParam?: string): Promise<Tables[T]> {
     if ("password" in dto && typeof dto.password == "string") {
       const hashed = await bcrypt.hash(dto.password, 3)
       dto.password = hashed as Tables[T][keyof Tables[T]]
     }
     const [keys, values, dollars] = toSQLPost(dto)
-    return toTS(await pool.query(`INSERT INTO ${table} (${keys}) VALUES(${dollars}) RETURNING *`, [...values]))
+    return toTS(await pool.query(`INSERT INTO ${table} (${keys}) VALUES(${dollars}) ${SQLParam ? SQLParam : ''} RETURNING *`, [...values]))
   }
 
   async put<T extends tables>(dto: Partial<Tables[T]>, id: number | string, table: T): Promise<Tables[T]> {

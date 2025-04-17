@@ -1,7 +1,8 @@
 import $api from "@/store/api"
-import { toCl } from "@/store/Mappers"
+import storeSocket from "@/store/store-socket"
 import { User } from "@s/core/domain/Users"
 import { UserDTO } from "@s/core/dtoObjects"
+import { frSO, toCl } from "@s/infrastructure/db/Mappers"
 import { makeAutoObservable, runInAction } from "mobx"
 
 export interface responseInterface {
@@ -38,8 +39,10 @@ class AuthorizationStore {
     const request: responseInterface = toCl(await $api.get("/refresh"))
     // console.log(request.user)
     if (request?.accessToken) {
-      localStorage.setItem("accessToken", request.accessToken)
       runInAction(() => this.user = request.user)
+      localStorage.setItem("accessToken", request.accessToken)
+      await storeSocket.waitSocket(storeSocket.socket)
+      storeSocket.socket.send(frSO('userid', this.user.id))
     }
   }
 }

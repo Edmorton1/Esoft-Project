@@ -1,14 +1,13 @@
 import storeAuthorization from "@/store/store-authorization";
-import StoreForm from "@/store/store-form";
+import StoreForm from "@/store/Store-Form";
 import { Form } from "@s/core/domain/Users";
 import { useForm } from "react-hook-form";
-
 
 interface RawForm {
   name: string,
   surname: string,
-  sex: string,
-  age: string,
+  sex: boolean,
+  age: number,
   description: string,
   target: string,
   hood: string,
@@ -18,37 +17,27 @@ interface RawForm {
 function FormCreate() {
     const { register, handleSubmit } = useForm<RawForm>();
 
-  function convertFormData(raw: RawForm): Form {
-    return {
-      ...raw,
-      id: storeAuthorization.user.id,
-      age: Number(raw.age),
-      tags: raw.tags.split(',').map(e => e.toLowerCase().trim()),
-      avatar: null,
-      sex: Boolean(raw.sex)
-    }
-  }
-
-  const handleForm = async (data: Form) => {
-    StoreForm.postForm(data)
+  const handleForm = async (data: RawForm) => {
+    const newData: Form = {...data, id: storeAuthorization.user.id, tags: data.tags.split(',').map(e => e.toLowerCase().trim()), avatar: null}
+    StoreForm.postForm(newData)
   }
 
   return (
     <>
     <div>Добро пожаловать, {storeAuthorization.user?.email}</div>
     <div>Создание анкеты</div>
-    <form onSubmit={handleSubmit((data) => handleForm(convertFormData(data)))} style={{display: "flex", flexDirection: "column", width: "400px", gap: "20px"}}>
+    <form onSubmit={handleSubmit((data) => handleForm(data))} style={{display: "flex", flexDirection: "column", width: "400px", gap: "20px"}}>
       <label>Имя</label>
       <input {...register('name')} type="text" value={"Коля"} />
       <label>Фамилия</label>
       <input {...register('surname')} type="text" value={"Коля"} />
       <label>Пол</label>
-      <select {...register('sex')} value={"1"}>
+      <select {...register('sex', {setValueAs: Boolean})} value={"1"}>
         <option value="true">Мужчина</option>
         <option value="false">Женщина</option>
       </select>
       <label>Возраст</label>
-      <input {...register('age')} type="number" value={20} />
+      <input {...register('age', {valueAsNumber: true})} type="number" value={20} />
       <label>Цель</label>
       <input {...register('target')} type="text" value={"Коля"} />
       <label>Район</label>

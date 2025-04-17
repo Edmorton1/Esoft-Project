@@ -1,4 +1,6 @@
+import StoreMessages from "@/store/Store-Messages";
 import { URL_CLIENT_WS, URL_SERVER_WS } from "@/URLS";
+import { toSO } from "@s/infrastructure/db/Mappers";
 import { makeAutoObservable } from "mobx";
 
 class SocketStore {
@@ -12,6 +14,17 @@ class SocketStore {
 
   //   }
   // }
+
+  waitSocket(socket: WebSocket): Promise<void> {
+    return new Promise(resolve => {
+      if (socket.readyState === WebSocket.OPEN) {
+        resolve()
+      } else {
+        socket.addEventListener('open', () => resolve(), {once: true})
+      }
+    })
+  }
+  
   connection = async () => {
     this.socket = new WebSocket(URL_SERVER_WS)
 
@@ -19,7 +32,11 @@ class SocketStore {
       console.log('КЛИЕНТ ПОДКЛЮЧИЛСЯ')
     }
     this.socket.onmessage = (msg) => {
-      console.log(msg.data)
+      const {data, type} = toSO(msg.data)
+      switch (type) {
+        case "message":
+          StoreMessages.messages.push(data)
+      }
 
       // setTimeout(() => {this.socket?.send('ПРИВЕТ С КЛИЕНТА'), console.log('СООБЩЕНИЕ ОТПРАВЛЕНО')}, 3000)
     }

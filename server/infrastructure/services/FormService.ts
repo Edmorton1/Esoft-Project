@@ -13,10 +13,10 @@ export class FormService {
     const tagId = await (await this.ORM.getByParams({tag: tag}, 'tags'))?.id
     
     if (tagId) {
-      await this.ORM.post({id: userId, tagId: tagId}, 'user_tags')
+      await this.ORM.post({id: userId, tagid: tagId}, 'user_tags')
     } else {
       const tagInDB = await this.ORM.post({tag}, 'tags')
-      await this.ORM.post({id: userId, tagId: tagInDB.id}, 'user_tags')
+      await this.ORM.post({id: userId, tagid: tagInDB.id}, 'user_tags')
     }
   }
 }

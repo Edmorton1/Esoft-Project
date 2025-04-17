@@ -14,8 +14,8 @@ export class HttpTokenController {
     console.log(id, role)
     const tokens = this.TokenService.generateTokens({id: id, role: role})
     const [accessToken, refreshToken] = tokens
-    await this.ORM.delete(id, 'tokens')
-    await this.ORM.post({id: id, token: refreshToken}, 'tokens')
+    // await this.ORM.delete(id, 'tokens')
+    await this.ORM.post({id: id, token: refreshToken}, 'tokens', 'ON CONFLICT DO NOTHING')
     res.cookie('refreshToken', refreshToken, {httpOnly: true, sameSite: "lax", maxAge: 1000 * 60 * 60 * 24})
     return accessToken
   }

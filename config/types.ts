@@ -3,6 +3,7 @@ export interface buildPaths {
   output: string;
   html: string;
   src: string;
+  server: string;
   public: string
 }
 

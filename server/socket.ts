@@ -1,20 +1,39 @@
+import { MsgTypes } from "@s/core/domain/types";
+import { toSO } from "@s/infrastructure/db/Mappers";
 import WebSocket from "ws";
 
+interface WebSocketWidh extends WebSocket {
+  id?: number
+}
+
+const clients = new Map<number, WebSocket>()
+
 function createWebSocketServer(server: any) {
-  const ws = new WebSocket.Server({ server })
+  const wss = new WebSocket.Server({ server })
 
-  ws.on('connection', (ws) => {
+  wss.on('connection', (wsClient: WebSocketWidh) => {
     console.log('WEB SOCKET WORK')
+    // clients.set(-1, [wsClient])
 
-    ws.send('ПРИВЕТ С СЕРВЕРА')
+    // ws.send('ПРИВЕТ С СЕРВЕРА')
     
-    ws.on('message', msg => {
-      console.log(msg)
+    wsClient.on('message', msg => {
+      const {data, type} = toSO(msg)
+      switch (type) {
+        case "userid":
+          console.log(data)
+          wsClient.id = data
+          clients.set(data, wsClient)
+          break
+      }
+        
+      // console.log(data)
     })
-    ws.on('close', () => {
+    wsClient.on('close', () => {
+      clients.delete(wsClient.id)
       console.log('КЛИЕНТ ЗАКРЫЛСЯ')
     })
   })
 }
 
-export default createWebSocketServer
+export {createWebSocketServer, clients}
