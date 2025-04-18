@@ -4,14 +4,45 @@
 //   text: string
 // }
 
-// function MessageComponent({}: CommentInterface) {
-//   return (
-//     <>
-//       <div>От {e.fromid} К {e.toid} Текст: {e.text}</div>
-//       <button>Изменить</button>
-//       <button>Удалить</button>
-//     </>
-//   )
-// }
+import useGetForm from "@/assets/useGetForm"
+import StoreForm from "@/store/Store-Form"
+import StoreMessages from "@/store/Store-Messages"
+import { Message } from "@s/core/domain/Users"
+import { useEffect, useState } from "react"
 
-// export default MessageComponent
+interface propsInterface {
+  msg: Message,
+  editing: boolean,
+  setEditMessage: React.Dispatch<React.SetStateAction<number>>
+}
+
+function MessageComponent({msg, editing, setEditMessage}: propsInterface) {
+  const [value, setValue] = useState('')
+
+  const from = useGetForm(msg.fromid)
+  const to = useGetForm(msg.toid)
+
+  return (
+    <>
+      <div>От {from?.name} К {to?.name}</div>
+      <br />
+      <div>Текст:
+        {editing 
+        ? <>
+            <input type="text" onChange={e => setValue(e.target.value)} />
+            <button onClick={() => {StoreMessages.put({...msg, text: value}); setEditMessage(null)}}>Готово</button>
+          </>
+        : <span>{msg.text}</span>}
+      </div>
+      <br />
+      {msg.fromid == StoreForm.form.id && !editing && (
+        <>
+          <button onClick={() => setEditMessage(msg.id)}>Изменить</button>
+          <button onClick={() => StoreMessages.delete(msg.id)}>Удалить</button>
+        </>
+      )}
+    </>
+  )
+}
+
+export default MessageComponent

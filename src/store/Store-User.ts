@@ -39,7 +39,7 @@ class StoreUser {
     localStorage.setItem("accessToken", request.accessToken)
 
     runInAction(() => this.user = request.user)
-    console.log(request.user)
+    // console.log(request.user)
     return request.user.id
   }
   login = async (data: UserDTO) => {
@@ -48,17 +48,16 @@ class StoreUser {
 
     runInAction(() => this.user = request.user)
     await StoreForm.getForm(request.user.id)
-    console.log(request.user)
+    // console.log(request.user)
   }
   logout = async () => {
     const request = toCl(await $api.get(`/logout/${this.user.id}`))
     localStorage.removeItem("accessToken")
     this.user = null
     StoreForm.form = null
-    console.log('asdsd')
   }
   initializing = async () => {
-    console.log('ЗАПРОС ПОШёл')
+    // console.log('ЗАПРОС ПОШёл')
     const request: responseInterface = toCl(await $api.get("/refresh"))
     // console.log(request.user)
     if (request?.accessToken) {

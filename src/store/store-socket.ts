@@ -35,7 +35,13 @@ class SocketStore {
       const {data, type} = toSO(msg.data)
       switch (type) {
         case "message":
-          StoreMessages.takeMessage(data)
+          StoreMessages.socketGet(data)
+          break
+        case "deleteMessage":
+          StoreMessages.socketDelete(data)
+          break
+        case "editMessage":
+          StoreMessages.socketPut(data)
       }
 
       // setTimeout(() => {this.socket?.send('ПРИВЕТ С КЛИЕНТА'), console.log('СООБЩЕНИЕ ОТПРАВЛЕНО')}, 3000)

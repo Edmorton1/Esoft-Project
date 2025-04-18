@@ -4,37 +4,35 @@ import { Message } from "@s/core/domain/Users"
 import { observer } from "mobx-react-lite"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
+import StoreForm from "@/store/Store-Form"
+import { toJS } from "mobx"
+import MessageComponent from "@/components/MessageComponent"
 
 function Messages() {
-  const [editMessage, setEditMessage] = useState(null)
+  const [editMessage, setEditMessage] = useState<null | number>(null)
 
   useEffect(() => {
-    StoreMessages.getAllMessage()
-    console.log(StoreMessages.messages)
+    StoreMessages.getAll()
+    // console.log(StoreMessages.messages)
+    // console.log(toJS(StoreForm.form))
   }, [])
 
   const {register, handleSubmit} = useForm()
   
   return (
     <>
-      <div>Пользователь: {storeAuthorization.user?.email}</div>
+      <div>Пользователь: {StoreForm.form?.name}</div>
       <div>Сообщения</div>
       <div>Исходящие</div>
-      {StoreMessages.messages?.sent?.map(e => (
-        <>
-          <div>От {e.fromid} К {e.toid} Текст: {e.text}</div>
-          <button>Изменить</button>
-          <button>Удалить</button>
-        </>
+      {StoreMessages.messages?.sent?.map(msg => (
+        <MessageComponent msg={msg} editing={editMessage == msg.id} setEditMessage={setEditMessage} />
       ))}
       <div>Входящие</div>
-      {StoreMessages.messages?.received?.map(e => (
-        <>
-          <div>От {e.fromid} К {e.toid} Текст: {e.text}</div>
-        </>
+      {StoreMessages.messages?.received?.map(msg => (
+        <MessageComponent msg={msg} editing={editMessage == msg.id} setEditMessage={setEditMessage}/>
       ))}
       <br />
-      <form onSubmit={handleSubmit((data: Message) => StoreMessages.sendMessage(data))}>
+      <form onSubmit={handleSubmit((data: Message) => StoreMessages.send(data))}>
         <div>Отправить сообщение</div>
         <input {...register('fromid', {valueAsNumber: true})} type="number" placeholder="От кого?" />
         <input {...register('toid', {valueAsNumber: true})} type="number" placeholder="К кому?" />

@@ -1,7 +1,4 @@
-import storeAuthorization from "@/store/Store-User";
-import StoreForm from "@/store/Store-Form";
-import { Form } from "@s/core/domain/Users";
-import { useForm, UseFormHandleSubmit, UseFormRegister } from "react-hook-form";
+import { UseFormRegister } from "react-hook-form";
 import { FormDTO, UserDTO } from "@s/core/dtoObjects";
 
 function FormCreate({register}: {register: UseFormRegister<UserDTO & FormDTO>}) {
