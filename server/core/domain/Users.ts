@@ -30,7 +30,7 @@ export class Message {
   constructor(
     readonly fromid: number,
     readonly toid: number,
-    readonly text: string,
+    public text: string,
     readonly id?: number,
     readonly created_at?: Date
   ) {}

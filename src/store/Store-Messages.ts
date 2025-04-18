@@ -7,7 +7,7 @@ import { toCl } from "@s/infrastructure/db/Mappers"
 import StoreUser from "@/store/Store-User"
 
 class StoreMessages {
-  messages: {sent: Message[]; received: Message[]} = undefined
+  messages: {sent: Message[]; received: Message[]} | undefined = undefined
   constructor() {
     makeAutoObservable(this)
   }
@@ -19,6 +19,7 @@ class StoreMessages {
     // console.log(storeAuthorization.user)
     const sent: Message[] = toCl(await $api.get(`/messages?fromid=${storeAuthorization.user?.id}`))
     const received: Message[] = toCl(await $api.get(`/messages?toid=${storeAuthorization.user?.id}`))
+    console.log(sent.sort((a, b) => a.id - b.id))
     const msgs = {sent, received}
     // console.log(msgs)
     this.messages = msgs
@@ -48,7 +49,9 @@ class StoreMessages {
   }
   
   socketPut = (data: Message) => {
-    this.messages.received = this.messages.received
+    console.log(data)
+    this.messages.received = this.messages.received.map(e => e.id === data.id ? {...e, text: data.text} : e)
+    this.messages.sent = this.messages.sent.map(e => e.id === data.id ? {...e, text: data.text} : e)
   }
 
   socketDelete = (id: number) => {

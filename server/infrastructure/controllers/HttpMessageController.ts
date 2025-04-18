@@ -29,14 +29,14 @@ export class HttpMessageController {
     console.log(data)
   }
 
-  async editMessage(req: Request<{id: number, text: string}>, res: Response) {
+  async editMessage(req: Request<{id: number}>, res: Response) {
     const {id} = req.params
     const data = req.body
 
     console.log(id, data)
     this.sendSocket(data, 'editMessage', data)
 
-    console.log(id)
+    await this.ORM.put(data, id, 'messages')
   }
 
   async deleteMessage(req: Request<{id: number}>, res: Response) {

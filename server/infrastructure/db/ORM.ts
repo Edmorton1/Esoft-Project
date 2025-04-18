@@ -19,11 +19,19 @@ export class ORM {
   }
 
   async getByParams<T extends tables>(param: Partial<Tables[T]>, table: T): Promise<Tables[T][]> {
+    // try {
     // const keys = Object.keys(param)
     // const values = Object.values(param)
     // console.log(param, table)
     const [values, and] = toSQLWhere(param)
+    console.log(`SELECT * FROM ${table} WHERE ${and}`, [...values])
     return toTS(await pool.query(`SELECT * FROM ${table} WHERE ${and}`, [...values]))
+    // }
+    // catch(err) {
+    //   if (err.code === '22P02') {
+    //     return []
+    //   }
+    // }
   }
 
   async post<T extends tables>(dto: Partial<Tables[T]>, table: T, SQLParam?: string): Promise<Tables[T][]> {
