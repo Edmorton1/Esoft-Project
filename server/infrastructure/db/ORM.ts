@@ -1,6 +1,7 @@
 import { tables, Tables } from "@s/core/domain/types"
+import { getCahce, redis, setCache } from "@s/infrastructure/cache/redis"
 import pool from "@s/infrastructure/db/db"
-import { toTS } from "@s/infrastructure/db/Mappers"
+import { frJSON, toJSON, toTS } from "@s/infrastructure/db/Mappers"
 import bcrypt from "bcrypt"
 // interface CRUDRepositoryInterface {
 //   get(table: tables): Promise<Tables[] | Tables>,
@@ -12,17 +13,26 @@ import bcrypt from "bcrypt"
 
 export class ORM {
   async get<T extends tables>(table: T): Promise<Tables[T][]> {
-    return toTS(await pool.query(`SELECT * FROM ${table}`))
+    const request = toTS(await pool.query(`SELECT * FROM ${table}`))
+    redis.set(table, request)
+    return request
   }
   async getById<T extends tables>(id: number | string, table: T): Promise<Tables[T][]> {
-    return toTS(await pool.query(`SELECT * FROM ${table} WHERE id = $1`, [id]))
+    const cacheName = `${table}${id}`
+    const cache = await getCahce<Tables[T][]>(cacheName)
+
+    if (cache) {
+      return cache
+    }
+
+    const request = toTS(await pool.query(`SELECT * FROM ${table} WHERE id = $1`, [id]))
+    await setCache(cacheName, request)
+    return request
   }
 
   async getByParams<T extends tables>(param: Partial<Tables[T]>, table: T): Promise<Tables[T][]> {
+    // console.log('редис редис редис редис редис редис редис ')
     // try {
-    // const keys = Object.keys(param)
-    // const values = Object.values(param)
-    // console.log(param, table)
     const [values, and] = toSQLWhere(param)
     console.log(`SELECT * FROM ${table} WHERE ${and}`, [...values])
     return toTS(await pool.query(`SELECT * FROM ${table} WHERE ${and}`, [...values]))

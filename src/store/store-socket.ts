@@ -1,6 +1,6 @@
 import StoreMessages from "@/store/Store-Messages";
 import { URL_CLIENT_WS, URL_SERVER_WS } from "@/URLS";
-import { toSO } from "@s/infrastructure/db/Mappers";
+import { frSO } from "@s/infrastructure/db/Mappers";
 import { makeAutoObservable } from "mobx";
 
 class SocketStore {
@@ -32,7 +32,7 @@ class SocketStore {
       console.log('КЛИЕНТ ПОДКЛЮЧИЛСЯ')
     }
     this.socket.onmessage = (msg) => {
-      const {data, type} = toSO(msg.data)
+      const {data, type} = frSO(msg.data)
       switch (type) {
         case "message":
           StoreMessages.socketGet(data)

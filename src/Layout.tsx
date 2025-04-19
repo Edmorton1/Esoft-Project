@@ -1,5 +1,5 @@
 import storeSocket from "@/store/Store-Socket"
-import { frSO } from "@s/infrastructure/db/Mappers"
+import { toSO } from "@s/infrastructure/db/Mappers"
 import { Link, Outlet } from "react-router-dom"
 
 function Layout() {

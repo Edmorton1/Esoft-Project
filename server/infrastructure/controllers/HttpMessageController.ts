@@ -1,6 +1,6 @@
 import { msg, MsgTypes } from "@s/core/domain/types";
 import { Form, Message } from "@s/core/domain/Users";
-import { frSO, one } from "@s/infrastructure/db/Mappers";
+import { toSO, one } from "@s/infrastructure/db/Mappers";
 import { ORM } from "@s/infrastructure/db/ORM";
 import { MessageService } from "@s/infrastructure/services/MessageService";
 import { clients } from "@s/socket";
@@ -15,8 +15,8 @@ export class HttpMessageController {
   sendSocket<T extends msg>(data: Message, type: T, msg: MsgTypes[T]) {
     const clientFrom = clients.get(data.fromid)
     const clientTo = clients.get(data.toid)
-    clientFrom!.send(frSO(type, msg))
-    clientTo?.send(frSO(type, msg))
+    clientFrom!.send(toSO(type, msg))
+    clientTo?.send(toSO(type, msg))
   }
 
   async sendMessage(req: Request, res: Response) {

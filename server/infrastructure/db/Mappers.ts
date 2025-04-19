@@ -14,8 +14,22 @@ export function toSQL(domainModel: any) {
   return domainModel
 }
 
-export function toSO(msg: any): SocketMessageInterface {
+export const frJSON = <T>(data: string | any): T | null => {
+  if (typeof data == "string") {
+    return JSON.parse(data.toString())
+  } return null
+}
+
+export function frSO(msg: any): SocketMessageInterface {
   return JSON.parse(msg.toString())
+}
+
+export const toJSON = (data: any): string => {
+  return JSON.stringify(data)
+}
+
+export function toSO<T extends msg>(type: T, data: MsgTypes[T]) {
+  return toJSON({data, type})
 }
 
 export const toCl = <T>(response: {data: T}): T => {
@@ -23,10 +37,6 @@ export const toCl = <T>(response: {data: T}): T => {
   //   return null
   // }
   return response.data
-}
-
-export function frSO<T extends msg>(type: T, data: MsgTypes[T]) {
-  return JSON.stringify({data, type})
 }
 
 export function one<T>(data: T[]): T {

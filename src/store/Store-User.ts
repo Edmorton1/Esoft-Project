@@ -3,7 +3,7 @@ import StoreForm from "@/store/Store-Form"
 import storeSocket from "@/store/Store-Socket"
 import { Form, User } from "@s/core/domain/Users"
 import { FormDTO, UserDTO } from "@s/core/dtoObjects"
-import { frSO, toCl } from "@s/infrastructure/db/Mappers"
+import { toSO, toCl } from "@s/infrastructure/db/Mappers"
 import { makeAutoObservable, runInAction } from "mobx"
 
 export interface responseInterface {
@@ -65,7 +65,7 @@ class StoreUser {
       await StoreForm.getForm(request.user.id)
       localStorage.setItem("accessToken", request.accessToken)
       await storeSocket.waitSocket(storeSocket.socket!)
-      storeSocket.socket!.send(frSO('userid', this.user!.id))
+      storeSocket.socket!.send(toSO('userid', this.user!.id))
     } else {
       this.user = null
       StoreForm.form = null

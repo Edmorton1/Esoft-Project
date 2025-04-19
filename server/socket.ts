@@ -1,5 +1,5 @@
 import { MsgTypes } from "@s/core/domain/types";
-import { toSO } from "@s/infrastructure/db/Mappers";
+import { frSO } from "@s/infrastructure/db/Mappers";
 import WebSocket from "ws";
 
 interface WebSocketWidh extends WebSocket {
@@ -18,7 +18,7 @@ function createWebSocketServer(server: any) {
     // ws.send('ПРИВЕТ С СЕРВЕРА')
     
     wsClient.on('message', msg => {
-      const {data, type} = toSO(msg)
+      const {data, type} = frSO(msg)
       switch (type) {
         case "userid":
           console.log(data)
