@@ -3,7 +3,7 @@ import { toSO } from "@s/infrastructure/db/Mappers";
 import WebSocket from "ws";
 
 interface WebSocketWidh extends WebSocket {
-  id?: number
+  id: number
 }
 
 const clients = new Map<number, WebSocket>()

@@ -1,7 +1,7 @@
 import { ORM } from "@s/infrastructure/db/ORM";
 import { UserDTO, PayloadDTO, TokenDTO } from "@s/core/dtoObjects";
 import { TokenService } from "@s/infrastructure/services/TokenService";
-import { Request, Response } from "webpack-dev-server";
+import { Request, Response } from "express";
 import bcrypt from "bcrypt"
 import { one } from "@s/infrastructure/db/Mappers";
 
@@ -63,7 +63,8 @@ export class HttpTokenController {
 
 
   async refresh(req: Request, res: Response) {
-    const accessToken = req.headers.authorization.split(' ')[1]
+    // ТУТ ПОСМОТРЕТЬ ПОТОМ ГДЕ !
+    const accessToken = req.headers.authorization!.split(' ')[1]
     const verifyAccess = await this.TokenService.validateAccess(accessToken)
     
     if (verifyAccess) {

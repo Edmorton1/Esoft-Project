@@ -17,9 +17,8 @@ class StoreMessages {
     // await storeAuthorization.waitUser()
     // console.log('after')
     // console.log(storeAuthorization.user)
-    const sent: Message[] = toCl(await $api.get(`/messages?fromid=${storeAuthorization.user?.id}`))
-    const received: Message[] = toCl(await $api.get(`/messages?toid=${storeAuthorization.user?.id}`))
-    console.log(sent.sort((a, b) => a.id - b.id))
+    let sent = toCl<Message[]>(await $api.get(`/messages?fromid=${storeAuthorization.user?.id}`)).sort((a, b) => a.id! - b.id!)
+    let received = toCl<Message[]>(await $api.get(`/messages?toid=${storeAuthorization.user?.id}`)).sort((a, b) => a.id! - b.id!)
     const msgs = {sent, received}
     // console.log(msgs)
     this.messages = msgs
@@ -41,23 +40,23 @@ class StoreMessages {
   }
   
   socketGet = (data: Message) => {
-    console.log(StoreUser.user.id, data.toid, data.fromid)
-    if (data.toid == StoreUser.user.id) {
-      return this.messages.received.push(data)
+    // console.log(StoreUser.user.id, data.toid, data.fromid)
+    if (data.toid == StoreUser.user!.id) {
+      return this.messages!.received.push(data)
     }
-    return this.messages.sent.push(data)
+    return this.messages!.sent.push(data)
   }
   
   socketPut = (data: Message) => {
     console.log(data)
-    this.messages.received = this.messages.received.map(e => e.id === data.id ? {...e, text: data.text} : e)
-    this.messages.sent = this.messages.sent.map(e => e.id === data.id ? {...e, text: data.text} : e)
+    this.messages!.received = this.messages!.received.map(e => e.id === data.id ? {...e, text: data.text} : e)
+    this.messages!.sent = this.messages!.sent.map(e => e.id === data.id ? {...e, text: data.text} : e)
   }
 
   socketDelete = (id: number) => {
     console.log(id)
-    this.messages.received = this.messages.received.filter(e => e.id != id)
-    this.messages.sent = this.messages.sent.filter(e => e.id != id)
+    this.messages!.received = this.messages!.received.filter(e => e.id != id)
+    this.messages!.sent = this.messages!.sent.filter(e => e.id != id)
   }
 }
 

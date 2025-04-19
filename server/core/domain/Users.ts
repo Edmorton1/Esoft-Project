@@ -15,7 +15,7 @@ export class Form {
     readonly surname: string,
     readonly sex: boolean,
     readonly age: number,
-    readonly avatar: string,
+    readonly avatar: string | null,
     readonly description: string,
     readonly target: string,
     readonly hood: string,

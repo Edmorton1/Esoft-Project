@@ -13,7 +13,7 @@ import { useEffect, useState } from "react"
 interface propsInterface {
   msg: Message,
   editing: boolean,
-  setEditMessage: React.Dispatch<React.SetStateAction<number>>
+  setEditMessage: React.Dispatch<React.SetStateAction<number | null>>
 }
 
 function MessageComponent({msg, editing, setEditMessage}: propsInterface) {
@@ -35,10 +35,10 @@ function MessageComponent({msg, editing, setEditMessage}: propsInterface) {
         : <span>{msg.text}</span>}
       </div>
       <br />
-      {msg.fromid == StoreForm.form.id && !editing && (
+      {msg.fromid == StoreForm.form?.id && !editing && (
         <>
-          <button onClick={() => setEditMessage(msg.id)}>Изменить</button>
-          <button onClick={() => StoreMessages.delete(msg.id)}>Удалить</button>
+          <button onClick={() => setEditMessage(msg.id!)}>Изменить</button>
+          <button onClick={() => StoreMessages.delete(msg.id!)}>Удалить</button>
         </>
       )}
     </>

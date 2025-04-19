@@ -5,6 +5,7 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import { BuildOptions } from "./types"
 import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer"
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
+import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin'
 import path from "path"
 
 function buildPlugins(options: BuildOptions): Configuration['plugins'] {
@@ -22,7 +23,10 @@ function buildPlugins(options: BuildOptions): Configuration['plugins'] {
             new DefinePlugin({
                 __PLATFORM__: JSON.stringify(options.platform)
             }),
-            isDev && new ReactRefreshWebpackPlugin()
+            isDev && new ReactRefreshWebpackPlugin(),
+            new ForkTsCheckerWebpackPlugin({
+                async: false
+            })
         ]
     )
 }

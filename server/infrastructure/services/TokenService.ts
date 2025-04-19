@@ -10,8 +10,8 @@ export class TokenService {
 
 
   generateTokens(payload: PayloadDTO) {
-    const accessToken = jwt.sign(payload, process.env.ACCESS_PRIVATE_KEY, {expiresIn: "10d"})
-    const refreshToken = jwt.sign(payload, process.env.REFRESH_PRIVATE_KEY, {expiresIn: "10d"})
+    const accessToken = jwt.sign(payload, process.env.ACCESS_PRIVATE_KEY!, {expiresIn: "10d"})
+    const refreshToken = jwt.sign(payload, process.env.REFRESH_PRIVATE_KEY!, {expiresIn: "10d"})
     
     return [accessToken, refreshToken]
   }
@@ -19,7 +19,7 @@ export class TokenService {
   async validateAccess(accessToken: string): Promise<JWTDTO | false> {
     try {
 
-      const token = jwt.verify(accessToken, process.env.ACCESS_PRIVATE_KEY) as JWTDTO
+      const token = jwt.verify(accessToken, process.env.ACCESS_PRIVATE_KEY!) as JWTDTO
       if (one(await this.ORM.getById(token.id, 'users'))) {
         return token
       } else return false
@@ -32,7 +32,7 @@ export class TokenService {
   async validateRefresh(refreshToken: string): Promise<JWTDTO | false> {
     try {
       
-      const token = jwt.verify(refreshToken, process.env.REFRESH_PRIVATE_KEY) as JWTDTO
+      const token = jwt.verify(refreshToken, process.env.REFRESH_PRIVATE_KEY!) as JWTDTO
       if (one(await this.ORM.getById(token.id, 'users'))) {
         return token
       } else return false

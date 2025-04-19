@@ -5,7 +5,7 @@ import { observer } from "mobx-react-lite";
 import { useForm } from "react-hook-form";
 
 function Login() {
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit } = useForm<UserDTO>();
 
   const handleTest = async () => {
     const request = await $api.get(`/users`)

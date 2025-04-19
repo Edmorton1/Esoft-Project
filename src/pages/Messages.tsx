@@ -1,11 +1,9 @@
-import storeAuthorization from "@/store/Store-User"
 import StoreMessages from "@/store/Store-Messages"
 import { Message } from "@s/core/domain/Users"
 import { observer } from "mobx-react-lite"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import StoreForm from "@/store/Store-Form"
-import { toJS } from "mobx"
 import MessageComponent from "@/components/MessageComponent"
 
 function Messages() {
@@ -17,7 +15,7 @@ function Messages() {
     // console.log(toJS(StoreForm.form))
   }, [])
 
-  const {register, handleSubmit} = useForm()
+  const {register, handleSubmit} = useForm<Message>()
   
   return (
     <>

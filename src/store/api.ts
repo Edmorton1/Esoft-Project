@@ -19,9 +19,9 @@ $api.interceptors.request.use((config => {
 
 $api.interceptors.request.use((async config => {
   if (
-    config.url.includes('/registration') ||
-    config.url.includes('/login') ||
-    config.url.includes('/logout')
+    config.url?.includes('/registration') ||
+    config.url?.includes('/login') ||
+    config.url?.includes('/logout')
   ) return config
 
   const request: responseInterface = toCl(

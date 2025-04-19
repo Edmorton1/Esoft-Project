@@ -15,7 +15,7 @@ class StoreUser {
   constructor() {
     makeAutoObservable(this)
   }
-  user: User = undefined
+  user: User | null | undefined = undefined
 
   // waitUser(): Promise<void> {
   //   return new Promise(resolve => {
@@ -34,7 +34,7 @@ class StoreUser {
   // }
   
   registration = async (user: UserDTO): Promise<number> => {
-    const request: responseInterface = toCl((await $api.post(`/registration`, user)))
+    const request = toCl<responseInterface>((await $api.post(`/registration`, user)))
     // StoreForm.postForm(form)
     localStorage.setItem("accessToken", request.accessToken)
 
@@ -43,7 +43,7 @@ class StoreUser {
     return request.user.id
   }
   login = async (data: UserDTO) => {
-    const request: responseInterface = toCl(await $api.post(`/login`, data))
+    const request = toCl<responseInterface>(await $api.post(`/login`, data))
     localStorage.setItem("accessToken", request.accessToken)
 
     runInAction(() => this.user = request.user)
@@ -51,21 +51,21 @@ class StoreUser {
     // console.log(request.user)
   }
   logout = async () => {
-    const request = toCl(await $api.get(`/logout/${this.user.id}`))
+    const request = toCl(await $api.get(`/logout/${this.user!.id}`))
     localStorage.removeItem("accessToken")
     this.user = null
     StoreForm.form = null
   }
   initializing = async () => {
     // console.log('ЗАПРОС ПОШёл')
-    const request: responseInterface = toCl(await $api.get("/refresh"))
+    const request = toCl<responseInterface>(await $api.get("/refresh"))
     // console.log(request.user)
     if (request?.accessToken) {
       runInAction(() => this.user = request.user)
       await StoreForm.getForm(request.user.id)
       localStorage.setItem("accessToken", request.accessToken)
-      await storeSocket.waitSocket(storeSocket.socket)
-      storeSocket.socket.send(frSO('userid', this.user.id))
+      await storeSocket.waitSocket(storeSocket.socket!)
+      storeSocket.socket!.send(frSO('userid', this.user!.id))
     } else {
       this.user = null
       StoreForm.form = null

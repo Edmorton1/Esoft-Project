@@ -15,7 +15,7 @@ export class HttpMessageController {
   sendSocket<T extends msg>(data: Message, type: T, msg: MsgTypes[T]) {
     const clientFrom = clients.get(data.fromid)
     const clientTo = clients.get(data.toid)
-    clientFrom.send(frSO(type, msg))
+    clientFrom!.send(frSO(type, msg))
     clientTo?.send(frSO(type, msg))
   }
 
@@ -41,8 +41,8 @@ export class HttpMessageController {
 
   async deleteMessage(req: Request<{id: number}>, res: Response) {
     const { id } = req.params
-    // const data = one(await this.ORM.delete(id, 'messages'))
-    const data = one(await this.ORM.getById(id, 'messages'))
+    const data = one(await this.ORM.delete(id, 'messages'))
+    // const data = one(await this.ORM.getById(id, 'messages'))
 
     this.sendSocket(data, 'deleteMessage', id)
   }

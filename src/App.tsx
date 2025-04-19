@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router";
-import { LazyLogin, LazyMain, LazyMessages, LazyRegistration } from "@/index.lazy";
+import { LazyLogin, LazyMain, LazyMessages, LazyRegistration, LazyUsers } from "@/index.lazy";
 import "@/css/App.scss"
 import SocketStore from "@/store/Store-Socket";
 import { Suspense, useEffect } from "react";
@@ -25,6 +25,7 @@ function App() {
                   <Route path="/registration" element={<LazyRegistration />}/>
                   {/* <Route path="/form" element={<LazyForm/>}></Route> */}
                   <Route path="/messages" element={<LazyMessages />}></Route>
+                  <Route path="/users" element={<LazyUsers/>}></Route>
                   <Route path="*" element={<div>Такой страницы нет</div>}></Route>
               </Routes>
           </Suspense>

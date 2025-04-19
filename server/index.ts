@@ -5,6 +5,7 @@ import cors from "cors"
 import http from "http"
 import cookieParser from "cookie-parser"
 import { createWebSocketServer } from "@s/socket"
+import "@s/infrastructure/cache/redis"
 dotenv.config()
 
 const app = express()

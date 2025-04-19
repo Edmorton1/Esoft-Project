@@ -13,6 +13,8 @@
 
       "strict": true,
       // "resolveJsonModule": true,
+      // "types": ["NodeJS"],
+      // "typeRoots": ["./server"],
       "baseUrl": ".",
       "paths": {
         "@/*": ["./src/*"],
