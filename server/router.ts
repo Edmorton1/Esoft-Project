@@ -1,6 +1,6 @@
 import express from "express"
 import { tables } from "@s/core/domain/types"
-import { formController, messageController, tokenController, universalController } from "@s/controllers"
+import { formController, likesController, messageController, tokenController, universalController } from "@s/controllers"
 const router = express.Router()
 
 // const httpUserController = (method: keyof HttpUserController) => {
@@ -22,7 +22,7 @@ tablesArr.forEach(table => {
   router.delete(`/${table}/:id`, universalController('delete', table))
 })
 
-router.get('/byParams', universalController('getByParams', 'users'))
+// router.get('/byParams', universalController('getByParams', 'users'))
 
 router.post('/registration', tokenController('registartion'))
 router.post('/login', tokenController('login'))
@@ -34,5 +34,7 @@ router.post('/createForm', formController("postForm"))
 router.post('/sendMessage', messageController('sendMessage'))
 router.put('/editMessage/:id', messageController('editMessage'))
 router.delete('/deleteMessage/:id', messageController('deleteMessage'))
+
+router.post('/likesGet', likesController('sendLike'))
 
 export default router

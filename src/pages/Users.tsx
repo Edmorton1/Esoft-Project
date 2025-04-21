@@ -1,22 +1,31 @@
 import useGetById from "@/assets/useGetById"
 import StoreUsers from "@/store/Store-Users"
-import Toast from "@/ui/Toast"
-import { Form } from "@s/core/domain/Users"
-import { Suspense, useEffect, useRef, useState } from "react"
+import Alert from "@/ui/Alert"
+import { Suspense, useEffect, useState } from "react"
+import * as style from "@/css/ToastLike.scss"
+import StoreForm from "@/store/Store-Form"
+import StoreLikes from "@/store/StoreLikes"
+import { toJS } from "mobx"
 
 function Users() {
-  useGetById('forms', undefined, 'array', (data: Form[]) => StoreUsers.initial(data))
+  useGetById('forms', undefined, 'array', StoreUsers.initial)
   const [state, setState] = useState(false)
-  const ref = useRef(null)
 
   return (
     <Suspense>
-      <Toast state={state} nodeRef={ref} ></Toast>
-      {StoreUsers.users?.map(e => (
+
+      <Alert state={state} setState={setState}>
+        <div className={style.toast}>Вы понравились пользователю</div>
+      </Alert>
+      <button onClick={() => console.log(toJS(StoreLikes.likes))}>Вывести стор</button>
+      <br />
+      <br />
+
+      {StoreUsers.users?.map(anUser => (
         <>
-          <div>{e.id} {e.name}</div>
-          <button onClick={() => {}}>Лайкнуть</button>
-          <button onClick={() => console.log(StoreUsers.users)}>Вывести стор</button>
+          <div>{anUser.id} {anUser.name}</div>
+          {/* <button onClick={() => setState(true)}>Лайкнуть</button> */}
+          <button onClick={() => StoreLikes.sendLike({userid: StoreForm.form?.id!, liked_userid: anUser.id})}>Лайкнуть</button>
         </>
       ))}
     </Suspense>

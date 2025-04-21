@@ -43,10 +43,11 @@ export const cacheEdit = async (table: tables, request: any, type: 'edit' | 'del
   if (table != 'tokens') {
     const searchTerms = Object.entries(request[0]).map(e => e.join('-'));
     const dataDelete = (await redis.scan(0, 'MATCH', `${table}-*`, 'COUNT', 1000))[1].filter(key => searchTerms.some(term => key.includes(term)))
+    console.log(dataDelete)
     redis.del(table)
-    redis.del(dataDelete)
+    dataDelete.length > 0 && redis.del(dataDelete)
     if (type == 'edit') {
-      const key = `${table}-${request[0].id}`
+      const key = `${table}-id-${request[0].id}`
       setCache(key, request)
     }
   }

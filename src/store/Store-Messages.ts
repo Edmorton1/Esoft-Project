@@ -31,6 +31,7 @@ class StoreMessages {
   }
 
   delete = async (id: number) => {
+    console.log(id)
     const request = await $api.delete(`/deleteMessage/${id}`)
   }
   

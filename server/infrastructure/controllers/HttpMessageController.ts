@@ -21,11 +21,10 @@ export class HttpMessageController {
 
   async sendMessage(req: Request, res: Response) {
     const data: Message = req.body
-    console.log(clients.keys())
 
-    this.sendSocket(data, 'message', data)
+    const request = one(await this.ORM.post(data, 'messages'))
 
-    await this.ORM.post(data, 'messages')
+    this.sendSocket(data, 'message', request)
     // console.log(data)
   }
 

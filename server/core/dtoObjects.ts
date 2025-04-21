@@ -44,3 +44,10 @@ export class TokenDTO {
     readonly accessToken: string
   ) {}
 }
+
+export class LikesDTO {
+  constructor(
+    readonly userid: number,
+    readonly liked_userid: number
+  ) {}
+}

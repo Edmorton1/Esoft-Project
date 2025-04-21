@@ -20,7 +20,7 @@ function Login() {
     <form onSubmit={handleSubmit((data: UserDTO) => storeAuthorization.login(data))}>
       {/* <input {...register('email')} type="text" placeholder="email" value="marty@gmial.ru" />
       <input {...register('password')} type="text" placeholder="password" value="123" /> */}
-      <input {...register('email')} type="text" placeholder="email" value="asad" />
+      <input {...register('email')} type="text" placeholder="email" />
       <input {...register('password')} type="text" placeholder="password" value="123" />
       <button>Войти</button>
     </form>

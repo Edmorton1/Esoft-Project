@@ -17,7 +17,9 @@ export type MsgTypes = {
   userid: number,
   message: Message,
   deleteMessage: number,
-  editMessage: Message
+  editMessage: Message,
+
+  like: Likes
 }
 
 export type msg = keyof MsgTypes

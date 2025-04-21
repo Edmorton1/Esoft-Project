@@ -1,4 +1,5 @@
 import StoreMessages from "@/store/Store-Messages";
+import StoreLikes from "@/store/StoreLikes";
 import { URL_CLIENT_WS, URL_SERVER_WS } from "@/URLS";
 import { frSO } from "@s/infrastructure/db/Mappers";
 import { makeAutoObservable } from "mobx";
@@ -35,6 +36,7 @@ class SocketStore {
       const {data, type} = frSO(msg.data)
       switch (type) {
         case "message":
+          console.log(data)
           StoreMessages.socketGet(data)
           break
         case "deleteMessage":
@@ -42,6 +44,11 @@ class SocketStore {
           break
         case "editMessage":
           StoreMessages.socketPut(data)
+          break
+
+        case "like":
+          StoreLikes.socketGet(data)
+          break
       }
 
       // setTimeout(() => {this.socket?.send('ПРИВЕТ С КЛИЕНТА'), console.log('СООБЩЕНИЕ ОТПРАВЛЕНО')}, 3000)

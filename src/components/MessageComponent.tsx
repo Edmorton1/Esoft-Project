@@ -8,6 +8,7 @@ import useGetById from "@/assets/useGetById"
 import StoreForm from "@/store/Store-Form"
 import StoreMessages from "@/store/Store-Messages"
 import { Message } from "@s/core/domain/Users"
+import { toJS } from "mobx"
 import { useEffect, useState } from "react"
 
 interface propsInterface {
@@ -22,8 +23,7 @@ function MessageComponent({msg, editing, setEditMessage}: propsInterface) {
   const from = useGetById('forms', {id: msg.fromid}, 'single')
   const to = useGetById('forms', {id: msg.toid}, 'single')
   const datetime = `${new Date(msg.created_at!).toLocaleDateString()} ${new Date(msg.created_at!).toLocaleTimeString()}`
-  console.log(editing)
-
+  
   return (
     <>
       <div>От {from?.name} К {to?.name} {datetime}</div>
@@ -41,6 +41,7 @@ function MessageComponent({msg, editing, setEditMessage}: propsInterface) {
         <>
           <button onClick={() => setEditMessage(msg.id!)}>Изменить</button>
           <button onClick={() => StoreMessages.delete(msg.id!)}>Удалить</button>
+          <button onClick={() => console.log(toJS(StoreMessages.messages))}>Вывести сообщения</button>
         </>
       )}
     </>

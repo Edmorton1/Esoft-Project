@@ -31,7 +31,7 @@ export class Message {
     readonly fromid: number,
     readonly toid: number,
     public text: string,
-    readonly id?: number,
+    readonly id: number,
     readonly created_at?: Date
   ) {}
 }

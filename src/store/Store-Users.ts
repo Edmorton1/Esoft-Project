@@ -1,5 +1,6 @@
 import $api from "@/store/api";
-import { Form } from "@s/core/domain/Users";
+import { Form, Likes } from "@s/core/domain/Users";
+import { LikesDTO } from "@s/core/dtoObjects";
 import { makeAutoObservable, runInAction } from "mobx";
 
 class StoreUsers {
@@ -10,7 +11,7 @@ class StoreUsers {
   users: Form[] | null = null
 
   initial = (data: Form[]) => {
-    runInAction(() => this.users = data)
+    this.users = data
   }
 }
 

@@ -6,6 +6,7 @@ import { tables } from "@s/core/domain/types"
 import { HttpFormController } from "@s/infrastructure/controllers/HttpFormController"
 import { FormService } from "@s/infrastructure/services/FormService"
 import { HttpMessageController } from "@s/infrastructure/controllers/HttpMessageController"
+import { HttpLikesController } from "@s/infrastructure/controllers/HttpLikesController"
 
 export const universalController = (method: keyof CRUDController, table: tables) => {
   const controller = new CRUDController(new ORM(), table)
@@ -24,5 +25,10 @@ export const formController = (method: keyof HttpFormController) => {
 
 export const messageController = (method: keyof HttpMessageController) => {
   const controller = new HttpMessageController(new FormService(new ORM), new ORM())
+  return (controller[method] as Function).bind(controller)
+}
+
+export const likesController = (method: keyof HttpLikesController) => {
+  const controller = new HttpLikesController(new ORM)
   return (controller[method] as Function).bind(controller)
 }

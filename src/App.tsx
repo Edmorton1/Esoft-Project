@@ -3,7 +3,7 @@ import { LazyLogin, LazyMain, LazyMessages, LazyRegistration, LazyUsers } from "
 import "@/css/App.scss"
 import SocketStore from "@/store/Store-Socket";
 import { Suspense, useEffect } from "react";
-import AuthorizeChecking from "@/ui/AuthorizeChecking";
+import Initialization from "@/ui/Initialization";
 import Layout from "@/Layout";
 // ДЛЯ АССИНХРОННЫХ ОПЕРАЦИЙ ИСПОЛЬЗОВАТЬ suspense
 
@@ -17,7 +17,7 @@ function App() {
     // <ErrorBoundary FallbackComponent={Fallback}>
         <BrowserRouter>
         <Layout />
-          <AuthorizeChecking/>
+          <Initialization/>
           <Suspense>
             <Routes>
                   <Route index element={<LazyMain />} />

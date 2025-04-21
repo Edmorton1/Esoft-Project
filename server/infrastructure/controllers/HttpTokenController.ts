@@ -12,7 +12,7 @@ export class HttpTokenController {
   ) {}
 
   async createTokens(id: number, role: string, res: Response) {
-    console.log(id, role)
+    // console.log(id, role)
     const tokens = this.TokenService.generateTokens({id: id, role: role})
     const [accessToken, refreshToken] = tokens
     // await this.ORM.delete(id, 'tokens')
@@ -68,7 +68,7 @@ export class HttpTokenController {
     const verifyAccess = await this.TokenService.validateAccess(accessToken)
     
     if (verifyAccess) {
-      console.log('access')
+      // console.log('access')
       const user = one(await this.ORM.getById(verifyAccess.id, 'users'))
       return this.returnDTO({user, accessToken}, res)
     }
@@ -76,7 +76,7 @@ export class HttpTokenController {
     const verifyRefresh = await this.TokenService.validateRefresh(req.cookies.refreshToken)
 
     if (!verifyAccess && verifyRefresh) {
-      console.log('refresh')
+      // console.log('refresh')
       const user = one(await this.ORM.getById(verifyRefresh.id, 'users'))
       const accessToken = await this.createTokens(verifyRefresh.id, verifyRefresh.role, res)
       return this.returnDTO({user, accessToken}, res)

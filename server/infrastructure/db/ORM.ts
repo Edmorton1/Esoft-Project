@@ -1,7 +1,7 @@
 import { tables, Tables } from "@s/core/domain/types"
 import { cacheEdit, cacheGet, redis, setCache } from "@s/infrastructure/cache/redis"
 import pool from "@s/infrastructure/db/db"
-import { toTS } from "@s/infrastructure/db/Mappers"
+import { frJSON, toTS } from "@s/infrastructure/db/Mappers"
 import bcrypt from "bcrypt"
 // interface CRUDRepositoryInterface {
 //   get(table: tables): Promise<Tables[] | Tables>,
@@ -25,7 +25,7 @@ export class ORM {
   
   async getByParams<T extends tables>(param: Partial<Tables[T]>, table: T): Promise<Tables[T][]> {
     // try {
-    console.log(param, table)
+    // console.log(param)
     const [values, and] = toSQLWhere(param)
     // console.log(`SELECT * FROM ${table} WHERE ${and}`, [...values])
 
@@ -54,6 +54,7 @@ export class ORM {
   }
 
   async put<T extends tables>(dto: Partial<Tables[T]>, id: number | string, table: T): Promise<Tables[T][]> {
+    console.log(dto, id, table)
     const [values, dollars] = toSQLPut(dto)
     const request = toTS<T>(await pool.query(`UPDATE ${table} SET ${dollars} WHERE id = ${id} RETURNING *`, [...values]))
 
@@ -62,6 +63,7 @@ export class ORM {
   }
 
   async delete<T extends tables>(id: number | string, table: T): Promise<Tables[T][]> {
+    console.log(id, table)
     const request = toTS<T>(await pool.query(`DELETE FROM ${table} WHERE id = $1 RETURNING *`, [id]))
     
     cacheEdit(table, request, 'delete')

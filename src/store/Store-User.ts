@@ -66,6 +66,7 @@ class StoreUser {
       localStorage.setItem("accessToken", request.accessToken)
       await storeSocket.waitSocket(storeSocket.socket!)
       storeSocket.socket!.send(toSO('userid', this.user!.id))
+      
     } else {
       this.user = null
       StoreForm.form = null

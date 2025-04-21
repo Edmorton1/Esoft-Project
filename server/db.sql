@@ -25,6 +25,8 @@ CREATE TABLE likes (
 	id SERIAL PRIMARY KEY,
 	userId INT REFERENCES forms(id) ON DELETE CASCADE NOT NULL,
 	liked_userId INT NOT NULL,
+	UNIQUE (userid, liked_userId),
+	CHECK (userid <> liked_userId),
 	FOREIGN KEY (liked_userId) REFERENCES forms(id) ON DELETE CASCADE
 );
 

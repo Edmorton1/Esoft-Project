@@ -9,9 +9,10 @@ export class CRUDController {
     readonly table: tables
   ) {}
   
-  async get(req: Request, res: Response) {
-    const params = req.query
-    if (Object.keys(params).length > 0) {
+  async get(req: Request<{query: string}>, res: Response) {
+    if (Object.keys(req.query).length > 0) {
+      const params = req.query
+      console.log(params)
       return res.json(await this.ORM.getByParams(params, this.table))
     }
     res.json(await this.ORM.get(this.table))
@@ -39,11 +40,11 @@ export class CRUDController {
     res.json(request)
   }
 
-  async getByParams(req: Request, res: Response) {
-    const {table, ...params} = frJSON<{table: tables, params: Partial<Tables[tables]>}>(req.query.params)!
-    console.log(params)
-    //@ts-ignore
-    const request = await this.ORM.getByParams(params, table)
-    res.json(request)
-  }
+  // async getByParams(req: Request, res: Response) {
+  //   const {table, ...params} = frJSON<{table: tables, params: Partial<Tables[tables]>}>(req.query.params)!
+  //   // console.log(params)
+  //   //@ts-ignore
+  //   const request = await this.ORM.getByParams(params, table)
+  //   res.json(request)
+  // }
 }
