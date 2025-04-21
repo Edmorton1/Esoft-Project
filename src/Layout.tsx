@@ -10,6 +10,7 @@ function Layout() {
       <Link to={"/registration"}><button>Регистрация</button></Link>
       <Link to={"/login"}><button>Войти</button></Link>
       <Link to={"/messages"}><button>Сообщения</button></Link>
+      <Link to={"/users"}><button>Пользователи</button></Link>
       <br />
       <br />
       <Outlet />

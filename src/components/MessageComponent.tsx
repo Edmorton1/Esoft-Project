@@ -4,7 +4,7 @@
 //   text: string
 // }
 
-import useGetForm from "@/assets/useGetForm"
+import useGetById from "@/assets/useGetById"
 import StoreForm from "@/store/Store-Form"
 import StoreMessages from "@/store/Store-Messages"
 import { Message } from "@s/core/domain/Users"
@@ -19,12 +19,14 @@ interface propsInterface {
 function MessageComponent({msg, editing, setEditMessage}: propsInterface) {
   const [value, setValue] = useState('')
 
-  const from = useGetForm(msg.fromid)
-  const to = useGetForm(msg.toid)
+  const from = useGetById('forms', {id: msg.fromid}, 'single')
+  const to = useGetById('forms', {id: msg.toid}, 'single')
+  const datetime = `${new Date(msg.created_at!).toLocaleDateString()} ${new Date(msg.created_at!).toLocaleTimeString()}`
+  console.log(editing)
 
   return (
     <>
-      <div>От {from?.name} К {to?.name}</div>
+      <div>От {from?.name} К {to?.name} {datetime}</div>
       <br />
       <div>Текст:
         {editing 
@@ -35,7 +37,7 @@ function MessageComponent({msg, editing, setEditMessage}: propsInterface) {
         : <span>{msg.text}</span>}
       </div>
       <br />
-      {msg.fromid == StoreForm.form?.id && !editing && (
+      {msg.fromid === StoreForm.form?.id && !editing && (
         <>
           <button onClick={() => setEditMessage(msg.id!)}>Изменить</button>
           <button onClick={() => StoreMessages.delete(msg.id!)}>Удалить</button>

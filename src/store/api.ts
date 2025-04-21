@@ -40,7 +40,7 @@ export const noAuthorizeErrorAxios = (setErr: Function) => {
   return $api.interceptors.response.use(
     response => response,
     error => {
-      if (error.status == 401) {
+      if (error.status === 401) {
         console.log(error.status)
         localStorage.removeItem("accessToken")
         storeAuthorization.user = null

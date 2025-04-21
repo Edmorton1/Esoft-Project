@@ -1,0 +1,32 @@
+import $api from "@/store/api"
+import { Tables, tables } from "@s/core/domain/types"
+import { one, toCl, toJSON } from "@s/infrastructure/db/Mappers"
+import { useEffect, useState } from "react"
+
+function useGetById<T extends tables>(table: T, params?: Partial<Tables[T]>, resType?: 'array', callback?: (data: any) => void): Tables[T][] | null
+function useGetById<T extends tables>(table: T, params?: Partial<Tables[T]>, resType?: 'single', callback?: (data: any) => void): Tables[T] | null
+function useGetById<T extends tables>(table: T, params?: Partial<Tables[T]>, resType?: 'single' | 'array', callback?: (data: any) => void): Tables[T][] | Tables[T] | null {
+  const [value, setValue] = useState<Tables[T][] | Tables[T] | null>(null)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (params) {
+        const request = await toCl<Tables[T][]>(await $api.get(`/byParams?params=${toJSON({table, ...params})}`))
+        callback && callback(request)
+        if (resType == 'single') {
+          return setValue(one(request))
+        }
+        return setValue(request)
+      }
+      const request = await toCl<Tables[T]>(await $api.get(`/${table}`))
+      callback && callback(request)
+      return setValue(request)
+    }
+
+    fetchData()
+  }, [])
+
+  return value
+}
+
+export default useGetById

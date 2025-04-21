@@ -7,7 +7,7 @@ import { CSSTransition } from "react-transition-group"
 // animations.exit,
 // animations.exit_active
 
-function ErrorAuthorize({state, nodeRef}: {state: boolean, nodeRef: any}) {
+function Toast({state, nodeRef}: {state: boolean, nodeRef: any}) {
   return (
     <CSSTransition
     nodeRef={nodeRef}
@@ -26,4 +26,4 @@ function ErrorAuthorize({state, nodeRef}: {state: boolean, nodeRef: any}) {
   )
 }
 
-export default ErrorAuthorize
+export default Toast

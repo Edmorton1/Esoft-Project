@@ -26,14 +26,14 @@ export class HttpMessageController {
     this.sendSocket(data, 'message', data)
 
     await this.ORM.post(data, 'messages')
-    console.log(data)
+    // console.log(data)
   }
 
   async editMessage(req: Request<{id: number}>, res: Response) {
     const {id} = req.params
     const data = req.body
 
-    console.log(id, data)
+    // console.log(id, data)
     this.sendSocket(data, 'editMessage', data)
 
     await this.ORM.put(data, id, 'messages')

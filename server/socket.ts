@@ -21,7 +21,6 @@ function createWebSocketServer(server: any) {
       const {data, type} = frSO(msg)
       switch (type) {
         case "userid":
-          console.log(data)
           wsClient.id = data
           clients.set(data, wsClient)
           break

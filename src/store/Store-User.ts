@@ -56,7 +56,7 @@ class StoreUser {
     this.user = null
     StoreForm.form = null
   }
-  initializing = async () => {
+  initial = async () => {
     // console.log('ЗАПРОС ПОШёл')
     const request = toCl<responseInterface>(await $api.get("/refresh"))
     // console.log(request.user)

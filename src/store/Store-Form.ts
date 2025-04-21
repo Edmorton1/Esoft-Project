@@ -26,6 +26,10 @@ class FormStore {
     // console.log(request)
     return request
   }
+
+  async getAll(): Promise<Form[]> {
+    return toCl<Form[]>(await $api.get('/forms'))
+  }
 }
 
 export default new FormStore()

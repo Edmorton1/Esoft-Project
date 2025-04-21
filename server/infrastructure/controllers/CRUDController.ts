@@ -1,4 +1,5 @@
-import { tables } from "@s/core/domain/types"
+import { Tables, tables } from "@s/core/domain/types"
+import { frJSON } from "@s/infrastructure/db/Mappers"
 import { ORM } from "@s/infrastructure/db/ORM"
 import { Request, Response } from "express"
 
@@ -35,6 +36,14 @@ export class CRUDController {
   async delete(req: Request, res: Response) {
     const {id} = req.params
     const request = await this.ORM.delete(id, this.table)
+    res.json(request)
+  }
+
+  async getByParams(req: Request, res: Response) {
+    const {table, ...params} = frJSON<{table: tables, params: Partial<Tables[tables]>}>(req.query.params)!
+    console.log(params)
+    //@ts-ignore
+    const request = await this.ORM.getByParams(params, table)
     res.json(request)
   }
 }

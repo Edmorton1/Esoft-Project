@@ -10,9 +10,7 @@ function Messages() {
   const [editMessage, setEditMessage] = useState<null | number>(null)
 
   useEffect(() => {
-    StoreMessages.getAll()
-    // console.log(StoreMessages.messages)
-    // console.log(toJS(StoreForm.form))
+    StoreMessages.initial()
   }, [])
 
   const {register, handleSubmit} = useForm<Message>()
@@ -23,11 +21,11 @@ function Messages() {
       <div>Сообщения</div>
       <div>Исходящие</div>
       {StoreMessages.messages?.sent?.map(msg => (
-        <MessageComponent msg={msg} editing={editMessage == msg.id} setEditMessage={setEditMessage} />
+        <MessageComponent msg={msg} editing={editMessage === msg.id} setEditMessage={setEditMessage} />
       ))}
       <div>Входящие</div>
       {StoreMessages.messages?.received?.map(msg => (
-        <MessageComponent msg={msg} editing={editMessage == msg.id} setEditMessage={setEditMessage}/>
+        <MessageComponent msg={msg} editing={editMessage === msg.id} setEditMessage={setEditMessage}/>
       ))}
       <br />
       <form onSubmit={handleSubmit((data: Message) => StoreMessages.send(data))}>

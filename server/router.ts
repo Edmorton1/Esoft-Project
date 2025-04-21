@@ -22,6 +22,8 @@ tablesArr.forEach(table => {
   router.delete(`/${table}/:id`, universalController('delete', table))
 })
 
+router.get('/byParams', universalController('getByParams', 'users'))
+
 router.post('/registration', tokenController('registartion'))
 router.post('/login', tokenController('login'))
 router.get('/logout/:id', tokenController('logout'))

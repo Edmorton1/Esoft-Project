@@ -1,7 +1,7 @@
 import { tables, Tables } from "@s/core/domain/types"
-import { getCahce, redis, setCache } from "@s/infrastructure/cache/redis"
+import { cacheEdit, cacheGet, redis, setCache } from "@s/infrastructure/cache/redis"
 import pool from "@s/infrastructure/db/db"
-import { frJSON, toJSON, toTS } from "@s/infrastructure/db/Mappers"
+import { toTS } from "@s/infrastructure/db/Mappers"
 import bcrypt from "bcrypt"
 // interface CRUDRepositoryInterface {
 //   get(table: tables): Promise<Tables[] | Tables>,
@@ -13,29 +13,25 @@ import bcrypt from "bcrypt"
 
 export class ORM {
   async get<T extends tables>(table: T): Promise<Tables[T][]> {
-    const request = toTS(await pool.query(`SELECT * FROM ${table}`))
-    redis.set(table, request)
-    return request
+    const key = table
+    const callback = async () => toTS<T>(await pool.query(`SELECT * FROM ${table}`))
+    return cacheGet(key, callback)
   }
   async getById<T extends tables>(id: number | string, table: T): Promise<Tables[T][]> {
-    const cacheName = `${table}${id}`
-    const cache = await getCahce<Tables[T][]>(cacheName)
-
-    if (cache) {
-      return cache
-    }
-
-    const request = toTS(await pool.query(`SELECT * FROM ${table} WHERE id = $1`, [id]))
-    await setCache(cacheName, request)
-    return request
+    const key = `${table}-id-${id}`
+    const callback = async () => toTS<T>(await pool.query(`SELECT * FROM ${table} WHERE id = $1`, [id]))
+    return await cacheGet(key, callback)
   }
-
+  
   async getByParams<T extends tables>(param: Partial<Tables[T]>, table: T): Promise<Tables[T][]> {
-    // console.log('редис редис редис редис редис редис редис ')
     // try {
+    console.log(param, table)
     const [values, and] = toSQLWhere(param)
-    console.log(`SELECT * FROM ${table} WHERE ${and}`, [...values])
-    return toTS(await pool.query(`SELECT * FROM ${table} WHERE ${and}`, [...values]))
+    // console.log(`SELECT * FROM ${table} WHERE ${and}`, [...values])
+
+    const key = `${table}-${Object.entries(param).flat().join("-")}`
+    const callback = async () => toTS<T>(await pool.query(`SELECT * FROM ${table} WHERE ${and}`, [...values]))
+    return cacheGet(key, callback)
     // }
     // catch(err) {
     //   if (err.code === '22P02') {
@@ -50,17 +46,26 @@ export class ORM {
       dto.password = hashed as Tables[T][keyof Tables[T]]
     }
     const [keys, values, dollars] = toSQLPost(dto)
-    return toTS(await pool.query(`INSERT INTO ${table} (${keys}) VALUES(${dollars}) ${SQLParam ? SQLParam : ''} RETURNING *`, [...values]))
+    const request =  toTS<T>(await pool.query(`INSERT INTO ${table} (${keys}) VALUES(${dollars}) ${SQLParam ? SQLParam : ''} RETURNING *`, [...values]))
+
+    cacheEdit(table, request)
+
+    return request
   }
 
   async put<T extends tables>(dto: Partial<Tables[T]>, id: number | string, table: T): Promise<Tables[T][]> {
     const [values, dollars] = toSQLPut(dto)
-    return toTS(await pool.query(`UPDATE ${table} SET ${dollars} WHERE id = ${id} RETURNING *`, [...values]))
+    const request = toTS<T>(await pool.query(`UPDATE ${table} SET ${dollars} WHERE id = ${id} RETURNING *`, [...values]))
+
+    cacheEdit(table, request)
+    return request
   }
 
   async delete<T extends tables>(id: number | string, table: T): Promise<Tables[T][]> {
-    console.log(id, table)
-    return toTS(await pool.query(`DELETE FROM ${table} WHERE id = $1 RETURNING *`, [id]))
+    const request = toTS<T>(await pool.query(`DELETE FROM ${table} WHERE id = $1 RETURNING *`, [id]))
+    
+    cacheEdit(table, request, 'delete')
+    return request
   }
 }
 
@@ -84,3 +89,26 @@ function toSQLWhere(props: any) {
   const and = keys.map((e, i) => (`${e} = $${i + 1} and`)).join(' ').slice(0, -4)
   return [values, and]
 }
+
+// async get<T extends tables>(table: T): Promise<Tables[T][]> {
+//   return toTS(await pool.query(`SELECT * FROM ${table}`))
+// }
+// async getById<T extends tables>(id: number | string, table: T): Promise<Tables[T][]> {
+//   return toTS(await pool.query(`SELECT * FROM ${table} WHERE id = $1`, [id]))
+// }
+
+// async getByParams<T extends tables>(param: Partial<Tables[T]>, table: T): Promise<Tables[T][]> {
+//   // try {
+//   // const keys = Object.keys(param)
+//   // const values = Object.values(param)
+//   // console.log(param, table)
+//   const [values, and] = toSQLWhere(param)
+//   console.log(`SELECT * FROM ${table} WHERE ${and}`, [...values])
+//   return toTS(await pool.query(`SELECT * FROM ${table} WHERE ${and}`, [...values]))
+//   // }
+//   // catch(err) {
+//   //   if (err.code === '22P02') {
+//   //     return []
+//   //   }
+//   // }
+// }

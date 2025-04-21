@@ -1,6 +1,6 @@
 import $api, { noAuthorizeErrorAxios } from "@/store/api"
 import storeAuthorization from "@/store/Store-User"
-import ErrorAuthorize from "@/ui/ErrorAuthorize"
+import Toast from "@/ui/Toast"
 import { useEffect, useRef, useState } from "react"
 
 function AuthorizeChecking() {
@@ -9,11 +9,11 @@ function AuthorizeChecking() {
 
   useEffect(() => {
     noAuthorizeErrorAxios(setErr)
-    storeAuthorization.initializing()
+    storeAuthorization.initial()
   }, [])
   
   return (
-    <ErrorAuthorize nodeRef={nodeRef} state={err} />
+    <Toast nodeRef={nodeRef} state={err} />
   )
 }
 

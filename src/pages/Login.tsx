@@ -27,7 +27,7 @@ function Login() {
     <button onClick={storeAuthorization.logout}>Выйти</button>
     <button onClick={() => console.log(storeAuthorization.user)}>Вывести пользователя</button>
     <button onClick={handleTest}>Запрос на проверку авторизации</button>
-    <button onClick={storeAuthorization.initializing}>Инициализация</button>
+    <button onClick={storeAuthorization.initial}>Инициализация</button>
     </>
   )
 }

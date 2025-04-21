@@ -1,6 +1,6 @@
-import { msg, MsgTypes, SocketMessageInterface } from "@s/core/domain/types"
+import { msg, MsgTypes, SocketMessageInterface, tables, Tables } from "@s/core/domain/types"
 
-export function toTS(entity: any) {
+export function toTS<T extends tables>(entity: any): Tables[T][] {
     // return entity.rows.length > 1 ? entity.rows : entity.rows[0]
     return entity.rows
   }
