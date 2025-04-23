@@ -1,5 +1,5 @@
 import $api from "@/store/api"
-import { makeAutoObservable } from "mobx"
+import { makeAutoObservable, runInAction } from "mobx"
 import { Message } from "@s/core/domain/Users"
 import StoreSocket from "@/store/Store-Socket"
 import storeAuthorization from "@/store/Store-User"
@@ -7,7 +7,8 @@ import { toCl } from "@s/infrastructure/db/Mappers"
 import StoreUser from "@/store/Store-User"
 
 class StoreMessages {
-  messages: {sent: Message[]; received: Message[]} | undefined = undefined
+  messages: {sent: Message[]; received: Message[]} | null = null
+  
   constructor() {
     makeAutoObservable(this)
   }
@@ -16,7 +17,7 @@ class StoreMessages {
     let sent = toCl<Message[]>(await $api.get(`/messages?fromid=${storeAuthorization.user?.id}`))?.sort((a, b) => a.id! - b.id!)
     let received = toCl<Message[]>(await $api.get(`/messages?toid=${storeAuthorization.user?.id}`))?.sort((a, b) => a.id! - b.id!)
     const msgs = {sent, received}
-    this.messages = msgs
+    runInAction(() => this.messages = msgs)
   }
 
   send = async (data: Message) => {
@@ -54,4 +55,4 @@ class StoreMessages {
   }
 }
 
-export default new StoreMessages()
+export default new StoreMessages

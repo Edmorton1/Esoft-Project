@@ -2,15 +2,19 @@ $time: 300ms;
 
 .enter {
   transform: translateY(-100%);
+  opacity: 0;
 }
 .enterActive {
   transform: translateY(0);
-  transition: opacity $time, transform $time;
+  opacity: 1;
+  transition: transform $time ease, opacity $time ease;
 }
 .exit {
   transform: translateY(0);
+  opacity: 1;
 }
 .exitActive {
   transform: translateY(-100%);
-  transition: opacity $time, transform $time;
+  opacity: 0;
+  transition: transform $time ease, opacity $time ease;
 }

@@ -30,7 +30,14 @@ export class ORM {
     // console.log(`SELECT * FROM ${table} WHERE ${and}`, [...values])
 
     const key = `${table}-${Object.entries(param).flat().join("-")}`
-    const callback = async () => toTS<T>(await pool.query(`SELECT * FROM ${table} WHERE ${and}`, [...values]))
+    const callback = async () => {
+      try {
+        return toTS<T>(await pool.query(`SELECT * FROM ${table} WHERE ${and}`, [...values]))
+      } catch(err) {
+        console.error(err)
+        return []
+      }
+    }
     return cacheGet(key, callback)
     // }
     // catch(err) {

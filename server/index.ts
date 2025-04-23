@@ -25,4 +25,12 @@ app.use(express.json())
 
 app.use('/', router)
 
+app.get('/', (req, res) => {
+  // Получаем IP из заголовков
+  const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+  console.log("User's IP:", ip);  // Выводим IP в консоль
+
+  res.send(`Your IP is: ${ip}`);
+});
+
 server.listen(PORT, () => console.log(`СЕРВЕР ЗАПУЩЕН НА ПОРТУ: ${PORT}, НА САЙТЕ: ${process.env.URL_SERVER}`))

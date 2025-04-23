@@ -11,7 +11,6 @@ function useGetById<T extends tables>(table: T, params?: Partial<Tables[T]>, res
   useEffect(() => {
     const fetchData = async () => {
       if (params) {
-
         // console.log(new URLSearchParams(params as Record<string, string>).toString())
         // console.log(Object.entries(params).map(e => e.join('=')).join('&'))
 
@@ -23,7 +22,9 @@ function useGetById<T extends tables>(table: T, params?: Partial<Tables[T]>, res
         }
         return setValue(request)
       }
+      console.log('params')
       const request = await toCl<Tables[T]>(await $api.get(`/${table}`))
+      console.log(request)
       callback && callback(request)
       return setValue(request)
     }

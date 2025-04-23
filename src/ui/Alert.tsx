@@ -1,25 +1,29 @@
-import $api, { noAuthorizeErrorAxios } from "@/store/api"
-import storeAuthorization from "@/store/Store-User"
-import Toast from "@/ui/Toast"
-import { cloneElement, useEffect, useRef, useState } from "react"
+import React, { useRef } from 'react';
+import { observer } from "mobx-react-lite";
+import Toast from "@/ui/Toast";
+import StoreGlobal from "@/store/Store-Global";
+import * as style from "@/css/ToastLike.scss"
 
-interface propsInterface {
-  state: boolean,
-  setState: React.Dispatch<React.SetStateAction<boolean>>
-  children: any
-}
-// Тост инициализируется, поэтому время всегда разное
-function Alert({state, setState, children}: propsInterface) {
-  const nodeRef = useRef(null)
+function Alert() {
+  const nodeRefs = useRef<{ [key: string]: React.RefObject<HTMLDivElement | null> }>({});
 
-  useEffect(() => {
-    setInterval(() => setState(false), 3000)
-    clearInterval(3000)
-  }, [])
-  
   return (
-    <Toast nodeRef={nodeRef} state={state}>{children}</Toast>
-  )
+    <>
+      {StoreGlobal.data.map((e, i) => {
+        if (!nodeRefs.current[e.id]) {
+          nodeRefs.current[e.id] = React.createRef<HTMLDivElement>();
+        }
+
+        return (
+          <Toast key={e.id} nodeRef={nodeRefs.current[e.id]} usl={e.visible} id={String(e.id)}>
+            <div ref={nodeRefs.current[e.id]} className={style.toast} style={{top: `${(i + 1) * 30}px`, backgroundColor: e.color}}>
+              {e.text}
+            </div>
+          </Toast>
+        );
+      })}
+    </>
+  );
 }
 
-export default Alert
+export default observer(Alert);

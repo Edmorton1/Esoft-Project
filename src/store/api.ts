@@ -1,8 +1,9 @@
+import StoreGlobal from "@/store/Store-Global";
 import storeAuthorization, { responseInterface } from "@/store/Store-User";
 import { URL_SERVER } from "@/URLS";
 import { toCl } from "@s/infrastructure/db/Mappers";
 import axios from "axios";
-import { error } from "console";
+import { runInAction } from "mobx";
 
 const $api = axios.create({
   baseURL: URL_SERVER,
@@ -21,7 +22,8 @@ $api.interceptors.request.use((async config => {
   if (
     config.url?.includes('/registration') ||
     config.url?.includes('/login') ||
-    config.url?.includes('/logout')
+    config.url?.includes('/logout') ||
+    config.method?.toLowerCase() == "get"
   ) return config
 
   const request: responseInterface = toCl(
@@ -36,16 +38,15 @@ $api.interceptors.request.use((async config => {
   return config
 }))
 
-export const noAuthorizeErrorAxios = (setErr: Function) => {
+export const noAuthorizeErrorAxios = () => {
   return $api.interceptors.response.use(
     response => response,
     error => {
       if (error.status === 401) {
         console.log(error.status)
         localStorage.removeItem("accessToken")
-        storeAuthorization.user = null
-        setErr(true)
-        setTimeout(() => setErr(false), 1000)
+        runInAction(() => storeAuthorization.user = null)
+        StoreGlobal.sendInfo('asdasdasdasd', 'red')
         return Promise.resolve(error)
       }
       return Promise.reject(error)

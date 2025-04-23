@@ -19,7 +19,6 @@ function Registration() {
   return (
     <>
     <div>Добро пожаловать: {StoreUser.user?.email}</div>
-    {/* <form onSubmit={handleSubmit((data: UserDTO) => storeAuthorization.registration(data))}> */}
     <form onSubmit={handleSubmit(data => registrationHandle(data))} style={{display: "flex", flexDirection: "column", width: "400px", gap: "10px"}}>
       <input {...register('email')} type="text" placeholder="email" />
       <input {...register('password')} type="text" placeholder="password" />

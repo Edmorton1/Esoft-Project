@@ -1,6 +1,9 @@
 import $api from "@/store/api"
 import StoreForm from "@/store/Store-Form"
+import StoreMessages from "@/store/Store-Messages"
 import storeSocket from "@/store/Store-Socket"
+import StoreTags from "@/store/Store-Tags"
+import StoreLikes from "@/store/StoreLikes"
 import { Form, User } from "@s/core/domain/Users"
 import { FormDTO, UserDTO } from "@s/core/dtoObjects"
 import { toSO, toCl } from "@s/infrastructure/db/Mappers"
@@ -12,10 +15,11 @@ export interface responseInterface {
 }
 
 class StoreUser {
+  user: User | null | undefined = undefined
+  
   constructor() {
     makeAutoObservable(this)
   }
-  user: User | null | undefined = undefined
 
   // waitUser(): Promise<void> {
   //   return new Promise(resolve => {
@@ -32,46 +36,62 @@ class StoreUser {
   //     }
   //   })
   // }
+
+  loadModules = async (logout: boolean = false) => {
+    if (!logout) {
+      await StoreLikes.initial()
+      await StoreMessages.initial()
+      await StoreTags.initial()
+    } else {
+      runInAction(() => {
+        this.user = null;
+        StoreForm.form = null;
+        StoreTags.tags = null;
+        StoreLikes.likes = null;
+        StoreMessages.messages = null;
+      })
+    }
+  }
   
   registration = async (user: UserDTO): Promise<number> => {
     const request = toCl<responseInterface>((await $api.post(`/registration`, user)))
-    // StoreForm.postForm(form)
     localStorage.setItem("accessToken", request.accessToken)
 
     runInAction(() => this.user = request.user)
-    // console.log(request.user)
     return request.user.id
   }
+  
   login = async (data: UserDTO) => {
     const request = toCl<responseInterface>(await $api.post(`/login`, data))
     localStorage.setItem("accessToken", request.accessToken)
 
-    runInAction(() => this.user = request.user)
-    await StoreForm.getForm(request.user.id)
-    // console.log(request.user)
+    await this.initial()
   }
+
   logout = async () => {
     const request = toCl(await $api.get(`/logout/${this.user!.id}`))
     localStorage.removeItem("accessToken")
-    this.user = null
-    StoreForm.form = null
+    runInAction(() => this.user = null)
+    runInAction(() => StoreForm.form = null)
+
+    this.loadModules(true)
   }
+
   initial = async () => {
-    // console.log('ЗАПРОС ПОШёл')
     const request = toCl<responseInterface>(await $api.get("/refresh"))
-    // console.log(request.user)
     if (request?.accessToken) {
       runInAction(() => this.user = request.user)
-      await StoreForm.getForm(request.user.id)
+      await StoreForm.initial(request.user.id)
       localStorage.setItem("accessToken", request.accessToken)
       await storeSocket.waitSocket(storeSocket.socket!)
       storeSocket.socket!.send(toSO('userid', this.user!.id))
+
+      this.loadModules()
       
     } else {
-      this.user = null
-      StoreForm.form = null
+      this.loadModules(true)
     }
   }
 }
 
-export default new StoreUser()
+export default new StoreUser

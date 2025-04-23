@@ -12,7 +12,6 @@ export class CRUDController {
   async get(req: Request<{query: string}>, res: Response) {
     if (Object.keys(req.query).length > 0) {
       const params = req.query
-      console.log(params)
       return res.json(await this.ORM.getByParams(params, this.table))
     }
     res.json(await this.ORM.get(this.table))

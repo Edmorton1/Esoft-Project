@@ -1,18 +1,18 @@
 import $api from "@/store/api";
 import { Form, Likes } from "@s/core/domain/Users";
 import { LikesDTO } from "@s/core/dtoObjects";
-import { makeAutoObservable, runInAction } from "mobx";
+import { configure, makeAutoObservable, runInAction } from "mobx";
 
 class StoreUsers {
+  users: Form[] | null = null
+  
   constructor() {
     makeAutoObservable(this)
   }
-  
-  users: Form[] | null = null
 
   initial = (data: Form[]) => {
     this.users = data
   }
 }
 
-export default new StoreUsers()
+export default new StoreUsers

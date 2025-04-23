@@ -64,7 +64,12 @@ export class HttpTokenController {
 
   async refresh(req: Request, res: Response) {
     // ТУТ ПОСМОТРЕТЬ ПОТОМ ГДЕ !
-    const accessToken = req.headers.authorization!.split(' ')[1]
+    const authHeader = req.headers.authorization
+    let accessToken: string = ''
+    if (authHeader?.startsWith('Bearer')) {
+      accessToken = req.headers.authorization!.split(' ')[1]
+    }
+
     const verifyAccess = await this.TokenService.validateAccess(accessToken)
     
     if (verifyAccess) {

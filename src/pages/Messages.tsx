@@ -20,12 +20,12 @@ function Messages() {
       <div>Пользователь: {StoreForm.form?.name}</div>
       <div>Сообщения</div>
       <div>Исходящие</div>
-      {StoreMessages.messages?.sent?.map(msg => (
-        <MessageComponent msg={msg} editing={editMessage === msg.id} setEditMessage={setEditMessage} />
+      {StoreMessages.messages?.sent?.map((msg, i) => (
+        <MessageComponent key={i} msg={msg} editing={editMessage === msg.id} setEditMessage={setEditMessage} />
       ))}
       <div>Входящие</div>
-      {StoreMessages.messages?.received?.map(msg => (
-        <MessageComponent msg={msg} editing={editMessage === msg.id} setEditMessage={setEditMessage}/>
+      {StoreMessages.messages?.received?.map((msg, i) => (
+        <MessageComponent key={i} msg={msg} editing={editMessage === msg.id} setEditMessage={setEditMessage}/>
       ))}
       <br />
       <form onSubmit={handleSubmit((data: Message) => StoreMessages.send(data))}>

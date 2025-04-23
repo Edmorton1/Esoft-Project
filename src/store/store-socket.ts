@@ -2,10 +2,11 @@ import StoreMessages from "@/store/Store-Messages";
 import StoreLikes from "@/store/StoreLikes";
 import { URL_CLIENT_WS, URL_SERVER_WS } from "@/URLS";
 import { frSO } from "@s/infrastructure/db/Mappers";
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, runInAction } from "mobx";
 
 class SocketStore {
   socket: WebSocket | null = null
+  
   constructor() {
     makeAutoObservable(this)
   }
@@ -27,7 +28,7 @@ class SocketStore {
   }
   
   connection = async () => {
-    this.socket = new WebSocket(URL_SERVER_WS)
+    this.socket = runInAction(() => new WebSocket(URL_SERVER_WS))
 
     this.socket.onopen = (msg) => {
       console.log('КЛИЕНТ ПОДКЛЮЧИЛСЯ')
@@ -60,4 +61,4 @@ class SocketStore {
   }
 }
 
-export default new SocketStore()
+export default new SocketStore
