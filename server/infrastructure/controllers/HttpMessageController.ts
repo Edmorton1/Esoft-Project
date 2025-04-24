@@ -33,7 +33,7 @@ export class HttpMessageController {
     const data = req.body
 
     // console.log(id, data)
-    this.sendSocket(data, 'editMessage', data)
+    this.sendSocket(data, 'edit_message', data)
 
     await this.ORM.put(data, id, 'messages')
   }
@@ -43,6 +43,6 @@ export class HttpMessageController {
     const data = one(await this.ORM.delete(id, 'messages'))
     // const data = one(await this.ORM.getById(id, 'messages'))
 
-    this.sendSocket(data, 'deleteMessage', id)
+    this.sendSocket(data, 'delete_message', id)
   }
 }

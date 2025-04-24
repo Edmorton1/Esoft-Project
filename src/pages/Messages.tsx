@@ -16,7 +16,7 @@ function Messages() {
   const {register, handleSubmit} = useForm<Message>()
   
   return (
-    <>
+    <main>
       <div>Пользователь: {StoreForm.form?.name}</div>
       <div>Сообщения</div>
       <div>Исходящие</div>
@@ -36,7 +36,7 @@ function Messages() {
         <input {...register('text')} type="text" value={"text test"} />
         <button>Отпраивть</button>
       </form>
-    </>
+    </main>
   )
 }
 

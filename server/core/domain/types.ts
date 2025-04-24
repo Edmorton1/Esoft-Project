@@ -16,10 +16,11 @@ export type tables = keyof Tables
 export type MsgTypes = {
   userid: number,
   message: Message,
-  deleteMessage: number,
-  editMessage: Message,
+  delete_message: number,
+  edit_message: Message,
 
   like: Likes
+  delete_like: number
 }
 
 export type msg = keyof MsgTypes

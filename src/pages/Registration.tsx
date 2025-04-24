@@ -17,17 +17,17 @@ function Registration() {
   }
 
   return (
-    <>
-    <div>Добро пожаловать: {StoreUser.user?.email}</div>
-    <form onSubmit={handleSubmit(data => registrationHandle(data))} style={{display: "flex", flexDirection: "column", width: "400px", gap: "10px"}}>
-      <input {...register('email')} type="text" placeholder="email" />
-      <input {...register('password')} type="text" placeholder="password" />
-      <FormCreate register={register} />
-    </form>
-    <button onClick={StoreUser.logout}>Выйти</button>
-    <button onClick={() => console.log(StoreUser.user)}>Вывести пользователя</button>
-    <button onClick={() => console.log(StoreForm.form)}>Вывести форму</button>
-    </>
+    <main>
+      <div>Добро пожаловать: {StoreUser.user?.email}</div>
+      <form onSubmit={handleSubmit(data => registrationHandle(data))} style={{display: "flex", flexDirection: "column", width: "400px", gap: "10px"}}>
+        <input {...register('email')} type="text" placeholder="email" />
+        <input {...register('password')} type="text" placeholder="password" />
+        <FormCreate register={register} />
+      </form>
+      <button onClick={StoreUser.logout}>Выйти</button>
+      <button onClick={() => console.log(StoreUser.user)}>Вывести пользователя</button>
+      <button onClick={() => console.log(StoreForm.form)}>Вывести форму</button>
+    </main>
   )
 }
 

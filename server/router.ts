@@ -36,5 +36,6 @@ router.put('/editMessage/:id', messageController('editMessage'))
 router.delete('/deleteMessage/:id', messageController('deleteMessage'))
 
 router.post('/likesGet', likesController('sendLike'))
+router.delete('/likesDelete/:id', likesController('sendDelete'))
 
 export default router

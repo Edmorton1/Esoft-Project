@@ -13,7 +13,8 @@ function buildDevServer(options: BuildOptions): Configuration['devServer'] {
             hot: true,
             // compress: true,
             port: options.port ?? '5000',
-            historyApiFallback: true
+            historyApiFallback: true,
+            static: options.paths.public
         }
     )
 }

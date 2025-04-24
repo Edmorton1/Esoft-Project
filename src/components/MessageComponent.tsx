@@ -4,7 +4,7 @@
 //   text: string
 // }
 
-import useGetById from "@/assets/useGetById"
+import useGetById from "@/hooks/useGetById"
 import StoreForm from "@/store/Store-Form"
 import StoreMessages from "@/store/Store-Messages"
 import { Message } from "@s/core/domain/Users"

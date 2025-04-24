@@ -13,11 +13,12 @@ CREATE TABLE forms (
 	name VARCHAR(32) NOT NULL,
 	surname VARCHAR(32),
   sex BOOLEAN NOT NULL,
-	age INT,
+	age INT NOT NULL,
 	avatar TEXT,
 	description TEXT, 
 	target VARCHAR(64) NOT NULL,
-	hood VARCHAR(64)
+	city VARCHAR(64),
+	location GEOGRAPHY(Point, 4326) 
   -- ПОТОМ ЕЩЁ ДОБАВИТЬ КООРДИНАТЫ
 );
 

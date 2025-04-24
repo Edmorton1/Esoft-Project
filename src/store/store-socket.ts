@@ -40,16 +40,18 @@ class SocketStore {
           console.log(data)
           StoreMessages.socketGet(data)
           break
-        case "deleteMessage":
+        case "delete_message":
           StoreMessages.socketDelete(data)
           break
-        case "editMessage":
+        case "edit_message":
           StoreMessages.socketPut(data)
           break
 
         case "like":
           StoreLikes.socketGet(data)
           break
+        case "delete_like":
+          StoreLikes.sendDelete(data)
       }
 
       // setTimeout(() => {this.socket?.send('ПРИВЕТ С КЛИЕНТА'), console.log('СООБЩЕНИЕ ОТПРАВЛЕНО')}, 3000)
