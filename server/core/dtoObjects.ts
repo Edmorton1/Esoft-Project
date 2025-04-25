@@ -11,14 +11,19 @@ export class FormDTO {
   constructor(
     readonly id: number,
     readonly name: string,
-    readonly surname: string,
     readonly sex: boolean,
     readonly age: number,
-    readonly avatar: string,
-    readonly description: string,
     readonly target: string,
-    readonly hood: string,
+    // ПОТОМ СДЕЛАТЬ НЕОБЯЗ
     public tags: string,
+
+    readonly surname?: string,
+    readonly avatar?: string,
+    readonly description?: string,
+    readonly city?: string,
+    readonly location?: {lng: number, lat: number},
+
+
   ) {}
 }
 
@@ -49,5 +54,13 @@ export class LikesDTO {
   constructor(
     readonly userid: number,
     readonly liked_userid: number
+  ) {}
+}
+
+export class LocationDTO {
+  constructor(
+    readonly city: string,
+    readonly  lng: number,
+    readonly lat: number
   ) {}
 }

@@ -22,7 +22,7 @@ export class HttpFormController {
 
   async postForm(req: Request, res: Response) {
     const data: Form = req.body
-    // console.log(data)
+    console.log(data)
     const tags = data.tags
     delete data.tags
     const form = one(await this.ORM.post(data, 'forms'))

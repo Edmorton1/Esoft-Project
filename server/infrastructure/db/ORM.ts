@@ -1,4 +1,5 @@
 import { tables, Tables } from "@s/core/domain/types"
+import { Form } from "@s/core/domain/Users"
 import { cacheEdit, cacheGet, redis, setCache } from "@s/infrastructure/cache/redis"
 import pool from "@s/infrastructure/db/db"
 import { frJSON, toTS } from "@s/infrastructure/db/Mappers"
@@ -52,7 +53,37 @@ export class ORM {
       const hashed = await bcrypt.hash(dto.password, 3)
       dto.password = hashed as Tables[T][keyof Tables[T]]
     }
+    // if (table === 'forms') {
+    //   const request =  toTS<T>(await pool.query(`INSERT INTO ${table} (${keys}) VALUES(${dollars}) ${SQLParam ? SQLParam : ''} RETURNING *`, [...values]))
+    // }
+
+    // INSERT INTO forms (name, surname, sex, age, target, description, avatar, city, id, location) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)  RETURNING * [
+      // 'Коля',
+      // 'Коля',
+      // true,
+      // 20,
+      // 'Коля',
+      // 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque illo voluptatibus distinctio inventore officiis quisquam aspernatur fuga voluptatum assumenda dicta similique maxime, quia vel dolore! Soluta error reprehenderit sint voluptatibus?',
+      // {},
+      // '',
+      // 75,
+      // { lng: 30.2713058, lat: 60.0449033 }
+    // ]
+
+//     INSERT INTO forms (name, surname, sex, age, target, description, avatar, city, id, location) values(
+//       'Коля',
+//       'Коля',
+//       true,
+//       20,
+//       'Коля',
+//       'Lorem',
+//       null,
+//       'takes',
+//       75,
+//       ST_SetSRID(ST_MakePoint(30.2713058, 60.0449033), 4326)
+// )
     const [keys, values, dollars] = toSQLPost(dto)
+    console.log(`INSERT INTO ${table} (${keys}) VALUES(${dollars}) ${SQLParam ? SQLParam : ''} RETURNING *`, values)
     const request =  toTS<T>(await pool.query(`INSERT INTO ${table} (${keys}) VALUES(${dollars}) ${SQLParam ? SQLParam : ''} RETURNING *`, [...values]))
 
     cacheEdit(table, request)
@@ -79,10 +110,18 @@ export class ORM {
 }
 
 function toSQLPost(props: any) {
-  const keys = Object.keys(props).join(', ')
-  const values = Object.values(props)
-  const dollars = values.map((e, i) => `$${i + 1}`).join(', ')
-  return [keys, values, dollars]
+  const {location, ...data} = props
+
+  const keys = Object.keys(data)
+  const values = Object.values(data)
+  const locationSQL = `ST_SetSRID(ST_MakePoint($${values.length + 1}, $${values.length + 2}), 4326)`
+  if (location) {
+    keys.push('location')
+    values.push(location.lng, location.lat)
+  }
+  const dollars = keys.map((e, i) => `$${i + 1}`).join(', ')
+  console.log(dollars)
+  return [keys.join(', '), values, location ? dollars.slice(0, -3) + locationSQL : dollars]
 }
 
 function toSQLPut(props: any) {

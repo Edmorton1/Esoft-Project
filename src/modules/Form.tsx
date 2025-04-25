@@ -1,34 +1,39 @@
 import { UseFormRegister } from "react-hook-form";
-import { FormDTO, UserDTO } from "@s/core/dtoObjects";
+import { FormDTO, LocationDTO, UserDTO } from "@s/core/dtoObjects";
+import useGeolocation from "@/hooks/useGeolocation";
+import { useContext } from "react";
+import { ThemeContext } from "@/pages/Registration";
 
-function FormCreate({register}: {register: UseFormRegister<UserDTO & FormDTO>}) {
+function FormCreate({register, location}: {register: UseFormRegister<UserDTO & FormDTO>, location: LocationDTO}) {
+  const asd = useContext(ThemeContext)
+  console.log(asd)
 
   return (
     <>
     <div>Создание анкеты</div>
     <br />
     <label>Имя</label>
-    <input {...register('name')} type="text" value={"Коля"} />
+    <input {...register('name')} type="text" />
     <label>Фамилия</label>
-    <input {...register('surname')} type="text" value={"Коля"} />
+    <input {...register('surname')} type="text" />
     <label>Пол</label>
-    <select {...register('sex', {setValueAs: Boolean})} value={"1"}>
+    <select {...register('sex', {setValueAs: Boolean})} >
       <option value="true">Мужчина</option>
       <option value="false">Женщина</option>
     </select>
     <label>Возраст</label>
-    <input {...register('age', {valueAsNumber: true})} type="number" value={20} />
+    <input {...register('age', {valueAsNumber: true})} type="number" />
     <label>Цель</label>
-    <input {...register('target')} type="text" value={"Коля"} />
-    <label>Район</label>
-    <input {...register('hood')} type="text" value={"Коля"} />
+    <input {...register('target')} type="text" />
     <label>Теги</label>
-    <input {...register('tags')} type="text" value={"Рыбалка, качалка, гитарка"} />
+    <input {...register('tags')} type="text" />
     <label>Описание</label>
-    <textarea {...register('description')} value={"Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque illo voluptatibus distinctio inventore officiis quisquam aspernatur fuga voluptatum assumenda dicta similique maxime, quia vel dolore! Soluta error reprehenderit sint voluptatibus?"}></textarea>
-    <button>Отправить</button>
+    <textarea {...register('description')} />
     {/* <label>Аватар</label>
-      <input {...register('avatar')} type="file" /> */}
+    <input {...register('avatar')} type="file" /> */}
+    <label>Город</label>
+    <input {...register('city')} type="text" />
+    <button>Отправить</button>
     </>
   )
 }

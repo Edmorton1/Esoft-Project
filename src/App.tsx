@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router";
-import { LazyLogin, LazyMain, LazyMessages, LazyProfile, LazyRegistration, LazyUsers } from "@/index.lazy";
+import { LazyLogin, LazyMain, LazyMessages, LazyProfile, LazyRegistration, LazyTest, LazyUsers } from "@/index.lazy";
 import "@/css/App.scss"
 import SocketStore from "@/store/Store-Socket";
 import { Suspense, useEffect } from "react";
@@ -29,6 +29,8 @@ function App() {
                     <Route path="/users" element={<LazyUsers/>}></Route>
                     <Route path="/profile/:id" element={<LazyProfile/>} />
                     <Route path="*" element={<div>Такой страницы нет</div>} />
+
+                    <Route path="/test" element={<LazyTest/>}/>
                   </Route>
               </Routes>
           </Suspense>

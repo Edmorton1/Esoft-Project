@@ -13,22 +13,6 @@ import { observer } from "mobx-react-lite"
 function Users() {
   useGetById('forms', undefined, 'array', StoreUsers.initial)
 
-  // if ("geolocation" in navigator) {
-  //   navigator.geolocation.getCurrentPosition(
-  //     (position) => {
-  //       const lat = position.coords.latitude
-  //       const lng = position.coords.longitude
-  //       console.log("Геолокация получена:", lat, lng);
-  //       fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=YOUR_API_KEY`)
-  //     },
-  //     (error) => {
-  //       console.error("Ошибка при получении геолокации:", error);
-  //     }
-  //   );
-  // } else {
-  //   console.log("Геолокация не поддерживается этим браузером.");
-  // }
-
   return (
     <Suspense>
       <main>

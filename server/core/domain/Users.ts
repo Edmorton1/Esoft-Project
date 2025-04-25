@@ -12,13 +12,16 @@ export class Form {
   constructor(
     readonly id: number,
     readonly name: string,
-    readonly surname: string,
     readonly sex: boolean,
     readonly age: number,
-    readonly avatar: string | null,
-    readonly description: string,
     readonly target: string,
-    readonly hood: string,
+
+    readonly surname?: string,
+    readonly avatar?: string | null,
+    readonly description?: string,
+    readonly city?: string,
+    readonly location?: {lng: number, lat: number},
+
     public tags?: string[],
     public likes?: number[],
     public dataRes?: number[],
