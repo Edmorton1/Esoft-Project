@@ -10,25 +10,25 @@ import { HttpLikesController } from "@s/infrastructure/controllers/HttpLikesCont
 
 export const universalController = (method: keyof CRUDController, table: tables) => {
   const controller = new CRUDController(new ORM(), table)
-  return (controller[method] as Function).bind(controller)
+  return (controller[method] as () => any).bind(controller)
 }
 
 export const tokenController = (method: keyof HttpTokenController) => {
   const controller = new HttpTokenController(new TokenService(new ORM), new ORM())
-  return (controller[method] as Function).bind(controller)
+  return (controller[method] as () => any).bind(controller)
 }
 
 export const formController = (method: keyof HttpFormController) => {
   const controller = new HttpFormController(new FormService(new ORM), new ORM())
-  return (controller[method] as Function).bind(controller)
+  return (controller[method] as () => any).bind(controller)
 }
 
 export const messageController = (method: keyof HttpMessageController) => {
   const controller = new HttpMessageController(new FormService(new ORM), new ORM())
-  return (controller[method] as Function).bind(controller)
+  return (controller[method] as () => any).bind(controller)
 }
 
 export const likesController = (method: keyof HttpLikesController) => {
   const controller = new HttpLikesController(new ORM)
-  return (controller[method] as Function).bind(controller)
+  return (controller[method] as () => any).bind(controller)
 }

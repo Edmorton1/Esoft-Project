@@ -1,16 +1,32 @@
 import useGetById from "@/hooks/useGetById"
-import { useParams } from "react-router-dom"
+import StoreProfile from "@/store/Store-Profile"
+import { toJS } from "mobx"
+import { observer } from "mobx-react-lite"
+import { useEffect } from "react"
+import { Link, useParams } from "react-router-dom"
+import FourHundredFour from "./ErrorPages/404"
 
 function Profile() {
   const id = Number(useParams().id)
-  const user = useGetById('forms', {id: id})
-  console.log(user)
+  useGetById('forms', {id: id}, 'single', StoreProfile.initial)
+
+  if (StoreProfile.profile === null) {
+    return <></>
+  }
+
+  if (StoreProfile.profile === undefined) {
+    return (
+      <FourHundredFour />
+    )
+  }
 
   return (
     <main>
-      {id}
+      <Link to={"/settings"}>Настройки</Link>
+      {StoreProfile.profile?.id}
+      <button onClick={() => console.log(toJS(StoreProfile.profile))}>asd</button>
     </main>
   )
 }
 
-export default Profile
+export default observer(Profile)

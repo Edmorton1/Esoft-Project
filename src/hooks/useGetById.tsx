@@ -16,10 +16,12 @@ function useGetById<T extends tables>(table: T, params?: Partial<Tables[T]>, res
 
         // console.log(params)
         const request = await toCl<Tables[T][]>(await $api.get(`/${table}?${Object.entries(params).map(e => e.join('=')).join('&')}`))
-        callback && callback(request)
         if (resType == 'single') {
-          return setValue(one(request))
+          const result = one(request)
+          setValue(result)
+          return callback && callback(result)
         }
+        callback && callback(request)
         return setValue(request)
       }
       console.log('params')

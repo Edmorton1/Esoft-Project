@@ -27,8 +27,8 @@ function Users() {
           <div key={i}>
             <div>{anUser.id} {anUser.name}</div>
             {!StoreLikes.likes?.sent.map(e => e.liked_userid).includes(anUser.id)
-            ? <button onClick={() => StoreLikes.sendLike({userid: StoreForm.form?.id!, liked_userid: anUser.id})}>Лайкнуть</button>
-            : <button onClick={() => StoreLikes.delete(anUser.id)}>Убрать лайк</button>}
+            ? !(anUser.id === StoreForm.form?.id) && <button onClick={() => StoreLikes.sendLike({userid: StoreForm.form!.id, liked_userid: anUser.id})}>Лайкнуть</button>
+            : StoreForm?.form && <button onClick={() => StoreLikes.delete(anUser.id)}>Убрать лайк</button>}
 
           </div>
         ))}

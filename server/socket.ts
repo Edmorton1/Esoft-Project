@@ -1,4 +1,3 @@
-import { MsgTypes } from "@s/core/domain/types";
 import { frSO } from "@s/infrastructure/db/Mappers";
 import WebSocket from "ws";
 

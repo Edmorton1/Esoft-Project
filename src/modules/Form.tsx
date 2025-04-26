@@ -12,27 +12,27 @@ function FormCreate({register, location}: {register: UseFormRegister<UserDTO & F
     <>
     <div>Создание анкеты</div>
     <br />
-    <label>Имя</label>
-    <input {...register('name')} type="text" />
-    <label>Фамилия</label>
-    <input {...register('surname')} type="text" />
-    <label>Пол</label>
-    <select {...register('sex', {setValueAs: Boolean})} >
+    <label htmlFor="name">Имя</label>
+    <input {...register('name')} type="text" id="name" />
+    <label htmlFor="surname">Фамилия</label>
+    <input {...register('surname')} type="text" id="surname" />
+    <label htmlFor="sex">Пол</label>
+    <select {...register('sex', {setValueAs: Boolean})} id="sex" >
       <option value="true">Мужчина</option>
       <option value="false">Женщина</option>
     </select>
-    <label>Возраст</label>
-    <input {...register('age', {valueAsNumber: true})} type="number" />
-    <label>Цель</label>
-    <input {...register('target')} type="text" />
-    <label>Теги</label>
-    <input {...register('tags')} type="text" />
-    <label>Описание</label>
-    <textarea {...register('description')} />
+    <label htmlFor="age">Возраст</label>
+    <input {...register('age', {valueAsNumber: true})} type="number" id="age" />
+    <label htmlFor="target">Цель</label>
+    <input {...register('target')} type="text" id="target" />
+    <label htmlFor="tags">Теги</label>
+    <input {...register('tags')} type="text" id="tags" />
+    <label htmlFor="description">Описание</label>
+    <textarea {...register('description')} id="description" />
     {/* <label>Аватар</label>
     <input {...register('avatar')} type="file" /> */}
-    <label>Город</label>
-    <input {...register('city')} type="text" />
+    <label htmlFor="city">Город</label>
+    <input {...register('city')} type="text" id="city" />
     <button>Отправить</button>
     </>
   )

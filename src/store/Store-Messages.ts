@@ -14,8 +14,8 @@ class StoreMessages {
   }
 
   initial = async () => {
-    let sent = toCl<Message[]>(await $api.get(`/messages?fromid=${storeAuthorization.user?.id}`))?.sort((a, b) => a.id! - b.id!)
-    let received = toCl<Message[]>(await $api.get(`/messages?toid=${storeAuthorization.user?.id}`))?.sort((a, b) => a.id! - b.id!)
+    const sent = toCl<Message[]>(await $api.get(`/messages?fromid=${storeAuthorization.user?.id}`))?.sort((a, b) => a.id! - b.id!)
+    const received = toCl<Message[]>(await $api.get(`/messages?toid=${storeAuthorization.user?.id}`))?.sort((a, b) => a.id! - b.id!)
     const msgs = {sent, received}
     runInAction(() => this.messages = msgs)
   }

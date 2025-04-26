@@ -31,11 +31,12 @@ CREATE TABLE likes (
 	FOREIGN KEY (liked_userId) REFERENCES forms(id) ON DELETE CASCADE
 );
 
-CREATE TABLE data_res (
-	id SERIAL PRIMARY KEY,
-	userId INT REFERENCES forms(id) ON DELETE CASCADE NOT NULL,
-	res_userId INT NOT NULL,
-	FOREIGN KEY (res_userId) REFERENCES forms(id) ON DELETE CASCADE
+CREATE TYPE private_type AS ENUM ('all', 'liked', 'none');
+
+CREATE TABLE private (
+	id INT PRIMARY KEY REFERENCES forms(id) ON DELETE CASCADE NOT NULL,
+	surname private_type DEFAULT 'liked' NOT NULL,
+	city private_type DEFAULT 'all' NOT NULL
 );
 
 CREATE TABLE tags (

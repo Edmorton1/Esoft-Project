@@ -30,6 +30,7 @@ function Layout() {
           "Tags:", toJS(StoreTags.tags),
           toJS(StoreUsers.users)
           )}>Вывести сторы</button>
+        <button>Светлый</button>
         <br />
         <br />
     </header>

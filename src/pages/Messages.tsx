@@ -32,8 +32,8 @@ function Messages() {
         <div>Отправить сообщение</div>
         <input {...register('fromid', {valueAsNumber: true})} type="number" placeholder="От кого?" />
         <input {...register('toid', {valueAsNumber: true})} type="number" placeholder="К кому?" />
-        <label>Текст</label>
-        <input {...register('text')} type="text" value={"text test"} />
+        <label htmlFor="text">Текст</label>
+        <input {...register('text')} type="text" value={"text test"} id="text" />
         <button>Отпраивть</button>
       </form>
     </main>
