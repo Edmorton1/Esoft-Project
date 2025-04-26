@@ -2,7 +2,8 @@ function Settings() {
   return (
     <main style={{display: "flex", flexDirection: "column"}}>
       <div>Настройки конфиденциальности</div>
-      <label htmlFor="surname">Кто видит вашу фамилию?</label>
+      Тут тогда добавлю настройки отправки сообщений
+      {/* <label htmlFor="surname">Кто видит вашу фамилию?</label>
       <select name="surname" id="surname">
         <option value="all">Все</option>
         <option value="liked">Понравившиеся пользователи</option>
@@ -13,7 +14,7 @@ function Settings() {
         <option value="">Все</option>
         <option value="">Понравившиеся пользователи</option>
         <option value="">Никто</option>
-      </select>
+      </select> */}
     </main>
   )
 }

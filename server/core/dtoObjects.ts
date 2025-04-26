@@ -1,4 +1,4 @@
-import { User } from "@s/core/domain/Users";
+import { TargetType, User } from "@s/core/domain/Users";
 
 export class UserDTO {
   constructor(
@@ -13,9 +13,10 @@ export class FormDTO {
     readonly name: string,
     readonly sex: boolean,
     readonly age: number,
-    readonly target: string,
+    readonly target: TargetType,
     // ПОТОМ СДЕЛАТЬ НЕОБЯЗ
-    public tags: string,
+    readonly targetCustom: string,
+    public tags?: string,
 
     readonly surname?: string,
     readonly avatar?: string,

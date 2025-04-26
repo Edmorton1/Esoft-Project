@@ -1,12 +1,9 @@
 import {BrowserRouter, Routes, Route} from "react-router";
 import { LazyFourHundredFour, LazyLogin, LazyMain, LazyMessages, LazyProfile, LazyRegistration, LazySettings, LazyTest, LazyUsers } from "@/index.lazy";
-import "@/css/App.scss";
 import SocketStore from "@/store/Store-Socket";
 import {Suspense, useEffect} from "react";
 import Initialization from "@/ui/Initialization";
 import Layout from "@/Layout";
-import {ErrorBoundary} from "react-error-boundary";
-import Fallback from "@/Fallback";
 // ДЛЯ АССИНХРОННЫХ ОПЕРАЦИЙ ИСПОЛЬЗОВАТЬ suspense
 
 function App() {

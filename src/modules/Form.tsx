@@ -1,12 +1,14 @@
 import { UseFormRegister } from "react-hook-form";
 import { FormDTO, LocationDTO, UserDTO } from "@s/core/dtoObjects";
 import useGeolocation from "@/hooks/useGeolocation";
-import { useContext } from "react";
-import { ThemeContext } from "@/pages/Registration";
+import { useContext, useState } from "react";
 
-function FormCreate({register, location}: {register: UseFormRegister<UserDTO & FormDTO>, location: LocationDTO}) {
-  const asd = useContext(ThemeContext)
-  console.log(asd)
+function FormCreate({register}: {register: UseFormRegister<UserDTO & FormDTO>}) {
+  const [target, setTarget] = useState(false)
+
+  const valueToNull = (value: string) => {
+    return value === '' ? null : value
+  }
 
   return (
     <>
@@ -14,8 +16,6 @@ function FormCreate({register, location}: {register: UseFormRegister<UserDTO & F
     <br />
     <label htmlFor="name">Имя</label>
     <input {...register('name')} type="text" id="name" />
-    <label htmlFor="surname">Фамилия</label>
-    <input {...register('surname')} type="text" id="surname" />
     <label htmlFor="sex">Пол</label>
     <select {...register('sex', {setValueAs: Boolean})} id="sex" >
       <option value="true">Мужчина</option>
@@ -24,15 +24,22 @@ function FormCreate({register, location}: {register: UseFormRegister<UserDTO & F
     <label htmlFor="age">Возраст</label>
     <input {...register('age', {valueAsNumber: true})} type="number" id="age" />
     <label htmlFor="target">Цель</label>
-    <input {...register('target')} type="text" id="target" />
+    <select {...register('target')} onChange={(e) => {e.target.value == 'other' ? setTarget(true) : setTarget(false)}} id="target">
+      <option value="relation">Отношения</option>
+      <option value="friend">Дружба</option>
+      <option value="chat">Чатинг</option>
+      <option value="hobby">Хобби</option>
+      <option value="other">Другое</option>
+    </select>
+    {target && <input {...register('targetCustom')} type="text" placeholder="Напишите свою цель..." />}
     <label htmlFor="tags">Теги</label>
-    <input {...register('tags')} type="text" id="tags" />
+    <input {...register('tags', {setValueAs: value => value.length < 1 ? undefined : value})} type="text" id="tags" />
     <label htmlFor="description">Описание</label>
-    <textarea {...register('description')} id="description" />
+    <textarea {...register('description', { setValueAs: valueToNull })} id="description" />
     {/* <label>Аватар</label>
     <input {...register('avatar')} type="file" /> */}
     <label htmlFor="city">Город</label>
-    <input {...register('city')} type="text" id="city" />
+    <input {...register('city', {setValueAs: valueToNull})} type="text" id="city" />
     <button>Отправить</button>
     </>
   )

@@ -1,12 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <base href="/">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <base href="/">
+
+  <style>
+    body {
+      background-color: white;
+    }
+    body.dark {
+      background-color: #282828;
+    }
+  </style>
+
 </head>
 <body>
-    <div id="root"></div>
+  <div id="root"></div>
+  <script>
+    const theme = localStorage.getItem('theme') || 'light';
+    document.body.classList.add(theme);
+  </script>
 </body>
 </html>

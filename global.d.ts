@@ -2,6 +2,7 @@ declare module "*.scss" {
   const classes: { [key: string]: string };
   export = classes;
 }
+
 declare module "*.png" {
   const value: string;
   export default value;

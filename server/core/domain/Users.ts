@@ -8,15 +8,17 @@ export class User {
   ) {}
 }
 
+export type TargetType = 'friend' | 'relation' | 'chat' | 'hobby' | 'other'
+
 export class Form {
   constructor(
     readonly id: number,
     readonly name: string,
     readonly sex: boolean,
     readonly age: number,
-    readonly target: string,
+    readonly target: TargetType,
+    readonly targetCustom?: string,
 
-    readonly surname?: string,
     readonly avatar?: string | null,
     readonly description?: string,
     readonly city?: string,
