@@ -19,7 +19,7 @@ export class FormDTO {
     public tags?: string,
 
     readonly surname?: string,
-    readonly avatar?: string,
+    readonly avatar?: FileList,
     readonly description?: string,
     readonly city?: string,
     readonly location?: {lng: number, lat: number},
@@ -63,5 +63,14 @@ export class LocationDTO {
     readonly city: string,
     readonly  lng: number,
     readonly lat: number
+  ) {}
+}
+
+export class MessageDTO {
+  constructor(
+    readonly fromid: number,
+    readonly toid: number,
+    readonly text: string,
+    public files: FileList,
   ) {}
 }

@@ -32,7 +32,7 @@ export function toSO<T extends msg>(type: T, data: MsgTypes[T]) {
   return toJSON({data, type})
 }
 
-export const toCl = <T>(response: {data: T}): T => {
+export const toCl = <T>(response: any): T => {
   // if (!data.data) {
   //   return null
   // }

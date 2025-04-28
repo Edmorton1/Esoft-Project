@@ -23,8 +23,8 @@ export class Form {
     readonly description?: string,
     readonly city?: string,
     readonly location?: {lng: number, lat: number},
+    public tags?: {id: number, tag: string}[],
 
-    public tags?: string[],
     public likes?: number[],
     public dataRes?: number[],
     public message?: Message[]
@@ -33,11 +33,12 @@ export class Form {
 
 export class Message {
   constructor(
+    readonly id: number,
     readonly fromid: number,
     readonly toid: number,
-    public text: string,
-    readonly id: number,
-    readonly created_at?: Date
+    readonly text: string,
+    readonly files: string[],
+    readonly created_at: Date
   ) {}
 }
 

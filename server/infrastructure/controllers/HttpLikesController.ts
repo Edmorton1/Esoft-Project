@@ -11,9 +11,12 @@ export class HttpLikesController {
   ) {}
 
   sendLike = async (req: Request, res: Response) => {
+    let {fields} = req.query
+    fields = String(fields)
+
     const like: LikesDTO = req.body
     const {userid, liked_userid} = like
-    const request = one(await this.ORM.post(like, 'likes'))
+    const request = one(await this.ORM.post(like, 'likes', 'id, liked_userid'))
     console.log(clients.keys())
     const clientTo = clients.get(liked_userid)
     clientTo?.send(toSO('like', request))

@@ -12,7 +12,7 @@ import { checkForms } from "./ORMForms"
 //   delete(id: number | string, table: tables): Promise<Tables[] | Tables>
 // }
 
-const fieldsKey = (fields: string | undefined) => `--${fields ? 'fields: ' + fields : ''}`
+const fieldsKey = (fields: string | undefined) => `${fields ? '--fields: ' + fields : ''}`
 const fieldsSelect = (fields: string | undefined) => `${fields ? fields : '*'}`
 
 export class ORM {
@@ -42,15 +42,15 @@ export class ORM {
     return cacheGet(key, callback)
   }
 
-  async post<T extends tables>(dto: Partial<Tables[T]>, table: T, SQLParam?: string): Promise<Tables[T][]> {
+  async post<T extends tables>(dto: Partial<Tables[T]>, table: T, fields?: string): Promise<Tables[T][]> {
     if ("password" in dto && typeof dto.password == "string") {
       const hashed = await bcrypt.hash(dto.password, 3)
       dto.password = hashed as Tables[T][keyof Tables[T]]
     }
     
     const [keys, values, dollars] = toSQLPost(dto)
-    console.log(`INSERT INTO ${table} (${keys}) VALUES(${dollars}) ${SQLParam ? SQLParam : ''} RETURNING *`, values)
-    const request =  toTS<T>(await pool.query(`INSERT INTO ${table} (${keys}) VALUES(${dollars}) ${SQLParam ? SQLParam : ''} RETURNING *`, [...values]))
+    console.log(`INSERT INTO ${table} (${keys}) VALUES(${dollars}) RETURNING *`, values)
+    const request =  toTS<T>(await pool.query(`INSERT INTO ${table} (${keys}) VALUES(${dollars}) RETURNING ${fieldsSelect(fields)}`, [...values]))
 
     cacheEdit(table, request)
 
@@ -58,7 +58,6 @@ export class ORM {
   }
 
   async put<T extends tables>(dto: Partial<Tables[T]>, id: number | string, table: T): Promise<Tables[T][]> {
-    console.log(dto, id, table)
     const [values, dollars] = toSQLPut(dto)
     const request = toTS<T>(await pool.query(`UPDATE ${table} SET ${dollars} WHERE id = ${id} RETURNING *`, [...values]))
 

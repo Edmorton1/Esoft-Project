@@ -1,5 +1,6 @@
 import { msg, MsgTypes } from "@s/core/domain/types";
 import { Form, Message } from "@s/core/domain/Users";
+import { MessageDTO } from "@s/core/dtoObjects";
 import { toSO, one } from "@s/infrastructure/db/Mappers";
 import { ORM } from "@s/infrastructure/db/ORM";
 import { MessageService } from "@s/infrastructure/services/MessageService";
@@ -20,12 +21,11 @@ export class HttpMessageController {
   }
 
   async sendMessage(req: Request, res: Response) {
-    const data: Message = req.body
+    const data: MessageDTO = req.body
+    // const request = one(await this.ORM.post(data, 'messages'))
+    // this.sendSocket(data, 'message', request)
 
-    const request = one(await this.ORM.post(data, 'messages'))
-
-    this.sendSocket(data, 'message', request)
-    // console.log(data)
+    console.log(data, data.text, data.fromid)
   }
 
   async editMessage(req: Request<{id: number}>, res: Response) {

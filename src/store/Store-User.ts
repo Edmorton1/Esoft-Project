@@ -86,7 +86,7 @@ class StoreUser {
       await storeSocket.waitSocket(storeSocket.socket!)
       storeSocket.socket!.send(toSO('userid', this.user!.id))
 
-      this.loadModules()
+      await this.loadModules()
       
     } else {
       this.loadModules(true)

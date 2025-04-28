@@ -11,6 +11,7 @@ class HttpFilesController {
   ) {}
 
   async postAvatar(req: Request, res: Response) {
+    
     const {id} = req.params
     const buffer = req.file!.buffer
     const compress = await this.FileService.avatarCompress(buffer)
@@ -20,7 +21,7 @@ class HttpFilesController {
     // res.send(compress)
     const yandex = await upload(compress, id + '.webp')
     await this.ORM.put({avatar: yandex.Location}, id, 'forms')
-    res.json({url: yandex.Location})
+    res.json(yandex.Location)
   }
 }
 

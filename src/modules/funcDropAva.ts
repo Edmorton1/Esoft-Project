@@ -1,13 +1,23 @@
 import StoreUser from "@/store/Store-User";
 import StoreFiles from "@/store/StoreFiles";
 
-function dropHandle(file: File) {
+export async function toFormData(files: FileList) {
+  const formData = new FormData()
+  for (const file of files) {
+    formData.append('files', file)
+  }
+  console.log(formData)
+  return formData
+}
+
+export async function AvatarHandle(file: File): Promise<string> {
   const formData = new FormData();
   formData.append('avatar', file)
   console.log(formData.get(file.name))
 
-  StoreFiles.postAvatar(formData, StoreUser.user!.id)
+  return await StoreFiles.postAvatar(formData, StoreUser.user!.id)
 }
-export function dropAvatar(event: React.ChangeEvent<HTMLInputElement>) {
-  dropHandle(event.target.files![0]);
+
+export function AvatarOnChange(event: React.ChangeEvent<HTMLInputElement>) {
+  AvatarHandle(event.target.files![0]);
 }

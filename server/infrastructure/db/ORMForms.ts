@@ -13,7 +13,7 @@ async function getForm(fields?: string, id?: number | string, params?: Partial<F
       ${fields ? fields : 'forms.*'}, 
       COALESCE(
         json_agg(
-          json_build_object('id', tags.id, 'name', tags.tag)
+          json_build_object('id', tags.id, 'tag', tags.tag)
         ), '[]'
       ) AS tags
     FROM forms

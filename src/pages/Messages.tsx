@@ -5,15 +5,12 @@ import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import StoreForm from "@/store/Store-Form"
 import MessageComponent from "@/components/MessageComponent"
+import { MessageDTO } from "@s/core/dtoObjects"
 
 function Messages() {
   const [editMessage, setEditMessage] = useState<null | number>(null)
 
-  useEffect(() => {
-    StoreMessages.initial()
-  }, [])
-
-  const {register, handleSubmit} = useForm<Message>()
+  const {register, handleSubmit} = useForm<MessageDTO>()
   
   return (
     <main>
@@ -28,12 +25,14 @@ function Messages() {
         <MessageComponent key={i} msg={msg} editing={editMessage === msg.id} setEditMessage={setEditMessage}/>
       ))}
       <br />
-      <form onSubmit={handleSubmit((data: Message) => StoreMessages.send(data))}>
+      <form onSubmit={handleSubmit((data: MessageDTO) => StoreMessages.send(data))} style={{display: "flex", flexDirection: "column", width: "300px"}}>
         <div>Отправить сообщение</div>
         <input {...register('fromid', {valueAsNumber: true})} type="number" placeholder="От кого?" />
         <input {...register('toid', {valueAsNumber: true})} type="number" placeholder="К кому?" />
         <label htmlFor="text">Текст</label>
         <input {...register('text')} type="text" value={"text test"} id="text" />
+        <label htmlFor="files">Файлы</label>
+        <input {...register("files")} type="file" multiple id="files" />
         <button>Отпраивть</button>
       </form>
     </main>

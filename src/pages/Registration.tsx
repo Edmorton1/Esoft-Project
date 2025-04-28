@@ -7,21 +7,27 @@ import { FormDTO, UserDTO } from "@s/core/dtoObjects";
 import { observer } from "mobx-react-lite";
 import { useForm } from "react-hook-form"
 import { createContext } from "react";
+import { AvatarHandle } from "@/modules/funcDropAva";
+import { toCl } from "@s/infrastructure/db/Mappers";
 
 function Registration() {
   const { register, handleSubmit } = useForm<UserDTO & FormDTO>();
   const location = useGeolocation()!
 
   async function registrationHandle(data: UserDTO & FormDTO) {
-    const {email, password, ...rawForm} = data
+    const {email, password, avatar, ...rawForm} = data
     const {city, ...coords} = location
     const name = rawForm.name.charAt(0).toUpperCase() + rawForm.name.slice(1).toLowerCase()
-    // const userid = await StoreUser.registration({email, password})
+    const userid = await StoreUser.registration({email, password})
+    const avatarUpload = toCl(await AvatarHandle(avatar![0]))
+    console.log(avatarUpload)
     // ПОТОМ userid ДОБАВИТЬ
 
-    const form: Form = {...rawForm, name: name, id: 0, tags: data.tags?.split(',').map(e => e.toLowerCase().trim()), location: coords}
+    //@ts-ignore
+    const form: Form = {...rawForm, name: name, id: userid, avatar: avatarUpload, tags: data.tags?.split(',').map(e => e.toLowerCase().trim()), location: coords}
+    
     console.log(form)
-    // await StoreForm.postForm(form)
+    await StoreForm.postForm(form)
   }
 
   return (

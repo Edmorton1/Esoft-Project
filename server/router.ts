@@ -33,7 +33,7 @@ router.get('/refresh', tokenController('refresh'))
 
 router.post('/createForm', formController("postForm"))
 
-router.post('/sendMessage', messageController('sendMessage'))
+router.post('/sendMessage', upload.array('files'), messageController('sendMessage'))
 router.put('/editMessage/:id', messageController('editMessage'))
 router.delete('/deleteMessage/:id', messageController('deleteMessage'))
 

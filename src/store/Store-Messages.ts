@@ -2,9 +2,10 @@ import $api from "@/store/api"
 import { makeAutoObservable, runInAction } from "mobx"
 import { Message } from "@s/core/domain/Users"
 import StoreSocket from "@/store/Store-Socket"
-import storeAuthorization from "@/store/Store-User"
 import { toCl } from "@s/infrastructure/db/Mappers"
 import StoreUser from "@/store/Store-User"
+import { toFormData } from "@/modules/funcDropAva"
+import { MessageDTO } from "@s/core/dtoObjects"
 
 class StoreMessages {
   messages: {sent: Message[]; received: Message[]} | null = null
@@ -14,16 +15,26 @@ class StoreMessages {
   }
 
   initial = async () => {
-    const sent = toCl<Message[]>(await $api.get(`/messages?fromid=${storeAuthorization.user?.id}`))?.sort((a, b) => a.id! - b.id!)
-    const received = toCl<Message[]>(await $api.get(`/messages?toid=${storeAuthorization.user?.id}`))?.sort((a, b) => a.id! - b.id!)
+    const sent = toCl<Message[]>(await $api.get(`/messages?fromid=${StoreUser.user?.id}`))?.sort((a, b) => a.id! - b.id!)
+    const received = toCl<Message[]>(await $api.get(`/messages?toid=${StoreUser.user?.id}`))?.sort((a, b) => a.id! - b.id!)
     const msgs = {sent, received}
     runInAction(() => this.messages = msgs)
   }
 
-  send = async (data: Message) => {
-    const request = await $api.post('/sendMessage', data)
+  send = async (data: MessageDTO) => {
+    const fd = await toFormData(data.files)
+    console.log(data)
+    fd.append('fromid', String(data.fromid))
+    fd.append('toid', String(data.toid))
+    fd.append('text', data.text)
+
+    console.log(fd.get('files'))
+    const request = await $api.post('/sendMessage', fd, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
     // storeSocket.socket.send(JSON.stringify(data))
-    console.log(request)
   }
 
   put = async (data: Message) => {
