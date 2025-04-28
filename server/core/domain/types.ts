@@ -28,3 +28,11 @@ export type msg = keyof MsgTypes
 export type SocketMessageInterface= {
   [K in keyof MsgTypes]: {type: K, data: MsgTypes[K]}
 }[keyof MsgTypes]
+
+export interface YandexPost {
+  ETag: string,
+  Location: string,
+  key: string,
+  Key: string,
+  Bucket: string
+}

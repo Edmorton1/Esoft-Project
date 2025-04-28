@@ -1,10 +1,10 @@
 import useGetById from "@/hooks/useGetById"
 import StoreProfile from "@/store/Store-Profile"
-import { toJS } from "mobx"
 import { observer } from "mobx-react-lite"
-import { useEffect } from "react"
 import { Link, useParams } from "react-router-dom"
 import FourHundredFour from "./ErrorPages/404"
+import StoreForm from "@/store/Store-Form"
+import Avatar from "@/modules/Avatar"
 
 function Profile() {
   const id = Number(useParams().id)
@@ -21,10 +21,13 @@ function Profile() {
   }
 
   return (
-    <main>
+    <main style={{display: "flex", flexDirection: "column"}}>
+      <div>{StoreProfile.profile.id === StoreForm.form?.id ? 'Ващ аккаунт' : "Не ваш"}</div>
       <Link to={"/settings"}>Настройки</Link>
       {StoreProfile.profile?.id}
-      <button onClick={() => console.log(toJS(StoreProfile.profile))}>asd</button>
+      <Avatar />
+      <img src={StoreForm.form!.avatar!} alt="" />
+      {/* <button onClick={() => console.log(toJS(StoreProfile.profile))}>asd</button> */}
     </main>
   )
 }

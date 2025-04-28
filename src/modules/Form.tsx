@@ -36,8 +36,8 @@ function FormCreate({register}: {register: UseFormRegister<UserDTO & FormDTO>}) 
     <input {...register('tags', {setValueAs: value => value.length < 1 ? undefined : value})} type="text" id="tags" />
     <label htmlFor="description">Описание</label>
     <textarea {...register('description', { setValueAs: valueToNull })} id="description" />
-    {/* <label>Аватар</label>
-    <input {...register('avatar')} type="file" /> */}
+    <label htmlFor="avatar">Аватар</label>
+    <input {...register('avatar')} type="file" id="avatar" />
     <label htmlFor="city">Город</label>
     <input {...register('city', {setValueAs: valueToNull})} type="text" id="city" />
     <button>Отправить</button>

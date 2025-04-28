@@ -1,5 +1,5 @@
 import { ORM } from "@s/infrastructure/db/ORM";
-import { UserDTO, PayloadDTO, TokenDTO } from "@s/core/dtoObjects";
+import { UserDTO, TokenDTO } from "@s/core/dtoObjects";
 import { TokenService } from "@s/infrastructure/services/TokenService";
 import { Request, Response } from "express";
 import bcrypt from "bcrypt"
@@ -16,7 +16,13 @@ export class HttpTokenController {
     const tokens = this.TokenService.generateTokens({id: id, role: role})
     const [accessToken, refreshToken] = tokens
     // await this.ORM.delete(id, 'tokens')
-    await this.ORM.post({id: id, token: refreshToken}, 'tokens', 'ON CONFLICT DO NOTHING')
+    const refreshHash = await bcrypt.hash(refreshToken, 3)
+    const tokensInDB = await this.ORM.getById(id, 'tokens')
+    if (tokensInDB) {
+      await this.ORM.put({token: refreshHash}, id, 'tokens')
+    } else {
+      await this.ORM.post({id: id, token: refreshHash}, 'tokens')
+    }
     res.cookie('refreshToken', refreshToken, {httpOnly: true, sameSite: "lax", maxAge: 1000 * 60 * 60 * 24})
     return accessToken
   }

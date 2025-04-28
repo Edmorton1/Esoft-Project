@@ -1,1 +1,4 @@
 node_modules/
+cloudkeys.txt
+.env
+env

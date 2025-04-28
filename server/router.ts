@@ -1,6 +1,8 @@
 import express from "express"
 import { tables } from "@s/core/domain/types"
-import { formController, likesController, messageController, tokenController, universalController } from "@s/controllers"
+import { filesController, formController, likesController, messageController, tokenController, universalController } from "@s/controllers"
+import multer from "multer"
+const upload = multer({storage: multer.memoryStorage()})
 const router = express.Router()
 
 // const httpUserController = (method: keyof HttpUserController) => {
@@ -11,7 +13,7 @@ const router = express.Router()
 
 
 
-const tablesArr: tables[] = ['users', 'forms', 'likes', 'messages', 'data_res', 'tags', 'user_tags', 'tokens']
+const tablesArr: tables[] = ['users', 'forms', 'likes', 'messages', 'tags', 'user_tags', 'tokens']
 
 tablesArr.forEach(table => {
   router.get(`/${table}`, universalController('get', table))
@@ -37,5 +39,7 @@ router.delete('/deleteMessage/:id', messageController('deleteMessage'))
 
 router.post('/likesGet', likesController('sendLike'))
 router.delete('/likesDelete/:id', likesController('sendDelete'))
+
+router.post('/postAvatar/:id', upload.single('avatar'),  filesController('postAvatar'))
 
 export default router

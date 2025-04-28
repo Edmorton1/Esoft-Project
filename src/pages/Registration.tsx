@@ -15,12 +15,13 @@ function Registration() {
   async function registrationHandle(data: UserDTO & FormDTO) {
     const {email, password, ...rawForm} = data
     const {city, ...coords} = location
-    const userid = await StoreUser.registration({email, password})
+    const name = rawForm.name.charAt(0).toUpperCase() + rawForm.name.slice(1).toLowerCase()
+    // const userid = await StoreUser.registration({email, password})
     // ПОТОМ userid ДОБАВИТЬ
 
-    const form: Form = {...rawForm, id: userid, tags: data.tags?.split(',').map(e => e.toLowerCase().trim()), location: coords, avatar: null}
+    const form: Form = {...rawForm, name: name, id: 0, tags: data.tags?.split(',').map(e => e.toLowerCase().trim()), location: coords}
     console.log(form)
-    await StoreForm.postForm(form)
+    // await StoreForm.postForm(form)
   }
 
   return (

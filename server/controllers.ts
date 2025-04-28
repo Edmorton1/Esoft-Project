@@ -7,6 +7,8 @@ import { HttpFormController } from "@s/infrastructure/controllers/HttpFormContro
 import { FormService } from "@s/infrastructure/services/FormService"
 import { HttpMessageController } from "@s/infrastructure/controllers/HttpMessageController"
 import { HttpLikesController } from "@s/infrastructure/controllers/HttpLikesController"
+import HttpFilesController from "./infrastructure/controllers/HttpFilesController"
+import FileService from "./infrastructure/services/FileService"
 
 export const universalController = (method: keyof CRUDController, table: tables) => {
   const controller = new CRUDController(new ORM(), table)
@@ -30,5 +32,10 @@ export const messageController = (method: keyof HttpMessageController) => {
 
 export const likesController = (method: keyof HttpLikesController) => {
   const controller = new HttpLikesController(new ORM)
+  return (controller[method] as () => any).bind(controller)
+}
+
+export const filesController = (method: keyof HttpFilesController) => {
+  const controller = new HttpFilesController(new FileService, new ORM)
   return (controller[method] as () => any).bind(controller)
 }

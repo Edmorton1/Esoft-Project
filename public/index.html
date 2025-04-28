@@ -7,9 +7,6 @@
   <base href="/">
 
   <style>
-    body {
-      background-color: white;
-    }
     body.dark {
       background-color: #282828;
     }
@@ -19,8 +16,10 @@
 <body>
   <div id="root"></div>
   <script>
-    const theme = localStorage.getItem('theme') || 'light';
-    document.body.classList.add(theme);
+    const theme = localStorage.getItem('theme');
+    if (theme === 'dark') {
+      document.body.classList.add(theme);
+    }
   </script>
 </body>
 </html>
