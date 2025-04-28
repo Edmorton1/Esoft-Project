@@ -46,7 +46,8 @@ class StoreLikes {
 
   sendLike = async (data: LikesDTO) => {
     const request: Likes = toCl(await $api.post('/likesGet', data))
-    runInAction(() => this.likes?.sent.push({id: request.id, liked_userid: request.liked_userid}))
+    console.log(request)
+    runInAction(() => this.likes?.sent.push(request))
     console.log(request)
   }
 

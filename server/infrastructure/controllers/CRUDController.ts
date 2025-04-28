@@ -1,5 +1,4 @@
-import { Tables, tables } from "@s/core/domain/types"
-import { frJSON } from "@s/infrastructure/db/Mappers"
+import { tables } from "@s/core/domain/types"
 import { ORM } from "@s/infrastructure/db/ORM"
 import { Request, Response } from "express"
 
@@ -9,16 +8,19 @@ export class CRUDController {
     readonly table: tables
   ) {}
   
-  async get(req: Request<{query: string}>, res: Response) {
+  async get(req: Request<object, object, object, {fields?: string}>, res: Response) {
+    const { fields, ...params } = req.query;
+    delete req.query.fields
+
     if (Object.keys(req.query).length > 0) {
-      const params = req.query
-      return res.json(await this.ORM.getByParams(params, this.table))
+      return res.json(await this.ORM.getByParams(params, this.table, fields))
     }
-    res.json(await this.ORM.get(this.table))
+    res.json(await this.ORM.get(this.table, fields))
   }
-  async getById(req: Request, res: Response) {
+  async getById(req: Request<{id: string}, object, object, {fields?: string}>, res: Response) {
+    const {fields} = req.query
     const {id} = req.params
-    const request = await this.ORM.getById(id, this.table)
+    const request = await this.ORM.getById(id, this.table, fields)
     res.json(request)
   }
   async post(req: Request, res: Response) {

@@ -12,31 +12,33 @@ import { checkForms } from "./ORMForms"
 //   delete(id: number | string, table: tables): Promise<Tables[] | Tables>
 // }
 
+const fieldsKey = (fields: string | undefined) => `--${fields ? 'fields: ' + fields : ''}`
+const fieldsSelect = (fields: string | undefined) => `${fields ? fields : '*'}`
+
 export class ORM {
-  async get<T extends tables>(table: T): Promise<Tables[T][]> {
-    const key = table
-    const callback = checkForms(table, async () => toTS<T>(await pool.query(`SELECT * FROM ${table}`)))
+  async get<T extends tables>(table: T, fields?: string): Promise<Tables[T][]> {
+    const key = `${table}${fieldsKey(fields)}`
+    const callback = checkForms(table, async () => toTS<T>(await pool.query(`SELECT ${fieldsSelect(fields)} FROM ${table}`)), fields)
     return cacheGet(key, callback)
   }
-  async getById<T extends tables>(id: number | string, table: T): Promise<Tables[T][]> {
-    const key = `${table}-id-${id}`
-    const callback = checkForms(table, async () => toTS<T>(await pool.query(`SELECT * FROM ${table} WHERE id = $1`, [id])), id)
+  async getById<T extends tables>(id: number | string, table: T, fields?: string): Promise<Tables[T][]> {
+    const key = `${table}-id-${id}${fieldsKey(fields)}`
+    const callback = checkForms(table, async () => toTS<T>(await pool.query(`SELECT ${fieldsSelect(fields)} FROM ${table} WHERE id = $1`, [id])), fields, id)
     return await cacheGet(key, callback)
   }
   
-  async getByParams<T extends tables>(params: Partial<Tables[T]>, table: T): Promise<Tables[T][]> {
+  async getByParams<T extends tables>(params: Partial<Tables[T]>, table: T, fields?: string): Promise<Tables[T][]> {
     const [values, and] = toSQLWhere(params)
-    const key = `${table}-${Object.entries(params).flat().join("-")}`
+    const key = `${table}-${Object.entries(params).flat().join("-")}${fieldsKey(fields)}`
     const callback = checkForms(table, 
       async () => {
         try {
-          return toTS<T>(await pool.query(`SELECT * FROM ${table} WHERE ${and}`, [...values]))
+          return toTS<T>(await pool.query(`SELECT ${fieldsSelect(fields)} FROM ${table} WHERE ${and}`, [...values]))
         } catch(err) {
           console.log(err)
           return []
         }
-      }, undefined, params)
-
+      }, fields, undefined, params)
     return cacheGet(key, callback)
   }
 
