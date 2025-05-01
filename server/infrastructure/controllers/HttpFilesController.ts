@@ -26,11 +26,31 @@ class HttpFilesController {
 
   async TestConvertVideo(req: Request, res: Response) {
     // old: 1656511
-    const buffer = req.file?.buffer!
-    const total = await this.FileService.videoCompress(buffer)
+
+    // web: 470950 24.62s
+
+    // amd: 251880 1.94s
+    const buffer = req.file!.buffer!
+    const extention = req.file!.originalname.split('.').pop()!
+    const total = await this.FileService.videoCompress(buffer, extention)
     console.log(total.length)
     res.type('mp4')
     res.send(buffer)
+  }
+
+  async TestConvertAudio(req: Request, res: Response) {
+    // old: 8014556
+
+    // wav: 17586712
+    // mp3: 3427330
+    // ogg: 2133090
+    const buffer = req.file!.buffer!
+    const extention = req.file!.originalname.split('.').pop()!
+    console.log(extention)
+    const total = await this.FileService.audioCompress(buffer, extention)
+    console.log('разница:', buffer.length - total.length, buffer.length, total.length)
+    res.type('wav')
+    res.send(total)
   }
 }
 

@@ -43,5 +43,6 @@ router.delete('/likesDelete/:id', likesController('sendDelete'))
 router.post('/postAvatar/:id', upload.single('avatar'),  filesController('postAvatar'))
 
 router.post('/testCompressViedo', upload.single('video'), filesController('TestConvertVideo'))
+router.post('/testCompressAudio', upload.single('audio'), filesController('TestConvertAudio'))
 
 export default router
