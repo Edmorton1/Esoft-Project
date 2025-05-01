@@ -1,7 +1,6 @@
 import { UseFormRegister } from "react-hook-form";
 import { FormDTO, LocationDTO, UserDTO } from "@s/core/dtoObjects";
-import useGeolocation from "@/hooks/useGeolocation";
-import { useContext, useState } from "react";
+import { useState } from "react";
 
 function FormCreate({register}: {register: UseFormRegister<UserDTO & FormDTO>}) {
   const [target, setTarget] = useState(false)

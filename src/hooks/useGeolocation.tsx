@@ -30,7 +30,7 @@ function useGeolocation(): LocationDTO | null {
     }
   }, []);
 
-  return city!;
+  return city;
 }
 
 export default useGeolocation

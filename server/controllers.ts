@@ -9,6 +9,7 @@ import { HttpMessageController } from "@s/infrastructure/controllers/HttpMessage
 import { HttpLikesController } from "@s/infrastructure/controllers/HttpLikesController"
 import HttpFilesController from "./infrastructure/controllers/HttpFilesController"
 import FileService from "./infrastructure/services/FileService"
+import { MessageFileService } from "./infrastructure/services/MessageFileService"
 
 export const universalController = (method: keyof CRUDController, table: tables) => {
   const controller = new CRUDController(new ORM(), table)
@@ -26,7 +27,7 @@ export const formController = (method: keyof HttpFormController) => {
 }
 
 export const messageController = (method: keyof HttpMessageController) => {
-  const controller = new HttpMessageController(new FormService(new ORM), new ORM())
+  const controller = new HttpMessageController(new MessageFileService(new FileService), new ORM())
   return (controller[method] as () => any).bind(controller)
 }
 

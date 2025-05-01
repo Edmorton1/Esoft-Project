@@ -12,15 +12,15 @@ export const s3 = new EasyYandexS3({
   debug: false,
 });
 
-export const upload = async (file: Buffer, name: string): Promise<YandexPost> => {
+export const upload = async (file: Buffer, name: number | string, path: string): Promise<YandexPost> => {
   const load = await s3.Upload(
     {
       buffer: file,
-      name: name,
+      name: String(name),
     },
-    '/avatars/'
+    path
   );
-  console.log(load)
+  // console.log(load)
   //@ts-ignore
   return load
 }

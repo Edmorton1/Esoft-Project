@@ -3,13 +3,14 @@ import { Form, Message } from "@s/core/domain/Users";
 import { MessageDTO } from "@s/core/dtoObjects";
 import { toSO, one } from "@s/infrastructure/db/Mappers";
 import { ORM } from "@s/infrastructure/db/ORM";
-import { MessageService } from "@s/infrastructure/services/MessageService";
+import { MessageFileService } from "@s/infrastructure/services/MessageFileService";
 import { clients } from "@s/socket";
+import { upload } from "@s/yandex";
 import { Request, Response } from "express";
 
 export class HttpMessageController {
   constructor(
-    readonly MessageService: MessageService,
+    readonly MessageService: MessageFileService,
     readonly ORM: ORM
   ) {}
 
@@ -22,10 +23,15 @@ export class HttpMessageController {
 
   async sendMessage(req: Request, res: Response) {
     const data: MessageDTO = req.body
-    // const request = one(await this.ORM.post(data, 'messages'))
+    const files = req.files as Express.Multer.File[]
+    //@ts-ignore
+    const request = one(await this.ORM.post(data, 'messages'))
+
+    const paths = await this.MessageService.uploadFiles(request.id, files)
+    await this.ORM.put({files: paths}, request.id, 'messages')
     // this.sendSocket(data, 'message', request)
 
-    console.log(data, data.text, data.fromid)
+    console.log('paths', paths)
   }
 
   async editMessage(req: Request<{id: number}>, res: Response) {

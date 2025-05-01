@@ -14,14 +14,23 @@ class HttpFilesController {
     
     const {id} = req.params
     const buffer = req.file!.buffer
-    const compress = await this.FileService.avatarCompress(buffer)
+    const compress = await this.FileService.imageCompress(buffer)
 
     console.log(compress.length)
     // res.type("webp")
     // res.send(compress)
-    const yandex = await upload(compress, id + '.webp')
+    const yandex = await upload(compress, id + '.webp', '/avatars/')
     await this.ORM.put({avatar: yandex.Location}, id, 'forms')
     res.json(yandex.Location)
+  }
+
+  async TestConvertVideo(req: Request, res: Response) {
+    // old: 1656511
+    const buffer = req.file?.buffer!
+    const total = await this.FileService.videoCompress(buffer)
+    console.log(total.length)
+    res.type('mp4')
+    res.send(buffer)
   }
 }
 
