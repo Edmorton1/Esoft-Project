@@ -14,7 +14,7 @@ function Users() {
 
   return (
     <Suspense>
-      <main>
+      <>
         <button onClick={StoreUser.logout}>Выйти</button>
         <button onClick={() => StoreGlobal.sendInfo(String(Math.random()))}>Тру</button>
         <button onClick={() => console.log(toJS(StoreGlobal.data))}>Тру</button>
@@ -31,7 +31,7 @@ function Users() {
 
           </div>
         ))}
-      </main>
+      </>
     </Suspense>
   )
 }

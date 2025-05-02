@@ -31,7 +31,15 @@ function MessageComponent({msg, editing, setEditMessage}: propsInterface) {
       <div>Текст:
         {editing 
         ? <>
-            <input type="text" onChange={e => setValue(e.target.value)} />
+            <input type="text" onChange={e => setValue(e.target.value)} defaultValue={msg.text} />
+            <br />
+            <div>
+              {msg.files}
+              <button>удалить</button>
+            </div>
+            <br />
+            <div>Добавить</div>
+            <input type="file" onChange={e => console.log(e)} />
             <button onClick={() => {StoreMessages.put({...msg, text: value}); setEditMessage(null)}}>Готово</button>
           </>
         : <span>{msg.text}</span>}
@@ -39,6 +47,7 @@ function MessageComponent({msg, editing, setEditMessage}: propsInterface) {
       <br />
       {msg.fromid === StoreForm.form?.id && !editing && (
         <>
+          {/* <img src={msg.files[0]} alt="" /> */}
           <button onClick={() => setEditMessage(msg.id!)}>Изменить</button>
           <button onClick={() => StoreMessages.delete(msg.id!)}>Удалить</button>
           <button onClick={() => console.log(toJS(StoreMessages.messages))}>Вывести сообщения</button>

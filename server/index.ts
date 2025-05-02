@@ -33,4 +33,7 @@ app.use('/', router)
 //   res.send(`Your IP is: ${ip}`);
 // });
 
+// ОТКЛЮЧЕНИЕ ВАРНИНГА У ЯНДЕКСА и require У FileType
+process.removeAllListeners('warning');
+
 server.listen(PORT, () => console.log(`СЕРВЕР ЗАПУЩЕН НА ПОРТУ: ${PORT}, НА САЙТЕ: ${process.env.URL_SERVER}`))

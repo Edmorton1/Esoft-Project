@@ -12,18 +12,34 @@ export const s3 = new EasyYandexS3({
   debug: false,
 });
 
-export const upload = async (file: Buffer, name: number | string, path: string): Promise<YandexPost> => {
-  const load = await s3.Upload(
-    {
-      buffer: file,
-      name: String(name),
-    },
-    path
-  );
-  // console.log(load)
-  //@ts-ignore
-  return load
+class Yandex {
+  upload = async (file: Buffer, name: number | string, path: string): Promise<YandexPost> => {
+
+    const load = await s3.Upload(
+      {
+        buffer: file,
+        name: String(name),
+      },
+      path
+    );
+
+    // console.log(load)
+    //@ts-ignore
+    return load
+  }
+  delete = async (id: number) => {
+    //@ts-ignore
+    const folder: string[] = ((await s3.GetList(`/messages/${id}/`)).Contents).map(e => e.Key)
+    folder.forEach(async e => {
+      await s3.Remove(e)
+    })
+    return folder
+  }
 }
+
+export default new Yandex
+
+
 
 // export const getSignedUrl = async (fileKey: string): Promise<string> => {
 //   const url = await s3.GetList

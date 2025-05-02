@@ -13,7 +13,7 @@ function Login() {
   }
 
   return (
-    <main>
+    <>
       <div>Добро пожаловать: {storeAuthorization.user?.email}</div>
       <form onSubmit={handleSubmit((data: UserDTO) => storeAuthorization.login(data))}>
         {/* <input {...register('email')} type="text" placeholder="email" value="marty@gmial.ru" />
@@ -26,7 +26,7 @@ function Login() {
       <button onClick={() => console.log(storeAuthorization.user)}>Вывести пользователя</button>
       <button onClick={handleTest}>Запрос на проверку авторизации</button>
       <button onClick={storeAuthorization.initial}>Инициализация</button>
-    </main>
+    </>
   )
 }
 

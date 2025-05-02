@@ -7,6 +7,7 @@ import { tmpdir } from "os";
 import { promises, unlink, writeFile } from "fs";
 import { PassThrough, Readable } from "stream";
 import { randomUUID } from "crypto";
+import { fileTypeFromBuffer } from "file-type";
 
 ffmpeg.setFfmpegPath(ffmpegPath!);
 
@@ -14,15 +15,15 @@ const writeFileFS = promisify(writeFile);
 const unlinkFS = promisify(unlink);
 
 class FileService {
+  toBuffer(files: Express.Multer.File[]) {
+    return files.map(e => e.buffer)
+  }
+  
   async imageCompress(buffer: Buffer) {
     return await sharp(buffer)
     .resize(400)
     .webp({quality: 100})
     .toBuffer()
-  }
-
-  toBuffer(files: Express.Multer.File[]) {
-    return files.map(e => e.buffer)
   }
   
   async videoCompress(buffer: Buffer, extention: string): Promise<Buffer> {
@@ -96,6 +97,25 @@ class FileService {
         resolve(resultBuffer);
       });
     });
+  }
+
+  async compress(buffer: Buffer): Promise<[Buffer, string]> {
+    const type = (await fileTypeFromBuffer(buffer))
+    const ext = type!.ext
+    const mime = type!.mime
+    console.log(ext, mime)
+
+    if (mime.includes('image')) {
+      return [await this.imageCompress(buffer), 'webp']
+    }
+    else if (mime.includes('audio')) {
+      console.log('AUDIO MIME INCLUDE TRUE')
+      return [await this.audioCompress(buffer, ext), 'ogg']
+    }
+    else if (mime.includes('video')) {
+      return [await this.videoCompress(buffer, ext), 'mp4']
+    }
+    throw new Error('Неизвестное разрешение')
   }
 }
 

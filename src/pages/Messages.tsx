@@ -13,7 +13,7 @@ function Messages() {
   const {register, handleSubmit} = useForm<MessageDTO>()
   
   return (
-    <main>
+    <>
       <div>Пользователь: {StoreForm.form?.name}</div>
       <div>Сообщения</div>
       <div>Исходящие</div>
@@ -35,7 +35,7 @@ function Messages() {
         <input {...register("files")} type="file" multiple id="files" />
         <button>Отпраивть</button>
       </form>
-    </main>
+    </>
   )
 }
 

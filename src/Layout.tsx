@@ -7,14 +7,15 @@ import StoreUser from "@/store/Store-User"
 import StoreUsers from "@/store/Store-Users"
 import StoreLikes from "@/store/StoreLikes"
 import { toJS } from "mobx"
-import { Link, Outlet } from "react-router-dom"
+import { Link, NavLink, Outlet } from "react-router-dom"
 import Theme from "./ui/Theme"
 
 function Layout() {
   return (
     <>
     <header>
-      <Link to={"/"}><button>Главная</button></Link>
+      <nav>
+        <NavLink to={"/"}><button className="active">Главная</button></NavLink>
         <Link to={"/registration"}><button>Регистрация</button></Link>
         <Link to={"/login"}><button>Войти</button></Link>
         <Link to={"/messages"}><button>Сообщения</button></Link>
@@ -30,11 +31,14 @@ function Layout() {
           )}>Вывести сторы
         </button>
         <Theme />
+      </nav>
         <br />
         <br />
     </header>
       
-      <Outlet />
+      <main>
+        <Outlet />
+      </main>
     </>
   )
 }

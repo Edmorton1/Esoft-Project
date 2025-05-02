@@ -1,6 +1,7 @@
 import { ORM } from "@s/infrastructure/db/ORM";
 import FileService from "./FileService";
-import { upload } from "@s/yandex";
+import Yandex from "@s/yandex";
+import { fileTypeFromBuffer } from "file-type";
 
 export class MessageFileService {
   constructor(
@@ -11,10 +12,10 @@ export class MessageFileService {
     const buffers = this.FileService.toBuffer(files)
     return await Promise.all(
       buffers.map(async (e, i) => {
-      const load = await upload(e, `${i}` ,`/messages/${id}/`)
-      console.log(load.Location)
+        const [newBuffer, ext] = await this.FileService.compress(e)
+        const load = await Yandex.upload(newBuffer, `${i}.${ext}` ,`/messages/${id}/`)
+        console.log(load.Location)
       return load.Location
     }))
   }
-
 }
