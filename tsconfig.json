@@ -18,7 +18,8 @@
       "baseUrl": ".",
       "paths": {
         "@/*": ["./src/*"],
-        "@s/*": ["./server/*"]
+        "@s/*": ["./server/*"],
+        "@shared/*": ["./shared/*"]
       }
     },
     "ts-node": {

@@ -9,18 +9,20 @@ import StoreLikes from "@/store/StoreLikes"
 import { toJS } from "mobx"
 import { Link, NavLink, Outlet } from "react-router-dom"
 import Theme from "./ui/Theme"
+import { paths } from "@shared/PATHS"
+import * as style from "@/css/Shared.scss"
 
 function Layout() {
   return (
     <>
     <header>
       <nav>
-        <NavLink to={"/"}><button className="active">Главная</button></NavLink>
-        <Link to={"/registration"}><button>Регистрация</button></Link>
-        <Link to={"/login"}><button>Войти</button></Link>
-        <Link to={"/messages"}><button>Сообщения</button></Link>
-        <Link to={"/users"}><button>Пользователи</button></Link>
-        <Link to={"/profile/2"}><button>profile 2</button></Link>
+        <NavLink to={"/"}>{({ isActive }) => <button className={isActive ? style.active : ''}>Главная</button>}</NavLink>
+        <Link to={paths.registration}><button>Регистрация</button></Link>
+        <Link to={paths.login}><button>Войти</button></Link>
+        <Link to={paths.messages}><button>Сообщения</button></Link>
+        <Link to={paths.users}><button>Пользователи</button></Link>
+        <Link to={`${paths.profile}/2`}><button>profile 2</button></Link>
         <button onClick={() => console.log(
           'User: ', toJS(StoreUser.user),
           'Form:', toJS(StoreForm.form),

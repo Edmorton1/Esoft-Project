@@ -2,6 +2,7 @@ import express from "express"
 import { tables } from "@s/core/domain/types"
 import { filesController, formController, likesController, messageController, tokenController, universalController } from "@s/controllers"
 import multer from "multer"
+import { serverPaths } from "@shared/PATHS"
 const upload = multer({storage: multer.memoryStorage()})
 const router = express.Router()
 
@@ -26,23 +27,23 @@ tablesArr.forEach(table => {
 
 // router.get('/byParams', universalController('getByParams', 'users'))
 
-router.post('/registration', tokenController('registartion'))
-router.post('/login', tokenController('login'))
-router.get('/logout/:id', tokenController('logout'))
-router.get('/refresh', tokenController('refresh'))
+router.post(serverPaths.registration, tokenController('registartion'))
+router.post(serverPaths.login, tokenController('login'))
+router.get(`${serverPaths.logout}/:id`, tokenController('logout'))
+router.get(serverPaths.refresh, tokenController('refresh'))
 
-router.post('/createForm', formController("postForm"))
+router.post(serverPaths.createForm, formController("postForm"))
 
-router.post('/sendMessage', upload.array('files'), messageController('sendMessage'))
-router.put('/editMessage/:id', messageController('editMessage'))
-router.delete('/deleteMessage/:id', messageController('deleteMessage'))
+router.post(serverPaths.sendMessage, upload.array('files'), messageController('sendMessage'))
+router.put(`${serverPaths.editMessage}/:id`, messageController('editMessage'))
+router.delete(`${serverPaths.deleteMessage}/:id`, messageController('deleteMessage'))
 
-router.post('/likesGet', likesController('sendLike'))
-router.delete('/likesDelete/:id', likesController('sendDelete'))
+router.post(serverPaths.likesGet, likesController('sendLike'))
+router.delete(`${serverPaths.likesDelete}/:id`, likesController('sendDelete'))
 
-router.post('/postAvatar/:id', upload.single('avatar'),  filesController('postAvatar'))
+router.post(`${serverPaths.postAvatar}/:id`, upload.single('avatar'),  filesController('postAvatar'))
 
-router.post('/testCompressViedo', upload.single('video'), filesController('TestConvertVideo'))
-router.post('/testCompressAudio', upload.single('audio'), filesController('TestConvertAudio'))
+router.post(serverPaths.testCompressViedo, upload.single('video'), filesController('TestConvertVideo'))
+router.post(serverPaths.testCompressAudio, upload.single('audio'), filesController('TestConvertAudio'))
 
 export default router

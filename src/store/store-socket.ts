@@ -1,6 +1,6 @@
 import StoreMessages from "@/store/Store-Messages";
 import StoreLikes from "@/store/StoreLikes";
-import { URL_CLIENT_WS, URL_SERVER_WS } from "@/URLS";
+import { URL_CLIENT_WS, URL_SERVER_WS } from "@shared/URLS";
 import { frSO } from "@s/infrastructure/db/Mappers";
 import { makeAutoObservable, runInAction } from "mobx";
 

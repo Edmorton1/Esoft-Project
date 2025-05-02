@@ -7,6 +7,7 @@ import StoreLikes from "@/store/StoreLikes"
 import { Form, User } from "@s/core/domain/Users"
 import { FormDTO, UserDTO } from "@s/core/dtoObjects"
 import { toSO, toCl } from "@s/infrastructure/db/Mappers"
+import { serverPaths } from "@shared/PATHS"
 import { makeAutoObservable, runInAction } from "mobx"
 
 export interface responseInterface {
@@ -54,7 +55,7 @@ class StoreUser {
   }
   
   registration = async (user: UserDTO): Promise<number> => {
-    const request = toCl<responseInterface>((await $api.post(`/registration`, user)))
+    const request = toCl<responseInterface>((await $api.post(`${serverPaths.registration}`, user)))
     localStorage.setItem("accessToken", request.accessToken)
 
     runInAction(() => this.user = request.user)
@@ -62,14 +63,14 @@ class StoreUser {
   }
   
   login = async (data: UserDTO) => {
-    const request = toCl<responseInterface>(await $api.post(`/login`, data))
+    const request = toCl<responseInterface>(await $api.post(`${serverPaths.login}`, data))
     localStorage.setItem("accessToken", request.accessToken)
 
     await this.initial()
   }
 
   logout = async () => {
-    const request = toCl(await $api.get(`/logout/${this.user!.id}`))
+    const request = toCl(await $api.get(`${serverPaths.logout}/${this.user!.id}`))
     localStorage.removeItem("accessToken")
     runInAction(() => this.user = null)
     runInAction(() => StoreForm.form = null)
@@ -78,7 +79,7 @@ class StoreUser {
   }
 
   initial = async () => {
-    const request = toCl<responseInterface>(await $api.get("/refresh"))
+    const request = toCl<responseInterface>(await $api.get(serverPaths.refresh))
     if (request?.accessToken) {
       runInAction(() => this.user = request.user)
       await StoreForm.initial(request.user.id)

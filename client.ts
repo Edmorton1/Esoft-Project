@@ -1,4 +1,4 @@
-import { PORT, URL_CLIENT } from "@/URLS";
+import { PORT, URL_CLIENT } from "@shared/URLS";
 import express from "express";
 import path from "path";
 

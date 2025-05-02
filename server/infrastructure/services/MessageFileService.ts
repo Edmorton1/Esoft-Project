@@ -1,7 +1,5 @@
-import { ORM } from "@s/infrastructure/db/ORM";
 import FileService from "./FileService";
 import Yandex from "@s/yandex";
-import { fileTypeFromBuffer } from "file-type";
 
 export class MessageFileService {
   constructor(

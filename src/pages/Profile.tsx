@@ -5,19 +5,18 @@ import { Link, useParams } from "react-router-dom"
 import FourHundredFour from "./ErrorPages/404"
 import StoreForm from "@/store/Store-Form"
 import { AvatarOnChange } from "@/modules/funcDropAva"
+import Loading from "../ui/Loading"
 
 function Profile() {
   const id = Number(useParams().id)
   useGetById('forms', {id: id}, 'single', StoreProfile.initial)
 
   if (StoreProfile.profile === null) {
-    return <></>
+    return <Loading />
   }
 
   if (StoreProfile.profile === undefined) {
-    return (
-      <FourHundredFour />
-    )
+    return <FourHundredFour />
   }
 
   return (

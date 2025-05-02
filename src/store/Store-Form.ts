@@ -1,6 +1,7 @@
 import $api from "@/store/api";
 import { Form } from "@s/core/domain/Users";
 import { one, toCl } from "@s/infrastructure/db/Mappers";
+import { serverPaths } from "@shared/PATHS";
 import { makeAutoObservable, runInAction } from "mobx";
 
 class FormStore {
@@ -16,7 +17,7 @@ class FormStore {
   }
 
   async postForm(data: Form) {
-    const request = toCl<Form>(await $api.post(`/createForm`, data))
+    const request = toCl<Form>(await $api.post(`${serverPaths.createForm}`, data))
     runInAction(() => this.form = request)
     // console.log(request)
   }

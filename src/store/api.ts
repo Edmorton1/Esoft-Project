@@ -1,9 +1,10 @@
 import StoreGlobal from "@/store/Store-Global";
 import storeAuthorization, { responseInterface } from "@/store/Store-User";
-import { URL_SERVER } from "@/URLS";
+import { URL_SERVER } from "@shared/URLS";
 import { toCl } from "@s/infrastructure/db/Mappers";
 import axios from "axios";
 import { runInAction } from "mobx";
+import { serverPaths } from "@shared/PATHS";
 
 const $api = axios.create({
   baseURL: URL_SERVER,
@@ -20,9 +21,9 @@ $api.interceptors.request.use((config => {
 
 $api.interceptors.request.use((async config => {
   if (
-    config.url?.includes('/registration') ||
-    config.url?.includes('/login') ||
-    config.url?.includes('/logout') ||
+    config.url?.includes(serverPaths.registration) ||
+    config.url?.includes(serverPaths.login) ||
+    config.url?.includes(serverPaths.logout) ||
     config.method?.toLowerCase() == "get"
   ) return config
 

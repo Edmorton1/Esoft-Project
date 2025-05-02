@@ -6,6 +6,14 @@ import { toCl } from "@s/infrastructure/db/Mappers"
 import StoreUser from "@/store/Store-User"
 import { toFormData } from "@/modules/funcDropAva"
 import { MessageDTO } from "@s/core/dtoObjects"
+import { serverPaths } from "@shared/PATHS"
+
+interface MessagePut {
+  fromid: number,
+  toid: number,
+  text: string,
+  files: {new: FileList | null, old: string[]},
+}
 
 class StoreMessages {
   messages: {sent: Message[]; received: Message[]} | null = null
@@ -22,14 +30,14 @@ class StoreMessages {
   }
 
   send = async (data: MessageDTO) => {
-    const fd = await toFormData(data.files)
+    const formdata = await toFormData(data.files)
     console.log(data)
-    fd.append('fromid', String(data.fromid))
-    fd.append('toid', String(data.toid))
-    fd.append('text', data.text)
+    formdata.append('fromid', String(data.fromid))
+    formdata.append('toid', String(data.toid))
+    formdata.append('text', data.text)
 
-    console.log(fd.get('files'))
-    const request = await $api.post('/sendMessage', fd, {
+    console.log(formdata.get('files'))
+    const request = await $api.post('/sendMessage', formdata, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
@@ -37,14 +45,17 @@ class StoreMessages {
     // storeSocket.socket.send(JSON.stringify(data))
   }
 
-  put = async (data: Message) => {
-    console.log(data)
-    const request = await $api.put(`/editMessage/${data.id}`, data)
+  put = async (data: MessagePut) => {
+    const old = this.messages?.sent.find(e => e.toid == data.toid)
+    const deleted = old?.files.filter(e => !data.files.old.includes(e))
+    const formdata = await toFormData(data.files.new!)
+    console.log(deleted)
+    // const request = await $api.put(`${serverPaths.editMessage}/${data.id}`, data)
   }
 
   delete = async (id: number) => {
     console.log(id)
-    const request = await $api.delete(`/deleteMessage/${id}`)
+    const request = await $api.delete(`${serverPaths.deleteMessage}/${id}`)
   }
   
   socketGet = (data: Message) => {

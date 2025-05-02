@@ -4,6 +4,7 @@ export interface buildPaths {
   html: string;
   src: string;
   server: string;
+  shared: string,
   public: string
 }
 

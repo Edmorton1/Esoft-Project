@@ -1,5 +1,6 @@
 import { makeAutoObservable } from "mobx"
 import $api from "./api"
+import { serverPaths } from "@shared/PATHS"
 
 class StoreFiles {
   constructor() {
@@ -7,7 +8,7 @@ class StoreFiles {
   }
 
   async postAvatar(file: FormData, id: number): Promise<string> {
-    const request: string = await $api.post(`/postAvatar/${id}`, file)
+    const request: string = await $api.post(`${serverPaths.postAvatar}/${id}`, file)
     return request
   }
 }

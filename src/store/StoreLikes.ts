@@ -6,6 +6,7 @@ import { LikesDTO } from "@s/core/dtoObjects";
 import { toCl } from "@s/infrastructure/db/Mappers";
 import { makeAutoObservable, runInAction, toJS } from "mobx";
 import StoreUser from "./Store-User";
+import { serverPaths } from "@shared/PATHS";
 
 class StoreLikes {
   likes: {sent: {id: number, liked_userid: number}[]; received: {id: number, userid: number}[]} | null = null
@@ -26,7 +27,7 @@ class StoreLikes {
     try {
       const id = this.likes?.sent.find(e => e.liked_userid == liked_userid)!.id
       console.log(id)
-      const request = toCl(await $api.delete(`/likesDelete/${id}`))
+      const request = toCl(await $api.delete(`${serverPaths.likesDelete}/${id}`))
       console.log(liked_userid, this.likes?.sent.filter(e => e.id != liked_userid))
       runInAction(() => this.likes!.sent = this.likes!.sent.filter(e => e.liked_userid != liked_userid))
       console.log(request)
@@ -43,7 +44,7 @@ class StoreLikes {
   }
 
   sendLike = async (data: LikesDTO) => {
-    const request: Likes = toCl(await $api.post('/likesGet?fields', data))
+    const request: Likes = toCl(await $api.post(`${serverPaths.likesGet}?fields`, data))
     console.log(request)
     runInAction(() => this.likes?.sent.push(request))
     console.log(request)

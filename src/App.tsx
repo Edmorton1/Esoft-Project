@@ -5,6 +5,7 @@ import {Suspense, useEffect} from "react";
 import Initialization from "@/ui/Initialization";
 import Layout from "@/Layout";
 import { ErrorBoundary } from "react-error-boundary";
+import { paths } from "@shared/PATHS";
 // ДЛЯ АССИНХРОННЫХ ОПЕРАЦИЙ ИСПОЛЬЗОВАТЬ suspense
 
 function App() {
@@ -20,15 +21,15 @@ function App() {
 				<Routes>
 					<Route element={<Layout />}>
 						<Route index element={<LazyMain />} />
-						<Route path="/login" element={<LazyLogin />} />
-						<Route path="/registration" element={<LazyRegistration />} />
-						<Route path="/messages" element={<LazyMessages />} />
-						<Route path="/users" element={<LazyUsers />}></Route>
-						<Route path="/profile/:id" element={<LazyProfile />} />
-            <Route path="/settings" element={<LazySettings/>}/>
+						<Route path={paths.login} element={<LazyLogin />} />
+						<Route path={paths.registration} element={<LazyRegistration />} />
+						<Route path={paths.messages} element={<LazyMessages />} />
+						<Route path={paths.users} element={<LazyUsers />}></Route>
+						<Route path={`${paths.profile}/:id`} element={<LazyProfile />} />
+            <Route path={paths.settings} element={<LazySettings/>}/>
 						<Route path="*" element={<LazyFourHundredFour />} />
 
-						<Route path="/test" element={<LazyTest />} />
+						<Route path={paths.test} element={<LazyTest />} />
 					</Route>
 				</Routes>
 			</Suspense>
