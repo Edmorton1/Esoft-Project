@@ -21,7 +21,7 @@ class HttpFilesController {
     console.log(compress.length)
     // res.type("webp")
     // res.send(compress)
-    const yandex = await Yandex.upload(compress, id + '.webp', '/avatars/')
+    const yandex = await Yandex.upload(compress,'.webp', '/avatars/')
     await this.ORM.put({avatar: yandex.Location}, id, 'forms')
     res.json(yandex.Location)
   }

@@ -74,3 +74,22 @@ export class MessageDTO {
     public files: FileList,
   ) {}
 }
+
+export class MessagePutDTO {
+  constructor(
+    readonly id: number,
+    readonly fromid: number,
+    readonly toid: number,
+    readonly text: string,
+    readonly files: {new: FileList | null, old: string[]},
+  ) {}
+}
+
+export class MessagePutServer {
+  constructor(
+    readonly fromid: number,
+    readonly toid: number,
+    readonly text: string,
+    readonly deleted: string[]
+  ) {}
+}

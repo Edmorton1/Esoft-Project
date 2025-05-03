@@ -30,7 +30,7 @@ function Messages() {
         <input {...register('fromid', {valueAsNumber: true})} type="number" placeholder="От кого?" />
         <input {...register('toid', {valueAsNumber: true})} type="number" placeholder="К кому?" />
         <label htmlFor="text">Текст</label>
-        <input {...register('text')} type="text" value={"text test"} id="text" />
+        <input {...register('text')} type="text" defaultValue={"text test"} id="text" />
         <label htmlFor="files">Файлы</label>
         <input {...register("files")} type="file" multiple id="files" />
         <button>Отпраивть</button>

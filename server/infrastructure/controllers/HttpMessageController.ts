@@ -1,6 +1,6 @@
 import { msg, MsgTypes } from "@s/core/domain/types";
 import { Form, Message } from "@s/core/domain/Users";
-import { MessageDTO } from "@s/core/dtoObjects";
+import { MessageDTO, MessagePutDTO, MessagePutServer } from "@s/core/dtoObjects";
 import { toSO, one } from "@s/infrastructure/db/Mappers";
 import { ORM } from "@s/infrastructure/db/ORM";
 import { MessageFileService } from "@s/infrastructure/services/MessageFileService";
@@ -29,26 +29,31 @@ export class HttpMessageController {
     const request = one(await this.ORM.post(data, 'messages'))
 
     const paths = await this.MessageService.uploadFiles(request.id, files)
-    await this.ORM.put({files: paths}, request.id, 'messages')
-    // this.sendSocket(data, 'message', request)
 
-    console.log('paths', paths)
+    const total = one(await this.ORM.put({files: paths}, request.id, 'messages'))
+
+    this.sendSocket(total, 'message', total)
   }
 
   async editMessage(req: Request<{id: number}>, res: Response) {
     const {id} = req.params
-    const data = req.body
 
-    // console.log(id, data)
-    this.sendSocket(data, 'edit_message', data)
+    const data: MessagePutServer = req.body
+    const files = req.files as Express.Multer.File[]
 
-    await this.ORM.put(data, id, 'messages')
+    const deleted = await Yandex.deleteArr(data.deleted)
+    const paths = await this.MessageService.uploadFiles(id, files)
+    // console.log([...deleted, ...paths])
+
+    const total = one(await this.ORM.put({files: [...deleted, ...paths]}, id, 'messages'))
+
+    this.sendSocket(total, 'edit_message', total)
   }
 
   async deleteMessage(req: Request<{id: number}>, res: Response) {
     const { id } = req.params
     const data = one(await this.ORM.delete(id, 'messages'))
-    const asd = await Yandex.delete(id)
+    const asd = await Yandex.deleteFolder(id)
     console.log(asd)
     // const data = one(await this.ORM.getById(id, 'messages'))
 

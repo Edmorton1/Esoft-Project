@@ -35,7 +35,7 @@ router.get(serverPaths.refresh, tokenController('refresh'))
 router.post(serverPaths.createForm, formController("postForm"))
 
 router.post(serverPaths.sendMessage, upload.array('files'), messageController('sendMessage'))
-router.put(`${serverPaths.editMessage}/:id`, messageController('editMessage'))
+router.put(`${serverPaths.editMessage}/:id`, upload.array('files'), messageController('editMessage'))
 router.delete(`${serverPaths.deleteMessage}/:id`, messageController('deleteMessage'))
 
 router.post(serverPaths.likesGet, likesController('sendLike'))

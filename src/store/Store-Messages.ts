@@ -1,19 +1,12 @@
 import $api from "@/store/api"
-import { makeAutoObservable, runInAction } from "mobx"
+import { makeAutoObservable, runInAction, toJS } from "mobx"
 import { Message } from "@s/core/domain/Users"
 import StoreSocket from "@/store/Store-Socket"
 import { toCl } from "@s/infrastructure/db/Mappers"
 import StoreUser from "@/store/Store-User"
 import { toFormData } from "@/modules/funcDropAva"
-import { MessageDTO } from "@s/core/dtoObjects"
+import { MessageDTO, MessagePutDTO } from "@s/core/dtoObjects"
 import { serverPaths } from "@shared/PATHS"
-
-interface MessagePut {
-  fromid: number,
-  toid: number,
-  text: string,
-  files: {new: FileList | null, old: string[]},
-}
 
 class StoreMessages {
   messages: {sent: Message[]; received: Message[]} | null = null
@@ -32,6 +25,7 @@ class StoreMessages {
   send = async (data: MessageDTO) => {
     const formdata = await toFormData(data.files)
     console.log(data)
+
     formdata.append('fromid', String(data.fromid))
     formdata.append('toid', String(data.toid))
     formdata.append('text', data.text)
@@ -45,12 +39,28 @@ class StoreMessages {
     // storeSocket.socket.send(JSON.stringify(data))
   }
 
-  put = async (data: MessagePut) => {
-    const old = this.messages?.sent.find(e => e.toid == data.toid)
-    const deleted = old?.files.filter(e => !data.files.old.includes(e))
+  put = async (data: MessagePutDTO) => {
+    const old = this.messages?.sent.find(e => e.id == data.id)
+    console.log(data, toJS(old))
+    const deleted = old?.files?.filter(e => data.files.old.includes(e))
+    console.log('formdata')
     const formdata = await toFormData(data.files.new!)
-    console.log(deleted)
-    // const request = await $api.put(`${serverPaths.editMessage}/${data.id}`, data)
+    // Object.entries(data).forEach(e => formdata.append(e[0], String(e[1])))
+
+    formdata.append('fromid', String(data.fromid))
+    formdata.append('toid', String(data.toid))
+    formdata.append('text', data.text)
+    deleted!.forEach(e => {
+      formdata.append('deleted[]', e.split('.net/')[1])
+    })
+
+    console.log(formdata.get('id'))
+
+    const request = await $api.put(`${serverPaths.editMessage}/${data.id}`, formdata, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
   }
 
   delete = async (id: number) => {
@@ -67,8 +77,9 @@ class StoreMessages {
   }
   
   socketPut = (data: Message) => {
-    this.messages!.received = this.messages!.received.map(e => e.id === data.id ? {...e, text: data.text} : e)
-    this.messages!.sent = this.messages!.sent.map(e => e.id === data.id ? {...e, text: data.text} : e)
+    console.log(data)
+    this.messages!.received = this.messages!.received.map(e => e.id === data.id ? {...e, text: data.text, files: data.files} : e)
+    this.messages!.sent = this.messages!.sent.map(e => e.id === data.id ? {...e, text: data.text, files: data.files} : e)
   }
 
   socketDelete = (id: number) => {
