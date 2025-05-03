@@ -1,30 +1,49 @@
-import useGetById from "@/hooks/useGetById"
-import StoreForm from "@/store/Store-Form"
 import { Message } from "@s/core/domain/Users"
-import MessageStatic from "./ui/MessageStatic"
-import MessageEdit from "./ui/MessageEdit"
+import { useEffect, useState } from "react"
+import { createContext } from "react"
+import MessageComponent from "./ui/MessageComponent"
+import StoreMessages from "./store/Store-Messages"
+import { MessageContextType } from "./types/MessageTypes"
 
 interface propsInterface {
   msg: Message,
-  changeClick: () => any,
-  deleteClick: () => any,
-  editing: boolean
+  editing: boolean,
+  setEditMessage: React.Dispatch<React.SetStateAction<number | null>>
 }
 
-function MessageFeature({msg, changeClick, deleteClick, editing}: propsInterface) {
-  const to = useGetById('forms', {id: msg.toid}, 'single')
-  const datetime = `${new Date(msg.created_at!).toLocaleDateString()} ${new Date(msg.created_at!).toLocaleTimeString()}`
+export const MessageContext = createContext<MessageContextType | null>(null)
+
+function MessageFeature({msg, editing, setEditMessage}: propsInterface) {
+  const [value, setValue] = useState('')
+  const [files, setFiles] = useState<{new: FileList | null, old: string[] | null} | null>(null)
+
+  useEffect(() => {
+    if (editing) {
+      setValue(msg.text)
+      setFiles({new: null, old: Array.isArray(msg?.files) && msg.files.length > 0 ? msg.files : null})
+    }
+  }, [editing])
+
+  const context = {
+    value: value,
+    files: files,
+
+    submitClick: () => {StoreMessages.put({...msg, text: value, files: files!}); setEditMessage(null)},
+    inputNewFile: (e: React.ChangeEvent<HTMLInputElement>) => setFiles(prev => ({...prev!, new: e.target.files})),
+    textInput: (e: React.ChangeEvent<HTMLInputElement>) => setValue(e.target.value),
+    clickDeleteFile: (item: string) => setFiles(prev => ({...prev!, old: prev!.old!.filter(file => file != item)})),
+  }
+
+  const changeClick = () => setEditMessage(msg.id!)
+  const deleteClick = () => StoreMessages.delete(msg.id!)
+
+
   
-  return <>
-    <div>От {msg.fromid} К {to?.name} {datetime}</div>
-    <br />
-    <div>
-      <p>Текст:</p>
-      {editing && <MessageEdit/>}
-    </div>
-    <br />
-    {msg.fromid === StoreForm.form?.id && <MessageStatic/>}
-  </>
+  return (
+    <MessageContext.Provider value={context}>
+      <MessageComponent editing={editing} msg={msg} changeClick={changeClick} deleteClick={deleteClick}/>
+    </MessageContext.Provider>
+  )
 }
 
 export default MessageFeature

@@ -4,12 +4,11 @@ import { observer } from "mobx-react-lite"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import StoreForm from "@/store/Store-Form"
-import MessageWidget from "@/pages/Messages/Widgets/MessageWidget"
+import MessageFeature from "@/pages/Messages/Widgets/Features/MessageFeature"
 import { MessageDTO } from "@s/core/dtoObjects"
+import MessageWidget from "./Widgets/MessageWidget"
 
 function Messages() {
-  const [editMessage, setEditMessage] = useState<null | number>(null)
-
   const {register, handleSubmit} = useForm<MessageDTO>()
   
   return (
@@ -17,13 +16,7 @@ function Messages() {
       <div>Пользователь: {StoreForm.form?.name}</div>
       <div>Сообщения</div>
       <div>Исходящие</div>
-      {StoreMessages.messages?.sent?.map((msg, i) => (
-        <MessageWidget key={i} msg={msg} editing={editMessage === msg.id} setEditMessage={setEditMessage} />
-      ))}
-      <div>Входящие</div>
-      {StoreMessages.messages?.received?.map((msg, i) => (
-        <MessageWidget key={i} msg={msg} editing={editMessage === msg.id} setEditMessage={setEditMessage}/>
-      ))}
+      <MessageWidget />
       <br />
       <form onSubmit={handleSubmit((data: MessageDTO) => StoreMessages.send(data))} style={{display: "flex", flexDirection: "column", width: "300px"}}>
         <div>Отправить сообщение</div>
