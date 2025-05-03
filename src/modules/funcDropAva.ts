@@ -1,10 +1,12 @@
 import StoreUser from "@/store/Store-User";
 import StoreFiles from "@/store/StoreFiles";
 
-export async function toFormData(files: FileList) {
+export async function toFormData(files: FileList | null) {
   const formData = new FormData()
-  for (const file of files) {
-    formData.append('files', file)
+  if (files) {
+    for (const file of files) {
+      formData.append('files', file)
+    }
   }
   console.log(formData)
   return formData

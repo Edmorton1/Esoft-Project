@@ -40,27 +40,35 @@ class StoreMessages {
   }
 
   put = async (data: MessagePutDTO) => {
-    const old = this.messages?.sent.find(e => e.id == data.id)
+    const old = this.messages!.sent.find(e => e.id == data.id)!
     console.log(data, toJS(old))
-    const deleted = old?.files?.filter(e => data.files.old.includes(e))
-    console.log('formdata')
-    const formdata = await toFormData(data.files.new!)
-    // Object.entries(data).forEach(e => formdata.append(e[0], String(e[1])))
+    if (data.files.new == null && data.files.old == null && data.text == old.text) {
+      return;
+      
+    }
+    if (data.files.new == null && data.files.old == null) {
+      await $api.put(`${serverPaths.editMessage}/${data.id}`, data)
 
-    formdata.append('fromid', String(data.fromid))
-    formdata.append('toid', String(data.toid))
-    formdata.append('text', data.text)
-    deleted!.forEach(e => {
-      formdata.append('deleted[]', e.split('.net/')[1])
-    })
-
-    console.log(formdata.get('id'))
-
-    const request = await $api.put(`${serverPaths.editMessage}/${data.id}`, formdata, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    })
+    } else {
+      const deleted = old.files?.filter(e => data.files.old?.includes(e))
+      const formdata = await toFormData(data.files.new)
+      // Object.entries(data).forEach(e => formdata.append(e[0], String(e[1])))
+  
+      formdata.append('fromid', String(data.fromid))
+      formdata.append('toid', String(data.toid))
+      formdata.append('text', data.text)
+      deleted?.forEach(e => {
+        formdata.append('deleted[]', e.split('.net/')[1])
+      })
+  
+      // console.log(formdata.get('id'))
+  
+      const request = await $api.put(`${serverPaths.editMessage}/${data.id}`, formdata, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+    }
   }
 
   delete = async (id: number) => {

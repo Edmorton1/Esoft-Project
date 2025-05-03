@@ -81,7 +81,7 @@ export class MessagePutDTO {
     readonly fromid: number,
     readonly toid: number,
     readonly text: string,
-    readonly files: {new: FileList | null, old: string[]},
+    readonly files: {new: FileList | null, old: string[] | null},
   ) {}
 }
 
@@ -90,6 +90,6 @@ export class MessagePutServer {
     readonly fromid: number,
     readonly toid: number,
     readonly text: string,
-    readonly deleted: string[]
+    readonly deleted?: string[]
   ) {}
 }

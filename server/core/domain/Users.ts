@@ -37,7 +37,7 @@ export class Message {
     readonly fromid: number,
     readonly toid: number,
     readonly text: string,
-    readonly files: string[],
+    readonly files: string[] | null,
     readonly created_at: Date
   ) {}
 }

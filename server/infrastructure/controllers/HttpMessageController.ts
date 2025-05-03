@@ -37,16 +37,22 @@ export class HttpMessageController {
 
   async editMessage(req: Request<{id: number}>, res: Response) {
     const {id} = req.params
+    let total = null
 
     const data: MessagePutServer = req.body
     const files = req.files as Express.Multer.File[]
 
-    const deleted = await Yandex.deleteArr(data.deleted)
-    const paths = await this.MessageService.uploadFiles(id, files)
-    // console.log([...deleted, ...paths])
-
-    const total = one(await this.ORM.put({files: [...deleted, ...paths]}, id, 'messages'))
-
+    if (!files && !data.deleted) {
+      total = one(await this.ORM.put({text: data.text}, id, 'messages'))
+    } else {
+      console.log(files, data)
+      const ostavshiesa = await Yandex.deleteArr(id, data.deleted)
+      const paths = files.length > 0 ?  await this.MessageService.uploadFiles(id, files) : []
+      // console.log([...deleted, ...paths])
+      // console.log(ostavshiesa, paths)
+  
+      total = one(await this.ORM.put({files: [...ostavshiesa, ...paths], text: data.text}, id, 'messages'))
+    }
     this.sendSocket(total, 'edit_message', total)
   }
 

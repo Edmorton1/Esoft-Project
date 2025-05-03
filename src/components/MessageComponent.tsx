@@ -19,7 +19,7 @@ interface propsInterface {
 
 function MessageComponent({msg, editing, setEditMessage}: propsInterface) {
   const [value, setValue] = useState('')
-  const [files, setFiles] = useState<{new: FileList | null, old: string[]} | null>(null)
+  const [files, setFiles] = useState<{new: FileList | null, old: string[] | null} | null>(null)
 
   const from = useGetById('forms', {id: msg.fromid}, 'single')
   const to = useGetById('forms', {id: msg.toid}, 'single')
@@ -28,15 +28,15 @@ function MessageComponent({msg, editing, setEditMessage}: propsInterface) {
   useEffect(() => {
     if (editing) {
       setValue(msg.text)
-      setFiles({new: null, old: msg.files})
+      setFiles({new: null, old: Array.isArray(msg?.files) && msg.files.length > 0 ? msg.files : null})
     }
   }, [editing])
 
   function DeletedFiles() {
-    return files?.old.map(e => (
+    return files?.old?.map(e => (
       <div key={e}>
         {e}
-        <button onClick={() => setFiles(prev => ({...prev!, old: prev!.old.filter(file => file != e)}))}>удалить</button>
+        <button onClick={() => setFiles(prev => ({...prev!, old: prev!.old!.filter(file => file != e)}))}>удалить</button>
       </div>
     ))
   }
