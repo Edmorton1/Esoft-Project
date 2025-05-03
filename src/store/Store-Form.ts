@@ -1,4 +1,4 @@
-import $api from "@/store/api";
+import $api from "@/pages/shared/api/api";
 import { Form } from "@s/core/domain/Users";
 import { one, toCl } from "@s/infrastructure/db/Mappers";
 import { serverPaths } from "@shared/PATHS";

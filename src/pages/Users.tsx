@@ -5,7 +5,7 @@ import { Suspense, useEffect, useState } from "react"
 import StoreForm from "@/store/Store-Form"
 import StoreLikes from "@/store/StoreLikes"
 import { toJS } from "mobx"
-import StoreGlobal from "@/store/Store-Global"
+import StoreGlobal from "@/pages/shared/api/Store-Global"
 import StoreUser from "@/store/Store-User"
 import { observer } from "mobx-react-lite"
 // 042b5b75-f847-4f2a-b695-b5f58adc9dfd

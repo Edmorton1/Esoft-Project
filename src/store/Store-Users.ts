@@ -1,4 +1,4 @@
-import $api from "@/store/api";
+import $api from "@/pages/shared/api/api";
 import { Form, Likes } from "@s/core/domain/Users";
 import { LikesDTO } from "@s/core/dtoObjects";
 import { configure, makeAutoObservable, runInAction } from "mobx";

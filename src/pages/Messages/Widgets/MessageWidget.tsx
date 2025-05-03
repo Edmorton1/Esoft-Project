@@ -6,7 +6,7 @@
 
 import useGetById from "@/hooks/useGetById"
 import StoreForm from "@/store/Store-Form"
-import StoreMessages from "@/store/Store-Messages"
+import StoreMessages from "@/pages/Messages/Widgets/Features/store/Store-Messages"
 import { Message } from "@s/core/domain/Users"
 import { toJS } from "mobx"
 import { useEffect, useState } from "react"
@@ -17,7 +17,7 @@ interface propsInterface {
   setEditMessage: React.Dispatch<React.SetStateAction<number | null>>
 }
 
-function MessageComponent({msg, editing, setEditMessage}: propsInterface) {
+function MessageWidget({msg, editing, setEditMessage}: propsInterface) {
   const [value, setValue] = useState('')
   const [files, setFiles] = useState<{new: FileList | null, old: string[] | null} | null>(null)
 
@@ -75,4 +75,4 @@ function MessageComponent({msg, editing, setEditMessage}: propsInterface) {
   )
 }
 
-export default MessageComponent
+export default MessageWidget

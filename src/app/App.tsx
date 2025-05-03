@@ -1,9 +1,9 @@
 import {BrowserRouter, Routes, Route} from "react-router";
-import { LazyFourHundredFour, LazyLogin, LazyMain, LazyMessages, LazyProfile, LazyRegistration, LazySettings, LazyTest, LazyUsers } from "@/index.lazy";
-import SocketStore from "@/store/Store-Socket";
+import { LazyFourHundredFour, LazyLogin, LazyMain, LazyMessages, LazyProfile, LazyRegistration, LazySettings, LazyTest, LazyUsers } from "@/app/index.lazy";
+import SocketStore from "@/pages/shared/api/Store-Socket";
 import {Suspense, useEffect} from "react";
 import Initialization from "@/ui/Initialization";
-import Layout from "@/Layout";
+import Layout from "@/app/Layout";
 import { ErrorBoundary } from "react-error-boundary";
 import { paths } from "@shared/PATHS";
 // ДЛЯ АССИНХРОННЫХ ОПЕРАЦИЙ ИСПОЛЬЗОВАТЬ suspense

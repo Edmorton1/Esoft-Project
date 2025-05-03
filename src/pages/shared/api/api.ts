@@ -1,4 +1,4 @@
-import StoreGlobal from "@/store/Store-Global";
+import StoreGlobal from "@/pages/shared/api/Store-Global";
 import storeAuthorization, { responseInterface } from "@/store/Store-User";
 import { URL_SERVER } from "@shared/URLS";
 import { toCl } from "@s/infrastructure/db/Mappers";

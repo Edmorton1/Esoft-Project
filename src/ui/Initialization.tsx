@@ -1,4 +1,4 @@
-import $api, { noAuthorizeErrorAxios } from "@/store/api"
+import $api, { noAuthorizeErrorAxios } from "@/pages/shared/api/api"
 import StoreUser from "@/store/Store-User"
 import Toast from "@/ui/Toast"
 import { useEffect } from "react"

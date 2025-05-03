@@ -1,4 +1,4 @@
-import $api from "@/store/api";
+import $api from "@/pages/shared/api/api";
 import storeAuthorization from "@/store/Store-User";
 import { UserDTO } from "@s/core/dtoObjects";
 import { observer } from "mobx-react-lite";

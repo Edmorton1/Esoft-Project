@@ -1,5 +1,5 @@
 import { makeAutoObservable } from "mobx"
-import $api from "./api"
+import $api from "../pages/shared/api/api"
 import { serverPaths } from "@shared/PATHS"
 
 class StoreFiles {

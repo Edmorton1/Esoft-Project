@@ -1,4 +1,4 @@
-import $api from "@/store/api"
+import $api from "@/pages/shared/api/api"
 import { Tables, tables } from "@s/core/domain/types"
 import { one, toCl, toJSON } from "@s/infrastructure/db/Mappers"
 import { useEffect, useState } from "react"

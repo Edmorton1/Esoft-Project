@@ -1,6 +1,6 @@
-import $api from "@/store/api";
+import $api from "@/pages/shared/api/api";
 import StoreForm from "@/store/Store-Form";
-import StoreGlobal from "@/store/Store-Global";
+import StoreGlobal from "@/pages/shared/api/Store-Global";
 import { Likes } from "@s/core/domain/Users";
 import { LikesDTO } from "@s/core/dtoObjects";
 import { toCl } from "@s/infrastructure/db/Mappers";

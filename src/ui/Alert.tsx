@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { observer } from "mobx-react-lite";
 import Toast from "@/ui/Toast";
-import StoreGlobal from "@/store/Store-Global";
+import StoreGlobal from "@/pages/shared/api/Store-Global";
 import * as style from "@/css/ToastLike.scss"
 
 function Alert() {
