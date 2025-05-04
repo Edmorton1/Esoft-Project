@@ -1,13 +1,13 @@
 import { lazy } from "react";
 
-export const LazyMain = lazy(() => import("@/pages/Main"))
-export const LazyLogin = lazy(() => import("@/pages/Login"))
-export const LazyRegistration = lazy(() => import("@/pages/Registration"))
-export const LazyUsers = lazy(() => import("@/pages/Users"))
+export const LazyMain = lazy(() => import("@/pages/Main/Main"))
+export const LazyLogin = lazy(() => import("@/pages/Login/Login"))
+export const LazyRegistration = lazy(() => import("@/pages/Registration/Registration"))
+export const LazyUsers = lazy(() => import("@/pages/Users/Users"))
 export const LazyMessages = lazy(() => import('@/pages/Messages/Messages'))
-export const LazyProfile = lazy(() => import('@/pages/Profile'))
-export const LazySettings = lazy(() => import('@/pages/Settings'))
+export const LazyProfile = lazy(() => import('@/pages/Profile/Profile'))
+export const LazySettings = lazy(() => import('@/pages/Settings/Settings'))
 
-export const LazyFourHundredFour = lazy(() => import('@/pages/ErrorPages/404'))
+export const LazyFourHundredFour = lazy(() => import('@/shared/Errors/404'))
 
-export const LazyTest = lazy(() => import('@/test/Test'))
+export const LazyTest = lazy(() => import('@/pages/test/Test'))

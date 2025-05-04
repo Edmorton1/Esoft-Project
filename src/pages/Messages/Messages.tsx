@@ -1,12 +1,12 @@
-import StoreMessages from "@/pages/Messages/Widgets/Features/store/Store-Messages"
+import StoreMessages from "@/pages/Messages/widgets/modules/store/Store-Messages"
 import { Message } from "@s/core/domain/Users"
 import { observer } from "mobx-react-lite"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
-import StoreForm from "@/store/Store-Form"
-import MessageFeature from "@/pages/Messages/Widgets/Features/MessageFeature"
+import StoreForm from "@/shared/store/Store-Form"
+import MessageModule from "@/pages/Messages/widgets/modules/MessageModule"
 import { MessageDTO } from "@s/core/dtoObjects"
-import MessageWidget from "./Widgets/MessageWidget"
+import MessageWidget from "./widgets/MessageWidget"
 
 function Messages() {
   const {register, handleSubmit} = useForm<MessageDTO>()
