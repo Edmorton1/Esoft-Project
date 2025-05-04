@@ -1,5 +1,5 @@
 import useGetById from "@/shared/hooks/useGetById"
-import StoreForm from "@/shared/store/Store-Form"
+import StoreForm from "@/shared/stores/Store-Form"
 import { Message } from "@s/core/domain/Users"
 
 interface propsInterface {

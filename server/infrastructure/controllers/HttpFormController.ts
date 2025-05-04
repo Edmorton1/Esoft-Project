@@ -1,6 +1,6 @@
 import { Form } from "@s/core/domain/Users";
 import { one } from "@s/infrastructure/db/Mappers";
-import { ORM } from "@s/infrastructure/db/ORM";
+import { ORM } from "@s/infrastructure/db/requests/ORM";
 import { FormService } from "@s/infrastructure/services/FormService";
 import { Request, Response } from "express";
 

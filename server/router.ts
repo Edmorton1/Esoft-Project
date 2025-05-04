@@ -1,6 +1,6 @@
 import express from "express"
 import { tables } from "@s/core/domain/types"
-import { filesController, formController, likesController, messageController, tokenController, universalController } from "@s/controllers"
+import { filesController, formController, hardController, likesController, messageController, tokenController, universalController } from "@s/controllers"
 import multer from "multer"
 import { serverPaths } from "@shared/PATHS"
 const upload = multer({storage: multer.memoryStorage()})
@@ -45,5 +45,7 @@ router.post(`${serverPaths.postAvatar}/:id`, upload.single('avatar'),  filesCont
 
 router.post(serverPaths.testCompressViedo, upload.single('video'), filesController('TestConvertVideo'))
 router.post(serverPaths.testCompressAudio, upload.single('audio'), filesController('TestConvertAudio'))
+
+router.get(`${serverPaths.getUserTags}/:id`, hardController('getUserTags'))
 
 export default router

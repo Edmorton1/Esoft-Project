@@ -1,5 +1,5 @@
 import $api, { noAuthorizeErrorAxios } from "@/shared/api/api"
-import StoreUser from "@/shared/store/Store-User"
+import StoreUser from "@/shared/stores/Store-User"
 import Toast from "@/shared/ui/Toast"
 import { useEffect } from "react"
 import Alert from "@/shared/ui/Alert"

@@ -1,12 +1,14 @@
 import useGetById from "@/shared/hooks/useGetById"
-import StoreUsers from "@/shared/store/Store-Users"
+import StoreUsers from "@/pages/Users/widgets/store/Store-Users"
 import { Suspense } from "react"
-import StoreForm from "@/shared/store/Store-Form"
-import StoreLikes from "@/shared/store/StoreLikes"
+import StoreForm from "@/shared/stores/Store-Form"
+import StoreLikes from "@/shared/stores/StoreLikes"
 import { toJS } from "mobx"
 import StoreGlobal from "@/shared/api/Store-Global"
-import StoreUser from "@/shared/store/Store-User"
+import StoreUser from "@/shared/stores/Store-User"
 import { observer } from "mobx-react-lite"
+import UsersCardWidget from "@/pages/Users/widgets/UsersCard/UsersCardWidget"
+import UsersFilterWidget from "@/pages/Users/widgets/Filters/UsersFilterWidget"
 // 042b5b75-f847-4f2a-b695-b5f58adc9dfd
 function Users() {
   useGetById('forms', undefined, 'array', StoreUsers.initial)
@@ -21,15 +23,14 @@ function Users() {
         <br />
         <br />
 
-        {StoreUsers.users?.map((anUser, i) => (
-          <div key={i}>
-            <div>{anUser.id} {anUser.name}</div>
-            {!StoreLikes.likes?.sent.map(e => e.liked_userid).includes(anUser.id)
-            ? !(anUser.id === StoreForm.form?.id) && <button onClick={() => StoreLikes.sendLike({userid: StoreForm.form!.id, liked_userid: anUser.id})}>Лайкнуть</button>
-            : StoreForm?.form && <button onClick={() => StoreLikes.delete(anUser.id)}>Убрать лайк</button>}
-
-          </div>
-        ))}
+        <div style={{display: "flex", justifyContent: "space-around"}}>
+          <main>
+            <UsersCardWidget />
+          </main>
+          <main style={{display: "flex", flexDirection: "column"}}>
+            <UsersFilterWidget />
+          </main>
+        </div>
       </>
     </Suspense>
   )

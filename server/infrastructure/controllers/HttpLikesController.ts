@@ -1,7 +1,7 @@
 import { Likes } from "@s/core/domain/Users";
 import { LikesDTO } from "@s/core/dtoObjects";
 import { one, toSO } from "@s/infrastructure/db/Mappers";
-import { ORM } from "@s/infrastructure/db/ORM";
+import { ORM } from "@s/infrastructure/db/requests/ORM";
 import { clients } from "@s/socket";
 import { Request, Response } from "express";
 

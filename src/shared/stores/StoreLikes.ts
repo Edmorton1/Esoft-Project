@@ -1,11 +1,11 @@
 import $api from "@/shared/api/api";
-import StoreForm from "@/shared/store/Store-Form";
+import StoreForm from "@/shared/stores/Store-Form";
 import StoreGlobal from "@/shared/api/Store-Global";
 import { Likes } from "@s/core/domain/Users";
 import { LikesDTO } from "@s/core/dtoObjects";
 import { toCl } from "@s/infrastructure/db/Mappers";
 import { makeAutoObservable, runInAction, toJS } from "mobx";
-import StoreUser from "./Store-User";
+import StoreUser from "@/shared/stores/Store-User";
 import { serverPaths } from "@shared/PATHS";
 
 class StoreLikes {

@@ -1,9 +1,9 @@
 import useGetById from "@/shared/hooks/useGetById"
-import StoreProfile from "@/shared/store/Store-Profile"
+import StoreProfile from "@/shared/stores/Store-Profile"
 import { observer } from "mobx-react-lite"
 import { Link, useParams } from "react-router-dom"
 import FourHundredFour from "../../shared/Errors/404"
-import StoreForm from "@/shared/store/Store-Form"
+import StoreForm from "@/shared/stores/Store-Form"
 import { AvatarOnChange } from "@/pages/Registration/modules/funcs/funcDropAva"
 import Loading from "../../shared/ui/Loading"
 

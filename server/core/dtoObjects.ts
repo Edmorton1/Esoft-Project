@@ -18,7 +18,6 @@ export class FormDTO {
     readonly targetCustom: string,
     public tags?: string,
 
-    readonly surname?: string,
     readonly avatar?: FileList,
     readonly description?: string,
     readonly city?: string,

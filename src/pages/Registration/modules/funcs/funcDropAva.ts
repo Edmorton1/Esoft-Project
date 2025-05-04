@@ -1,5 +1,5 @@
-import StoreUser from "@/shared/store/Store-User";
-import StoreFiles from "@/shared/store/StoreFiles";
+import StoreUser from "@/shared/stores/Store-User";
+import StoreFiles from "@/shared/stores/StoreFiles";
 
 export async function toFormData(files: FileList | null) {
   const formData = new FormData()

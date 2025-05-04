@@ -1,5 +1,5 @@
 import StoreGlobal from "@/shared/api/Store-Global";
-import storeAuthorization, { responseInterface } from "@/shared/store/Store-User";
+import storeAuthorization, { responseInterface } from "@/shared/stores/Store-User";
 import { URL_SERVER } from "@shared/URLS";
 import { toCl } from "@s/infrastructure/db/Mappers";
 import axios from "axios";

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { ORM } from "../db/ORM";
+import { ORM } from "../db/requests/ORM";
 import sharp from "sharp";
 import FileService from "../services/FileService";
 import { fileTypeFromBuffer } from "file-type";

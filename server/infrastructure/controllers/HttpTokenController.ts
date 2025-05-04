@@ -1,4 +1,4 @@
-import { ORM } from "@s/infrastructure/db/ORM";
+import { ORM } from "@s/infrastructure/db/requests/ORM";
 import { UserDTO, TokenDTO } from "@s/core/dtoObjects";
 import { TokenService } from "@s/infrastructure/services/TokenService";
 import { Request, Response } from "express";

@@ -1,5 +1,5 @@
 import { one } from "@s/infrastructure/db/Mappers";
-import { ORM } from "@s/infrastructure/db/ORM";
+import { ORM } from "@s/infrastructure/db/requests/ORM";
 
 export class FormService {
   constructor (

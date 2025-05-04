@@ -27,5 +27,7 @@ export const serverPaths = {
   postAvatar: "/postAvatar",
 
   testCompressViedo: "/testCompressViedo",
-  testCompressAudio: "/testCompressAudio"
+  testCompressAudio: "/testCompressAudio",
+
+  getUserTags: "/getUserTags"
 }

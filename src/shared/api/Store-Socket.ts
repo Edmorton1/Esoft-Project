@@ -1,5 +1,5 @@
 import StoreMessages from "@/pages/Messages/widgets/modules/store/Store-Messages";
-import StoreLikes from "@/shared/store/StoreLikes";
+import StoreLikes from "@/shared/stores/StoreLikes";
 import { URL_SERVER_WS } from "@shared/URLS";
 import { frSO } from "@s/infrastructure/db/Mappers";
 import { makeAutoObservable, runInAction } from "mobx";

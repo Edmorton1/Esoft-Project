@@ -1,7 +1,7 @@
 import useGeolocation from "@/shared/hooks/useGeolocation";
 import RegistrationModule from "@/pages/Registration/modules/RegistrationModule";
-import StoreForm from "@/shared/store/Store-Form";
-import StoreUser from "@/shared/store/Store-User";
+import StoreForm from "@/shared/stores/Store-Form";
+import StoreUser from "@/shared/stores/Store-User";
 import { Form } from "@s/core/domain/Users";
 import { FormDTO, UserDTO } from "@s/core/dtoObjects";
 import { observer } from "mobx-react-lite";

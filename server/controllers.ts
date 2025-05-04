@@ -1,5 +1,5 @@
 import { CRUDController } from "@s/infrastructure/controllers/CRUDController"
-import { ORM } from "@s/infrastructure/db/ORM"
+import { ORM } from "@s/infrastructure/db/requests/ORM"
 import { TokenService } from "@s/infrastructure/services/TokenService"
 import { HttpTokenController } from "@s/infrastructure/controllers/HttpTokenController"
 import { tables } from "@s/core/domain/types"
@@ -10,6 +10,8 @@ import { HttpLikesController } from "@s/infrastructure/controllers/HttpLikesCont
 import HttpFilesController from "./infrastructure/controllers/HttpFilesController"
 import FileService from "./infrastructure/services/FileService"
 import { MessageFileService } from "./infrastructure/services/MessageFileService"
+import HttpHardController from "@s/infrastructure/controllers/HttpHardController"
+import SQLHard from "@s/infrastructure/db/requests/SQLHard"
 
 export const universalController = (method: keyof CRUDController, table: tables) => {
   const controller = new CRUDController(new ORM(), table)
@@ -38,5 +40,10 @@ export const likesController = (method: keyof HttpLikesController) => {
 
 export const filesController = (method: keyof HttpFilesController) => {
   const controller = new HttpFilesController(new FileService, new ORM)
+  return (controller[method] as () => any).bind(controller)
+}
+
+export const hardController = (method: keyof HttpHardController) => {
+  const controller = new HttpHardController(new SQLHard)
   return (controller[method] as () => any).bind(controller)
 }

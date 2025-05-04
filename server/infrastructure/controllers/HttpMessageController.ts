@@ -2,7 +2,7 @@ import { msg, MsgTypes } from "@s/core/domain/types";
 import { Form, Message } from "@s/core/domain/Users";
 import { MessageDTO, MessagePutDTO, MessagePutServer } from "@s/core/dtoObjects";
 import { toSO, one } from "@s/infrastructure/db/Mappers";
-import { ORM } from "@s/infrastructure/db/ORM";
+import { ORM } from "@s/infrastructure/db/requests/ORM";
 import { MessageFileService } from "@s/infrastructure/services/MessageFileService";
 import { clients } from "@s/socket";
 import Yandex from "@s/yandex";
