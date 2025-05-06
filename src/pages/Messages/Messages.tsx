@@ -1,10 +1,7 @@
 import StoreMessages from "@/pages/Messages/widgets/modules/store/Store-Messages"
-import { Message } from "@s/core/domain/Users"
 import { observer } from "mobx-react-lite"
-import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import StoreForm from "@/shared/stores/Store-Form"
-import MessageModule from "@/pages/Messages/widgets/modules/MessageModule"
 import { MessageDTO } from "@s/core/dtoObjects"
 import MessageWidget from "./widgets/MessageWidget"
 

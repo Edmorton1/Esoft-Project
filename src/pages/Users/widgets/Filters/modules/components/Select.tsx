@@ -8,10 +8,13 @@ function Select() {
 
   const inputHandle = (e: ChangeEvent<HTMLInputElement>) => UpdateParams.update('target', e.target.value)
   const selectChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    if (e.target.value == "other") {
+    if (e.target.value === "other") {
       UpdateParams.remove('target')
       setTarget(true)
-    } else {
+    } else if (e.target.value === "any") {
+      setTarget(false)
+      UpdateParams.remove("target")
+    } else  {
       setTarget(false);
       UpdateParams.update('target', e.target.value)
     }

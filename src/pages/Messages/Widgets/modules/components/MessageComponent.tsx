@@ -1,12 +1,15 @@
+import ToComponent from "@/pages/Messages/widgets/modules/components/ToComponent";
 import useGetById from "@/shared/hooks/useGetById"
 import StoreForm from "@/shared/stores/Store-Form"
 import { Message } from "@s/core/domain/Users"
+import { memo } from "react";
 
 interface propsInterface {
   editing: boolean,
   msg: Message,
   value: string,
   files: { new: FileList | null; old: string[] | null } | null,
+
   changeClick: () => void,
   deleteClick: () => void,
   clickDeleteFile: (item: string) => any,
@@ -15,11 +18,8 @@ interface propsInterface {
   submitClick: () => any
 }
 
-function MessageComponent({editing, msg, changeClick, deleteClick, files, value, inputNewFile, textInput, submitClick, clickDeleteFile}: propsInterface) {
-
-  const to = useGetById('forms', {id: msg.toid}, 'single')
-  const datetime = `${new Date(msg.created_at!).toLocaleDateString()} ${new Date(msg.created_at!).toLocaleTimeString()}`
-
+const MessageComponent = ({editing, msg, changeClick, deleteClick, files, value, inputNewFile, textInput, submitClick, clickDeleteFile}: propsInterface) => {
+  // console.log('COMPONENT RENDER', msg.id, editing, files)
   function DeletedFiles() {
     return files?.old?.map(item => (
       <div key={item}>
@@ -30,7 +30,7 @@ function MessageComponent({editing, msg, changeClick, deleteClick, files, value,
   }
   
   return <>
-    <div>От {msg.fromid} К {to?.name} {datetime}</div>
+    <ToComponent msg={msg} />
     <br />
     <div>
       <p>Текст: {msg.text}</p>
@@ -47,11 +47,11 @@ function MessageComponent({editing, msg, changeClick, deleteClick, files, value,
       </>}
     </div>
     <br />
-    {msg.fromid === StoreForm.form?.id && <>
+    {msg.fromid === StoreForm.form?.id && !editing && <>
       <button onClick={changeClick}>Изменить</button>
       <button onClick={deleteClick}>Удалить</button>
     </>}
   </>
 }
 
-export default MessageComponent
+export default memo(MessageComponent)

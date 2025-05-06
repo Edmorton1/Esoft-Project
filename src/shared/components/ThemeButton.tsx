@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import * as styles from "@/app/App.scss"
 
 function ThemeButton() {
+  // console.log('THEMEBUTTON render')
   const [state, setState] = useState(false)
   // light - false
   // dark - true

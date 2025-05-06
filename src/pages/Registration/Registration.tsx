@@ -26,7 +26,7 @@ function Registration() {
     const {city, ...coords} = location
     const name = rawForm.name.charAt(0).toUpperCase() + rawForm.name.slice(1).toLowerCase()
     const userid = await StoreUser.registration({email, password})
-    const avatarUpload = toCl(await AvatarHandle(avatar![0]))
+    const avatarUpload = avatar.length && toCl(await AvatarHandle(avatar![0]))
 
     // ПОТОМ userid ДОБАВИТЬ
 
@@ -34,7 +34,7 @@ function Registration() {
     const form: Form = {...rawForm, name: name, id: userid, avatar: avatarUpload, tags: data.tags?.split(',').map(e => e.toLowerCase().trim()), location: coords}
     
     console.log(form)
-    // await StoreForm.postForm(form)
+    await StoreForm.postForm(form)
   }
 
   return (

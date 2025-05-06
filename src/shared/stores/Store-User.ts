@@ -59,6 +59,7 @@ class StoreUser {
     localStorage.setItem("accessToken", request.accessToken)
 
     runInAction(() => this.user = request.user)
+    this.initial()
     return request.user.id
   }
   

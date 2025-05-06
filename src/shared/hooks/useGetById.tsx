@@ -12,7 +12,6 @@ function useGetById<T extends tables>(table: T, params?: Partial<Tables[T]>, res
     const fetchData = async () => {
       if (params) {
         // console.log(new URLSearchParams(params as Record<string, string>).toString())
-        // console.log(Object.entries(params).map(e => e.join('=')).join('&'))
 
         // console.log(params)
         const request = await toCl<Tables[T][]>(await $api.get(`/${table}?${Object.entries(params).map(e => e.join('=')).join('&')}`))

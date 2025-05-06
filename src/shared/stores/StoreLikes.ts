@@ -16,11 +16,11 @@ class StoreLikes {
   }
 
   initial = async () => {
-    console.log(StoreForm.form)
+    // console.log(StoreForm.form)
     const sent = toCl<Likes[]>(await $api.get(`/likes?userid=${StoreUser.user!.id}&fields=id, liked_userid`))
     const received = toCl<Likes[]>(await $api.get(`/likes?liked_userid=${StoreUser.user!.id}&fields=id, userid`))
     runInAction(() => this.likes = {sent, received})
-    console.log(toJS(this.likes))
+    // console.log(toJS(this.likes))
   }
 
   delete = async (liked_userid: number) => {

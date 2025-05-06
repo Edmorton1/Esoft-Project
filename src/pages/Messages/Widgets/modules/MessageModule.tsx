@@ -1,5 +1,5 @@
 import { Message } from "@s/core/domain/Users"
-import { useEffect, useState } from "react"
+import { memo, useCallback, useEffect, useState } from "react"
 import MessageComponent from "./components/MessageComponent"
 import StoreMessages from "./store/Store-Messages"
 
@@ -9,7 +9,8 @@ interface propsInterface {
   setEditMessage: React.Dispatch<React.SetStateAction<number | null>>
 }
 
-function MessageModule({msg, editing, setEditMessage}: propsInterface) {
+const MessageModule = ({msg, editing, setEditMessage}: propsInterface) => {
+  // console.log("MODULE RENDER", msg.id)
   const [value, setValue] = useState('')
   const [files, setFiles] = useState<{new: FileList | null, old: string[] | null} | null>(null)
 
@@ -20,17 +21,28 @@ function MessageModule({msg, editing, setEditMessage}: propsInterface) {
     }
   }, [editing])
 
-  const changeClick = () => setEditMessage(msg.id!)
-  const deleteClick = () => StoreMessages.delete(msg.id!)
+  const changeClick = useCallback(() => setEditMessage(msg.id!), [msg, editing])
+  const deleteClick = useCallback(() => StoreMessages.delete(msg.id!), [msg])
 
-  const submitClick = () => {StoreMessages.put({...msg, text: value, files: files!}); setEditMessage(null)};
-  const inputNewFile = (e: React.ChangeEvent<HTMLInputElement>) => setFiles(prev => ({...prev!, new: e.target.files}));
-  const textInput = (e: React.ChangeEvent<HTMLInputElement>) => setValue(e.target.value);
-  const clickDeleteFile = (item: string) => setFiles(prev => ({...prev!, old: prev!.old!.filter(file => file != item)}));
+  const submitClick = useCallback(() => {StoreMessages.put({...msg, text: value, files: files!}); setEditMessage(null)}, [msg, value, files])
+  const inputNewFile = useCallback((e: React.ChangeEvent<HTMLInputElement>) => setFiles(prev => ({...prev!, new: e.target.files})), [])
+  const textInput = useCallback((e: React.ChangeEvent<HTMLInputElement>) => setValue(e.target.value), [])
+  const clickDeleteFile = useCallback((item: string) => setFiles(prev => ({...prev!, old: prev!.old!.filter(file => file != item)})), [])
 
 
   
-  return <MessageComponent editing={editing} msg={msg} changeClick={changeClick} deleteClick={deleteClick} value={value} files={files} submitClick={submitClick} inputNewFile={inputNewFile} textInput={textInput} clickDeleteFile={clickDeleteFile}/>
+  return <MessageComponent 
+    editing={editing}
+    msg={msg}
+    changeClick={changeClick}
+    deleteClick={deleteClick}
+    value={value}
+    files={files}
+    submitClick={submitClick}
+    inputNewFile={inputNewFile}
+    textInput={textInput}
+    clickDeleteFile={clickDeleteFile}
+  />
 }
 
-export default MessageModule
+export default memo(MessageModule)

@@ -1,6 +1,7 @@
 import useUpdateParams from "@/shared/hooks/useChangeParams"
 
 function Checkbox({keyName, value, children}: {keyName: string, value: string, children: string}) {
+  console.log("FILTER CHECKBOX")
   const UpdateParams = useUpdateParams()
 
   const handleChange = () => UpdateParams.update(keyName, value)

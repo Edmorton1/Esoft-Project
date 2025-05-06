@@ -1,23 +1,15 @@
-import Checkbox from "@/pages/Users/widgets/Filters/modules/ui/Checkbox"
-import Select from "@/pages/Users/widgets/Filters/modules/ui/Select"
+import Checkbox from "@/pages/Users/widgets/Filters/modules/components/Checkbox"
+import AgeRange from "@/pages/Users/widgets/Filters/modules/components/AgeRange"
+import Select from "@/pages/Users/widgets/Filters/modules/components/Select"
+import Tags from "@/pages/Users/widgets/Filters/modules/components/Tags"
 import useUpdateParams from "@/shared/hooks/useChangeParams"
-import StoreTags from "@/shared/stores/Store-Tags"
-import { useState } from "react"
-import { useForm } from "react-hook-form"
+import Input from "@/pages/Users/widgets/Filters/modules/components/Input"
 
 
 function UsersFilterWidget() {
-  const Tags = () => StoreTags.tags?.map(e => <>
-    <ol><input type="checkbox" />{e.tag}</ol>
-  </>)
-
-  const UpdateParams = useUpdateParams()
+  console.log("FILTER")
 
   return <>
-  <button onClick={() => UpdateParams.update('asd', 'asdasd')}>params</button>
-  <button onClick={() => console.log(UpdateParams.params)}>params</button>
-  <button onClick={() => UpdateParams.remove('asd')}>remove</button>
-  
     <div>Показывать только</div>
     <br />
     <label htmlFor="sex">Пол</label>
@@ -26,11 +18,13 @@ function UsersFilterWidget() {
       <Checkbox keyName="sex" value="woman">Женщина</Checkbox>
     </ul>
     <label htmlFor="age">Возраст</label>
-    <input type="range" />
+    <AgeRange keyName="min_age" />
+    <AgeRange keyName="max_age"/>
+    {/* <Range /> */}
     <label htmlFor="target">Цель</label>
     <Select />
     <label htmlFor="city">Город</label>
-    <input type="text" />
+    <Input keyName="city" />
     {/* <label htmlFor="location">Расстояние</label>
     <input type="range" /> */}
     <div>
