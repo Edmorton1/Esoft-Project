@@ -3,7 +3,7 @@ import { UserDTO, TokenDTO } from "@s/core/dtoObjects";
 import { TokenService } from "@s/infrastructure/services/TokenService";
 import { Request, Response } from "express";
 import bcrypt from "bcrypt"
-import { one } from "@s/infrastructure/db/Mappers";
+import { one } from "@shared/MAPPERS";
 
 export class HttpTokenController {
   constructor(

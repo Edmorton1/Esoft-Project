@@ -1,6 +1,6 @@
 import $api from "@/shared/api/api"
 import { Tables, tables } from "@s/core/domain/types"
-import { one, toCl, toJSON } from "@s/infrastructure/db/Mappers"
+import { one, toCl, toJSON } from "@shared/MAPPERS"
 import { useEffect, useState } from "react"
 
 function useGetById<T extends tables>(table: T, params?: Partial<Tables[T]>, resType?: 'array', callback?: (data: any) => void): Tables[T][] | null

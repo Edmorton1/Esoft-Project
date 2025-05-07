@@ -1,7 +1,7 @@
 import { tables, Tables } from "@s/core/domain/types"
 import { cacheEdit, cacheGet } from "@s/infrastructure/cache/redis"
 import pool from "@s/infrastructure/db/db"
-import { toTS } from "@s/infrastructure/db/Mappers"
+import { toTS } from "@shared/MAPPERS"
 import bcrypt from "bcrypt"
 import { checkForms } from "./ORMForms"
 // interface CRUDRepositoryInterface {

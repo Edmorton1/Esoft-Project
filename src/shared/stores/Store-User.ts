@@ -6,7 +6,7 @@ import StoreTags from "@/shared/stores/Store-Tags"
 import StoreLikes from "@/shared/stores/StoreLikes"
 import { Form, User } from "@s/core/domain/Users"
 import { FormDTO, UserDTO } from "@s/core/dtoObjects"
-import { toSO, toCl } from "@s/infrastructure/db/Mappers"
+import { toSO, toCl } from "@shared/MAPPERS"
 import { serverPaths } from "@shared/PATHS"
 import { makeAutoObservable, runInAction } from "mobx"
 

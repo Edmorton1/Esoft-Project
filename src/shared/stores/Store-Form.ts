@@ -1,6 +1,6 @@
 import $api from "@/shared/api/api";
-import { Form } from "@s/core/domain/Users";
-import { one, toCl } from "@s/infrastructure/db/Mappers";
+import { Form, Tags } from "@s/core/domain/Users";
+import { one, toCl } from "@shared/MAPPERS";
 import { serverPaths } from "@shared/PATHS";
 import { makeAutoObservable, runInAction } from "mobx";
 
@@ -14,6 +14,10 @@ class FormStore {
   async initial(id: number) {
     const data = one(toCl<Form[]>(await $api.get(`/forms/${id}`)))
     runInAction(() => this.form = data)
+  }
+
+  async addTags(tags: Tags[]) {
+    runInAction(() => this.form!.tags = tags)
   }
 
   async postForm(data: Form) {

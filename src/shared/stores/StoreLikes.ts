@@ -3,7 +3,7 @@ import StoreForm from "@/shared/stores/Store-Form";
 import StoreGlobal from "@/shared/api/Store-Global";
 import { Likes } from "@s/core/domain/Users";
 import { LikesDTO } from "@s/core/dtoObjects";
-import { toCl } from "@s/infrastructure/db/Mappers";
+import { toCl } from "@shared/MAPPERS";
 import { makeAutoObservable, runInAction, toJS } from "mobx";
 import StoreUser from "@/shared/stores/Store-User";
 import { serverPaths } from "@shared/PATHS";

@@ -1,4 +1,4 @@
-import { frSO } from "@s/infrastructure/db/Mappers";
+import { frSO } from "@shared/MAPPERS";
 import WebSocket from "ws";
 
 interface WebSocketWidh extends WebSocket {

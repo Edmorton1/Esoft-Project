@@ -42,3 +42,7 @@ export const toCl = <T>(response: any): T => {
 export function one<T>(data: T[]): T {
   return data[0]
 }
+
+export function toArr(data: string | null) {
+  return data?.split(', ')
+}

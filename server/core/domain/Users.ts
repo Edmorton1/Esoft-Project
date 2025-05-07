@@ -23,7 +23,7 @@ export class Form {
     readonly description?: string,
     readonly city?: string,
     readonly location?: {lng: number, lat: number},
-    public tags?: {id: number, tag: string}[],
+    public tags?: Tags[],
 
     public likes?: number[],
     public dataRes?: number[],

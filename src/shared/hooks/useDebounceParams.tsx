@@ -3,16 +3,19 @@ import useDebounce from "@/shared/hooks/useDebounce"
 import { ChangeEvent, useEffect } from "react"
 
 function useDebounceParams(keyName: string): [string | null, (e: any) => any] {
-  const UpdateParams = useUpdateParams()
+  const [params, updateParams] = useUpdateParams()
 
   const [debounce, setDebounce] = useDebounce()
-  const initial = UpdateParams.params[keyName]
+  const initial = params[keyName]
 
   useEffect(() => {
+    console.log(initial, debounce)
     if (initial && debounce === null) {
       setDebounce(initial)
+    } else if (!initial && debounce === null) {
+      return
     } else {
-      UpdateParams.update(keyName, debounce!, false)
+      updateParams(keyName, debounce!, false)
     }
   }, [debounce])
 

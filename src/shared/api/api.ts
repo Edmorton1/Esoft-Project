@@ -1,7 +1,7 @@
 import StoreGlobal from "@/shared/api/Store-Global";
 import storeAuthorization, { responseInterface } from "@/shared/stores/Store-User";
 import { URL_SERVER } from "@shared/URLS";
-import { toCl } from "@s/infrastructure/db/Mappers";
+import { toCl } from "@shared/MAPPERS";
 import axios from "axios";
 import { runInAction } from "mobx";
 import { serverPaths } from "@shared/PATHS";

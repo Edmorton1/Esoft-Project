@@ -1,4 +1,4 @@
-import { toTS } from "@s/infrastructure/db/Mappers"
+import { toTS } from "@shared/MAPPERS"
 import SQLHard from "@s/infrastructure/db/requests/SQLHard"
 import { Request, Response } from "express"
 

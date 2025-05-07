@@ -1,7 +1,7 @@
 import { Form } from "@s/core/domain/Users"
 import { makeAutoObservable, runInAction } from "mobx"
 import $api from "@/shared/api/api"
-import { one, toCl } from "@s/infrastructure/db/Mappers"
+import { one, toCl } from "@shared/MAPPERS"
 
 class StoreProfile {
   profile: Form | null = null

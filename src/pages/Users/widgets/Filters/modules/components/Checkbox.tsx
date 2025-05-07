@@ -1,14 +1,14 @@
 import useUpdateParams from "@/shared/hooks/useChangeParams"
 
 function Checkbox({keyName, value, children}: {keyName: string, value: string, children: string}) {
-  console.log("FILTER CHECKBOX")
-  const UpdateParams = useUpdateParams()
+  
+  const [params, updateParams] = useUpdateParams()
 
-  const handleChange = () => UpdateParams.update(keyName, value)
+  const handleChange = () => updateParams(keyName, value)
 
   return <>
     <ol>
-      <input onChange={handleChange} checked={UpdateParams.params[keyName] === value} type="checkbox" id={value || ''} /><label htmlFor={value || ''}>{children}</label>
+      <input onChange={handleChange} checked={params[keyName] === value} type="checkbox" id={value || ''} /><label htmlFor={value || ''}>{children}</label>
     </ol>
   </>
 }

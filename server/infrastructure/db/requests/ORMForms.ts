@@ -1,16 +1,29 @@
 import { tables } from "@s/core/domain/types"
 import { Form } from "@s/core/domain/Users"
 import pool from "@s/infrastructure/db/db"
-import { toTS } from "@s/infrastructure/db/Mappers"
+import { toTS } from "@shared/MAPPERS"
 import { toSQLWhere } from "./ORM"
 
 async function getForm(fields?: string, id?: number | string, params?: Partial<Form>): Promise<Form[]> {
+  fields = fields + ','
+  function toFields() {
+    if (fields) {
+      if (fields.includes('tags')) {
+        return ''
+      } else {
+        return 'forms.*, '
+      }
+    } else {
+        return 'forms.*, '
+    }
+  }
+
   const [values, and] = toSQLWhere(params ?? {}, true)
-  fields = fields?.split(', ').filter(e => e != 'tags').map(e => `forms.${e}`).join(', ')
-  console.log(fields)
+  // fields = fields?.split(', ').filter(e => e != 'tags').map(e => `forms.${e}`).join(', ')
+  // console.log(`ЗАПРОС ПОШЁЛ`, values, and, fields, id, params)
   const request = toTS<'forms'>(await pool.query(`
     SELECT 
-      ${fields ? fields : 'forms.*'}, 
+      ${toFields()}
       COALESCE(
         json_agg(
           json_build_object('id', tags.id, 'tag', tags.tag)
@@ -27,9 +40,12 @@ async function getForm(fields?: string, id?: number | string, params?: Partial<F
 }
 
 export function checkForms(table: tables, callback: () => any, fields?: string, id?: string | number, params?: Partial<Form>) {
+  // console.log(table, fields, params)
   if (table === 'forms' && (!fields || fields?.includes("tags"))) {
+    // console.log(table, fields, id, params)
     return () => getForm(fields, id, params)
   } else {
+    // console.log(table, fields, id, params)
     return () => callback()
   }
 }

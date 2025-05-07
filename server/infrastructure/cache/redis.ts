@@ -1,5 +1,5 @@
 import { tables } from "@s/core/domain/types"
-import { frJSON, toJSON } from "@s/infrastructure/db/Mappers"
+import { frJSON, toJSON } from "@shared/MAPPERS"
 import Redis from "ioredis"
 
 export const redis = new Redis({

@@ -7,7 +7,7 @@ import { FormDTO, UserDTO } from "@s/core/dtoObjects";
 import { observer } from "mobx-react-lite";
 import { useForm } from "react-hook-form"
 import { useEffect } from "react";
-import { toCl } from "@s/infrastructure/db/Mappers";
+import { toCl } from "@shared/MAPPERS";
 import { AvatarHandle } from "@/pages/Registration/modules/funcs/funcDropAva";
 
 function Registration() {

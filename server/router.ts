@@ -46,6 +46,6 @@ router.post(`${serverPaths.postAvatar}/:id`, upload.single('avatar'),  filesCont
 router.post(serverPaths.testCompressViedo, upload.single('video'), filesController('TestConvertVideo'))
 router.post(serverPaths.testCompressAudio, upload.single('audio'), filesController('TestConvertAudio'))
 
-router.get(`${serverPaths.getUserTags}/:id`, hardController('getUserTags'))
+// router.get(`${serverPaths.getUserTags}/:id`, hardController('getUserTags'))
 
 export default router

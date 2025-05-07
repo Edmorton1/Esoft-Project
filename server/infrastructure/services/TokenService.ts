@@ -1,5 +1,5 @@
 import { JWTDTO, PayloadDTO, UserDTO } from "@s/core/dtoObjects";
-import { one } from "@s/infrastructure/db/Mappers";
+import { one } from "@shared/MAPPERS";
 import { ORM } from "@s/infrastructure/db/requests/ORM";
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"

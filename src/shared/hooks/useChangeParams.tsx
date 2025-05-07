@@ -1,42 +1,61 @@
 import {useSearchParams} from "react-router-dom";
 
-interface UpdateParamsInterface {
-	params: Record<string, string>,
-	update: (key: string, value: string | number, remove?: boolean) => void,
-	remove: (key: string) => void
-}
+// interface UpdateParamsInterface {
+// 	params: Record<string, string>,
+// 	update: (key: string, value: string | number, remove?: boolean) => void,
+// 	remove: (key: string) => void
+// }
 
-const useUpdateParams = (): UpdateParamsInterface => {
+const useUpdateParams = (): [Record<string, string>, (key: string, value: string | number, remove?: boolean, add?: boolean) => void, (key: string) => void] => {
 	const [searchParams, setSearchParams] = useSearchParams();
 
-	class UpdateParams implements UpdateParamsInterface {
-		params = Object.fromEntries(searchParams.entries())
+	const params = Object.fromEntries(searchParams.entries())
 
-		update = (key: string, value: string | number, remove: boolean = true) => {
-			// console.log(key, value)
-			const newParams = new URLSearchParams(searchParams);
-			if (remove) {
-				const inParams = newParams.get(key) === value
-				inParams ? newParams.delete(key) : newParams.set(key, String(value));
+	const updateParams = (
+		key: string,
+		value: string | number,
+		remove: boolean = true,
+		add: boolean = false
+	) => {
+		// console.log(key, value)
+		const newParams = new URLSearchParams(searchParams);
+		if (add) {
+			let inParams: (string | number)[] = newParams.get(key)?.split(', ') ?? []
+			if (inParams.includes(value)) {
+				if (remove) {
+					inParams = inParams.filter(e => e != value)
+				}
 			} else {
-				newParams.set(key, String(value));
+				inParams.push(value)
 			}
-
-			// newParams.set(key, String(value));
-	
-			setSearchParams(newParams);
+			inParams = inParams.filter(e => e != '')
+			if (inParams.length === 0) {
+				newParams.delete(key)
+			} else {
+				newParams.set(key, inParams.join(', '))
+			}
+		}
+		if (remove) {
+			console.log(newParams.get(key) === value)
+			const inParams = newParams.get(key) === value
+			inParams ? newParams.delete(key) : newParams.set(key, String(value));
+		}
+		if (!remove && !add) {
+			newParams.set(key, String(value))
 		}
 
-		remove = (key: string) => {
-			// console.log("key", key)
-			const newParams = new URLSearchParams(searchParams);
-			newParams.delete(key)
-			
-			setSearchParams(newParams)
-		}
+		setSearchParams(newParams);
 	}
 
-	return new UpdateParams
+	const removeParams = (key: string) => {
+		// console.log("key", key)
+		const newParams = new URLSearchParams(searchParams);
+		newParams.delete(key)
+		
+		setSearchParams(newParams)
+	}
+
+	return [params, updateParams, removeParams]
 };
 
 export default useUpdateParams

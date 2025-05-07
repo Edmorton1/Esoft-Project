@@ -4,19 +4,19 @@ import { ChangeEvent, useState } from "react";
 function Select() {
   const [target, setTarget] = useState(false)
 
-  const UpdateParams = useUpdateParams()
+  const [params, updateParams, removeParams] = useUpdateParams()
 
-  const inputHandle = (e: ChangeEvent<HTMLInputElement>) => UpdateParams.update('target', e.target.value)
+  const inputHandle = (e: ChangeEvent<HTMLInputElement>) => updateParams('target', e.target.value)
   const selectChange = (e: ChangeEvent<HTMLSelectElement>) => {
     if (e.target.value === "other") {
-      UpdateParams.remove('target')
+      removeParams('target')
       setTarget(true)
     } else if (e.target.value === "any") {
       setTarget(false)
-      UpdateParams.remove("target")
+      removeParams("target")
     } else  {
       setTarget(false);
-      UpdateParams.update('target', e.target.value)
+      updateParams('target', e.target.value)
     }
   }
 

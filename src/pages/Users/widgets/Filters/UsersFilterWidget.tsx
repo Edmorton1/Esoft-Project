@@ -1,13 +1,13 @@
 import Checkbox from "@/pages/Users/widgets/Filters/modules/components/Checkbox"
 import AgeRange from "@/pages/Users/widgets/Filters/modules/components/AgeRange"
 import Select from "@/pages/Users/widgets/Filters/modules/components/Select"
-import Tags from "@/pages/Users/widgets/Filters/modules/components/Tags"
+import Tags from "@/pages/Users/widgets/Filters/modules/components/Tags/Tags"
 import useUpdateParams from "@/shared/hooks/useChangeParams"
 import Input from "@/pages/Users/widgets/Filters/modules/components/Input"
 
 
 function UsersFilterWidget() {
-  console.log("FILTER")
+  // console.log("FILTER")
 
   return <>
     <div>Показывать только</div>
