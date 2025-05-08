@@ -4,7 +4,6 @@ import { ChangeEvent } from "react"
 function Input({keyName}: {keyName: string}) {
   // console.log("input")
   const [debParams, setDebParams] = useDebounceParams(keyName)
-
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => setDebParams(e.target.value)
 
   return <>

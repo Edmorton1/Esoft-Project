@@ -3,25 +3,25 @@ import { ChangeEvent, useState } from "react";
 
 function Select() {
   const [target, setTarget] = useState(false)
-
+  const key = "target"
   const [params, updateParams, removeParams] = useUpdateParams()
 
-  const inputHandle = (e: ChangeEvent<HTMLInputElement>) => updateParams('target', e.target.value)
+  const inputHandle = (e: ChangeEvent<HTMLInputElement>) => updateParams(key, e.target.value)
   const selectChange = (e: ChangeEvent<HTMLSelectElement>) => {
     if (e.target.value === "other") {
-      removeParams('target')
+      removeParams(key)
       setTarget(true)
     } else if (e.target.value === "any") {
       setTarget(false)
-      removeParams("target")
+      removeParams(key)
     } else  {
       setTarget(false);
-      updateParams('target', e.target.value)
+      updateParams(key, e.target.value)
     }
   }
 
   return <>
-  <select onChange={selectChange} name="target" id="target">
+  <select onChange={selectChange} name={key} id={key}>
     <option value="any">Любая</option>
     <option value="relation">Отношения</option>
     <option value="friend">Дружба</option>

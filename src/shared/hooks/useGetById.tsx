@@ -13,7 +13,7 @@ function useGetById<T extends tables>(table: T, params?: Partial<Tables[T]>, res
       if (params) {
         // console.log(new URLSearchParams(params as Record<string, string>).toString())
 
-        // console.log(params)
+        console.log(params)
         const request = await toCl<Tables[T][]>(await $api.get(`/${table}?${Object.entries(params).map(e => e.join('=')).join('&')}`))
         if (resType == 'single') {
           const result = one(request)

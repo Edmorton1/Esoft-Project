@@ -29,5 +29,5 @@ export const serverPaths = {
   testCompressViedo: "/testCompressViedo",
   testCompressAudio: "/testCompressAudio",
 
-  // getUserTags: "/getUserTags"
+  extendedSearch: "/extendedSearch"
 }

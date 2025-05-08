@@ -7,6 +7,8 @@ function AgeRange({keyName}: {keyName: "min_age" | "max_age"}) {
   // const [params, updateParams] = useUpdateParams()
   const [debParams, setDebParams] = useDebounceParams(keyName)
   const [value, setValue] = useState<string | number>(50)
+  const keyMin = "min_age"
+  const keyMax = "max_age"
 
   useEffect(() => {
     if (debParams) {
@@ -15,7 +17,7 @@ function AgeRange({keyName}: {keyName: "min_age" | "max_age"}) {
   }, [debParams])
 
   const changeHandle = (e: ChangeEvent<HTMLInputElement>) => {
-      const change = keyName === "min_age" ? Number(e.target.value) : 100 - Number(e.target.value)
+      const change = keyName === keyMin ? Number(e.target.value) : 100 - Number(e.target.value)
       setValue(change);
       setDebParams(change)
   }
@@ -23,11 +25,11 @@ function AgeRange({keyName}: {keyName: "min_age" | "max_age"}) {
   return <>
     <p>{value}</p>
     <input
-      value={keyName === "max_age" ? 100 - Number(value) : value}
+      value={keyName === keyMax ? 100 - Number(value) : value}
       onChange={changeHandle}
-      className={keyName === "max_age" ? style.range : ''}
-      max={keyName === "min_age" ? 99 : 82}
-      min={keyName === "min_age" ? 18 : 1}
+      className={keyName === keyMax ? style.range : ''}
+      max={keyName === keyMin ? 99 : 82}
+      min={keyName === keyMin ? 18 : 1}
       type="range" />
   </>
 }

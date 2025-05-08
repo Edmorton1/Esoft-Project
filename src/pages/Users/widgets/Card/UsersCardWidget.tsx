@@ -1,5 +1,5 @@
 import StoreUsers from "@/pages/Users/widgets/store/Store-Users"
-import UsersCardModule from "@/pages/Users/widgets/UsersCard/modules/UsersCardModule"
+import UsersCardModule from "@/pages/Users/widgets/Card/modules/UsersCardModule"
 import { Form } from "@s/core/domain/Users"
 import { createContext } from "react"
 

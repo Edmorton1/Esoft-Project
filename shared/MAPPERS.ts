@@ -43,6 +43,6 @@ export function one<T>(data: T[]): T {
   return data[0]
 }
 
-export function toArr(data: string | null) {
+export function toArr(data: string | null | undefined) {
   return data?.split(', ')
 }

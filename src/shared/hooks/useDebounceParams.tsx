@@ -9,7 +9,7 @@ function useDebounceParams(keyName: string): [string | null, (e: any) => any] {
   const initial = params[keyName]
 
   useEffect(() => {
-    console.log(initial, debounce)
+    // console.log(initial, debounce)
     if (initial && debounce === null) {
       setDebounce(initial)
     } else if (!initial && debounce === null) {

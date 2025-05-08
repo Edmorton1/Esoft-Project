@@ -1,4 +1,4 @@
-import UsersCardInfo from "@/pages/Users/widgets/UsersCard/modules/components/UsersCardInfo"
+import UsersCardInfo from "@/pages/Users/widgets/Card/modules/components/UsersCardInfo"
 
 function UsersCardModule() {
   return <>

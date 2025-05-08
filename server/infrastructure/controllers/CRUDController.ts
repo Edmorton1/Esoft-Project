@@ -8,19 +8,20 @@ export class CRUDController {
     readonly table: tables
   ) {}
   
-  async get(req: Request<object, object, object, {fields?: string}>, res: Response) {
-    const { fields, ...params } = req.query;
+  async get(req: Request<object, object, object, {fields?: string, sqlparams?: string}>, res: Response) {
+    const { fields, sqlparams, ...params } = req.query;
     delete req.query.fields
+    delete req.query.sqlparams
 
     if (Object.keys(req.query).length > 0) {
-      return res.json(await this.ORM.getByParams(params, this.table, fields))
+      return res.json(await this.ORM.getByParams(params, this.table, fields, sqlparams))
     }
-    res.json(await this.ORM.get(this.table, fields))
+    res.json(await this.ORM.get(this.table, fields, sqlparams))
   }
-  async getById(req: Request<{id: string}, object, object, {fields?: string}>, res: Response) {
-    const {fields} = req.query
+  async getById(req: Request<{id: string}, object, object, {fields?: string, sqlparams?: string}>, res: Response) {
+    const {fields, sqlparams} = req.query
     const {id} = req.params
-    const request = await this.ORM.getById(id, this.table, fields)
+    const request = await this.ORM.getById(id, this.table, fields, sqlparams)
     res.json(request)
   }
   async post(req: Request, res: Response) {

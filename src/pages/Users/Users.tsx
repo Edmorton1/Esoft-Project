@@ -6,9 +6,10 @@ import { toJS } from "mobx"
 import StoreGlobal from "@/shared/api/Store-Global"
 import StoreUser from "@/shared/stores/Store-User"
 import { observer } from "mobx-react-lite"
-import UsersCardWidget from "@/pages/Users/widgets/UsersCard/UsersCardWidget"
+import UsersCardWidget from "@/pages/Users/widgets/Card/UsersCardWidget"
 import UsersFilterWidget from "@/pages/Users/widgets/Filters/UsersFilterWidget"
 import StoreTags from "@/shared/stores/Store-Tags"
+import Pagination from "@/pages/Users/widgets/Pagination/UserPagination"
 // 042b5b75-f847-4f2a-b695-b5f58adc9dfd
 function Users() {
   useGetById('forms', undefined, 'array', StoreUsers.initial)
@@ -26,6 +27,7 @@ function Users() {
 
         <div style={{display: "flex", justifyContent: "space-around"}}>
           <main>
+            <Pagination />
             <UsersCardWidget />
           </main>
           <main style={{display: "flex", flexDirection: "column"}}>

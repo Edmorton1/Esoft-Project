@@ -1,4 +1,4 @@
-import { UsersContext } from "@/pages/Users/widgets/UsersCard/UsersCardWidget"
+import { UsersContext } from "@/pages/Users/widgets/Card/UsersCardWidget"
 import { useContext } from "react"
 
 function UsersCardInfo() {
