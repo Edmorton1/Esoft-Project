@@ -4,7 +4,7 @@ import pool from "@s/infrastructure/db/db"
 import { toTS } from "@shared/MAPPERS"
 import { toSQLWhere } from "./ORM"
 
-async function getForm(fields?: string, id?: number | string, params?: Partial<Form>): Promise<Form[]> {
+async function getForm(fields?: string, id?: number | string, params?: Partial<Form>, sqlparams?: string): Promise<Form[]> {
   fields = fields + ','
   function toFields() {
     if (fields) {
@@ -34,16 +34,17 @@ async function getForm(fields?: string, id?: number | string, params?: Partial<F
     LEFT JOIN tags ON user_tags.tagid = tags.id
     ${id ? `WHERE forms.id = ${id}` : ``}
     ${params ? `WHERE ${and}` : ``}
-    GROUP BY forms.id;
+    GROUP BY forms.id
+    ${sqlparams || ''};
   `, params && [...values]))
   return request
 }
 
-export function checkForms(table: tables, callback: () => any, fields?: string, id?: string | number, params?: Partial<Form>) {
+export function checkForms(table: tables, callback: () => any, fields?: string, id?: string | number, params?: Partial<Form>, sqlparams?: string) {
   // console.log(table, fields, params)
   if (table === 'forms' && (!fields || fields?.includes("tags"))) {
     // console.log(table, fields, id, params)
-    return () => getForm(fields, id, params)
+    return () => getForm(fields, id, params, sqlparams)
   } else {
     // console.log(table, fields, id, params)
     return () => callback()

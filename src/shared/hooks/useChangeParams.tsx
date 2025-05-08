@@ -1,11 +1,5 @@
 import {useSearchParams} from "react-router-dom";
 
-// interface UpdateParamsInterface {
-// 	params: Record<string, string>,
-// 	update: (key: string, value: string | number, remove?: boolean) => void,
-// 	remove: (key: string) => void
-// }
-
 const useUpdateParams = (): [Record<string, string>, (key: string, value: string | number, remove?: boolean, add?: boolean) => void, (key: string) => void] => {
 	const [searchParams, setSearchParams] = useSearchParams();
 
@@ -36,7 +30,7 @@ const useUpdateParams = (): [Record<string, string>, (key: string, value: string
 			}
 		}
 		if (remove) {
-			console.log(newParams.get(key) === value)
+			// console.log(newParams.get(key) === value)
 			const inParams = newParams.get(key) === value
 			inParams ? newParams.delete(key) : newParams.set(key, String(value));
 		}

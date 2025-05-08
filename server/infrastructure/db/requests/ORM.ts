@@ -28,7 +28,7 @@ export class ORM {
 
     const key = `${table}${fieldsKey(fields, sqlparams)}`
 
-    const callback = checkForms(table, async () => toTS<T>(await pool.query(`SELECT ${fieldsSelect(fields)} FROM ${table} ${sql}`)), fields)
+    const callback = checkForms(table, async () => toTS<T>(await pool.query(`SELECT ${fieldsSelect(fields)} FROM ${table} ${sql}`)), fields, undefined, undefined, sqlparams)
     return cacheGet(key, callback)
   }
   async getById<T extends tables>(id: number | string, table: T, fields?: string, sqlparams?: string): Promise<Tables[T][]> {
@@ -37,7 +37,7 @@ export class ORM {
     const sql = toArr(sqlparams) || ''
     const key = `${table}-id-${id}${fieldsKey(fields)}`
 
-    const callback = checkForms(table, async () => toTS<T>(await pool.query(`SELECT ${fieldsSelect(fields)} FROM ${table} WHERE id = $1 ${sql}`, [id])), fields, id)
+    const callback = checkForms(table, async () => toTS<T>(await pool.query(`SELECT ${fieldsSelect(fields)} FROM ${table} WHERE id = $1 ${sql}`, [id])), fields, id, undefined, sqlparams)
     return await cacheGet(key, callback)
   }
   
@@ -58,7 +58,7 @@ export class ORM {
           console.log(err)
           return []
         }
-      }, fields, undefined, params)
+      }, fields, undefined, params, sqlparams)
     return cacheGet(key, callback)
   }
 
