@@ -6,7 +6,6 @@ export class MessageFileService {
     readonly FileService: FileService,
   ) {}
 
-  //id - это id сообщения
   async uploadFiles(id: number, files: Express.Multer.File[]): Promise<string[]> {
     const buffers = this.FileService.toBuffer(files)
     return await Promise.all(

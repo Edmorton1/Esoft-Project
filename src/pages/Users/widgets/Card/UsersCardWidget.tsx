@@ -10,7 +10,7 @@ export const UsersContext = createContext<Form | null>(null)
 
 function UsersCardWidget() {
   const [params] = useUpdateParams()
-  const page = Number(params.page) || 0
+  const page = Number(params.page) || 1
   console.log('card render')
   useGetById('forms', `sqlparams=limit 3 offset ${(page - 1) * 3}`, 'array', StoreUsers.initial)
 

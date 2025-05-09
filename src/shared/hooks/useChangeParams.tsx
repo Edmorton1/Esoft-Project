@@ -1,6 +1,12 @@
 import {useSearchParams} from "react-router-dom";
 
-const useUpdateParams = (): [Record<string, string>, (key: string, value: string | number, remove?: boolean, add?: boolean) => void, (key: string) => void] => {
+type returTypes = [
+	Record<string, string>,
+	(key: string, value: string | number, remove?: boolean, add?: boolean, firstRender?: boolean) => void,
+	(key: string) => void
+]
+
+const useUpdateParams = (): returTypes => {
 	const [searchParams, setSearchParams] = useSearchParams();
 
 	const params = Object.fromEntries(searchParams.entries())
@@ -9,14 +15,18 @@ const useUpdateParams = (): [Record<string, string>, (key: string, value: string
 		key: string,
 		value: string | number,
 		remove: boolean = true,
-		add: boolean = false
+		add: boolean = false,
+		firstRender: boolean = false
 	) => {
 		// console.log(key, value)
 		const newParams = new URLSearchParams(searchParams);
 		if (add) {
+			console.log("ADD")
 			let inParams: (string | number)[] = newParams.get(key)?.split(', ') ?? []
+			
+			// ЗАВТРА ТУТ ПОМЕНЯТЬ В ТЭГАХ ПРОБЛЕМУ
 			if (inParams.includes(value)) {
-				if (remove) {
+				if (!firstRender) {
 					inParams = inParams.filter(e => e != value)
 				}
 			} else {
@@ -30,11 +40,13 @@ const useUpdateParams = (): [Record<string, string>, (key: string, value: string
 			}
 		}
 		if (remove) {
+			console.log("REMOVE")
 			// console.log(newParams.get(key) === value)
 			const inParams = newParams.get(key) === value
 			inParams ? newParams.delete(key) : newParams.set(key, String(value));
 		}
 		if (!remove && !add) {
+			console.log("ADD REMOVE")
 			newParams.set(key, String(value))
 		}
 

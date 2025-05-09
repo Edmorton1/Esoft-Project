@@ -7,7 +7,7 @@ function Tag({tag}: {tag: string}) {
 
   useEffect(() => {
     if (!StoreForm.form?.tags?.map(e => e.tag).includes(tag)) {
-      updateParams('tags', tag, false, true)
+      updateParams('tags', tag, false, true, true)
     }
   }, [tag])
 

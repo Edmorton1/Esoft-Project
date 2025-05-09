@@ -1,3 +1,4 @@
+import useUpdateParams from "@/shared/hooks/useChangeParams"
 import useDebounceParams from "@/shared/hooks/useDebounceParams"
 import { ChangeEvent } from "react"
 

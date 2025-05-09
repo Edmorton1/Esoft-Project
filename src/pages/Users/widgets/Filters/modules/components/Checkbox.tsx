@@ -1,6 +1,12 @@
 import useUpdateParams from "@/shared/hooks/useChangeParams"
 
-function Checkbox({keyName, value, children}: {keyName: string, value: string, children: string}) {
+interface propsInterface {
+  keyName: string,
+  value: string,
+  children: string
+}
+
+function Checkbox({keyName, value, children}: propsInterface) {
   const [params, updateParams] = useUpdateParams()
   const handleChange = () => updateParams(keyName, value)
 
