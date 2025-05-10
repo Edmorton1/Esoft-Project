@@ -1,10 +1,9 @@
 import { tables } from "@s/core/domain/types"
-import { ORM } from "@s/infrastructure/db/requests/ORM"
+import ORM from "@s/infrastructure/db/requests/ORM"
 import { Request, Response } from "express"
 
-export class CRUDController {
+class CRUDController {
   constructor(
-    readonly ORM: ORM,
     readonly table: tables
   ) {}
   
@@ -14,31 +13,31 @@ export class CRUDController {
     delete req.query.sqlparams
 
     if (Object.keys(req.query).length > 0) {
-      return res.json(await this.ORM.getByParams(params, this.table, fields, sqlparams))
+      return res.json(await ORM.getByParams(params, this.table, fields, sqlparams))
     }
-    res.json(await this.ORM.get(this.table, fields, sqlparams))
+    res.json(await ORM.get(this.table, fields, sqlparams))
   }
   async getById(req: Request<{id: string}, object, object, {fields?: string, sqlparams?: string}>, res: Response) {
     const {fields, sqlparams} = req.query
     const {id} = req.params
-    const request = await this.ORM.getById(id, this.table, fields, sqlparams)
+    const request = await ORM.getById(id, this.table, fields, sqlparams)
     res.json(request)
   }
   async post(req: Request, res: Response) {
     console.log(req.body)
     const dto = req.body
-    const request = await this.ORM.post(dto, this.table)
+    const request = await ORM.post(dto, this.table)
     res.json(request)
   }
   async put(req: Request, res: Response) {
     const {id} = req.params
     const dto = req.body
-    const request = await this.ORM.put(dto, id, this.table)
+    const request = await ORM.put(dto, id, this.table)
     res.json(request)
   }
   async delete(req: Request, res: Response) {
     const {id} = req.params
-    const request = await this.ORM.delete(id, this.table)
+    const request = await ORM.delete(id, this.table)
     res.json(request)
   }
 
@@ -50,3 +49,5 @@ export class CRUDController {
   //   res.json(request)
   // }
 }
+
+export default CRUDController

@@ -1,14 +1,10 @@
 import { JWTDTO, PayloadDTO, UserDTO } from "@s/core/dtoObjects";
 import { one } from "@shared/MAPPERS";
-import { ORM } from "@s/infrastructure/db/requests/ORM";
+import ORM from "@s/infrastructure/db/requests/ORM";
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 
-export class TokenService {
-  constructor(
-    readonly ORM: ORM
-  ) {}
-
+class TokenService {
 
   generateTokens(payload: PayloadDTO) {
     const accessToken = jwt.sign(payload, process.env.ACCESS_PRIVATE_KEY!, {expiresIn: "10d"})
@@ -21,7 +17,7 @@ export class TokenService {
     try {
 
       const token = jwt.verify(accessToken, process.env.ACCESS_PRIVATE_KEY!) as JWTDTO
-      if (one(await this.ORM.getById(token.id, 'users'))) {
+      if (one(await ORM.getById(token.id, 'users'))) {
         return token
       } else return false
       
@@ -33,7 +29,7 @@ export class TokenService {
   async validateRefresh(refreshToken: string): Promise<JWTDTO | false> {
     try {
       const token = jwt.verify(refreshToken, process.env.REFRESH_PRIVATE_KEY!) as JWTDTO
-      const hashInDB = one(await this.ORM.getById(token.id, 'tokens')).token
+      const hashInDB = one(await ORM.getById(token.id, 'tokens')).token
 
       const hasDB = await bcrypt.compare(refreshToken, hashInDB)
       // const hasUser = one(await this.ORM.getById(token.id, 'users'))
@@ -46,3 +42,5 @@ export class TokenService {
     }
   }
 }
+
+export default new TokenService

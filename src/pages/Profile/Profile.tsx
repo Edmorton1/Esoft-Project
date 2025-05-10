@@ -9,7 +9,7 @@ import Loading from "../../shared/ui/Loading"
 
 function Profile() {
   const id = Number(useParams().id)
-  useGetById('forms', `id=${id}`, 'single', StoreProfile.initial)
+  useGetById(`/forms?id=${id}`, 'single', StoreProfile.initial)
 
   if (StoreProfile.profile === null) {
     return <Loading />

@@ -1,4 +1,3 @@
-import useGetById from "@/shared/hooks/useGetById"
 import StoreUsers from "@/pages/Users/widgets/store/Store-Users"
 import { Suspense } from "react"
 import StoreLikes from "@/shared/stores/StoreLikes"

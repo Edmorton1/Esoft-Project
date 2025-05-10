@@ -119,4 +119,4 @@ class FileService {
   }
 }
 
-export default FileService
+export default new FileService

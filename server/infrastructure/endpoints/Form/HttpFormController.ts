@@ -1,7 +1,7 @@
 import { Form } from "@s/core/domain/Users";
 import { one } from "@shared/MAPPERS";
-import { ORM } from "@s/infrastructure/db/requests/ORM";
-import { FormService } from "@s/infrastructure/services/FormService";
+import ORM from "@s/infrastructure/db/requests/ORM";
+import FormService from "@s/infrastructure/endpoints/Form/services/FormService";
 import { Request, Response } from "express";
 
 // SELECT 
@@ -14,18 +14,13 @@ import { Request, Response } from "express";
 // ЗАПРОС НА ПОЛУЧЕНИЕ ФОРМЫ И ТЕГОВ
 
 
-export class HttpFormController {
-  constructor(
-    readonly FormService: FormService,
-    readonly ORM: ORM
-  ) {}
-
+class HttpFormController {
   async postForm(req: Request, res: Response) {
     const data: Form = req.body
     console.log(data)
     const tags = data.tags
     delete data.tags
-    const form = one(await this.ORM.post(data, 'forms'))
+    const form = one(await ORM.post(data, 'forms'))
     tags?.forEach(async tag => {
       //@ts-ignore
       this.FormService.pushTag(data.id, tag)
@@ -33,3 +28,5 @@ export class HttpFormController {
     res.json(form)
   }
 }
+
+export default new HttpFormController

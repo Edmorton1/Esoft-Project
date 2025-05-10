@@ -4,6 +4,7 @@ import pool from "@s/infrastructure/db/db"
 import { toArr, toTS } from "@shared/MAPPERS"
 import bcrypt from "bcrypt"
 import { checkForms } from "./ORMForms"
+import { toSQLPost, toSQLPut, toSQLWhere } from "@s/infrastructure/db/requests/SQLparsers"
 // interface CRUDRepositoryInterface {
 //   get(table: tables): Promise<Tables[] | Tables>,
 //   getById(id: string | number, table: tables): Promise<Tables>
@@ -20,7 +21,7 @@ interface SQLParams {
 const fieldsKey = (fields?: string, sqlparams?: string) => `${fields ? '--fields: ' + fields : ''}${sqlparams ? '--sqlparams: ' + sqlparams : ''}`
 const fieldsSelect = (fields: string | undefined) => `${fields ? fields : '*'}`
 
-export class ORM {
+class ORM {
   async get<T extends tables>(table: T, fields?: string, sqlparams?: string): Promise<Tables[T][]> {
     // console.log("get", table, fields, sqlparams)
 
@@ -45,6 +46,7 @@ export class ORM {
     // console.log("getByParams", params, table, fields, sqlparams)
 
     const [values, and] = toSQLWhere(params)
+    console.log("TOSQL", values, and)
 
     const sql = toArr(sqlparams) || ''
     const key = `${table}-${Object.entries(params).flat().join("-")}${fieldsKey(fields)}`
@@ -96,33 +98,4 @@ export class ORM {
   }
 }
 
-
-
-function toSQLPost(props: any) {
-  const {location, ...data} = props
-
-  const keys = Object.keys(data)
-  const values = Object.values(data)
-  const locationSQL = `ST_SetSRID(ST_MakePoint($${values.length + 1}, $${values.length + 2}), 4326)`
-  if (location) {
-    keys.push('location')
-    values.push(location.lng, location.lat)
-  }
-  const dollars = keys.map((e, i) => `$${i + 1}`).join(', ')
-  console.log(dollars)
-  return [keys.join(', '), values, location ? dollars.slice(0, -3) + locationSQL : dollars]
-}
-
-function toSQLPut(props: any) {
-  const keys = Object.keys(props)
-  const values = Object.values(props)
-  const dollars = keys.map((e, i) => (`${e} = $${i + 1}`)).join(', ')
-  return [values, dollars]
-}
-
-export function toSQLWhere(props: any, isform?: boolean) {
-  const keys = Object.keys(props)
-  const values = Object.values(props)
-  const and = keys.map((e, i) => (`${isform ? `forms.` : ``}${e} = $${i + 1} and`)).join(' ').slice(0, -4)
-  return [values, and]
-}
+export default new ORM

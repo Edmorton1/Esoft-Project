@@ -1,50 +1,48 @@
-import { ORM } from "@s/infrastructure/db/requests/ORM";
+import ORM from "@s/infrastructure/db/requests/ORM";
 import { UserDTO, TokenDTO } from "@s/core/dtoObjects";
-import { TokenService } from "@s/infrastructure/services/TokenService";
 import { Request, Response } from "express";
 import bcrypt from "bcrypt"
 import { one } from "@shared/MAPPERS";
+import TokenService from "@s/infrastructure/endpoints/Token/services/TokenService";
 
-export class HttpTokenController {
-  constructor(
-    readonly TokenService: TokenService,
-    readonly ORM: ORM
-  ) {}
+class HttpTokenController {
 
-  async createTokens(id: number, role: string, res: Response) {
+  createTokens = async (id: number, role: string, res: Response) => {
     // console.log(id, role)
-    const tokens = this.TokenService.generateTokens({id: id, role: role})
+    // console.log("CREATE TOKENS")
+    const tokens = TokenService.generateTokens({id: id, role: role})
     const [accessToken, refreshToken] = tokens
     // await this.ORM.delete(id, 'tokens')
     const refreshHash = await bcrypt.hash(refreshToken, 3)
-    const tokensInDB = await this.ORM.getById(id, 'tokens')
+    const tokensInDB = await ORM.getById(id, 'tokens')
     if (tokensInDB) {
-      await this.ORM.put({token: refreshHash}, id, 'tokens')
+      await ORM.put({token: refreshHash}, id, 'tokens')
     } else {
-      await this.ORM.post({id: id, token: refreshHash}, 'tokens')
+      await ORM.post({id: id, token: refreshHash}, 'tokens')
     }
     res.cookie('refreshToken', refreshToken, {httpOnly: true, sameSite: "lax", maxAge: 1000 * 60 * 60 * 24})
     return accessToken
   }
 
-  returnDTO(dto: TokenDTO, res: Response) {
+  returnDTO = (dto: TokenDTO, res: Response) => {
     res.json({
       user: dto.user,
       accessToken: dto.accessToken
     })
   }
 
-  async registartion(req: Request, res: Response) {
+  registartion = async (req: Request, res: Response) => {
     const dto: UserDTO = req.body
-    const user = one(await this.ORM.post(dto, 'users'))
+    const user = one(await ORM.post(dto, 'users'))
     const accessToken = await this.createTokens(user.id, user.role, res)
     
     this.returnDTO({user, accessToken}, res)
   }
 
-  async login(req: Request, res: Response) {
+  login = async (req: Request, res: Response) => {
     const dto: UserDTO = req.body
-    const user = one(await this.ORM.getByParams({email: dto.email}, 'users'))
+    const user = one(await ORM.getByParams({email: dto.email}, 'users'))
+    console.log(user.id, user.role)
 
     if (!user) {
       return res.status(400).json('Такой почты нет')
@@ -59,16 +57,16 @@ export class HttpTokenController {
     this.returnDTO({user, accessToken}, res)
   }
   
-  async logout(req: Request, res: Response) {
+  logout = async (req: Request, res: Response) => {
     const {id} = req.params
 
     res.clearCookie('refreshToken')
-    await this.ORM.delete(id, 'tokens')
+    await ORM.delete(id, 'tokens')
     res.status(200).send('Выход выполнен')
   }
 
 
-  async refresh(req: Request, res: Response) {
+  refresh = async (req: Request, res: Response) => {
     // ТУТ ПОСМОТРЕТЬ ПОТОМ ГДЕ !
     const authHeader = req.headers.authorization
     let accessToken: string = ''
@@ -76,19 +74,19 @@ export class HttpTokenController {
       accessToken = req.headers.authorization!.split(' ')[1]
     }
 
-    const verifyAccess = await this.TokenService.validateAccess(accessToken)
+    const verifyAccess = await TokenService.validateAccess(accessToken)
     
     if (verifyAccess) {
       // console.log('access')
-      const user = one(await this.ORM.getById(verifyAccess.id, 'users'))
+      const user = one(await ORM.getById(verifyAccess.id, 'users'))
       return this.returnDTO({user, accessToken}, res)
     }
     
-    const verifyRefresh = await this.TokenService.validateRefresh(req.cookies.refreshToken)
+    const verifyRefresh = await TokenService.validateRefresh(req.cookies.refreshToken)
 
     if (!verifyAccess && verifyRefresh) {
       // console.log('refresh')
-      const user = one(await this.ORM.getById(verifyRefresh.id, 'users'))
+      const user = one(await ORM.getById(verifyRefresh.id, 'users'))
       const accessToken = await this.createTokens(verifyRefresh.id, verifyRefresh.role, res)
       return this.returnDTO({user, accessToken}, res)
     }
@@ -99,3 +97,4 @@ export class HttpTokenController {
 }
 
 // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwicm9sZSI6InVzZXIiLCJpYXQiOjE3NDQ2MTEyMTgsImV4cCI6MTc0NTQ3NTIxOH0.pDfrXzd7atVa2BtLwBM7a8HES_D76idPCYKntKFYe_Y -- ВАЛДИНЫЙ РЕФРЕШ
+export default new HttpTokenController

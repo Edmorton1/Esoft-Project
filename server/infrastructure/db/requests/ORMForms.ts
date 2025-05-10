@@ -1,8 +1,8 @@
 import { tables } from "@s/core/domain/types"
 import { Form } from "@s/core/domain/Users"
 import pool from "@s/infrastructure/db/db"
+import { toSQLWhere } from "@s/infrastructure/db/requests/SQLparsers"
 import { toTS } from "@shared/MAPPERS"
-import { toSQLWhere } from "./ORM"
 
 async function getForm(fields?: string, id?: number | string, params?: Partial<Form>, sqlparams?: string): Promise<Form[]> {
   fields = fields + ','

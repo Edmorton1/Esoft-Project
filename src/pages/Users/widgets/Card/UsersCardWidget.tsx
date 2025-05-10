@@ -11,8 +11,11 @@ export const UsersContext = createContext<Form | null>(null)
 function UsersCardWidget() {
   const [params] = useUpdateParams()
   const page = Number(params.page) || 1
-  console.log('card render')
-  useGetById('forms', `sqlparams=limit 3 offset ${(page - 1) * 3}`, 'array', StoreUsers.initial)
+  console.log(params)
+  // useGetById('forms', `sqlparams=limit 3 offset ${(page - 1) * 3}`, 'array', StoreUsers.initial)
+
+  //@ts-ignore
+  useGetById('extendedSearch', params.tags, 'array', StoreUsers.initial)
 
   return <>
     {/* <Pagination /> */}

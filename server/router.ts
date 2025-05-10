@@ -1,8 +1,14 @@
 import express from "express"
 import { tables } from "@s/core/domain/types"
-import { filesController, formController, hardController, likesController, messageController, tokenController, universalController } from "@s/controllers"
+import { universalController } from "@s/controllers"
 import multer from "multer"
 import { serverPaths } from "@shared/PATHS"
+import HttpTokenController from "@s/infrastructure/endpoints/Token/HttpTokenController"
+import HttpFormController from "@s/infrastructure/endpoints/Form/HttpFormController"
+import HttpMessageController from "@s/infrastructure/endpoints/Message/HttpMessageController"
+import HttpLikesController from "@s/infrastructure/endpoints/Likes/HttpLikesController"
+import HttpFilesController from "@s/infrastructure/endpoints/Files/HttpFilesController"
+import HttpExtendedSearchController from "@s/infrastructure/endpoints/ExtendSearch/HttpExtendedSearchController"
 const upload = multer({storage: multer.memoryStorage()})
 const router = express.Router()
 
@@ -27,25 +33,25 @@ tablesArr.forEach(table => {
 
 // router.get('/byParams', universalController('getByParams', 'users'))
 
-router.post(serverPaths.registration, tokenController('registartion'))
-router.post(serverPaths.login, tokenController('login'))
-router.get(`${serverPaths.logout}/:id`, tokenController('logout'))
-router.get(serverPaths.refresh, tokenController('refresh'))
+router.post(serverPaths.registration, HttpTokenController.registartion)
+router.post(serverPaths.login, HttpTokenController.login)
+router.get(`${serverPaths.logout}/:id`, HttpTokenController.logout)
+router.get(serverPaths.refresh, HttpTokenController.refresh)
 
-router.post(serverPaths.createForm, formController("postForm"))
+router.post(serverPaths.createForm, HttpFormController.postForm)
 
-router.post(serverPaths.sendMessage, upload.array('files'), messageController('sendMessage'))
-router.put(`${serverPaths.editMessage}/:id`, upload.array('files'), messageController('editMessage'))
-router.delete(`${serverPaths.deleteMessage}/:id`, messageController('deleteMessage'))
+router.post(serverPaths.sendMessage, upload.array('files'), HttpMessageController.sendMessage)
+router.put(`${serverPaths.editMessage}/:id`, upload.array('files'), HttpMessageController.editMessage)
+router.delete(`${serverPaths.deleteMessage}/:id`, HttpMessageController.deleteMessage)
 
-router.post(serverPaths.likesGet, likesController('sendLike'))
-router.delete(`${serverPaths.likesDelete}/:id`, likesController('sendDelete'))
+router.post(serverPaths.likesGet, HttpLikesController.sendLike)
+router.delete(`${serverPaths.likesDelete}/:id`, HttpLikesController.sendDelete)
 
-router.post(`${serverPaths.postAvatar}/:id`, upload.single('avatar'),  filesController('postAvatar'))
+router.post(`${serverPaths.postAvatar}/:id`, upload.single('avatar'),  HttpFilesController.postAvatar)
 
-router.post(serverPaths.testCompressViedo, upload.single('video'), filesController('TestConvertVideo'))
-router.post(serverPaths.testCompressAudio, upload.single('audio'), filesController('TestConvertAudio'))
+router.post(serverPaths.testCompressViedo, upload.single('video'), HttpFilesController.TestConvertVideo)
+router.post(serverPaths.testCompressAudio, upload.single('audio'), HttpFilesController.TestConvertAudio)
 
-router.get(`${serverPaths.extendedSearch}/:id`, hardController('getUserTags'))
+router.get(`${serverPaths.extendedSearch}`, HttpExtendedSearchController.getForms)
 
 export default router

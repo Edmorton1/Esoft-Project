@@ -31,3 +31,5 @@ export const serverPaths = {
 
   extendedSearch: "/extendedSearch"
 }
+
+export type serverPathsTypes = keyof typeof serverPaths
