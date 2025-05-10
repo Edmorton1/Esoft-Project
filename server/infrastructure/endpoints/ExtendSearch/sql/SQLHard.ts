@@ -13,14 +13,24 @@ class SQLHard {
               ${sim.join('')}
           ) DESC;
     `, [...values]))
+
+    console.log(request)
     
     return request.map(e => e.id)
   }
 
-  async getByTags(tags: number[], params: string) {
+  async getByTags(tags: number[], params: Record<string, string>) {
     const [values, and] = toSQLWhere(params, false, tags.length)
-    console.log(and)
+    // console.log(and)
     const keys = toSQLgetByTags(tags)
+
+    const haveTags = keys.length > 0
+      ? `LEFT JOIN user_tags matched ON matched.id = f.id AND matched.tagid IN (${keys})`
+      : `LEFT JOIN user_tags matched ON matched.id = f.id`
+
+    const secondTags = keys.length > 0
+      ? `HAVING COUNT(DISTINCT matched.tagid) > 0 ${and ? 'and ' + and : ''}`
+      : `HAVING COUNT(DISTINCT matched.tagid) > 0 ${and ? 'and ' + and : ''}`
 
     const request = toTS(await pool.query(`
     SELECT 
@@ -35,9 +45,9 @@ class SQLHard {
     FROM forms f
     LEFT JOIN user_tags ut ON ut.id = f.id
     LEFT JOIN tags t ON ut.tagid = t.id
-    LEFT JOIN user_tags matched ON matched.id = f.id AND matched.tagid IN (${keys})
+    ${haveTags}
     GROUP BY f.id
-    HAVING COUNT(DISTINCT matched.tagid) > 0 ${and ? 'and ' + and : ''}
+    ${secondTags}
     ORDER BY matched_count DESC;
     `, [...tags, ...values]))
     return request

@@ -4,16 +4,17 @@ import { Request, Response } from "express"
 
 class HttpExtendedSearchController {
 
-  async getForms(req: Request, res: Response) {
+  async getForms(req: Request<{}, {}, {}, {tags: string, params: string}>, res: Response) {
     const {tags, ...params} = req.query
+    console.log(tags, params)
     
-    //@ts-ignore
-    const tagsArr = await SQLHard.getUserTags(tags.trim())
-    //@ts-ignore
+
+    const tagsArr = tags ? await SQLHard.getUserTags(tags?.trim()) : []
+
     const zapisi = await SQLHard.getByTags(tagsArr, params)
     
     console.log(tagsArr)
-
+    console.log(zapisi.length)
     res.json(zapisi)
   }
 }

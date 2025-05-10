@@ -15,7 +15,7 @@ function UsersCardWidget() {
   // useGetById('forms', `sqlparams=limit 3 offset ${(page - 1) * 3}`, 'array', StoreUsers.initial)
 
   //@ts-ignore
-  useGetById('extendedSearch', params.tags, 'array', StoreUsers.initial)
+  useGetById(`/extendedSearch?tags=${params.tags}`, 'array', StoreUsers.initial)
 
   return <>
     {/* <Pagination /> */}
