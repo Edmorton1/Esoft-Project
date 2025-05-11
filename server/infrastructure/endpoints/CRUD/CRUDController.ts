@@ -7,7 +7,7 @@ class CRUDController {
     readonly table: tables
   ) {}
   
-  async get(req: Request<object, object, object, {fields?: string, sqlparams?: string}>, res: Response) {
+  get = async (req: Request<object, object, object, {fields?: string, sqlparams?: string}>, res: Response) => {
     const { fields, sqlparams, ...params } = req.query;
     delete req.query.fields
     delete req.query.sqlparams
@@ -17,25 +17,25 @@ class CRUDController {
     }
     res.json(await ORM.get(this.table, fields, sqlparams))
   }
-  async getById(req: Request<{id: string}, object, object, {fields?: string, sqlparams?: string}>, res: Response) {
+  getById = async (req: Request<{id: string}, object, object, {fields?: string, sqlparams?: string}>, res: Response) => {
     const {fields, sqlparams} = req.query
     const {id} = req.params
     const request = await ORM.getById(id, this.table, fields, sqlparams)
     res.json(request)
   }
-  async post(req: Request, res: Response) {
+  post = async (req: Request, res: Response) => {
     console.log(req.body)
     const dto = req.body
     const request = await ORM.post(dto, this.table)
     res.json(request)
   }
-  async put(req: Request, res: Response) {
+  put = async (req: Request, res: Response) => {
     const {id} = req.params
     const dto = req.body
     const request = await ORM.put(dto, id, this.table)
     res.json(request)
   }
-  async delete(req: Request, res: Response) {
+  delete = async (req: Request, res: Response) => {
     const {id} = req.params
     const request = await ORM.delete(id, this.table)
     res.json(request)

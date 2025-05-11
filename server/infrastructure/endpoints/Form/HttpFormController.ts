@@ -15,14 +15,15 @@ import { Request, Response } from "express";
 
 
 class HttpFormController {
-  async postForm(req: Request, res: Response) {
+  postForm = async (req: Request, res: Response) => {
     const data: Form = req.body
     console.log(data)
-    const tags = data.tags
+    //@ts-ignore
+    const rawTags: string[] = data.tags
     delete data.tags
     const form = one(await ORM.post(data, 'forms'))
-    tags?.forEach(async tag => {
-      FormService.pushTag(data.id, tag.tag)
+    const tags = rawTags?.map(async tag => {
+      FormService.pushTag(data.id, tag)
     })
     res.json(form)
   }

@@ -1,4 +1,4 @@
-export function toSQLPost(props: any) {
+export const toSQLPost = (props: any) => {
   const {location, ...data} = props
   const keys = Object.keys(data)
   const values = Object.values(data)
@@ -12,14 +12,14 @@ export function toSQLPost(props: any) {
   return [keys.join(', '), values, location ? dollars.slice(0, -3) + locationSQL : dollars]
 }
 
-export function toSQLPut(props: any) {
+export const toSQLPut = (props: any) => {
   const keys = Object.keys(props)
   const values = Object.values(props)
   const dollars = keys.map((e, i) => (`${e} = $${i + 1}`)).join(', ')
   return [values, dollars]
 }
 
-export function toSQLWhere(props: Record<any, any>, isform?: boolean): [any[], string] {
+export const toSQLWhere = (props: Record<any, any>, isform?: boolean): [any[], string] => {
   const keys = Object.keys(props).filter(e => props[e] != '')
   const values = Object.values(props).filter(e => e != '')
   console.log(keys.length === values.length)

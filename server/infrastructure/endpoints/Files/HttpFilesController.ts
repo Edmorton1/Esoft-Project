@@ -7,7 +7,7 @@ import Yandex from "@s/yandex";
 // import fileType from "file-type"
 
 class HttpFilesController {
-  async postAvatar(req: Request, res: Response) {
+  postAvatar = async (req: Request, res: Response) => {
     
     const {id} = req.params
     const buffer = req.file!.buffer
@@ -21,7 +21,7 @@ class HttpFilesController {
     res.json(yandex!.Location)
   }
 
-  async TestConvertVideo(req: Request, res: Response) {
+  TestConvertVideo = async (req: Request, res: Response) => {
     // old: 1656511
 
     // web: 470950 24.62s
@@ -35,7 +35,7 @@ class HttpFilesController {
     res.send(buffer)
   }
 
-  async TestConvertAudio(req: Request, res: Response) {
+  TestConvertAudio = async (req: Request, res: Response) => {
     // old: 8014556
 
     // wav: 17586712

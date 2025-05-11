@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import {useSearchParams} from "react-router-dom";
 
 type returTypes = [
@@ -11,7 +12,7 @@ const useUpdateParams = (): returTypes => {
 
 	const params = Object.fromEntries(searchParams.entries())
 
-	const updateParams = (
+	const updateParams = useCallback((
 		key: string,
 		value: string | number,
 		remove: boolean = true,
@@ -51,7 +52,7 @@ const useUpdateParams = (): returTypes => {
 		}
 
 		setSearchParams(newParams);
-	}
+	}, [searchParams, setSearchParams])
 
 	const removeParams = (key: string) => {
 		// console.log("key", key)

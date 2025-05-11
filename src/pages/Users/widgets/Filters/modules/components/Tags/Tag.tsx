@@ -9,7 +9,7 @@ function Tag({tag}: {tag: string}) {
     if (!StoreForm.form?.tags?.map(e => e.tag).includes(tag)) {
       updateParams('tags', tag, false, true, true)
     }
-  }, [tag])
+  }, [])
 
   const handleChange = () => updateParams('tags', tag, false, true)
 

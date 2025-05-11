@@ -9,15 +9,14 @@ import { Request, Response } from "express";
 import MessageFileService from "@s/infrastructure/endpoints/Message/services/MessageFileService";
 
 class HttpMessageController {
-
-  sendSocket<T extends msg>(data: Message, type: T, msg: MsgTypes[T]) {
+  sendSocket = <T extends msg>(data: Message, type: T, msg: MsgTypes[T]) => {
     const clientFrom = clients.get(data.fromid)
     const clientTo = clients.get(data.toid)
     clientFrom!.send(toSO(type, msg))
     clientTo?.send(toSO(type, msg))
   }
 
-  async sendMessage(req: Request, res: Response) {
+  sendMessage = async (req: Request, res: Response) => {
     const data: Message = req.body
     const files = req.files as Express.Multer.File[]
     console.log(files)
@@ -31,7 +30,7 @@ class HttpMessageController {
   }
 
   // ТУТ ПОФИКСИТЬ ПОТОМ
-  async editMessage(req: Request, res: Response) {
+  editMessage = async (req: Request, res: Response) => {
     const {id} = req.params
     let total = null
 
@@ -49,10 +48,11 @@ class HttpMessageController {
   
       total = one(await ORM.put({files: [...ostavshiesa, ...paths], text: data.text}, id, 'messages'))
     }
+    console.log('total', total)
     this.sendSocket(total, 'edit_message', total)
   }
 
-  async deleteMessage(req: Request<{id: number}>, res: Response) {
+  deleteMessage = async (req: Request<{id: number}>, res: Response) => {
     const { id } = req.params
     const data = one(await ORM.delete(id, 'messages'))
     const asd = await Yandex.deleteFolder(id)

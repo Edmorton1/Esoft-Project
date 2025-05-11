@@ -1,9 +1,5 @@
-import $api from "@/shared/api/api"
 import StoreForm from "@/shared/stores/Store-Form"
-import StoreUser from "@/shared/stores/Store-User"
-import { Form, Tags } from "@s/core/domain/Users"
-import { one, toArr, toCl } from "@shared/MAPPERS"
-import { serverPaths } from "@shared/PATHS"
+import { toArr } from "@shared/MAPPERS"
 import { makeAutoObservable, runInAction } from "mobx"
 
 class StoreTags {
@@ -16,11 +12,12 @@ class StoreTags {
   initial = async () => {
     const searchParams = toArr(new URLSearchParams(window.location.search).get('tags'))
 
+    console.log(StoreForm.form)
     const request = StoreForm.form!.tags!
     console.log(request)
     StoreForm.addTags(request)
 
-    const newTags = searchParams ? [...new Set([...request.map(e => e.tag), ...searchParams])] : request.map(e => e.tag)
+    const newTags = searchParams ? [...new Set([...request.map(e => e.tag), ...searchParams])] : request?.map(e => e.tag)
 
 
     runInAction(() => this.tags = newTags)

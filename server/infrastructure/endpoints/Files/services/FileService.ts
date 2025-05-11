@@ -19,14 +19,14 @@ class FileService {
     return files.map(e => e.buffer)
   }
   
-  async imageCompress(buffer: Buffer) {
+  imageCompress = async (buffer: Buffer) => {
     return await sharp(buffer)
     .resize(400)
     .webp({quality: 100})
     .toBuffer()
   }
   
-  async videoCompress(buffer: Buffer, extention: string): Promise<Buffer> {
+  videoCompress = async (buffer: Buffer, extention: string): Promise<Buffer> => {
     const input = path.join(tmpdir(), `input-${randomUUID()}.${extention}`);
     const output = path.join(tmpdir(), `output-${randomUUID()}.mp4`);
   
@@ -70,7 +70,7 @@ class FileService {
     });
   }
 
-  async audioCompress(buffer: Buffer, extention: string): Promise<Buffer> {
+  audioCompress = async (buffer: Buffer, extention: string): Promise<Buffer> => {
     return new Promise((resolve, reject) => {
       const outputStream = new PassThrough();
   
@@ -99,7 +99,7 @@ class FileService {
     });
   }
 
-  async compress(buffer: Buffer): Promise<[Buffer, string]> {
+  compress = async (buffer: Buffer): Promise<[Buffer, string]> => {
     const type = (await fileTypeFromBuffer(buffer))
     const ext = type!.ext
     const mime = type!.mime

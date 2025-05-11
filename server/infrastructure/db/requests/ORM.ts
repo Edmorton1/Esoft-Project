@@ -22,7 +22,7 @@ const fieldsKey = (fields?: string, sqlparams?: string) => `${fields ? '--fields
 const fieldsSelect = (fields: string | undefined) => `${fields ? fields : '*'}`
 
 class ORM {
-  async get<T extends tables>(table: T, fields?: string, sqlparams?: string): Promise<Tables[T][]> {
+  get = async <T extends tables>(table: T, fields?: string, sqlparams?: string): Promise<Tables[T][]> => {
     // console.log("get", table, fields, sqlparams)
 
     const sql = toArr(sqlparams) || ''
@@ -32,7 +32,7 @@ class ORM {
     const callback = checkForms(table, async () => toTS<T>(await pool.query(`SELECT ${fieldsSelect(fields)} FROM ${table} ${sql}`)), fields, undefined, undefined, sqlparams)
     return cacheGet(key, callback)
   }
-  async getById<T extends tables>(id: number | string, table: T, fields?: string, sqlparams?: string): Promise<Tables[T][]> {
+  getById = async <T extends tables>(id: number | string, table: T, fields?: string, sqlparams?: string): Promise<Tables[T][]> => {
     // console.log("getById", table, fields, sqlparams)
 
     const sql = toArr(sqlparams) || ''
@@ -42,7 +42,7 @@ class ORM {
     return await cacheGet(key, callback)
   }
   
-  async getByParams<T extends tables>(params: Partial<Tables[T]>, table: T, fields?: string, sqlparams?: string): Promise<Tables[T][]> {
+  getByParams = async <T extends tables>(params: Partial<Tables[T]>, table: T, fields?: string, sqlparams?: string): Promise<Tables[T][]> => {
     // console.log("getByParams", params, table, fields, sqlparams)
 
     const [values, and] = toSQLWhere(params)
@@ -64,7 +64,7 @@ class ORM {
     return cacheGet(key, callback)
   }
 
-  async post<T extends tables>(dto: Partial<Tables[T]>, table: T, fields?: string): Promise<Tables[T][]> {
+  post = async <T extends tables>(dto: Partial<Tables[T]>, table: T, fields?: string): Promise<Tables[T][]> => {
     // console.log("post", table, fields, dto)
     if ("password" in dto && typeof dto.password == "string") {
       const hashed = await bcrypt.hash(dto.password, 3)
@@ -80,7 +80,7 @@ class ORM {
     return request
   }
 
-  async put<T extends tables>(dto: Partial<Tables[T]>, id: number | string, table: T): Promise<Tables[T][]> {
+  put = async <T extends tables>(dto: Partial<Tables[T]>, id: number | string, table: T): Promise<Tables[T][]> => {
     // console.log("put", table, id, dto)
     const [values, dollars] = toSQLPut(dto)
     const request = toTS<T>(await pool.query(`UPDATE ${table} SET ${dollars} WHERE id = ${id} RETURNING *`, [...values]))
@@ -89,7 +89,7 @@ class ORM {
     return request
   }
 
-  async delete<T extends tables>(id: number | string, table: T): Promise<Tables[T][]> {
+  delete = async <T extends tables>(id: number | string, table: T): Promise<Tables[T][]> => {
     // console.log("delete", id, table)
     const request = toTS<T>(await pool.query(`DELETE FROM ${table} WHERE id = $1 RETURNING *`, [id]))
     

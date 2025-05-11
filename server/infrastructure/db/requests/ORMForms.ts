@@ -4,7 +4,7 @@ import pool from "@s/infrastructure/db/db"
 import { toSQLWhere } from "@s/infrastructure/db/requests/SQLparsers"
 import { toTS } from "@shared/MAPPERS"
 
-async function getForm(fields?: string, id?: number | string, params?: Partial<Form>, sqlparams?: string): Promise<Form[]> {
+const getForm = async (fields?: string, id?: number | string, params?: Partial<Form>, sqlparams?: string): Promise<Form[]> => {
   fields = fields + ','
   function toFields() {
     if (fields) {
@@ -21,6 +21,18 @@ async function getForm(fields?: string, id?: number | string, params?: Partial<F
   const [values, and] = toSQLWhere(params ?? {}, true)
   // fields = fields?.split(', ').filter(e => e != 'tags').map(e => `forms.${e}`).join(', ')
   // console.log(`ЗАПРОС ПОШЁЛ`, values, and, fields, id, params)
+  console.log('ЗАПРОС НА ФОРМУ ',`
+    SELECT 
+      ${toFields()}
+      json_agg(json_build_object('id', tags.id, 'tag', tags.tag)) AS tags
+    FROM forms
+    LEFT JOIN user_tags ON forms.id = user_tags.id
+    LEFT JOIN tags ON user_tags.tagid = tags.id
+    ${id ? `WHERE forms.id = ${id}` : ``}
+    ${params ? `WHERE ${and}` : ``}
+    GROUP BY forms.id
+    ${sqlparams || ''};
+  `)
   const request = toTS<'forms'>(await pool.query(`
     SELECT 
       ${toFields()}
@@ -36,7 +48,7 @@ async function getForm(fields?: string, id?: number | string, params?: Partial<F
   return request
 }
 
-export function checkForms(table: tables, callback: () => any, fields?: string, id?: string | number, params?: Partial<Form>, sqlparams?: string) {
+export const checkForms = (table: tables, callback: () => any, fields?: string, id?: string | number, params?: Partial<Form>, sqlparams?: string) => {
   // console.log(table, fields, params)
   if (table === 'forms' && (!fields || fields?.includes("tags"))) {
     // console.log(table, fields, id, params)

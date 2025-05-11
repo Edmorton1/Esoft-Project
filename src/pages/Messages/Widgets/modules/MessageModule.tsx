@@ -19,12 +19,12 @@ const MessageModule = ({msg, editing, setEditMessage}: propsInterface) => {
       setValue(msg.text)
       setFiles({new: null, old: Array.isArray(msg?.files) && msg.files.length > 0 ? msg.files : null})
     }
-  }, [editing])
+  }, [editing, msg.files, msg.text])
 
-  const changeClick = useCallback(() => setEditMessage(msg.id!), [msg, editing])
+  const changeClick = useCallback(() => setEditMessage(msg.id!), [msg.id, setEditMessage])
   const deleteClick = useCallback(() => StoreMessages.delete(msg.id!), [msg])
 
-  const submitClick = useCallback(() => {StoreMessages.put({...msg, text: value, files: files!}); setEditMessage(null)}, [msg, value, files])
+  const submitClick = useCallback(() => {StoreMessages.put({...msg, text: value, files: files!}); setEditMessage(null)}, [msg, value, files, setEditMessage])
   const inputNewFile = useCallback((e: React.ChangeEvent<HTMLInputElement>) => setFiles(prev => ({...prev!, new: e.target.files})), [])
   const textInput = useCallback((e: React.ChangeEvent<HTMLInputElement>) => setValue(e.target.value), [])
   const clickDeleteFile = useCallback((item: string) => setFiles(prev => ({...prev!, old: prev!.old!.filter(file => file != item)})), [])

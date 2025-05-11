@@ -19,7 +19,7 @@ function Registration() {
     if (location?.city) {
       setValue("city", location.city)
     }
-  }, [location])
+  }, [location, setValue])
 
   async function registrationHandle(data: UserDTO & FormDTO) {
     const {email, password, avatar, ...rawForm} = data

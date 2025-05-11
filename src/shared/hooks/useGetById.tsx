@@ -34,7 +34,7 @@ function useGetById<T extends tables>(fullUrl: string, resType?: 'single' | 'arr
     }
 
     fetchData()
-  }, [fullUrl])
+  }, [fullUrl, callback, resType])
 
   return value
 }

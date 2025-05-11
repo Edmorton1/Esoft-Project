@@ -5,7 +5,7 @@ import { toTS } from "@shared/MAPPERS"
 type tagsTypes = {groups: string, id: number[]}[]
 
 class SQLHard {
-  async getUserTags(tags: string): Promise<tagsTypes> {
+  getUserTags = async (tags: string): Promise<tagsTypes> => {
     const [keys, values] = toSQLgetUserTags(tags)
     const request = (await pool.query(`
     WITH input_words AS (
@@ -33,7 +33,7 @@ class SQLHard {
     return request
   }
 
-  async getByTags(tags: tagsTypes, params: Record<string, string>, page: string, min_age: string, max_age: string) {
+  getByTags = async (tags: tagsTypes, params: Record<string, string>, page: string, min_age: string, max_age: string) => {
     const [values, and] = toSQLWhere(params, false)
     const conditions: string[] = []
 

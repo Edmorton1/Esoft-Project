@@ -12,14 +12,6 @@ import HttpExtendedSearchController from "@s/infrastructure/endpoints/ExtendSear
 const upload = multer({storage: multer.memoryStorage()})
 const router = express.Router()
 
-// const httpUserController = (method: keyof HttpUserController) => {
-//   const controller = new HttpUserController(new UserService(new UserRepoImpl()), new UserRepoImpl())
-//   //@ts-ignore
-//   return controller[method].bind(controller)
-// }
-
-
-
 const tablesArr: tables[] = ['users', 'forms', 'likes', 'messages', 'tags', 'user_tags', 'tokens']
 
 tablesArr.forEach(table => {

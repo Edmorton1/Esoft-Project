@@ -17,7 +17,7 @@ function useDebounceParams(keyName: string, reload: boolean = false): [string | 
     } else {
       updateParams(keyName, debounce!, reload)
     }
-  }, [debounce])
+  }, [debounce, initial, keyName, reload, setDebounce, updateParams])
 
   const handleChange = (text: string) => setDebounce(text)
 
