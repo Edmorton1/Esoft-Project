@@ -7,7 +7,7 @@ function UsersCardInfo() {
   return <>
     <img src={context.avatar!} alt="" />
     <div>Имя: {context.name}</div>
-    <div>Пол: {context.sex}</div>
+    <div>Пол: {context.sex === true ? 'Мужчина' : 'Женщина'}</div>
     <div>Возраст: {context.age}</div>
     <div>Цель: {context.target}</div>
     <div>Описание: {context.description}</div>

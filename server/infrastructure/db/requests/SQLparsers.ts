@@ -19,9 +19,10 @@ export function toSQLPut(props: any) {
   return [values, dollars]
 }
 
-export function toSQLWhere(props: Record<any, any>, isform?: boolean, startValue?: number) {
-  const keys = Object.keys(props)
-  const values = Object.values(props)
-  const and = keys.map((e, i) => (`${isform ? `forms.` : ``}${e} = $${(startValue ?? 0) + i + 1} and`)).join(' ').slice(0, -4)
+export function toSQLWhere(props: Record<any, any>, isform?: boolean): [any[], string] {
+  const keys = Object.keys(props).filter(e => props[e] != '')
+  const values = Object.values(props).filter(e => e != '')
+  console.log(keys.length === values.length)
+  const and = keys.map((e, i) => (`${isform ? `forms.` : ``}${e} = $${i + 1} and`)).join(' ').slice(0, -4)
   return [values, and]
 }

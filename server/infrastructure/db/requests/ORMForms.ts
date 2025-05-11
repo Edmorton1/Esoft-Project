@@ -24,11 +24,7 @@ async function getForm(fields?: string, id?: number | string, params?: Partial<F
   const request = toTS<'forms'>(await pool.query(`
     SELECT 
       ${toFields()}
-      COALESCE(
-        json_agg(
-          json_build_object('id', tags.id, 'tag', tags.tag)
-        ), '[]'
-      ) AS tags
+      json_agg(json_build_object('id', tags.id, 'tag', tags.tag)) AS tags
     FROM forms
     LEFT JOIN user_tags ON forms.id = user_tags.id
     LEFT JOIN tags ON user_tags.tagid = tags.id

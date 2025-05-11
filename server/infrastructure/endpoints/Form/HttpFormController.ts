@@ -22,8 +22,7 @@ class HttpFormController {
     delete data.tags
     const form = one(await ORM.post(data, 'forms'))
     tags?.forEach(async tag => {
-      //@ts-ignore
-      this.FormService.pushTag(data.id, tag)
+      FormService.pushTag(data.id, tag)
     })
     res.json(form)
   }
