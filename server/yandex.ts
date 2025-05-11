@@ -14,7 +14,15 @@ export const s3 = new EasyYandexS3({
 });
 
 class Yandex {
-  upload = async (buffer: Buffer, ext: string, path: string): Promise<YandexPost> => {
+  getFolder = async (id: string | number): Promise<string[]> => {
+    const request = await s3.GetList(`/messages/${id}/`)
+    const requestVrap = request === false ? undefined : request
+
+    const folder: string[] = requestVrap!.Contents!.map(e => e.Key!)
+    return folder
+  }
+
+  upload = async (buffer: Buffer, ext: string, path: string) => {
 
     const load = await s3.Upload(
       {
@@ -23,31 +31,28 @@ class Yandex {
       },
       path
     );
-
-    // console.log(load)
-    //@ts-ignore
-    return load
+    return load === false ? undefined : Array.isArray(load) ? load[0] : load
   }
+
   deleteFolder = async (id: number) => {
-    //@ts-ignore
-    const folder: string[] = ((await s3.GetList(`/messages/${id}/`)).Contents).map(e => e.Key)
+    const folder = await this.getFolder(id)
     folder.forEach(async e => {
       await s3.Remove(e)
     })
     return folder
   }
+
   deleteArr = async (id: number | string, files?: string[]): Promise<string[]> => {
-    //@ts-ignore
-    let folder: string[] = ((await s3.GetList(`/messages/${id}/`)).Contents).map(e => e.Key)
+    let folder = await this.getFolder(id)
     console.log('folder', folder)
-      console.log(folder, files)
-      for (const e of folder) {
-        if (!files?.includes(e)) {
-          await s3.Remove(e);
-          folder = folder.filter(item => item != e)
-        }
+    console.log(folder, files)
+    for (const e of folder) {
+      if (!files?.includes(e)) {
+        await s3.Remove(e);
+        folder = folder.filter(item => item != e)
       }
-      console.log(folder)
+    }
+    console.log(folder)
 
     return folder.map(e => 'https://znakomstva.storage.yandexcloud.net/' + e);
   }

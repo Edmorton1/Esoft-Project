@@ -16,14 +16,12 @@ export class FormDTO {
     readonly target: TargetType,
     // ПОТОМ СДЕЛАТЬ НЕОБЯЗ
     readonly targetCustom: string,
-    readonly avatar: FileList,
-    public tags?: string,
+    readonly avatar?: FileList | string,
+    public tags?: string | string[],
 
     readonly description?: string,
     readonly city?: string,
     readonly location?: {lng: number, lat: number},
-
-
   ) {}
 }
 

@@ -9,7 +9,7 @@ class MessageFileService {
         const [newBuffer, ext] = await FileService.compress(e)
         const load = await Yandex.upload(newBuffer, ext ,`/messages/${id}/`)
         // console.log(load.Location)
-      return load.Location
+      return load!.Location
     }))
   }
 }

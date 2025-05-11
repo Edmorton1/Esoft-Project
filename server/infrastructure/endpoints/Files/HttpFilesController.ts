@@ -17,8 +17,8 @@ class HttpFilesController {
     // res.type("webp")
     // res.send(compress)
     const yandex = await Yandex.upload(compress,'.webp', '/avatars/')
-    await ORM.put({avatar: yandex.Location}, id, 'forms')
-    res.json(yandex.Location)
+    await ORM.put({avatar: yandex!.Location}, id, 'forms')
+    res.json(yandex!.Location)
   }
 
   async TestConvertVideo(req: Request, res: Response) {

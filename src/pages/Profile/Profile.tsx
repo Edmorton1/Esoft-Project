@@ -10,7 +10,6 @@ import Loading from "../../shared/ui/Loading"
 function Profile() {
   const id = Number(useParams().id)
 
-  //@ts-ignore
   useGetById(`/forms?id=${id}`, 'single', StoreProfile.initial)
 
   if (StoreProfile.profile === null) {

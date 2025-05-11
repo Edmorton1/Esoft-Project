@@ -1,5 +1,6 @@
 import $api from "@/shared/api/api";
 import { Form, Tags } from "@s/core/domain/Users";
+import { FormDTO } from "@s/core/dtoObjects";
 import { one, toCl } from "@shared/MAPPERS";
 import { serverPaths } from "@shared/PATHS";
 import { makeAutoObservable, runInAction } from "mobx";
@@ -20,7 +21,7 @@ class FormStore {
     runInAction(() => this.form!.tags = tags)
   }
 
-  async postForm(data: Form) {
+  async postForm(data: FormDTO) {
     const request = toCl<Form>(await $api.post(`${serverPaths.createForm}`, data))
     runInAction(() => this.form = request)
     // console.log(request)

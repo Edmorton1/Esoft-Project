@@ -3,13 +3,13 @@ import { Tables, tables } from "@s/core/domain/types"
 import { one, toCl, toJSON } from "@shared/MAPPERS"
 import { useEffect, useState } from "react"
 
-function useGetById<T extends tables>(table: T, resType?: 'array', callback?: (data: any) => void): Tables[T][] | null
-function useGetById<T extends tables>(table: T, resType?: 'single', callback?: (data: any) => void): Tables[T] | null
-function useGetById<T extends tables>(table: T, resType?: 'single' | 'array', callback?: (data: any) => void): Tables[T][] | Tables[T] | null {
+function useGetById<T extends tables>(fullUrl: string, resType?: 'array', callback?: (data: any) => void): Tables[T][] | null
+function useGetById<T extends tables>(fullUrl: string, resType?: 'single', callback?: (data: any) => void): Tables[T] | null
+function useGetById<T extends tables>(fullUrl: string, resType?: 'single' | 'array', callback?: (data: any) => void): Tables[T][] | Tables[T] | null {
   const [value, setValue] = useState<Tables[T][] | Tables[T] | null>(null)
 
   useEffect(() => {
-    const [url, params] = table.split('?')
+    const [url, params] = fullUrl.split('?')
     const fetchData = async () => {
       if (params) {
         // console.log(new URLSearchParams(params as Record<string, string>).toString())
@@ -34,7 +34,7 @@ function useGetById<T extends tables>(table: T, resType?: 'single' | 'array', ca
     }
 
     fetchData()
-  }, [table])
+  }, [fullUrl])
 
   return value
 }

@@ -4,8 +4,8 @@ import { ChangeEvent, useEffect } from "react"
 
 function useDebounceParams(keyName: string, reload: boolean = false): [string | null, (e: any) => any] {
   const [params, updateParams] = useUpdateParams()
-
   const [debounce, setDebounce] = useDebounce()
+  
   const initial = params[keyName]
 
   useEffect(() => {

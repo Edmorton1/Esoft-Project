@@ -18,10 +18,9 @@ class HttpMessageController {
   }
 
   async sendMessage(req: Request, res: Response) {
-    const data: MessageDTO = req.body
+    const data: Message = req.body
     const files = req.files as Express.Multer.File[]
     console.log(files)
-    //@ts-ignore
     const request = one(await ORM.post(data, 'messages'))
 
     const paths = await MessageFileService.uploadFiles(request.id, files)

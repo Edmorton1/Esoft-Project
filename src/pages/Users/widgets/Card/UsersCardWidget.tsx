@@ -28,8 +28,6 @@ function UsersCardWidget() {
   // ПОТО РЕАКТ КВЕРИ И ЧЕРНОВИКИ СООБЩЕНИЙ
   // ЕЩЁ ЗАКЭШИРОВАТЬ ПОДБОР ПОЛЬЗ
 
-
-  //@ts-ignore
   useGetById(`/extendedSearch?tags=${tags}&page=${page}&target=${target}&city=${city}&sex=${sex === 'man' ? 'true' : sex === 'woman' ? 'false' : ''}&min_age=${min_age}&max_age=${max_age}`, 'array', StoreUsers.initial)
 
   return <>
