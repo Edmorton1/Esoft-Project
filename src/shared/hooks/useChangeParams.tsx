@@ -12,7 +12,7 @@ const useUpdateParams = (): returTypes => {
 
 	const params = Object.fromEntries(searchParams.entries())
 
-	const updateParams = useCallback((
+	const updateParams = (
 		key: string,
 		value: string | number,
 		remove: boolean = true,
@@ -52,7 +52,7 @@ const useUpdateParams = (): returTypes => {
 		}
 
 		setSearchParams(newParams);
-	}, [searchParams, setSearchParams])
+	}
 
 	const removeParams = (key: string) => {
 		// console.log("key", key)

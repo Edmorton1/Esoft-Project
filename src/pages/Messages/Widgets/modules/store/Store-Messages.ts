@@ -1,12 +1,12 @@
 import $api from "@/shared/api/api"
 import { makeAutoObservable, runInAction, toJS } from "mobx"
 import { Message } from "@s/core/domain/Users"
-import StoreSocket from "@/shared/api/Store-Socket"
 import { toCl } from "@shared/MAPPERS"
 import StoreUser from "@/shared/stores/Store-User"
 import { toFormData } from "@/pages/Registration/modules/funcs/funcDropAva"
 import { MessageDTO, MessagePutDTO } from "@s/core/dtoObjects"
 import { serverPaths } from "@shared/PATHS"
+import { queryClient } from "@/shared/stores/ReactQuery"
 
 class StoreMessages {
   messages: {sent: Message[]; received: Message[]} | null = null
@@ -16,11 +16,23 @@ class StoreMessages {
   }
 
   initial = async () => {
-    const sent = toCl<Message[]>(await $api.get(`/messages?fromid=${StoreUser.user?.id}`))?.sort((a, b) => a.id! - b.id!)
-    const received = toCl<Message[]>(await $api.get(`/messages?toid=${StoreUser.user?.id}`))?.sort((a, b) => a.id! - b.id!)
-    const msgs = {sent, received}
-    runInAction(() => this.messages = msgs)
+    const data = await queryClient.fetchQuery({
+      queryKey: ['messages', StoreUser.user?.id],
+      queryFn: async () => {
+        const sent = toCl<Message[]>(await $api.get(`/messages?fromid=${StoreUser.user?.id}`))?.sort((a, b) => a.id! - b.id!)
+        const received = toCl<Message[]>(await $api.get(`/messages?toid=${StoreUser.user?.id}`))?.sort((a, b) => a.id! - b.id!)
+        return {sent, received}
+      }
+    })
+    runInAction(() => this.messages = data)
   }
+
+  // initial = async () => {
+  //   const sent = toCl<Message[]>(await $api.get(`/messages?fromid=${StoreUser.user?.id}`))?.sort((a, b) => a.id! - b.id!)
+  //   const received = toCl<Message[]>(await $api.get(`/messages?toid=${StoreUser.user?.id}`))?.sort((a, b) => a.id! - b.id!)
+  //   const msgs = {sent, received}
+  //   runInAction(() => this.messages = msgs)
+  // }
 
   send = async (data: MessageDTO) => {
     const formdata = await toFormData(data.files)

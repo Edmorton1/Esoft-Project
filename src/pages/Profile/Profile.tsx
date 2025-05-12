@@ -6,11 +6,19 @@ import FourHundredFour from "../../shared/Errors/404"
 import StoreForm from "@/shared/stores/Store-Form"
 import { AvatarOnChange } from "@/pages/Registration/modules/funcs/funcDropAva"
 import Loading from "../../shared/ui/Loading"
+import { useEffect } from "react"
+import { toJS } from "mobx"
 
 function Profile() {
   const id = Number(useParams().id)
 
-  useGetById(`/forms?id=${id}`, 'single', StoreProfile.initial)
+  // useGetById(`/forms?id=${id}`, 'single', StoreProfile.initial)
+  useEffect(() => {
+    StoreProfile.fetchProfile(id)
+  }, [])
+
+
+  // console.log(StoreProfile.profile, StoreForm.form)
 
   if (StoreProfile.profile === null) {
     return <Loading />
@@ -22,12 +30,24 @@ function Profile() {
 
   return (
     <main style={{display: "flex", flexDirection: "column"}}>
+      <button onClick={() => console.log(toJS(StoreProfile.profile))}>Вывести профайл</button>
+      <button onClick={() => StoreProfile.fetchProfile(id)}>Запрос на кэш</button>
       <div>{StoreProfile.profile.id === StoreForm.form?.id ? 'Ващ аккаунт' : "Не ваш"}</div>
       <Link to={"/settings"}>Настройки</Link>
       {StoreProfile.profile?.id}
-      <input type="file" onChange={AvatarOnChange} />;
-      <img src={StoreProfile.profile.avatar!} alt="" />
+      <img src={StoreProfile.profile.avatar!} style={{width: "400px"}} alt="" />
       {/* <button onClick={() => console.log(toJS(StoreProfile.profile))}>asd</button> */}
+
+      <div>INFO</div>
+      <br />
+      {/* <input type="file" onChange={AvatarOnChange} /> */}
+      <div>Имя: {StoreProfile.profile.name}</div>
+      <div>Пол: {StoreProfile.profile.sex === true ? 'Мужчина' : 'Женщина'}</div>
+      <div>Возраст: {StoreProfile.profile.age}</div>
+      <div>Цель: {StoreProfile.profile.target}</div>
+      <div>Описание: {StoreProfile.profile.description}</div>
+      <div>Город: {StoreProfile.profile.city}</div>
+      <div>Тэги: {StoreProfile.profile.tags?.map(e => e.tag).join(', ')}</div>
     </main>
   )
 }

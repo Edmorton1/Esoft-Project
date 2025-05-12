@@ -8,7 +8,6 @@ import Input from "@/pages/Users/widgets/Filters/modules/components/Input"
 
 function UsersFilterWidget() {
   console.log("FILTER RE")
-  const [params, updateParams] = useUpdateParams()
 
   return <>
     <div>Показывать только</div>
