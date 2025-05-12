@@ -1,5 +1,5 @@
-import useGetById from "@/shared/hooks/useGetById"
-import StoreProfile from "@/shared/stores/Store-Profile"
+import useGetBy from "@/shared/hooks/useGetBy"
+import StoreProfile from "@/pages/Profile/modules/stores/Store-Profile"
 import { observer } from "mobx-react-lite"
 import { Link, useParams } from "react-router-dom"
 import FourHundredFour from "../../shared/Errors/404"
@@ -12,11 +12,11 @@ import { toJS } from "mobx"
 function Profile() {
   const id = Number(useParams().id)
 
-  // useGetById(`/forms?id=${id}`, 'single', StoreProfile.initial)
-  useEffect(() => {
-    StoreProfile.fetchProfile(id)
-  }, [])
-
+  useGetBy(`/forms?id=${id}`, {
+    returnOne: true,
+    callback: StoreProfile.initial,
+    qkey: ['profile', id]
+  })
 
   // console.log(StoreProfile.profile, StoreForm.form)
 
