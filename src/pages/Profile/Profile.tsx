@@ -1,4 +1,4 @@
-import useGetById from "@/shared/hooks/useGetById"
+import useGetById from "@/shared/hooks/useGetBy"
 import StoreProfile from "@/shared/stores/Store-Profile"
 import { observer } from "mobx-react-lite"
 import { Link, useParams } from "react-router-dom"
@@ -10,7 +10,7 @@ import Loading from "../../shared/ui/Loading"
 function Profile() {
   const id = Number(useParams().id)
 
-  useGetById(`/forms?id=${id}`, 'single', StoreProfile.initial)
+  useGetById(`/forms?id=${id}`, {returnOne: true, callback: StoreProfile.initial})
 
   if (StoreProfile.profile === null) {
     return <Loading />

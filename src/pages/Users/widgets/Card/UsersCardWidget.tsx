@@ -2,7 +2,7 @@ import StoreUsers from "@/pages/Users/widgets/store/Store-Users"
 import UsersCardModule from "@/pages/Users/widgets/Card/modules/UsersCardModule"
 import { Form } from "@s/core/domain/Users"
 import { createContext } from "react"
-import useGetById from "@/shared/hooks/useGetById"
+import useGetById from "@/shared/hooks/useGetBy"
 import useUpdateParams from "@/shared/hooks/useChangeParams"
 
 export const UsersContext = createContext<Form | null>(null)
@@ -28,7 +28,7 @@ function UsersCardWidget() {
   // ПОТО РЕАКТ КВЕРИ И ЧЕРНОВИКИ СООБЩЕНИЙ
   // ЕЩЁ ЗАКЭШИРОВАТЬ ПОДБОР ПОЛЬЗ
 
-  useGetById(`/extendedSearch?tags=${tags}&page=${page}&target=${target}&city=${city}&sex=${sex === 'man' ? 'true' : sex === 'woman' ? 'false' : ''}&min_age=${min_age}&max_age=${max_age}`, 'array', StoreUsers.initial)
+  useGetById(`/extendedSearch?tags=${tags}&page=${page}&target=${target}&city=${city}&sex=${sex === 'man' ? 'true' : sex === 'woman' ? 'false' : ''}&min_age=${min_age}&max_age=${max_age}`, {callback: StoreUsers.initial})
 
   return <>
     {/* <Pagination /> */}
