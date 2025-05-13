@@ -1,7 +1,7 @@
 
 import $api from "@/shared/api/api"
 import { tables, Tables } from "@s/core/domain/types"
-import { one, toCl } from "@shared/MAPPERS"
+import { frJSON, one, toCl, toJSON } from "@shared/MAPPERS"
 import { useEffect, useState } from "react"
 
 interface optionsInterface {
@@ -17,12 +17,11 @@ function useGetBy<T extends tables>(fullUrl: string, options?: optionsInterface)
   const [url, params] = fullUrl.split('?')
   const endpoint = params ? `${url}?${params}` : `/${url}`
 
-
   useEffect(() => {
     const fetchData = async () => {
+    const response = await $api.get(endpoint)
+    const request = toCl<Tables[T][]>(response)
 
-    const request = toCl<Tables[T][]>(await $api.get(endpoint))
-      
     const result = options?.returnOne ? one(request) : request
     setValue(result)
     options?.callback && options?.callback(result)

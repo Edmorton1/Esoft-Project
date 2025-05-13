@@ -5,6 +5,7 @@ export const paths = {
   users: '/users',
   profile: '/profile',
   settings: '/settings',
+  room: '/room',
 
   test: "/test"
 }

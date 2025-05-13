@@ -1,12 +1,15 @@
 import useGeolocation from "@/shared/hooks/useGeolocation";
+import { useEffect } from "react";
 
 function Test() {
   const location = useGeolocation()
   console.log(location?.city)
 
+  const fetchTest = async () => console.log(await (await fetch('http://localhost:3000/test')).json())
+
   return (
     <>
-      asdasd
+      <button onClick={fetchTest}>Тестовый запрос</button>
     </>
 
   )

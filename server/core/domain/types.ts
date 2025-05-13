@@ -22,6 +22,10 @@ export type MsgTypes = {
 
   like: Likes
   delete_like: number
+
+  offer: string,
+  answer: string,
+  icecandidate: string
 }
 
 export type msg = keyof MsgTypes

@@ -21,6 +21,7 @@ function Header() {
         <Link to={paths.messages}><button>Сообщения</button></Link>
         <Link to={paths.users}><button>Пользователи</button></Link>
         <Link to={`${paths.profile}/2`}><button>profile 2</button></Link>
+        <Link to={paths.room}><button>ROOM</button></Link>
         <button onClick={() => console.log(
           'User: ', toJS(StoreUser.user),
           'Form:', toJS(StoreForm.form),

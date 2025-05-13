@@ -9,18 +9,19 @@ import HttpMessageController from "@s/infrastructure/endpoints/Message/HttpMessa
 import HttpLikesController from "@s/infrastructure/endpoints/Likes/HttpLikesController"
 import HttpFilesController from "@s/infrastructure/endpoints/Files/HttpFilesController"
 import HttpExtendedSearchController from "@s/infrastructure/endpoints/ExtendSearch/HttpExtendedSearchController"
+import CRUDMiddleware from "@s/infrastructure/middlewares/CRUDMiddleware"
 const upload = multer({storage: multer.memoryStorage()})
 const router = express.Router()
 
 const tablesArr: tables[] = ['users', 'forms', 'likes', 'messages', 'tags', 'user_tags', 'tokens']
 
 tablesArr.forEach(table => {
-  router.get(`/${table}`, universalController('get', table))
-  router.get(`/${table}/:id`, universalController('getById', table))
+  router.get(`/${table}`, new CRUDMiddleware(table).CRUDshort, universalController('get', table))
+  router.get(`/${table}/:id`, new CRUDMiddleware(table).CRUDshort, universalController('getById', table))
   // router.get(`/${table}`, universalController('getByParams', table))
-  router.post(`/${table}`, universalController('post', table))
-  router.put(`/${table}/:id`, universalController('put', table))
-  router.delete(`/${table}/:id`, universalController('delete', table))
+  router.post(`/${table}`, new CRUDMiddleware(table).CRUDshort, universalController('post', table))
+  router.put(`/${table}/:id`, new CRUDMiddleware(table).CRUDshort, universalController('put', table))
+  router.delete(`/${table}/:id`, new CRUDMiddleware(table).CRUDshort, universalController('delete', table))
 })
 
 // router.get('/byParams', universalController('getByParams', 'users'))

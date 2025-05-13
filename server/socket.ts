@@ -23,6 +23,9 @@ function createWebSocketServer(server: any) {
           wsClient.id = data
           clients.set(data, wsClient)
           break
+        
+        case "offer":
+          console.log(data)
       }
         
       // console.log(data)

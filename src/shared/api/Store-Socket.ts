@@ -35,6 +35,7 @@ class SocketStore {
     }
     this.socket.onmessage = (msg) => {
       const {data, type} = frSO(msg.data)
+      console.log(data, type)
       switch (type) {
         case "message":
           console.log(data)
@@ -52,6 +53,7 @@ class SocketStore {
           break
         case "delete_like":
           StoreLikes.sendDelete(data)
+          break
       }
 
       // setTimeout(() => {this.socket?.send('ПРИВЕТ С КЛИЕНТА'), console.log('СООБЩЕНИЕ ОТПРАВЛЕНО')}, 3000)
