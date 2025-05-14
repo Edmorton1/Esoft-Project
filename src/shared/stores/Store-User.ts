@@ -6,7 +6,7 @@ import StoreTags from "@/shared/stores/Store-Tags"
 import StoreLikes from "@/shared/stores/StoreLikes"
 import { Form, User } from "@s/core/domain/Users"
 import { FormDTO, UserDTO } from "@s/core/dtoObjects"
-import { toSO, toCl } from "@shared/MAPPERS"
+import { toSOSe, toCl } from "@shared/MAPPERS"
 import { serverPaths } from "@shared/PATHS"
 import { makeAutoObservable, runInAction } from "mobx"
 
@@ -86,7 +86,7 @@ class StoreUser {
       await StoreForm.initial(request.user.id)
       localStorage.setItem("accessToken", request.accessToken)
       await storeSocket.waitSocket(storeSocket.socket!)
-      storeSocket.socket!.send(toSO('userid', this.user!.id))
+      storeSocket.socket!.send(toSOSe('userid', this.user!.id))
 
       await this.loadModules()
       

@@ -1,8 +1,9 @@
 import StoreMessages from "@/pages/Messages/widgets/modules/store/Store-Messages";
 import StoreLikes from "@/shared/stores/StoreLikes";
 import { URL_SERVER_WS } from "@shared/URLS";
-import { frSO } from "@shared/MAPPERS";
+import { frSOSe, frSOCl } from "@shared/MAPPERS";
 import { makeAutoObservable, runInAction } from "mobx";
+import StoreRoom from "@/pages/Room/Store-Room";
 
 class SocketStore {
   socket: WebSocket | null = null
@@ -34,8 +35,8 @@ class SocketStore {
       console.log('КЛИЕНТ ПОДКЛЮЧИЛСЯ')
     }
     this.socket.onmessage = (msg) => {
-      const {data, type} = frSO(msg.data)
-      console.log(data, type)
+      const {data, type} = frSOCl(msg.data)
+      // console.log(data, type)
       switch (type) {
         case "message":
           console.log(data)
@@ -54,6 +55,10 @@ class SocketStore {
         case "delete_like":
           StoreLikes.sendDelete(data)
           break
+
+        case "offer":
+          console.log(data)
+          StoreRoom.SocketGetOffer(data)
       }
 
       // setTimeout(() => {this.socket?.send('ПРИВЕТ С КЛИЕНТА'), console.log('СООБЩЕНИЕ ОТПРАВЛЕНО')}, 3000)

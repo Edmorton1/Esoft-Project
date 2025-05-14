@@ -37,11 +37,11 @@ peerConnection.setRemoteDescription(offer)
 
 let dataChannel;
 
-// peerConnection.ondatachannel = event => {
-//     dataChanel = event.channel;
-//     dataChanel.onopen = () => console.log('Channel opened!')
-//     dataChanel.onmessage = e => console.log('Message', e.data)
-// }
+peerConnection.ondatachannel = event => {
+    dataChanel = event.channel;
+    dataChanel.onopen = () => console.log('Channel opened!')
+    dataChanel.onmessage = e => console.log('Message', e.data)
+}
 // event => {
 //     dataChanel = event.channel;
 //     dataChanel.onopen = () => console.log('Channel opened!')

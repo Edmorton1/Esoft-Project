@@ -1,7 +1,7 @@
-import { msg, MsgTypes } from "@s/core/domain/types";
+import { msg, MsgTypesServer } from "@s/core/domain/types";
 import { Form, Message } from "@s/core/domain/Users";
 import { MessageDTO, MessagePutDTO, MessagePutServer } from "@s/core/dtoObjects";
-import { toSO, one } from "@shared/MAPPERS";
+import { toSOSe, one } from "@shared/MAPPERS";
 import ORM from "@s/infrastructure/db/requests/ORM";
 import { clients } from "@s/socket";
 import Yandex from "@s/yandex";
@@ -9,11 +9,11 @@ import { Request, Response } from "express";
 import MessageFileService from "@s/infrastructure/endpoints/Message/services/MessageFileService";
 
 class HttpMessageController {
-  sendSocket = <T extends msg>(data: Message, type: T, msg: MsgTypes[T]) => {
+  sendSocket = <T extends msg>(data: Message, type: T, msg: MsgTypesServer[T]) => {
     const clientFrom = clients.get(data.fromid)
     const clientTo = clients.get(data.toid)
-    clientFrom!.send(toSO(type, msg))
-    clientTo?.send(toSO(type, msg))
+    clientFrom!.send(toSOSe(type, msg))
+    clientTo?.send(toSOSe(type, msg))
   }
 
   sendMessage = async (req: Request, res: Response) => {

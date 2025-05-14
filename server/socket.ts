@@ -1,4 +1,4 @@
-import { frSO } from "@shared/MAPPERS";
+import { frSOSe, toJSON, toSOCl, toSOSe } from "@shared/MAPPERS";
 import WebSocket from "ws";
 
 interface WebSocketWidh extends WebSocket {
@@ -17,7 +17,7 @@ function createWebSocketServer(server: any) {
     // ws.send('ПРИВЕТ С СЕРВЕРА')
     
     wsClient.on('message', msg => {
-      const {data, type} = frSO(msg)
+      const {data, type} = frSOSe(msg)
       switch (type) {
         case "userid":
           wsClient.id = data
@@ -25,7 +25,9 @@ function createWebSocketServer(server: any) {
           break
         
         case "offer":
-          console.log(data)
+          console.log('clients', clients.keys())
+          clients.get(data.id)?.send(toSOCl("offer", data.description))
+          break
       }
         
       // console.log(data)

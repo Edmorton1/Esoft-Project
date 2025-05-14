@@ -1,4 +1,4 @@
-import { msg, MsgTypes, SocketMessageInterface, tables, Tables } from "@s/core/domain/types"
+import { msg, MsgTypesClient, MsgTypesServer, SocketMessageServerInterface, tables, Tables } from "@s/core/domain/types"
 
 export function toTS<T extends keyof Tables>(entity: any): Tables[T][] {
     // return entity.rows.length > 1 ? entity.rows : entity.rows[0]
@@ -20,15 +20,23 @@ export const frJSON = <T>(data: string | any): T | null => {
   } return null
 }
 
-export function frSO(msg: any): SocketMessageInterface {
-  return JSON.parse(msg.toString())
-}
-
 export const toJSON = (data: any): string => {
   return JSON.stringify(data)
 }
 
-export function toSO<T extends msg>(type: T, data: MsgTypes[T]) {
+export function frSOSe(msg: any): SocketMessageServerInterface {
+  return JSON.parse(msg.toString())
+}
+
+export function frSOCl(msg: any) {
+    return JSON.parse(msg.toString())
+}
+
+export function toSOSe<T extends msg>(type: T, data: MsgTypesServer[T]) {
+  return toJSON({data, type})
+}
+
+export function toSOCl<T extends msg>(type: T, data: MsgTypesClient[T]) {
   return toJSON({data, type})
 }
 

@@ -14,7 +14,7 @@ export type Tables = {
 
 export type tables = keyof Tables
 
-export type MsgTypes = {
+export interface MsgTypesServer {
   userid: number,
   message: Message,
   delete_message: number,
@@ -23,16 +23,33 @@ export type MsgTypes = {
   like: Likes
   delete_like: number
 
-  offer: string,
+  offer: {id: number, description: RTCSessionDescription},
   answer: string,
   icecandidate: string
 }
 
-export type msg = keyof MsgTypes
+export interface MsgTypesClient extends Omit<MsgTypesServer, 'offer'> {
+  offer: RTCSessionDescription
+}
 
-export type SocketMessageInterface= {
-  [K in keyof MsgTypes]: {type: K, data: MsgTypes[K]}
-}[keyof MsgTypes]
+export type SocketMessageClientInterface = {
+  [K in keyof MsgTypesClient]: {type: K, data: MsgTypesClient[K]}
+}[keyof MsgTypesClient]
+
+// interface Person {
+//   name: string,
+//   age: number
+// }
+
+// export interface Skuf extends Omit<Person, 'name'> {
+//   name: number
+// } 
+
+export type msg = keyof MsgTypesServer
+
+export type SocketMessageServerInterface= {
+  [K in keyof MsgTypesServer]: {type: K, data: MsgTypesServer[K]}
+}[keyof MsgTypesServer]
 
 export interface YandexPost {
   ETag: string,
