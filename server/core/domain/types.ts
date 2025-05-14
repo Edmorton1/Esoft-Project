@@ -25,12 +25,13 @@ export interface MsgTypesServer {
 
   offer: {id: number, description: RTCSessionDescriptionInit},
   answer: {id: number, description: RTCSessionDescriptionInit},
-  icecandidate: string
+  candidate: {id: number, candidate: RTCIceCandidate}
 }
 
-export interface MsgTypesClient extends Omit<MsgTypesServer, 'offer' | 'answer'> {
+export interface MsgTypesClient extends Omit<MsgTypesServer, 'offer' | 'answer' | 'candidate'> {
   offer: RTCSessionDescriptionInit,
-  answer: RTCSessionDescriptionInit
+  answer: RTCSessionDescriptionInit,
+  candidate: RTCIceCandidate
 }
 
 export type SocketMessageClientInterface = {

@@ -3,7 +3,7 @@ import StoreLikes from "@/shared/stores/StoreLikes";
 import { URL_SERVER_WS } from "@shared/URLS";
 import { frSOSe, frSOCl } from "@shared/MAPPERS";
 import { makeAutoObservable, runInAction } from "mobx";
-import StoreRoom from "@/pages/Room/Store-Room";
+import StoreRoom from "@/pages/Room/WebRTC/Store-Room";
 
 class SocketStore {
   socket: WebSocket | null = null
@@ -63,6 +63,10 @@ class SocketStore {
         case "answer":
           console.log('answer socket', data)
           StoreRoom.SocketGetAnswer(data)
+          break
+        case "candidate":
+          console.log('Отправка кандидатов')
+          StoreRoom.SocketGetCandidate(data)
       }
 
       // setTimeout(() => {this.socket?.send('ПРИВЕТ С КЛИЕНТА'), console.log('СООБЩЕНИЕ ОТПРАВЛЕНО')}, 3000)
