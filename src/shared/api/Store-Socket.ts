@@ -59,6 +59,10 @@ class SocketStore {
         case "offer":
           console.log(data)
           StoreRoom.SocketGetOffer(data)
+          break
+        case "answer":
+          console.log('answer socket', data)
+          StoreRoom.SocketGetAnswer(data)
       }
 
       // setTimeout(() => {this.socket?.send('ПРИВЕТ С КЛИЕНТА'), console.log('СООБЩЕНИЕ ОТПРАВЛЕНО')}, 3000)

@@ -23,13 +23,14 @@ export interface MsgTypesServer {
   like: Likes
   delete_like: number
 
-  offer: {id: number, description: RTCSessionDescription},
-  answer: string,
+  offer: {id: number, description: RTCSessionDescriptionInit},
+  answer: {id: number, description: RTCSessionDescriptionInit},
   icecandidate: string
 }
 
-export interface MsgTypesClient extends Omit<MsgTypesServer, 'offer'> {
-  offer: RTCSessionDescription
+export interface MsgTypesClient extends Omit<MsgTypesServer, 'offer' | 'answer'> {
+  offer: RTCSessionDescriptionInit,
+  answer: RTCSessionDescriptionInit
 }
 
 export type SocketMessageClientInterface = {
