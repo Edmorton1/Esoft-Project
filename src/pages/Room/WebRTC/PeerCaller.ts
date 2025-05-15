@@ -4,8 +4,17 @@ import StoreSocket from "@/shared/api/Store-Socket";
 import { toSOSe } from "@shared/MAPPERS";
 
 class PeerCaller extends BasePeer {
-  constructor() {
-    super()
+  constructor(
+    readonly frid: number,
+    readonly toid: number
+  ) {
+    super(frid, toid)
+
+    this.peerConnection.onicecandidate = e => {
+      if (e.candidate) {
+        StoreSocket.socket?.send(toSOSe('candidate', {isCaller: true, id: this.toid, candidate: e.candidate}))
+      }
+    }
   }
 
   private sendOffer = (id: number, description: RTCSessionDescriptionInit) => {
@@ -13,12 +22,12 @@ class PeerCaller extends BasePeer {
     StoreSocket.socket?.send(toSOSe('offer', {id: id, description: description}))
   }
 
-  createOffer = async () => {
+  makeCall = async () => {
     this.dataChanel = setupDataChannel(this.peerConnection.createDataChannel('test'))
 
     this.offer = await this.peerConnection.createOffer()
     await this.peerConnection.setLocalDescription(this.offer)
-    this.sendOffer(this.toId, this.peerConnection.localDescription!)
+    this.sendOffer(this.toid, this.peerConnection.localDescription!)
     console.log(this.peerConnection.localDescription)
   }
 
@@ -28,4 +37,4 @@ class PeerCaller extends BasePeer {
   }
 }
 
-export default new PeerCaller
+export default PeerCaller

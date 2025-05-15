@@ -3,6 +3,8 @@ import StoreLikes from "@/shared/stores/StoreLikes";
 import { URL_SERVER_WS } from "@shared/URLS";
 import { frSOSe, frSOCl } from "@shared/MAPPERS";
 import { makeAutoObservable, runInAction } from "mobx";
+import PeerCaller from "@/pages/Room/WebRTC/PeerCaller";
+import PeerResponder from "@/pages/Room/WebRTC/PeerResponder";
 import StoreRoom from "@/pages/Room/WebRTC/Store-Room";
 
 class SocketStore {
@@ -58,15 +60,20 @@ class SocketStore {
 
         case "offer":
           console.log(data)
-          StoreRoom.SocketGetOffer(data)
+          StoreRoom.Responder!.SocketGetOffer(data)
           break
         case "answer":
           console.log('answer socket', data)
-          StoreRoom.SocketGetAnswer(data)
+          StoreRoom.Caller!.SocketGetAnswer(data)
           break
         case "candidate":
-          console.log('Отправка кандидатов')
-          StoreRoom.SocketGetCandidate(data)
+          // console.log('Отправка кандидатов')
+          if (!data.isCaller) {
+            StoreRoom.Responder!.SocketGetCandidate(data.candidate)
+          } else {
+            StoreRoom.Caller!.SocketGetCandidate(data.candidate)
+          }
+          // StoreRoom.SocketGetCandidate(data)
       }
 
       // setTimeout(() => {this.socket?.send('ПРИВЕТ С КЛИЕНТА'), console.log('СООБЩЕНИЕ ОТПРАВЛЕНО')}, 3000)

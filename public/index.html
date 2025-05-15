@@ -5,21 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <base href="/">
-
-  <style>
-    body.dark {
-      background-color: #282828;
-    }
-  </style>
-
 </head>
 <body>
   <div id="root"></div>
+  
   <script>
     const theme = localStorage.getItem('theme');
     if (theme === 'dark') {
       document.body.classList.add(theme);
     }
   </script>
+
 </body>
 </html>

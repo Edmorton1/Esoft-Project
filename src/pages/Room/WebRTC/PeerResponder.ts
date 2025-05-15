@@ -3,13 +3,22 @@ import StoreSocket from "@/shared/api/Store-Socket";
 import { toSOSe } from "@shared/MAPPERS";
 
 class PeerResponder extends BasePeer {
-  constructor() {
-    super()
+  constructor(
+    readonly frid: number,
+    readonly toid: number
+  ) {
+    super(frid, toid)
+
+    this.peerConnection.onicecandidate = e => {
+      if (e.candidate) {
+        StoreSocket.socket?.send(toSOSe('candidate', {isCaller: false, id: this.frid, candidate: e.candidate}))
+      }
+    }
   }
 
   private sendAnswer = (description: RTCSessionDescriptionInit) => {
     console.log('Отправка ансвера')
-    StoreSocket.socket?.send(toSOSe('answer', {id: this.frId, description: description}))
+    StoreSocket.socket?.send(toSOSe('answer', {id: this.frid, description: description}))
   }
 
   SocketGetOffer = async (offer: RTCSessionDescriptionInit) => {
@@ -27,4 +36,4 @@ class PeerResponder extends BasePeer {
   }
 }
 
-export default new PeerResponder
+export default PeerResponder

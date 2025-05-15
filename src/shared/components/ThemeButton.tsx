@@ -1,34 +1,31 @@
 import { useEffect, useState } from "react"
-import * as styles from "@/app/App.scss"
+import "@/app/App.scss"
 
 function ThemeButton() {
-  // console.log('THEMEBUTTON render')
-  const [state, setState] = useState(false)
-  // light - false
-  // dark - true
+  const [isDark, setIsDark] = useState(() => {
+    return localStorage.getItem('theme') === 'dark'
+  })
 
   useEffect(() => {
-    const theme = localStorage.getItem('theme')
-    setState(theme === "dark")
+    const body = document.body
 
-    const body = document.getElementsByTagName('body')[0]
-    body.classList.remove("dark")
-    if (theme === 'dark') {
-      body.classList.add(styles.dark)
+    if (isDark) {
+      body.classList.add("dark")
+      localStorage.setItem("theme", "dark")
     } else {
-      body.classList.remove(styles.dark)
+      body.classList.remove("dark")
+      localStorage.setItem("theme", "light")
     }
-  }, [state])
+  }, [isDark])
 
-  function handleClick() {
-    setState(!state)
-    
-    localStorage.setItem('theme', !state === true ? 'dark' : 'light')
-    console.log(!state)
+  const toggleTheme = () => {
+    setIsDark(prev => !prev)
   }
 
   return (
-    <button onClick={handleClick}>{state ? 'Dark' : 'Light'}</button>
+    <button onClick={toggleTheme}>
+      {isDark ? 'Dark' : 'Light'}
+    </button>
   )
 }
 

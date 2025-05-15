@@ -25,13 +25,13 @@ export interface MsgTypesServer {
 
   offer: {id: number, description: RTCSessionDescriptionInit},
   answer: {id: number, description: RTCSessionDescriptionInit},
-  candidate: {id: number, candidate: RTCIceCandidate}
+  candidate: {isCaller: boolean, id: number, candidate: RTCIceCandidate}
 }
 
 export interface MsgTypesClient extends Omit<MsgTypesServer, 'offer' | 'answer' | 'candidate'> {
   offer: RTCSessionDescriptionInit,
   answer: RTCSessionDescriptionInit,
-  candidate: RTCIceCandidate
+  candidate: {isCaller: boolean, candidate: RTCIceCandidate}
 }
 
 export type SocketMessageClientInterface = {

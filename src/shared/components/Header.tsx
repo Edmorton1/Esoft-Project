@@ -8,14 +8,16 @@ import { toJS } from "mobx"
 import { Link, NavLink, Outlet } from "react-router-dom"
 import ThemeButton from "@/shared/components/ThemeButton"
 import { paths } from "@shared/PATHS"
-import * as style from "@/shared/css/Shared.scss"
+import * as style from "@/shared/css/Shared.module.scss"
+import classNames from "classnames"
+import StoreGlobal from "@/shared/api/Store-Global"
 
 function Header() {
   return (
     <>
     <header>
       <nav>
-        <NavLink to={"/"}>{({ isActive }) => <button className={isActive ? style.active : ''}>Главная</button>}</NavLink>
+        <NavLink to={"/"}>{({ isActive }) => <button className={classNames({[style.active]: isActive})}>Главная</button>}</NavLink>
         <Link to={paths.registration}><button>Регистрация</button></Link>
         <Link to={paths.login}><button>Войти</button></Link>
         <Link to={paths.messages}><button>Сообщения</button></Link>
@@ -31,6 +33,7 @@ function Header() {
           toJS(StoreUsers.users)
           )}>Вывести сторы
         </button>
+        <button onClick={() => StoreGlobal.sendInfo('asadas', 'blue')}>Инфо</button>
         <ThemeButton />
       </nav>
         <br />

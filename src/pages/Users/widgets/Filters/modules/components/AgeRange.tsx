@@ -1,7 +1,8 @@
 import useUpdateParams from "@/shared/hooks/useChangeParams"
 import { ChangeEvent, useEffect, useState } from "react"
-import * as style from "@/pages/Users/widgets/Filters/modules/css/Range.scss"
+import * as style from "@/pages/Users/widgets/Filters/modules/css/Range.module.scss"
 import useDebounceParams from "@/shared/hooks/useDebounceParams"
+import classNames from "classnames"
 
 function AgeRange({keyName}: {keyName: "min_age" | "max_age"}) {
   // const [params, updateParams] = useUpdateParams()
@@ -27,7 +28,7 @@ function AgeRange({keyName}: {keyName: "min_age" | "max_age"}) {
     <input
       value={keyName === keyMax ? 100 - Number(value) : value}
       onChange={changeHandle}
-      className={keyName === keyMax ? style.range : ''}
+      className={classNames({[style.range]: keyName === keyMax})}
       max={keyName === keyMin ? 99 : 82}
       min={keyName === keyMin ? 18 : 1}
       type="range" />

@@ -1,4 +1,4 @@
-import { msg, MsgTypesClient, MsgTypesServer, SocketMessageServerInterface, tables, Tables } from "@s/core/domain/types"
+import { msg, MsgTypesClient, MsgTypesServer, SocketMessageClientInterface, SocketMessageServerInterface, tables, Tables } from "@s/core/domain/types"
 
 export function toTS<T extends keyof Tables>(entity: any): Tables[T][] {
     // return entity.rows.length > 1 ? entity.rows : entity.rows[0]
@@ -28,7 +28,7 @@ export function frSOSe(msg: any): SocketMessageServerInterface {
   return JSON.parse(msg.toString())
 }
 
-export function frSOCl(msg: any) {
+export function frSOCl(msg: any): SocketMessageClientInterface {
     return JSON.parse(msg.toString())
 }
 

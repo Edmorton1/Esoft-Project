@@ -1,22 +1,21 @@
-import { Configuration } from "mini-css-extract-plugin"
-import { BuildOptions } from "./types"
+import {Configuration} from "mini-css-extract-plugin";
+import {BuildOptions} from "./types";
 
-function buildDevServer(options: BuildOptions): Configuration['devServer'] {
-    const isDev = options.mode == 'development';
-	const isProd = options.mode == 'production';
+function buildDevServer(options: BuildOptions): Configuration["devServer"] {
+	const isDev = options.mode == "development";
+	const isProd = options.mode == "production";
 
-    return (
-        {   // static: {
-            // 	directory: path.join(__dirname, 'public'),
-            // },
-            open: true,
-            hot: true,
-            // compress: true,
-            port: options.port ?? '5000',
-            historyApiFallback: true,
-            static: options.paths.public
-        }
-    )
+	return {
+		// static: {
+		// 	directory: path.join(__dirname, 'public'),
+		// },
+		open: true,
+		hot: true,
+		// compress: true,
+		port: options.port ?? "5000",
+		historyApiFallback: true,
+		static: options.paths.public,
+	};
 }
 
-export default buildDevServer
+export default buildDevServer;

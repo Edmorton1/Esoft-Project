@@ -33,7 +33,7 @@ function createWebSocketServer(server: any) {
           clients.get(data.id)?.send(toSOCl('answer', data.description))
           break
         case "candidate":
-          clients.get(data.id)?.send(toSOCl('candidate', data.candidate))
+          clients.get(data.id)?.send(toSOCl('candidate', {isCaller: data.isCaller, candidate: data.candidate}))
       }
         
       // console.log(data)

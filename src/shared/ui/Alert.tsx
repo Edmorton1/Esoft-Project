@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { observer } from "mobx-react-lite";
 import Toast from "@/shared/ui/Toast";
 import StoreGlobal from "@/shared/api/Store-Global";
-import * as style from "@/shared/css/ToastLike.scss"
+import * as style from "@/shared/css/ToastLike.module.scss"
 
 function Alert() {
   const nodeRefs = useRef<{ [key: string]: React.RefObject<HTMLDivElement | null> }>({});
