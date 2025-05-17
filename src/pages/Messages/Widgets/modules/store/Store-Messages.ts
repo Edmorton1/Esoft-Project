@@ -23,6 +23,7 @@ class StoreMessages {
   }
 
   send = async (data: MessageDTO) => {
+    //@ts-ignore
     const formdata = await toFormData(data.files)
     console.log(data)
 

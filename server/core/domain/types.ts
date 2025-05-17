@@ -28,11 +28,19 @@ export interface MsgTypesServer {
   candidate: {isCaller: boolean, id: number, candidate: RTCIceCandidate}
 }
 
-export interface MsgTypesClient extends Omit<MsgTypesServer, 'offer' | 'answer' | 'candidate'> {
+export type OverdriveProperty<T, R> = Omit<T, keyof R> & R
+
+export type MsgTypesClient = OverdriveProperty<MsgTypesServer, {
   offer: RTCSessionDescriptionInit,
   answer: RTCSessionDescriptionInit,
-  candidate: {isCaller: boolean, candidate: RTCIceCandidate}
-}
+  candidate: {isCaller: boolean, candidate: RTCIceCandidate},
+}>
+
+// export interface MsgTypesClient extends Omit<MsgTypesServer, 'offer' | 'answer' | 'candidate'> {
+//   offer: RTCSessionDescriptionInit,
+//   answer: RTCSessionDescriptionInit,
+//   candidate: {isCaller: boolean, candidate: RTCIceCandidate}
+// }
 
 export type SocketMessageClientInterface = {
   [K in keyof MsgTypesClient]: {type: K, data: MsgTypesClient[K]}

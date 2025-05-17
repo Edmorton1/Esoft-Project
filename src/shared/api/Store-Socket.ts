@@ -59,19 +59,19 @@ class SocketStore {
           break
 
         case "offer":
-          console.log(data)
-          StoreRoom.Responder!.SocketGetOffer(data)
+          console.log(data);
+          (StoreRoom.Peer as PeerResponder).SocketGetOffer(data)
           break
         case "answer":
-          console.log('answer socket', data)
-          StoreRoom.Caller!.SocketGetAnswer(data)
+          console.log('answer socket', data);
+          (StoreRoom.Peer as PeerCaller).SocketGetAnswer(data)
           break
         case "candidate":
           // console.log('Отправка кандидатов')
-          if (!data.isCaller) {
-            StoreRoom.Responder!.SocketGetCandidate(data.candidate)
+          if (data.isCaller) {
+            StoreRoom.Peer!.SocketGetCandidate(data.candidate)
           } else {
-            StoreRoom.Caller!.SocketGetCandidate(data.candidate)
+            StoreRoom.Peer!.SocketGetCandidate(data.candidate)
           }
           // StoreRoom.SocketGetCandidate(data)
       }

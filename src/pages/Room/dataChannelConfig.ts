@@ -6,6 +6,7 @@ const setupDataChannel = (channel: RTCDataChannel, event?: RTCDataChannelEvent):
 
   channel!.onopen = () => console.log('Channel opened!')
   channel.onmessage = e => console.log('Message', e.data)
+  channel.onclose = () => console.log('CLOSE: КАНАЛ ЗАКРЫЛСЯ')
 
   return channel
 }

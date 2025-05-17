@@ -6,7 +6,7 @@ import {BuildOptions} from "./types";
 import buildResolvers from "./buildResolvers";
 import TerserPlugin from "terser-webpack-plugin";
 
-export function buildWebpack(options: BuildOptions): WebpackConfiguration {
+function buildWebpack(options: BuildOptions): WebpackConfiguration {
 	const isDev = options.mode == "development";
 	const isProd = options.mode == "production";
 
@@ -45,3 +45,5 @@ export function buildWebpack(options: BuildOptions): WebpackConfiguration {
 			: undefined,
 	};
 }
+
+export default buildWebpack

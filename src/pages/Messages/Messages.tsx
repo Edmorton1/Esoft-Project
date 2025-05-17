@@ -4,9 +4,15 @@ import { useForm } from "react-hook-form"
 import StoreForm from "@/shared/stores/Store-Form"
 import { MessageDTO } from "@s/core/dtoObjects"
 import MessageWidget from "./widgets/MessageWidget"
+import useVoice from "@/shared/hooks/useVoice"
+import VoiceMessage from "@/pages/Messages/widgets/modules/classes/VoiceMessage"
+import { useParams } from "react-router-dom"
 
 function Messages() {
   const {register, handleSubmit} = useForm<MessageDTO>()
+
+  const {toid} = useParams()
+    const voiceRef = useVoice(VoiceMessage, toid)
   
   return (
     <>
@@ -15,16 +21,19 @@ function Messages() {
       <div>Исходящие</div>
       <MessageWidget />
       <br />
-      <form onSubmit={handleSubmit((data: MessageDTO) => StoreMessages.send(data))} style={{display: "flex", flexDirection: "column", width: "300px"}}>
+      <form onSubmit={handleSubmit((data: MessageDTO) => StoreMessages.send({...data, toid: toid!, fromid: StoreForm.form!.id!}))} style={{display: "flex", flexDirection: "column", width: "300px"}}>
         <div>Отправить сообщение</div>
-        <input {...register('fromid', {valueAsNumber: true})} type="number" placeholder="От кого?" />
-        <input {...register('toid', {valueAsNumber: true})} type="number" placeholder="К кому?" />
+        {/* <input {...register('fromid', {valueAsNumber: true})} type="number" placeholder="От кого?" /> */}
+        {/* <input {...register('toid', {valueAsNumber: true})} type="number" placeholder="К кому?" /> */}
         <label htmlFor="text">Текст</label>
         <input {...register('text')} type="text" defaultValue={"text test"} id="text" />
         <label htmlFor="files">Файлы</label>
         <input {...register("files")} type="file" multiple id="files" />
         <button>Отпраивть</button>
       </form>
+      <button onClick={() => voiceRef.current!.start()}>Начать запись голоса</button>
+      <button onClick={() => voiceRef.current!.stop()}>Завершить</button>
+      <button onClick={() => console.log(voiceRef)}>Чанки</button>
     </>
   )
 }

@@ -10,6 +10,7 @@ import HttpLikesController from "@s/infrastructure/endpoints/Likes/HttpLikesCont
 import HttpFilesController from "@s/infrastructure/endpoints/Files/HttpFilesController"
 import HttpExtendedSearchController from "@s/infrastructure/endpoints/ExtendSearch/HttpExtendedSearchController"
 import CRUDMiddleware from "@s/infrastructure/middlewares/CRUDMiddleware"
+
 const upload = multer({storage: multer.memoryStorage()})
 const router = express.Router()
 

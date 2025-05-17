@@ -3,7 +3,7 @@
       "allowSyntheticDefaultImports": true,
       "esModuleInterop": true,
       "outDir": "./dist/",
-      // "noImplicitAny": true,
+      "noImplicitAny": true,
       "module": "ESNext",
       "target": "ESNext",
       "jsx": "react-jsx",

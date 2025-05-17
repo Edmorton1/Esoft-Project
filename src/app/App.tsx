@@ -23,7 +23,7 @@ function App() {
 						<Route index element={<LazyMain />} />
 						<Route path={paths.login} element={<LazyLogin />} />
 						<Route path={paths.registration} element={<LazyRegistration />} />
-						<Route path={paths.messages} element={<LazyMessages />} />
+						<Route path={`${paths.messages}/:toid`} element={<LazyMessages />} />
 						<Route path={paths.users} element={<LazyUsers />}></Route>
 						<Route path={`${paths.profile}/:id`} element={<LazyProfile />} />
             <Route path={paths.settings} element={<LazySettings/>}/>

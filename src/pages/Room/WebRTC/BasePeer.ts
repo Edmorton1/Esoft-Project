@@ -22,10 +22,25 @@ abstract class BasePeer {
         this.dataChanel = setupDataChannel(e.channel)
       }
     }
+    this.peerConnection.ontrack = e => {
+      const remoteStream = e.streams[0]
+      const audio = document.createElement('audio')
+      audio.srcObject = remoteStream;
+      audio.autoplay = true
+      document.body.appendChild(audio)
+    }
   }
 
   SocketGetCandidate = async (candidate: RTCIceCandidate) => {
     this.peerConnection.addIceCandidate(candidate)
+  }
+
+  closeConnection = () => {
+    this.peerConnection.close()
+  }
+
+  sendMessageCaller = (text: string) => {
+    this.dataChanel?.send(text)
   }
 }
 

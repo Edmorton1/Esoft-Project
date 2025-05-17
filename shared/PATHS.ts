@@ -8,7 +8,7 @@ export const paths = {
   room: '/room',
 
   test: "/test"
-}
+} as const
 
 export const serverPaths = {
   login: '/login',
@@ -31,6 +31,6 @@ export const serverPaths = {
   testCompressAudio: "/testCompressAudio",
 
   extendedSearch: "/extendedSearch"
-}
+} as const
 
-export type serverPathsTypes = keyof typeof serverPaths
+// export type serverPathsTypes = keyof typeof serverPaths
