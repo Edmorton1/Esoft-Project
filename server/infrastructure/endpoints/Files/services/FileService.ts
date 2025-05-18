@@ -103,12 +103,13 @@ class FileService {
     const type = (await fileTypeFromBuffer(buffer))
     const ext = type!.ext
     const mime = type!.mime
-    console.log(ext, mime)
+    console.log('EXT MIME', ext, mime)
 
     if (mime.includes('image')) {
       return [await this.imageCompress(buffer), 'webp']
     }
-    else if (mime.includes('audio')) {
+    // ПЕРЕДЕЛЫВАЮ video/webm ИЗ-ЗА АУДИО
+    else if (mime.includes('audio') || mime === 'video/webm') {
       console.log('AUDIO MIME INCLUDE TRUE')
       return [await this.audioCompress(buffer, ext), 'ogg']
     }

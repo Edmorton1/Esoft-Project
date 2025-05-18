@@ -65,7 +65,7 @@ export class LocationDTO {
 
 export class MessageDTO {
   constructor(
-    readonly fromid: number,
+    readonly fromid: number| string,
     readonly toid: number | string,
     readonly text: string,
     public files: FileList,

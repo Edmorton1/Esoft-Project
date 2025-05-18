@@ -2,20 +2,29 @@ import dotenv from "dotenv"
 import express from "express"
 import router from "@s/router"
 import cors from "cors"
-import http from "http"
+// import http from "http"
 import cookieParser from "cookie-parser"
 import { createWebSocketServer } from "@s/socket"
 import "@s/infrastructure/cache/redis"
 dotenv.config()
+import https from "https"
+import fs from 'fs'
+import path from 'path'
 
 const app = express()
 
-const PORT = process.env.PORT
-const server = http.createServer(app)
+const PORT = Number(process.env.PORT)
+
+export const options = {
+  cert: fs.readFileSync(path.resolve(__dirname, 'certs', '192.168.110.22+1.pem')),
+  key: fs.readFileSync(path.resolve(__dirname, 'certs', '192.168.110.22+1-key.pem'))
+}
+
+const server = https.createServer(options, app)
 createWebSocketServer(server)
 
 app.use(cors({
-  origin: ['http://localhost:5000'],
+  origin: ['https://localhost:5000', 'https://192.168.110.22:5000', 'http://localhost:5000', 'http://192.168.110.22:5000'],
   credentials: true
 }))
 
@@ -36,4 +45,4 @@ app.use('/', router)
 // ОТКЛЮЧЕНИЕ ВАРНИНГА У ЯНДЕКСА и require У FileType
 process.removeAllListeners('warning');
 
-server.listen(PORT, () => console.log(`СЕРВЕР ЗАПУЩЕН НА ПОРТУ: ${PORT}, НА САЙТЕ: ${process.env.URL_SERVER}`))
+server.listen(PORT, '0.0.0.0', () => console.log(`СЕРВЕР ЗАПУЩЕН НА ПОРТУ: ${PORT}, НА САЙТЕ: ${process.env.URL_SERVER}`))

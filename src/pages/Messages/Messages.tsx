@@ -31,6 +31,11 @@ function Messages() {
         <input {...register("files")} type="file" multiple id="files" />
         <button>Отпраивть</button>
       </form>
+      <br />
+      <br />
+      <button onClick={() => console.log(voiceRef.current?.stream.getVideoTracks(), voiceRef.current?.stream.getAudioTracks())}>Посмотреть видео аудио дорожки</button>
+      <br />
+      <br />
       <button onClick={() => voiceRef.current!.start()}>Начать запись голоса</button>
       <button onClick={() => voiceRef.current!.stop()}>Завершить</button>
       <button onClick={() => console.log(voiceRef)}>Чанки</button>

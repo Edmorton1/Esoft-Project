@@ -1,3 +1,6 @@
+import StoreMessages from "@/pages/Messages/widgets/modules/store/Store-Messages";
+import { fileToFileList } from "@/shared/funcs/filefuncs";
+import StoreForm from "@/shared/stores/Store-Form";
 import { blobToFile } from "@shared/MAPPERS";
 
 class VoiceMessage {
@@ -9,7 +12,9 @@ class VoiceMessage {
     readonly stream: MediaStream,
     readonly toid: number
   ) {
-    this.mediaRecorder = new MediaRecorder(this.stream)
+    this.mediaRecorder = new MediaRecorder(this.stream, {
+      mimeType: "audio/webm"
+    })
     console.log('Аудио установилось', stream)
     
     this.mediaRecorder.ondataavailable = e => {
@@ -48,7 +53,7 @@ class VoiceMessage {
     this.mediaRecorder.start()  
   }
 
-  async stop() {
+  stop = async () => {
     console.log('ЗАПИСЬ ЗАВЕРШИЛАСЬ')
 
     const stopping = new Promise<Blob>(res => {
@@ -70,7 +75,14 @@ class VoiceMessage {
   const blob = await stopping
   // console.log('blob aswa', blob)
   const file = blobToFile(blob, "file")
-  console.log(file)
+  const filelist = fileToFileList(file)
+
+  StoreMessages.send({
+    fromid: StoreForm.form!.id,
+    toid: this.toid,
+    text: 'test voice2',
+    files: filelist
+  })
   }
 
   media() {

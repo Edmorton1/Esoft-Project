@@ -17,6 +17,8 @@ interface propsInterface {
   submitClick: () => any
 }
 
+type resolutions = 'ogg' | 'webp' | 'mp4'
+
 const MessageComponent = ({editing, msg, changeClick, deleteClick, files, value, inputNewFile, textInput, submitClick, clickDeleteFile}: propsInterface) => {
   // console.log('COMPONENT RENDER', msg.id, editing, files)
   function DeletedFiles() {
@@ -44,6 +46,18 @@ const MessageComponent = ({editing, msg, changeClick, deleteClick, files, value,
         <input onChange={inputNewFile} type="file" multiple />
         <button onClick={submitClick}>Готово</button>
       </>}
+      {msg.files?.map(link => {
+        const type = (link.split('.').splice(-1)[0] as resolutions)
+        console.log(type)
+        switch (type) {
+          case 'webp':
+            return <img src={link} alt="" />
+          case 'mp4':
+            return <video controls src={link}></video>
+          case 'ogg':
+            return <audio controls src={link}></audio>
+        }
+      })}
     </div>
     <br />
     {msg.fromid === StoreForm.form?.id && !editing && <>

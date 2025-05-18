@@ -27,6 +27,7 @@ tablesArr.forEach(table => {
 
 // router.get('/byParams', universalController('getByParams', 'users'))
 
+router.get('/', (req, res) => {res.json('Работает'); console.log('Работает')})
 router.post(serverPaths.registration, HttpTokenController.registartion)
 router.post(serverPaths.login, HttpTokenController.login)
 router.get(`${serverPaths.logout}/:id`, HttpTokenController.logout)

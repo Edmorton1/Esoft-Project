@@ -1,0 +1,2 @@
+server/certs/*.pem binary
+server/certs/*.key binary

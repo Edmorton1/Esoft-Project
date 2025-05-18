@@ -14,6 +14,7 @@ function Login() {
 
   return (
     <>
+      <div>vasya@gmail.com</div>
       <div>Добро пожаловать: {storeAuthorization.user?.email}</div>
       <form onSubmit={handleSubmit((data: UserDTO) => storeAuthorization.login(data))}>
         {/* <input {...register('email')} type="text" placeholder="email" value="marty@gmial.ru" />

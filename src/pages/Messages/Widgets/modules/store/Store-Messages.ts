@@ -4,9 +4,9 @@ import { Message } from "@s/core/domain/Users"
 import StoreSocket from "@/shared/api/Store-Socket"
 import { toCl } from "@shared/MAPPERS"
 import StoreUser from "@/shared/stores/Store-User"
-import { toFormData } from "@/pages/Registration/modules/funcs/funcDropAva"
 import { MessageDTO, MessagePutDTO } from "@s/core/dtoObjects"
 import { serverPaths } from "@shared/PATHS"
+import { toFormData } from "@/shared/funcs/filefuncs"
 
 class StoreMessages {
   messages: {sent: Message[]; received: Message[]} | null = null

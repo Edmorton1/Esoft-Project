@@ -1,17 +1,6 @@
 import StoreUser from "@/shared/stores/Store-User";
 import StoreFiles from "@/shared/stores/StoreFiles";
 
-export async function toFormData(files: FileList | null) {
-  const formData = new FormData()
-  if (files) {
-    for (const file of files) {
-      formData.append('files', file)
-    }
-  }
-  console.log(formData)
-  return formData
-}
-
 export async function AvatarHandle(file: File): Promise<string> {
   const formData = new FormData();
   formData.append('avatar', file)
