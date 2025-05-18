@@ -1,7 +1,4 @@
 import setupDataChannel from "@/pages/Room/dataChannelConfig";
-import StoreSocket from "@/shared/api/Store-Socket";
-import StoreUser from "@/shared/stores/Store-User";
-import { toSOSe } from "@shared/MAPPERS";
 
 abstract class BasePeer {
   peerConnection = new RTCPeerConnection;
@@ -22,12 +19,27 @@ abstract class BasePeer {
         this.dataChanel = setupDataChannel(e.channel)
       }
     }
+    // РЕАКЦИЯ НА ЧУЖОЙ ТРЕК
     this.peerConnection.ontrack = e => {
+      console.log('track', e.track)
+      const isVideo = e.track.kind === 'video'
+      console.log('isVideo', e.track.kind)
       const remoteStream = e.streams[0]
-      const audio = document.createElement('audio')
-      audio.srcObject = remoteStream;
-      audio.autoplay = true
-      document.body.appendChild(audio)
+      if (isVideo) {
+        const remoteVideo = document.createElement('video');
+        remoteVideo.srcObject = remoteStream;
+        remoteVideo.autoplay = true;
+        remoteVideo.controls = true;
+        remoteVideo.style.width = '300px';
+        remoteVideo.id = 'remote-video'
+        document.body.appendChild(remoteVideo)
+      } else {
+        const remoteAudio = document.createElement('audio')
+        remoteAudio.srcObject = remoteStream;
+        remoteAudio.autoplay = true
+        remoteAudio.id = 'remote-audio'
+        document.body.appendChild(remoteAudio)
+      }
     }
   }
 

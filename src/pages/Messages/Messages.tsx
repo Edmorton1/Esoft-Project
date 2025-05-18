@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form"
 import StoreForm from "@/shared/stores/Store-Form"
 import { MessageDTO } from "@s/core/dtoObjects"
 import MessageWidget from "./widgets/MessageWidget"
-import useVoice from "@/shared/hooks/useVoice"
+import useMedia from "@/shared/hooks/useMedia"
 import VoiceMessage from "@/pages/Messages/widgets/modules/classes/VoiceMessage"
 import { useParams } from "react-router-dom"
 
@@ -12,7 +12,7 @@ function Messages() {
   const {register, handleSubmit} = useForm<MessageDTO>()
 
   const {toid} = useParams()
-    const voiceRef = useVoice(VoiceMessage, toid)
+    const [voiceRef] = useMedia(VoiceMessage, undefined, toid)
   
   return (
     <>
