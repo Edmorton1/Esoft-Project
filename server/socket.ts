@@ -1,4 +1,4 @@
-import { frSOSe, toJSON, toSOCl, toSOSe } from "@shared/MAPPERS";
+import { frSOSe, toSOCl } from "@shared/MAPPERS";
 import WebSocket from "ws";
 
 interface WebSocketWidh extends WebSocket {

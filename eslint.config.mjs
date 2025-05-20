@@ -5,6 +5,7 @@ import pluginReact from "eslint-plugin-react";
 import reactHooks from "eslint-plugin-react-hooks";
 import { defineConfig } from "eslint/config";
 import jsxA11y from 'eslint-plugin-jsx-a11y';
+import unusedImports from "eslint-plugin-unused-imports";
 
 export default defineConfig([
   {
@@ -26,6 +27,7 @@ export default defineConfig([
     },
     plugins: {
       react: pluginReact,
+      "unused-imports": unusedImports
     },
     settings: {
       react: {
@@ -38,17 +40,40 @@ export default defineConfig([
       "no-unused-vars": "off",
       "@typescript-eslint/no-unused-vars": "off",
       "@typescript-eslint/no-unused-expressions": "off",
-      "@typescript-eslint/ban-ts-comment": "warn",
+      // "@typescript-eslint/ban-ts-comment": "warn",
 
       //MUI ICONS
-      
+      "no-restricted-imports": [
+        "error",
+        {
+          "patterns": [{ "regex": "^@mui/[^/]+$" }]
+        }
+      ],
 
       // ПРАВИЛО НА any
       "@typescript-eslint/no-explicit-any": "off",
 
       //react-hooks
       'react-hooks/rules-of-hooks': 'error',
-      'react-hooks/exhaustive-deps': 'error',
+      // 'react-hooks/exhaustive-deps': 'error',
+
+      //НАВРЕМЯ
+      "no-irregular-whitespace": "off",
+      "@typescript-eslint/ban-ts-comment": "off",
+      "react-hooks/exhaustive-deps": "off",
+      "jsx-a11y/media-has-caption": "off",
+
+      //НЕ ИСПОЛЬЗУЕМЫЕ ИМПОРТЫ
+    //   "unused-imports/no-unused-imports": "error",
+    //     "unused-imports/no-unused-vars": [
+    //         "warn",
+    //         {
+    //             "vars": "all",
+    //             "varsIgnorePattern": "^_",
+    //             "args": "after-used",
+    //             "argsIgnorePattern": "^_",
+    //         },
+    //     ]
     },
   },
 ]);

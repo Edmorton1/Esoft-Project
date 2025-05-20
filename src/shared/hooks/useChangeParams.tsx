@@ -1,4 +1,3 @@
-import { useCallback } from "react";
 import {useSearchParams} from "react-router-dom";
 
 type returTypes = [

@@ -1,4 +1,3 @@
-import StoreUsers from "@/pages/Users/widgets/store/Store-Users"
 import { Suspense } from "react"
 import StoreLikes from "@/shared/stores/StoreLikes"
 import { toJS } from "mobx"

@@ -1,10 +1,9 @@
 import StoreMessages from "@/pages/Messages/widgets/modules/store/Store-Messages";
 import StoreLikes from "@/shared/stores/StoreLikes";
 import { URL_SERVER_WS } from "@shared/URLS";
-import { frSOSe, frSOCl } from "@shared/MAPPERS";
+import { frSOCl } from "@shared/MAPPERS";
 import { makeAutoObservable, runInAction } from "mobx";
 import PeerCaller from "@/pages/Room/WebRTC/PeerCaller";
-import PeerResponder from "@/pages/Room/WebRTC/PeerResponder";
 import StoreRoom from "@/pages/Room/WebRTC/Store-Room";
 
 class SocketStore {
@@ -73,6 +72,7 @@ class SocketStore {
           } else {
             StoreRoom.Peer!.SocketGetCandidate(data.candidate)
           }
+          break
           // StoreRoom.SocketGetCandidate(data)
       }
 

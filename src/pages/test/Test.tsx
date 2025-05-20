@@ -1,5 +1,4 @@
 import useGeolocation from "@/shared/hooks/useGeolocation";
-import { useEffect } from "react";
 
 function Test() {
   const location = useGeolocation()

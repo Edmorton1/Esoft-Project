@@ -1,6 +1,6 @@
 import useUpdateParams from "@/shared/hooks/useChangeParams"
 import useDebounce from "@/shared/hooks/useDebounce"
-import { ChangeEvent, useEffect } from "react"
+import { useEffect } from "react"
 
 function useDebounceParams(keyName: string, reload: boolean = false): [string | null, (e: any) => any] {
   const [params, updateParams] = useUpdateParams()

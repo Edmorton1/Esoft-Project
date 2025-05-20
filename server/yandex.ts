@@ -1,6 +1,5 @@
 import EasyYandexS3 from 'easy-yandex-s3';
 import dotenv from "dotenv"
-import { YandexPost } from './core/domain/types';
 import { randomUUID } from 'crypto';
 dotenv.config()
 

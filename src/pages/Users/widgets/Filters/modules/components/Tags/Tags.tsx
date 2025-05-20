@@ -1,8 +1,7 @@
 import Tag from "@/pages/Users/widgets/Filters/modules/components/Tags/Tag"
-import useUpdateParams from "@/shared/hooks/useChangeParams"
 import StoreTags from "@/shared/stores/Store-Tags"
 import { observer } from "mobx-react-lite"
-import { ChangeEvent, FormEvent, useRef, useState } from "react"
+import { useRef } from "react"
 
 function Tags() {
   const tagRef = useRef<HTMLInputElement | null>(null)

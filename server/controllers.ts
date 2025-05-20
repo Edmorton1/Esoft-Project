@@ -1,13 +1,5 @@
 import CRUDController from "@s/infrastructure/endpoints/CRUD/CRUDController"
-import ORM  from "@s/infrastructure/db/requests/ORM"
-import TokenService from "@s/infrastructure/endpoints/Token/services/TokenService"
 import { tables } from "@s/core/domain/types"
-import FormService from "@s/infrastructure/endpoints/Form/services/FormService"
-import HttpFilesController from "./infrastructure/endpoints/Files/HttpFilesController"
-import FileService from "./infrastructure/endpoints/Files/services/FileService"
-import HttpExtendedSearchController from "@s/infrastructure/endpoints/ExtendSearch/HttpExtendedSearchController"
-import SQLHard from "@s/infrastructure/endpoints/ExtendSearch/sql/SQLHard"
-import MessageFileService from "@s/infrastructure/endpoints/Message/services/MessageFileService"
 
 export const universalController = (method: keyof CRUDController, table: tables) => {
   const controller = new CRUDController(table)

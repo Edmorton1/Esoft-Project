@@ -1,4 +1,3 @@
-import useUpdateParams from "@/shared/hooks/useChangeParams"
 import { ChangeEvent, useEffect, useState } from "react"
 import * as style from "@/pages/Users/widgets/Filters/modules/css/Range.module.scss"
 import useDebounceParams from "@/shared/hooks/useDebounceParams"

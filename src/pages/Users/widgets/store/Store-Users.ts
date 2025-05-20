@@ -1,7 +1,5 @@
-import $api from "@/shared/api/api";
-import { Form, Likes } from "@s/core/domain/Users";
-import { LikesDTO } from "@s/core/dtoObjects";
-import { configure, makeAutoObservable, runInAction } from "mobx";
+import { Form } from "@s/core/domain/Users";
+import { makeAutoObservable } from "mobx";
 
 class StoreUsers {
   users: Form[] | null = null

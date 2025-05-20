@@ -4,7 +4,6 @@ import SocketStore from "@/shared/api/Store-Socket";
 import {Suspense, useEffect} from "react";
 import Initialization from "@/app/Initialization";
 import Header from "@/shared/components/Header";
-import { ErrorBoundary } from "react-error-boundary";
 import { paths } from "@shared/PATHS";
 // ДЛЯ АССИНХРОННЫХ ОПЕРАЦИЙ ИСПОЛЬЗОВАТЬ suspense
 

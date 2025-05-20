@@ -1,5 +1,5 @@
 import { UseFormRegister } from "react-hook-form";
-import { FormDTO, LocationDTO, UserDTO } from "@s/core/dtoObjects";
+import { FormDTO, UserDTO } from "@s/core/dtoObjects";
 import { useState } from "react";
 
 function RegistrationModule({register}: {register: UseFormRegister<UserDTO & FormDTO>}) {

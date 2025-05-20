@@ -6,7 +6,6 @@ import {BuildOptions} from "./types";
 import {BundleAnalyzerPlugin} from "webpack-bundle-analyzer";
 import ReactRefreshWebpackPlugin from "@pmmmwh/react-refresh-webpack-plugin";
 import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
-import path from "path";
 
 function buildPlugins(options: BuildOptions): Configuration["plugins"] {
 	const isDev = options.mode == "development";

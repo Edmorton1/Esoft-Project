@@ -1,5 +1,4 @@
 import { DataRes, Form, Likes, Message, Tags, Token, User, UserTags } from "@s/core/domain/Users"
-import { FormDTO, MessageDTO, UserDTO } from "@s/core/dtoObjects"
 
 export type Tables = {
   users: User,

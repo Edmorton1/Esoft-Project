@@ -1,8 +1,5 @@
-import BasePeer from "@/pages/Room/WebRTC/BasePeer"
 import PeerCaller from "@/pages/Room/WebRTC/PeerCaller"
 import PeerResponder from "@/pages/Room/WebRTC/PeerResponder"
-import StoreSocket from "@/shared/api/Store-Socket"
-import { toSOSe } from "@shared/MAPPERS"
 import { makeAutoObservable } from "mobx"
 
 class StoreRoom {

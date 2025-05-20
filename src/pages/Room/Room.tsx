@@ -1,13 +1,11 @@
 import AudioControl from "@/pages/Room/WebRTC/AudioControl"
-import BasePeer from "@/pages/Room/WebRTC/BasePeer"
-import PeerCaller from "@/pages/Room/WebRTC/PeerCaller"
 import PeerResponder from "@/pages/Room/WebRTC/PeerResponder"
 import StoreRoom from "@/pages/Room/WebRTC/Store-Room"
 import StoreCall from "@/shared/ui/ModalCall/StoreCall"
 import VideoControl from "@/pages/Room/WebRTC/VideoControl"
 import useLive from "@/shared/hooks/useLive"
 import StoreUser from "@/shared/stores/Store-User"
-import { useEffect, useRef, useState } from "react"
+import { useState } from "react"
 import StoreTalking from "@/shared/ui/ModalTalking/StoreTalking"
 
 // ФУНКЦИЯ

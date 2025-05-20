@@ -1,7 +1,6 @@
 import $api from "@/shared/api/api"
 import { makeAutoObservable, runInAction, toJS } from "mobx"
 import { Message } from "@s/core/domain/Users"
-import StoreSocket from "@/shared/api/Store-Socket"
 import { toCl } from "@shared/MAPPERS"
 import StoreUser from "@/shared/stores/Store-User"
 import { MessageDTO, MessagePutDTO } from "@s/core/dtoObjects"

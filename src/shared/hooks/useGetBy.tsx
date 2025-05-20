@@ -1,7 +1,7 @@
 
 import $api from "@/shared/api/api"
 import { tables, Tables } from "@s/core/domain/types"
-import { frJSON, one, toCl, toJSON } from "@shared/MAPPERS"
+import { one, toCl } from "@shared/MAPPERS"
 import { useEffect, useState } from "react"
 
 interface optionsInterface {

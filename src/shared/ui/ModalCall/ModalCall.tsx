@@ -1,9 +1,12 @@
 import PeerResponder from "@/pages/Room/WebRTC/PeerResponder";
 import StoreRoom from "@/pages/Room/WebRTC/Store-Room";
 import StoreCall from "@/shared/ui/ModalCall/StoreCall";
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
 import { observer } from "mobx-react-lite";
-import { useState } from "react";
 // import PhoneIcon from '@mui/icons-material/Phone'
 // import CallEndIcon from "@mui/icons-material/CallEnd"
 
