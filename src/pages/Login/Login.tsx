@@ -1,5 +1,6 @@
 import $api from "@/shared/api/api";
 import storeAuthorization from "@/shared/stores/Store-User";
+import { Box, Button } from "@mui/material";
 import { UserDTO } from "@s/core/dtoObjects";
 import { observer } from "mobx-react-lite";
 import { useForm } from "react-hook-form";
@@ -12,6 +13,8 @@ function Login() {
     console.log(request.status)
   }
 
+  const buttonVariant = 'outlined'
+
   return (
     <>
       <div>vasya@gmail.com</div>
@@ -23,10 +26,12 @@ function Login() {
         <input {...register('password')} type="text" placeholder="password" value="123" />
         <button>Войти</button>
       </form>
-      <button onClick={storeAuthorization.logout}>Выйти</button>
-      <button onClick={() => console.log(storeAuthorization.user)}>Вывести пользователя</button>
-      <button onClick={handleTest}>Запрос на проверку авторизации</button>
-      <button onClick={storeAuthorization.initial}>Инициализация</button>
+      <Box display="flex" flexDirection="column">
+        <Button onClick={storeAuthorization.logout} variant={buttonVariant}>Выйти</Button>
+        <Button onClick={() => console.log(storeAuthorization.user)} variant={buttonVariant}>Вывести пользователя</Button>
+        <Button onClick={handleTest} variant={buttonVariant}>Запрос на проверку авторизации</Button>
+        <Button onClick={storeAuthorization.initial} variant={buttonVariant}>Инициализация</Button>
+      </Box>
     </>
   )
 }

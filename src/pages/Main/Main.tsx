@@ -1,3 +1,4 @@
+import ModalCall from "@/shared/ui/ModalCall/ModalCall"
 import { useState } from "react"
 
 function Main() {
@@ -6,7 +7,11 @@ function Main() {
   if (error) throw new Error('Fallback error')
 
   return (
-    <button onClick={() => setError(true)}>asdasd</button>
+    <>
+      <button onClick={() => setError(true)}>asdasd</button>
+      <ModalCall></ModalCall>
+    </>
+
   )
 }
 

@@ -16,15 +16,15 @@ const app = express()
 const PORT = Number(process.env.PORT)
 
 export const options = {
-  cert: fs.readFileSync(path.resolve(__dirname, 'certs', '192.168.110.22+1.pem')),
-  key: fs.readFileSync(path.resolve(__dirname, 'certs', '192.168.110.22+1-key.pem'))
+  cert: fs.readFileSync(path.resolve(__dirname, 'certs', '192.168.1.125.pem')),
+  key: fs.readFileSync(path.resolve(__dirname, 'certs', '192.168.1.125-key.pem'))
 }
 
 const server = https.createServer(options, app)
 createWebSocketServer(server)
 
 app.use(cors({
-  origin: ['https://localhost:5000', 'https://192.168.110.22:5000', 'http://localhost:5000', 'http://192.168.110.22:5000'],
+  origin: ['https://localhost:5000', 'https://192.168.1.125:5000', 'http://localhost:5000', 'http://192.168.1.125:5000'],
   credentials: true
 }))
 
@@ -45,4 +45,4 @@ app.use('/', router)
 // ОТКЛЮЧЕНИЕ ВАРНИНГА У ЯНДЕКСА и require У FileType
 process.removeAllListeners('warning');
 
-server.listen(PORT, '0.0.0.0', () => console.log(`СЕРВЕР ЗАПУЩЕН НА ПОРТУ: ${PORT}, НА САЙТЕ: ${process.env.URL_SERVER}`))
+server.listen(PORT, '0.0.0.0', () => console.log(`СЕРВЕР ЗАПУЩЕН НА ПОРТУ: ${PORT},: ${process.env.URL_SERVER} КЛИЕНТ: ${process.env.URL_CLIENT}`))

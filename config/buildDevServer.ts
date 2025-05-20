@@ -22,8 +22,8 @@ function buildDevServer(options: BuildOptions): Configuration["devServer"] {
 		server: {
 			type: "https",
 			options: {
-     	  key: fs.readFileSync(path.resolve(__dirname, '..', 'server', 'certs', '192.168.110.22+1-key.pem')),
-      	cert: fs.readFileSync(path.resolve(__dirname, '..', 'server', 'certs', '192.168.110.22+1.pem')),
+     	  key: fs.readFileSync(path.resolve(__dirname, '..', 'server', 'certs', '192.168.1.125-key.pem')),
+      	cert: fs.readFileSync(path.resolve(__dirname, '..', 'server', 'certs', '192.168.1.125.pem')),
 			}
 		}
 	};

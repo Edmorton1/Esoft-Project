@@ -47,10 +47,6 @@ abstract class BasePeer {
     this.peerConnection.addIceCandidate(candidate)
   }
 
-  closeConnection = () => {
-    this.peerConnection.close()
-  }
-
   sendMessageCaller = (text: string) => {
     this.dataChanel?.send(text)
   }

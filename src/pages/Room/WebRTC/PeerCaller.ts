@@ -17,17 +17,17 @@ class PeerCaller extends BasePeer {
     }
   }
 
-  private sendOffer = (id: number, description: RTCSessionDescriptionInit) => {
+  private sendOffer = (description: RTCSessionDescriptionInit) => {
     console.log(this.peerConnection, this.dataChanel)
-    StoreSocket.socket?.send(toSOSe('offer', {id: id, description: description}))
+    StoreSocket.socket?.send(toSOSe('offer', {frid: this.frid, toid: this.toid, description: description}))
   }
 
-  makeCall = async () => {
+  createOffer = async () => {
     this.dataChanel = setupDataChannel(this.peerConnection.createDataChannel('test'))
 
     this.offer = await this.peerConnection.createOffer()
     await this.peerConnection.setLocalDescription(this.offer)
-    this.sendOffer(this.toid, this.peerConnection.localDescription!)
+    this.sendOffer(this.peerConnection.localDescription!)
     console.log(this.peerConnection.localDescription)
   }
 

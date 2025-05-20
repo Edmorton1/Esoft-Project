@@ -23,7 +23,7 @@ export interface MsgTypesServer {
   like: Likes
   delete_like: number
 
-  offer: {id: number, description: RTCSessionDescriptionInit},
+  offer: {frid: number, toid: number, description: RTCSessionDescriptionInit},
   answer: {id: number, description: RTCSessionDescriptionInit},
   candidate: {isCaller: boolean, id: number, candidate: RTCIceCandidate}
 }
@@ -31,29 +31,13 @@ export interface MsgTypesServer {
 export type OverdriveProperty<T, R> = Omit<T, keyof R> & R
 
 export type MsgTypesClient = OverdriveProperty<MsgTypesServer, {
-  offer: RTCSessionDescriptionInit,
   answer: RTCSessionDescriptionInit,
   candidate: {isCaller: boolean, candidate: RTCIceCandidate},
 }>
 
-// export interface MsgTypesClient extends Omit<MsgTypesServer, 'offer' | 'answer' | 'candidate'> {
-//   offer: RTCSessionDescriptionInit,
-//   answer: RTCSessionDescriptionInit,
-//   candidate: {isCaller: boolean, candidate: RTCIceCandidate}
-// }
-
 export type SocketMessageClientInterface = {
   [K in keyof MsgTypesClient]: {type: K, data: MsgTypesClient[K]}
 }[keyof MsgTypesClient]
-
-// interface Person {
-//   name: string,
-//   age: number
-// }
-
-// export interface Skuf extends Omit<Person, 'name'> {
-//   name: number
-// } 
 
 export type msg = keyof MsgTypesServer
 

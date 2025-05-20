@@ -12,6 +12,13 @@
       "forceConsistentCasingInFileNames": true,
 
       "strict": true,
+      "noImplicitThis": true,
+      "alwaysStrict": true,
+      "strictNullChecks": true,
+      "strictFunctionTypes": true,
+      "strictBindCallApply": true,
+      "noFallthroughCasesInSwitch": true,
+      // "noUncheckedIndexedAccess": true,
       // "resolveJsonModule": true,
       // "types": ["NodeJS"],
       // "typeRoots": ["./server"],

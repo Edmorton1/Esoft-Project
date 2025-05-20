@@ -23,7 +23,8 @@ export default (env:envTypes) => {
 			src: path.resolve(__dirname, 'src'),
 			server: path.resolve(__dirname, 'server'),
 			shared: path.resolve(__dirname, 'shared'),
-			public: path.resolve(__dirname, 'public')
+			public: path.resolve(__dirname, 'public'),
+			favicon: path.resolve(__dirname, 'public', 'favicon.ico')
 		},
 		analyzer: env.analyzer
 	})

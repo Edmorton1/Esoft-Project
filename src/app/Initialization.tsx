@@ -3,6 +3,9 @@ import StoreUser from "@/shared/stores/Store-User"
 import Toast from "@/shared/ui/Toast"
 import { useEffect } from "react"
 import Alert from "@/shared/ui/Alert"
+import ModalCall from "@/shared/ui/ModalCall/ModalCall"
+import CallLine from "@/shared/ui/CallLine"
+import ModalTalking from "@/shared/ui/ModalTalking/ModalTalking"
 
 function Initialization() {
 
@@ -16,9 +19,12 @@ function Initialization() {
     fetchData()
   }, [])
   
-  return (
+  return <>
     <Alert />
-  )
+    <ModalCall />
+    <ModalTalking />
+    <CallLine />
+  </>
 }
 
 export default Initialization

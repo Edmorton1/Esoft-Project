@@ -13,7 +13,7 @@ function buildPlugins(options: BuildOptions): Configuration["plugins"] {
 	const isProd = options.mode == "production";
 
 	return [
-		new HTMLWebpackPlugin({template: options.paths.html}),
+		new HTMLWebpackPlugin({template: options.paths.html, favicon: options.paths.favicon, title: "Znakomstva"}),
 		isDev && new webpack.ProgressPlugin(),
 		isProd &&
 			new MiniCssExtractPlugin({

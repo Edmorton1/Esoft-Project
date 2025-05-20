@@ -1,4 +1,5 @@
 import BasePeer from "@/pages/Room/WebRTC/BasePeer";
+import StoreCall from "@/shared/ui/ModalCall/StoreCall";
 import StoreSocket from "@/shared/api/Store-Socket";
 import { toSOSe } from "@shared/MAPPERS";
 
@@ -23,8 +24,9 @@ class PeerResponder extends BasePeer {
 
   SocketGetOffer = async (offer: RTCSessionDescriptionInit) => {
     console.log("SOCKET GET OFFER", offer)
-      await this.peerConnection.setRemoteDescription(offer)
-      await this.createAnswer()
+    await this.peerConnection.setRemoteDescription(offer)
+    StoreCall.openModal('assadsda')
+    // await this.createAnswer()
   }
   
   createAnswer = async () => {

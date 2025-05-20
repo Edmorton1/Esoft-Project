@@ -40,6 +40,9 @@ export default defineConfig([
       "@typescript-eslint/no-unused-expressions": "off",
       "@typescript-eslint/ban-ts-comment": "warn",
 
+      //MUI ICONS
+      
+
       // ПРАВИЛО НА any
       "@typescript-eslint/no-explicit-any": "off",
 

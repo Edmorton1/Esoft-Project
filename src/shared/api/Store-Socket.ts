@@ -60,7 +60,7 @@ class SocketStore {
 
         case "offer":
           console.log(data);
-          (StoreRoom.Peer as PeerResponder).SocketGetOffer(data)
+          StoreRoom.createPeers(data.frid, data.toid, false).SocketGetOffer(data.description)
           break
         case "answer":
           console.log('answer socket', data);
