@@ -1,32 +1,10 @@
-import { useEffect, useState } from "react"
-import "@/app/App.scss"
+import { ThemeContext } from "@/app/ChangeTheme"
+import { useContext } from "react"
 
 function ThemeButton() {
-  const [isDark, setIsDark] = useState(() => {
-    return localStorage.getItem('theme') === 'dark'
-  })
+  const handleClick = useContext(ThemeContext)
 
-  useEffect(() => {
-    const body = document.body
-
-    if (isDark) {
-      body.classList.add("dark")
-      localStorage.setItem("theme", "dark")
-    } else {
-      body.classList.remove("dark")
-      localStorage.setItem("theme", "light")
-    }
-  }, [isDark])
-
-  const toggleTheme = () => {
-    setIsDark(prev => !prev)
-  }
-
-  return (
-    <button onClick={toggleTheme}>
-      {isDark ? 'Dark' : 'Light'}
-    </button>
-  )
+  return <button onClick={handleClick}>Сменить тему</button>
 }
 
 export default ThemeButton

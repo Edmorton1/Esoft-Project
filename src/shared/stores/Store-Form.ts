@@ -1,5 +1,5 @@
 import $api from "@/shared/api/api";
-import { Form, Tags } from "@s/core/domain/Users";
+import { Form, Tags } from "@t/general/Users";
 import { FormDTOClient } from "types/client/DTOFormClient"
 import { one, toCl } from "@shared/MAPPERS";
 import { serverPaths } from "@shared/PATHS";

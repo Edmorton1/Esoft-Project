@@ -1,5 +1,5 @@
-import { TargetTypeSchema } from "@s/core/domain/Users";
-import { MulterFileSchema } from "@s/core/sharedTypes";
+import { TargetTypeSchema } from "@t/general/Users";
+import { MulterFileSchema } from "@t/shared/sharedTypes";
 import z from "zod"
 
 export const FormDTOCSchemaServer = z.object({

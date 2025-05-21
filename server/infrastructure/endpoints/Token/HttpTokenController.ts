@@ -1,5 +1,5 @@
 import ORM from "@s/infrastructure/db/requests/ORM";
-import { UserDTO, TokenDTO } from "@s/core/dtoObjects";
+import { UserDTO, TokenDTO } from "@t/general/dtoObjects";
 import { Request, Response } from "express";
 import bcrypt from "bcrypt"
 import { one } from "@shared/MAPPERS";

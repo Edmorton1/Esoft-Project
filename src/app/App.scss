@@ -1,19 +1,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
-:root {
-  --bg-color: white;
-  --ft-color: black;
-}
+// :root {
+//   --bg-color: white;
+//   --ft-color: black;
+// }
 
-.dark {
-  --bg-color: #242424;
-  --ft-color: white;
-}
+// .dark {
+//   --bg-color: #242424;
+//   --ft-color: white;
+// }
 
 body {
-  margin: 40px;
-  background-color: var(--bg-color);
-  color: var(--ft-color);
+  margin: 40px !important;
+  // background-color: var(--bg-color);
+  // color: var(--ft-color);
 }
 
 * {

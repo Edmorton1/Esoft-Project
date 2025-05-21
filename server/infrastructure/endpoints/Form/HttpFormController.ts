@@ -1,4 +1,4 @@
-import { Form } from "@s/core/domain/Users";
+import { Form } from "@t/general/Users";
 import { one } from "@shared/MAPPERS";
 import ORM from "@s/infrastructure/db/requests/ORM";
 import FormService from "@s/infrastructure/endpoints/Form/services/FormService";

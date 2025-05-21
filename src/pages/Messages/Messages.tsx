@@ -2,7 +2,7 @@ import StoreMessages from "@/pages/Messages/widgets/modules/store/Store-Messages
 import { observer } from "mobx-react-lite"
 import { useForm } from "react-hook-form"
 import StoreForm from "@/shared/stores/Store-Form"
-import { MessageDTO } from "@s/core/dtoObjects"
+import { MessageDTO } from "@t/general/dtoObjects"
 import MessageWidget from "./widgets/MessageWidget"
 import useMedia from "@/shared/hooks/useMedia"
 import VoiceMessage from "@/pages/Messages/widgets/modules/classes/VoiceMessage"

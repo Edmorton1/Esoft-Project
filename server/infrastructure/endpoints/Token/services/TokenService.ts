@@ -1,4 +1,4 @@
-import { JWTDTO, PayloadDTO } from "@s/core/dtoObjects";
+import { JWTDTO, PayloadDTO } from "@t/general/dtoObjects";
 import { one } from "@shared/MAPPERS";
 import ORM from "@s/infrastructure/db/requests/ORM";
 import bcrypt from "bcrypt"

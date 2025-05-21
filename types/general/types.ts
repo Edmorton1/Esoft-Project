@@ -1,4 +1,4 @@
-import { DataRes, Form, Likes, Message, Tags, Token, User, UserTags } from "@s/core/domain/Users"
+import { DataRes, Form, Likes, Message, Tags, Token, User, UserTags } from "@t/general/Users"
 
 export type Tables = {
   users: User,

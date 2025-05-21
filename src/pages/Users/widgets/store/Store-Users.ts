@@ -1,4 +1,4 @@
-import { Form } from "@s/core/domain/Users";
+import { Form } from "@t/general/Users";
 import { makeAutoObservable } from "mobx";
 
 class StoreUsers {

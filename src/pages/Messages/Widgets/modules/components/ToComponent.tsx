@@ -1,6 +1,6 @@
 import useGetById from "@/shared/hooks/useGetBy"
 import StoreForm from "@/shared/stores/Store-Form"
-import { Message } from "@s/core/domain/Users"
+import { Message } from "@t/general/Users"
 import { memo } from "react"
 
 const ToComponent = ({msg}: {msg: Message}) => {

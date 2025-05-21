@@ -1,4 +1,4 @@
-import { UserSchema } from "@s/core/domain/Users";
+import { UserSchema } from "@t/general/Users";
 import { z } from 'zod';
 
 export const UserDTOSchema = z.object({

@@ -1,9 +1,9 @@
 import $api from "@/shared/api/api"
 import { makeAutoObservable, runInAction, toJS } from "mobx"
-import { Message } from "@s/core/domain/Users"
+import { Message } from "@t/general/Users"
 import { toCl } from "@shared/MAPPERS"
 import StoreUser from "@/shared/stores/Store-User"
-import { MessageDTO, MessagePutDTO } from "@s/core/dtoObjects"
+import { MessageDTO, MessagePutDTO } from "@t/general/dtoObjects"
 import { serverPaths } from "@shared/PATHS"
 import { toFormData } from "@/shared/funcs/filefuncs"
 

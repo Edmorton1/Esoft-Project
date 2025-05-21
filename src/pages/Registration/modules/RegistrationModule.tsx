@@ -1,5 +1,5 @@
 import { UseFormRegister } from "react-hook-form";
-import { UserDTO } from "@s/core/dtoObjects";
+import { UserDTO } from "@t/general/dtoObjects";
 import { useState } from "react";
 import { FormDTOClient } from "types/client/DTOFormClient"
 

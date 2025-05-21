@@ -1,6 +1,6 @@
 import StoreUsers from "@/pages/Users/widgets/store/Store-Users"
 import UsersCardModule from "@/pages/Users/widgets/Card/modules/UsersCardModule"
-import { Form } from "@s/core/domain/Users"
+import { Form } from "@t/general/Users"
 import { createContext } from "react"
 import useGetById from "@/shared/hooks/useGetBy"
 import useUpdateParams from "@/shared/hooks/useChangeParams"
