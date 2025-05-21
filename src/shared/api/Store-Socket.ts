@@ -5,6 +5,7 @@ import { frSOCl } from "@shared/MAPPERS";
 import { makeAutoObservable, runInAction } from "mobx";
 import PeerCaller from "@/pages/Room/WebRTC/PeerCaller";
 import StoreRoom from "@/pages/Room/WebRTC/Store-Room";
+import { assertPeerCaller } from "@shared/TypeGuards";
 
 class SocketStore {
   socket: WebSocket | null = null
@@ -63,7 +64,8 @@ class SocketStore {
           break
         case "answer":
           console.log('answer socket', data);
-          (StoreRoom.Peer as PeerCaller).SocketGetAnswer(data)
+          assertPeerCaller(StoreRoom.Peer!)
+          StoreRoom.Peer.SocketGetAnswer(data)
           break
         case "candidate":
           // console.log('Отправка кандидатов')

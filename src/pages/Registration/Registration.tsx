@@ -2,17 +2,18 @@ import useGeolocation from "@/shared/hooks/useGeolocation";
 import RegistrationModule from "@/pages/Registration/modules/RegistrationModule";
 import StoreForm from "@/shared/stores/Store-Form";
 import StoreUser from "@/shared/stores/Store-User";
-import { FormDTO, UserDTO } from "@s/core/dtoObjects";
+import { UserDTO } from "@s/core/dtoObjects";
 import { observer } from "mobx-react-lite";
 import { useForm } from "react-hook-form"
 import { useEffect } from "react";
 import { toCl } from "@shared/MAPPERS";
 import { AvatarHandle } from "@/pages/Registration/modules/funcs/funcDropAva";
+import { FormDTOClient } from "@shared/DTOClientTypes";
 
 function Registration() {
   const location = useGeolocation()!
   console.log(location)
-  const { register, handleSubmit, setValue } = useForm<UserDTO & FormDTO>();
+  const { register, handleSubmit, setValue } = useForm<UserDTO & FormDTOClient>();
 
   useEffect(() => {
     if (location?.city) {
@@ -20,15 +21,16 @@ function Registration() {
     }
   }, [location, setValue])
 
-  async function registrationHandle(data: UserDTO & FormDTO) {
+  async function registrationHandle(data: UserDTO & FormDTOClient) {
     const {email, password, avatar, ...rawForm} = data
     const {city, ...coords} = location
     const name = rawForm.name.charAt(0).toUpperCase() + rawForm.name.slice(1).toLowerCase()
     const userid = await StoreUser.registration({email, password})
     const avatarUpload = avatar?.length ? toCl<string>(await AvatarHandle(avatar![0] as File)) : undefined
+    //@ts-ignore
     const tags = (data.tags as string)?.split(',').map(e => e.toLowerCase().trim())
 
-    const form: FormDTO = {...rawForm, name: name, id: userid, avatar: avatarUpload, tags: tags, location: coords}
+    const form: FormDTOClient = {...rawForm, name: name, id: userid, avatar: avatarUpload, tags: tags, location: coords}
     
     console.log(form)
     await StoreForm.postForm(form)

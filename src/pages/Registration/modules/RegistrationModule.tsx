@@ -1,8 +1,9 @@
 import { UseFormRegister } from "react-hook-form";
-import { FormDTO, UserDTO } from "@s/core/dtoObjects";
+import { UserDTO } from "@s/core/dtoObjects";
 import { useState } from "react";
+import { FormDTOClient } from "@shared/DTOClientTypes";
 
-function RegistrationModule({register}: {register: UseFormRegister<UserDTO & FormDTO>}) {
+function RegistrationModule({register}: {register: UseFormRegister<UserDTO & FormDTOClient>}) {
   const [target, setTarget] = useState(false)
 
   const valueToNull = (value: string) => {
@@ -30,7 +31,7 @@ function RegistrationModule({register}: {register: UseFormRegister<UserDTO & For
       <option value="hobby">Хобби</option>
       <option value="other">Другое</option>
     </select>
-    {target && <input {...register('targetCustom')} type="text" placeholder="Напишите свою цель..." />}
+    {/* {target && <input {...register('targetCustom')} type="text" placeholder="Напишите свою цель..." />} */}
     <label htmlFor="tags">Теги</label>
     <input {...register('tags', {setValueAs: value => value.length < 1 ? undefined : value})} type="text" id="tags" />
     <label htmlFor="description">Описание</label>

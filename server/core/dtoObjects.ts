@@ -1,92 +1,72 @@
-import { TargetType, User } from "@s/core/domain/Users";
+import { UserSchema } from "@s/core/domain/Users";
+import { z } from 'zod';
 
-export class UserDTO {
-  constructor(
-    readonly email: string,
-    readonly password: string
-  ) {}
-}
+export const UserDTOSchema = z.object({
+  email: z.string().email(),
+  password: z.string(),
+});
 
-export class FormDTO {
-  constructor(
-    readonly id: number,
-    readonly name: string,
-    readonly sex: boolean,
-    readonly age: number,
-    readonly target: TargetType,
-    // ПОТОМ СДЕЛАТЬ НЕОБЯЗ
-    readonly targetCustom: string,
-    readonly avatar?: FileList | string,
-    public tags?: string | string[],
+export const PayloadDTOSchema = z.object({
+  id: z.number(),
+  role: z.string(),
+});
 
-    readonly description?: string,
-    readonly city?: string,
-    readonly location?: {lng: number, lat: number},
-  ) {}
-}
+export const JWTDTOSchema = z.object({
+  id: z.number(),
+  role: z.string(),
+  iat: z.number(),
+  exp: z.number(),
+});
 
-export class PayloadDTO {
-  constructor(
-    readonly id: number,
-    readonly role: string
-  ) {}
-}
+export const TokenDTOSchema = z.object({
+  user: UserSchema,
+  accessToken: z.string(),
+});
 
-export class JWTDTO {
-  constructor(
-    readonly id: number,
-    readonly role: string,
-    readonly iat: number,
-    readonly exp: number
-  ) {}
-}
 
-export class TokenDTO {
-  constructor(
-    readonly user: User,
-    readonly accessToken: string
-  ) {}
-}
+export const LikesDTOSchema = z.object({
+  userid: z.number(),
+  liked_userid: z.number(),
+});
 
-export class LikesDTO {
-  constructor(
-    readonly userid: number,
-    readonly liked_userid: number
-  ) {}
-}
+export const LocationDTOSchema = z.object({
+  city: z.string(),
+  lng: z.number(),
+  lat: z.number(),
+});
 
-export class LocationDTO {
-  constructor(
-    readonly city: string,
-    readonly  lng: number,
-    readonly lat: number
-  ) {}
-}
+export const MessageDTOSchema = z.object({
+  fromid: z.union([z.number(), z.string()]),
+  toid: z.union([z.number(), z.string()]),
+  text: z.string(),
+  files: z.instanceof(FileList),
+});
 
-export class MessageDTO {
-  constructor(
-    readonly fromid: number| string,
-    readonly toid: number | string,
-    readonly text: string,
-    public files: FileList,
-  ) {}
-}
+export const MessagePutDTOSchema = z.object({
+  id: z.number(),
+  fromid: z.number(),
+  toid: z.number(),
+  text: z.string(),
+  files: z.object({
+    new: z.union([z.instanceof(FileList), z.null()]),
+    old: z.array(z.string()).nullable(),
+  }),
+});
 
-export class MessagePutDTO {
-  constructor(
-    readonly id: number,
-    readonly fromid: number,
-    readonly toid: number,
-    readonly text: string,
-    readonly files: {new: FileList | null, old: string[] | null},
-  ) {}
-}
+export const MessagePutServerSchema = z.object({
+  fromid: z.number(),
+  toid: z.number(),
+  text: z.string(),
+  deleted: z.array(z.string()).optional(),
+});
 
-export class MessagePutServer {
-  constructor(
-    readonly fromid: number,
-    readonly toid: number,
-    readonly text: string,
-    readonly deleted?: string[]
-  ) {}
-}
+export type UserDTO = z.infer<typeof UserDTOSchema>;
+
+export type PayloadDTO = z.infer<typeof PayloadDTOSchema>;
+export type JWTDTO = z.infer<typeof JWTDTOSchema>;
+export type TokenDTO = z.infer<typeof TokenDTOSchema>;
+export type LikesDTO = z.infer<typeof LikesDTOSchema>;
+export type LocationDTO = z.infer<typeof LocationDTOSchema>;
+export type MessageDTO = z.infer<typeof MessageDTOSchema>;
+export type MessagePutDTO = z.infer<typeof MessagePutDTOSchema>;
+export type MessagePutServer = z.infer<typeof MessagePutServerSchema>;

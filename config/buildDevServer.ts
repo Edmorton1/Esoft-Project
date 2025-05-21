@@ -12,7 +12,7 @@ function buildDevServer(options: BuildOptions): Configuration["devServer"] {
 		// 	directory: path.join(__dirname, 'public'),
 		// },
 		host: "0.0.0.0",
-		open: true,
+		// open: true,
 		hot: true,
 		// compress: true,
 		port: options.port ?? "5000",

@@ -3,6 +3,7 @@ import { one } from "@shared/MAPPERS";
 import ORM from "@s/infrastructure/db/requests/ORM";
 import FormService from "@s/infrastructure/endpoints/Form/services/FormService";
 import { Request, Response } from "express";
+import { FormDTOCSchemaServer } from "@s/core/DTOForm";
 
 // SELECT 
 //   forms.*, 
@@ -16,9 +17,10 @@ import { Request, Response } from "express";
 
 class HttpFormController {
   postForm = async (req: Request, res: Response) => {
-    const data: Form = req.body
+    const data = req.body
     console.log(data)
-    //@ts-ignore
+    FormDTOCSchemaServer.parse(data)
+    console.log('ZODD пропустил')
     const rawTags: string[] = data.tags
     delete data.tags
     const form = one(await ORM.post(data, 'forms'))
