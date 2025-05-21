@@ -8,6 +8,7 @@ function buildResolvers(options: BuildOptions): Configuration["resolve"] {
 			"@": options.paths.src,
 			"@s": options.paths.server,
 			"@shared": options.paths.shared,
+			"@t": options.paths.types
 		},
 	};
 }

@@ -1,4 +1,4 @@
-import { tables } from "@s/core/domain/types"
+import { tables } from "@t/general/types"
 import ORM from "@s/infrastructure/db/requests/ORM"
 import { Request, Response } from "express"
 

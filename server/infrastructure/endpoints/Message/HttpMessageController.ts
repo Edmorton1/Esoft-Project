@@ -1,4 +1,4 @@
-import { msg, MsgTypesServer } from "@s/core/domain/types";
+import { msg, MsgTypesServer } from "@t/general/types";
 import { Message } from "@s/core/domain/Users";
 import { MessagePutServer } from "@s/core/dtoObjects";
 import { toSOSe, one } from "@shared/MAPPERS";

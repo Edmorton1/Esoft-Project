@@ -9,6 +9,7 @@ import { UserDTO } from "@s/core/dtoObjects"
 import { toSOSe, toCl } from "@shared/MAPPERS"
 import { serverPaths } from "@shared/PATHS"
 import { makeAutoObservable, runInAction } from "mobx"
+import { FormDTOClient } from "types/client/DTOFormClient"
 
 export interface responseInterface {
   user: User,
@@ -54,15 +55,6 @@ class StoreUser {
     }
   }
   
-  registration = async (user: UserDTO): Promise<number> => {
-    const request = toCl<responseInterface>((await $api.post(`${serverPaths.registration}`, user)))
-    localStorage.setItem("accessToken", request.accessToken)
-
-    runInAction(() => this.user = request.user)
-    this.initial()
-    return request.user.id
-  }
-  
   login = async (data: UserDTO) => {
     const request = toCl<responseInterface>(await $api.post(`${serverPaths.login}`, data))
     localStorage.setItem("accessToken", request.accessToken)
@@ -93,6 +85,16 @@ class StoreUser {
     } else {
       this.loadModules(true)
     }
+  }
+
+  registration = async (user: UserDTO & FormDTOClient) => {
+    // const request = toCl<responseInterface>((await $api.post(`${serverPaths.registration}`, user)))
+    console.log(user)
+    // localStorage.setItem("accessToken", request.accessToken)
+
+    // runInAction(() => this.user = request.user)
+    // this.initial()
+    // return request.user.id
   }
 }
 

@@ -1,4 +1,4 @@
-import { msg, MsgTypesClient, MsgTypesServer, SocketMessageClientInterface, SocketMessageServerInterface, Tables } from "@s/core/domain/types"
+import { msg, MsgTypesClient, MsgTypesServer, SocketMessageClientInterface, SocketMessageServerInterface, Tables } from "@t/general/types"
 
 export function toTS<T extends keyof Tables>(entity: any): Tables[T][] {
     // return entity.rows.length > 1 ? entity.rows : entity.rows[0]

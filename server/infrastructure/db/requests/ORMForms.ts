@@ -1,4 +1,4 @@
-import { tables } from "@s/core/domain/types"
+import { tables } from "@t/general/types"
 import { Form } from "@s/core/domain/Users"
 import pool from "@s/infrastructure/db/db"
 import { toSQLWhere } from "@s/infrastructure/db/requests/SQLparsers"

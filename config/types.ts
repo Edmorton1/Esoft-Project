@@ -6,7 +6,8 @@ export interface buildPaths {
   server: string;
   shared: string,
   public: string,
-  favicon: string
+  favicon: string,
+  types: string
 }
 
 export type buildMode = "production" | "development";

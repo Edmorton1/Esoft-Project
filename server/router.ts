@@ -1,5 +1,5 @@
 import express from "express"
-import { tables } from "@s/core/domain/types"
+import { tables } from "@t/general/types"
 import { universalController } from "@s/controllers"
 import multer from "multer"
 import { serverPaths } from "@shared/PATHS"

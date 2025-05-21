@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form"
 import { useEffect } from "react";
 import { toCl } from "@shared/MAPPERS";
 import { AvatarHandle } from "@/pages/Registration/modules/funcs/funcDropAva";
-import { FormDTOClient } from "@shared/DTOClientTypes";
+import { FormDTOClient, RegistrationDTOClientScema } from "@t/client/DTOFormClient"
 
 function Registration() {
   const location = useGeolocation()!
@@ -22,18 +22,27 @@ function Registration() {
   }, [location, setValue])
 
   async function registrationHandle(data: UserDTO & FormDTOClient) {
-    const {email, password, avatar, ...rawForm} = data
+    try {
+      const newa = RegistrationDTOClientScema.parse(data)
+      console.log(newa)
+    } catch(err) {
+      console.error(err)
+    }
+
+    const {avatar, ...rawForm} = data
     const {city, ...coords} = location
+
     const name = rawForm.name.charAt(0).toUpperCase() + rawForm.name.slice(1).toLowerCase()
-    const userid = await StoreUser.registration({email, password})
+    // const userid = await StoreUser.registration({email, password})
     const avatarUpload = avatar?.length ? toCl<string>(await AvatarHandle(avatar![0] as File)) : undefined
     //@ts-ignore
     const tags = (data.tags as string)?.split(',').map(e => e.toLowerCase().trim())
 
-    const form: FormDTOClient = {...rawForm, name: name, id: userid, avatar: avatarUpload, tags: tags, location: coords}
+    const form: UserDTO & FormDTOClient = {...rawForm, name: name, avatar: avatarUpload, tags: tags, location: coords}
     
     console.log(form)
-    await StoreForm.postForm(form)
+    // await StoreForm.postForm(form)
+    await StoreUser.registration(form)
   }
 
   return (

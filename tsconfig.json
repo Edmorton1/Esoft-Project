@@ -26,7 +26,8 @@
       "paths": {
         "@/*": ["./src/*"],
         "@s/*": ["./server/*"],
-        "@shared/*": ["./shared/*"]
+        "@shared/*": ["./shared/*"],
+        "@t/*": ["./types/*"]
       }
     },
     "ts-node": {

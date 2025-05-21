@@ -3,9 +3,8 @@ import StoreLikes from "@/shared/stores/StoreLikes";
 import { URL_SERVER_WS } from "@shared/URLS";
 import { frSOCl } from "@shared/MAPPERS";
 import { makeAutoObservable, runInAction } from "mobx";
-import PeerCaller from "@/pages/Room/WebRTC/PeerCaller";
 import StoreRoom from "@/pages/Room/WebRTC/Store-Room";
-import { assertPeerCaller } from "@shared/TypeGuards";
+import { assertPeerCaller } from "@t/general/TypeGuards";
 
 class SocketStore {
   socket: WebSocket | null = null

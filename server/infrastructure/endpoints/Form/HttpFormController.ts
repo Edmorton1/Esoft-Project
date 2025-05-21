@@ -3,7 +3,7 @@ import { one } from "@shared/MAPPERS";
 import ORM from "@s/infrastructure/db/requests/ORM";
 import FormService from "@s/infrastructure/endpoints/Form/services/FormService";
 import { Request, Response } from "express";
-import { FormDTOCSchemaServer } from "@s/core/DTOForm";
+import { FormDTOCSchemaServer } from "types/server/DTOFormServer";
 
 // SELECT 
 //   forms.*, 

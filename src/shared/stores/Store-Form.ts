@@ -1,6 +1,6 @@
 import $api from "@/shared/api/api";
 import { Form, Tags } from "@s/core/domain/Users";
-import { FormDTOClient } from "@shared/DTOClientTypes";
+import { FormDTOClient } from "types/client/DTOFormClient"
 import { one, toCl } from "@shared/MAPPERS";
 import { serverPaths } from "@shared/PATHS";
 import { makeAutoObservable, runInAction } from "mobx";

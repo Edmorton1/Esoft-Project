@@ -3,7 +3,7 @@ import { MulterFileSchema } from "@s/core/sharedTypes";
 import z from "zod"
 
 export const FormDTOCSchemaServer = z.object({
-  id: z.number(),
+  // id: z.number(),
   name: z.string(),
   sex: z.boolean(),
   age: z.number(),

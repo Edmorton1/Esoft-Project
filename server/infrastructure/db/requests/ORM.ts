@@ -1,4 +1,4 @@
-import { tables, Tables } from "@s/core/domain/types"
+import { tables, Tables } from "@t/general/types"
 import { cacheEdit, cacheGet } from "@s/infrastructure/cache/redis"
 import pool from "@s/infrastructure/db/db"
 import { toArr, toTS } from "@shared/MAPPERS"

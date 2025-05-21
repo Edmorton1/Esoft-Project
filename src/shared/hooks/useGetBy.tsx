@@ -1,6 +1,6 @@
 
 import $api from "@/shared/api/api"
-import { tables, Tables } from "@s/core/domain/types"
+import { tables, Tables } from "@t/general/types"
 import { one, toCl } from "@shared/MAPPERS"
 import { useEffect, useState } from "react"
 

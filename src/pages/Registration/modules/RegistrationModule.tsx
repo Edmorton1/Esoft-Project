@@ -1,10 +1,9 @@
 import { UseFormRegister } from "react-hook-form";
 import { UserDTO } from "@s/core/dtoObjects";
 import { useState } from "react";
-import { FormDTOClient } from "@shared/DTOClientTypes";
+import { FormDTOClient } from "types/client/DTOFormClient"
 
 function RegistrationModule({register}: {register: UseFormRegister<UserDTO & FormDTOClient>}) {
-  const [target, setTarget] = useState(false)
 
   const valueToNull = (value: string) => {
     return value === '' ? null : value
@@ -24,12 +23,13 @@ function RegistrationModule({register}: {register: UseFormRegister<UserDTO & For
     <label htmlFor="age">Возраст</label>
     <input {...register('age', {valueAsNumber: true})} type="number" id="age" />
     <label htmlFor="target">Цель</label>
-    <select {...register('target')} onChange={(e) => {e.target.value == 'other' ? setTarget(true) : setTarget(false)}} id="target">
+    {/* <select {...register('target')} onChange={(e) => {e.target.value == 'other' ? setTarget(true) : setTarget(false)}} id="target"> */}
+    <select {...register('target')} id="target">
       <option value="relation">Отношения</option>
       <option value="friend">Дружба</option>
       <option value="chat">Чатинг</option>
       <option value="hobby">Хобби</option>
-      <option value="other">Другое</option>
+      {/* <option value="other">Другое</option> */}
     </select>
     {/* {target && <input {...register('targetCustom')} type="text" placeholder="Напишите свою цель..." />} */}
     <label htmlFor="tags">Теги</label>
