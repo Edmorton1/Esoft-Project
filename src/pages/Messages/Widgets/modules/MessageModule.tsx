@@ -1,4 +1,4 @@
-import { Message } from "@t/general/Users"
+import { Message } from "@t/gen/Users"
 import { memo, useCallback, useEffect, useState } from "react"
 import MessageComponent from "./components/MessageComponent"
 import StoreMessages from "./store/Store-Messages"

@@ -2,7 +2,7 @@ CREATE TYPE role_type AS ENUM ('user', 'admin');
 
 -- CREATE TYPE private_type AS ENUM ('all', 'liked', 'none');
 
-CREATE TYPE target_type AS ENUM('friend', 'relation', 'chat', 'hobby', 'other');
+CREATE TYPE target_type AS ENUM('friend', 'relation', 'chat', 'hobby');
 
 CREATE TABLE users (
 	id SERIAL PRIMARY KEY,
@@ -16,7 +16,7 @@ CREATE TABLE forms (
 	id INT PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE NOT NULL,
 	name VARCHAR(32) NOT NULL,
   sex BOOLEAN NOT NULL,
-	age INT NOT NULL,
+	age INT NOT NULL CHECK (age BETWEEN 18 AND 122),
 	avatar TEXT,
 	description TEXT, 
 	target target_type NOT NULL,

@@ -1,68 +1,72 @@
+import { nullToUndefiend, zid, zstring } from '@t/shared/zodSnippets';
 import { z } from 'zod';
 
 export const TargetTypeSchema = z.enum(['friend', 'relation', 'chat', 'hobby', 'other']);
+export const UserRoleSchema = z.enum(['user', 'admin'])
+
+export const LocationSchema = z.object({
+    lng: z.number(),
+    lat: z.number(),
+  })
 
 export const UserSchema = z.object({
-  id: z.number(),
-  email: z.string().email(),
-  password: z.string(),
-  role: z.enum(['user', 'admin']),
+  id: zid,
+  email: zstring.email(),
+  password: z.string().nonempty().min(6),
+  role: UserRoleSchema,
   created_at: z.coerce.date(),
 });
 
 export const TagsSchema = z.object({
-  id: z.number(),
-  tag: z.string(),
+  id: zid,
+  tag: zstring,
 });
 
 export const MessageSchema = z.object({
-  id: z.number(),
-  fromid: z.number(),
-  toid: z.number(),
-  text: z.string(),
-  files: z.array(z.string()).nullable(),
+  id: zid,
+  fromid: zid,
+  toid: zid,
+  text: zstring,
+  files: z.array(z.string().nonempty()).optional(),
   created_at: z.coerce.date(),
 });
 
 export const LikesSchema = z.object({
-  id: z.number(),
-  userid: z.number(),
-  liked_userid: z.number(),
+  id: zid,
+  userid: zid,
+  liked_userid: zid,
 });
 
-export const DataResSchema = z.object({
-  id: z.number(),
-  userid: z.number(),
-  res_userid: z.number(),
-});
+// export const DataResSchema = z.object({
+//   id: z.number(),
+//   userid: z.number(),
+//   res_userid: z.number(),
+// });
 
 export const TokenSchema = z.object({
-  id: z.number(),
-  token: z.string(),
+  id: zid,
+  token: z.string().nonempty(),
 });
 
 
 export const UserTagsSchema = z.object({
-  id: z.number(),
-  tagid: z.number(),
+  id: zid,
+  tagid: zid,
 });
 
 
 export const FormSchema = z.object({
-  id: z.number(),
-  name: z.string(),
+  id: zid,
+  name: zstring,
   sex: z.boolean(),
-  age: z.number(),
+  age: z.number().positive().min(18).max(122),
   target: TargetTypeSchema,
   // targetCustom: z.string().optional(),
-  avatar: z.string().optional(),
-  description: z.string().optional(),
-  city: z.string().optional(),
-  location: z.object({
-    lng: z.number(),
-    lat: z.number(),
-  }).optional(),
-  tags: z.array(TagsSchema).optional(),
+  avatar: z.preprocess(nullToUndefiend, z.string().nonempty().optional()).optional(),
+  description: z.preprocess(nullToUndefiend, zstring.optional()).optional(),
+  city: z.preprocess(nullToUndefiend, zstring.optional()).optional(),
+  location: z.preprocess(nullToUndefiend, z.union([LocationSchema, z.string()]).optional()),
+  tags: z.preprocess(nullToUndefiend, z.array(TagsSchema)),
   // likes: z.array(z.number()).optional(),
   // message: z.array(MessageSchema).optional(),
 });
@@ -71,11 +75,12 @@ export type User = z.infer<typeof UserSchema>;
 export type Form = z.infer<typeof FormSchema>;
 export type UserTags = z.infer<typeof UserTagsSchema>;
 export type Token = z.infer<typeof TokenSchema>;
-export type DataRes = z.infer<typeof DataResSchema>;
+// export type DataRes = z.infer<typeof DataResSchema>;
 export type Likes = z.infer<typeof LikesSchema>;
 export type Message = z.infer<typeof MessageSchema>;
 export type Tags = z.infer<typeof TagsSchema>;
 export type TargetType = z.infer<typeof TargetTypeSchema>;
+export type UserRoleType = z.infer<typeof UserRoleSchema>;
 
 // export class User {
 //   constructor(

@@ -1,6 +1,6 @@
 import PeerCaller from "@/pages/Room/WebRTC/PeerCaller";
 import PeerResponder from "@/pages/Room/WebRTC/PeerResponder";
-import { Form, FormSchema } from "@t/general/Users";
+import { Form, FormSchema } from "@t/gen/Users";
 import { z } from "zod";
 
 export function assertPeerCaller(value: PeerCaller | PeerResponder): asserts value is PeerCaller {

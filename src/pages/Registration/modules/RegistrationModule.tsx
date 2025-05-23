@@ -1,13 +1,10 @@
 import { UseFormRegister } from "react-hook-form";
-import { UserDTO } from "@t/general/dtoObjects";
-import { useState } from "react";
-import { FormDTOClient } from "types/client/DTOFormClient"
 
-function RegistrationModule({register}: {register: UseFormRegister<UserDTO & FormDTOClient>}) {
+function RegistrationModule({register}: {register: UseFormRegister<any>}) {
 
-  const valueToNull = (value: string) => {
-    return value === '' ? null : value
-  }
+  // const valueToNull = (value: string) => {
+  //   return value === '' ? null : value
+  // }
 
   return (
     <>
@@ -16,7 +13,7 @@ function RegistrationModule({register}: {register: UseFormRegister<UserDTO & For
     <label htmlFor="name">Имя</label>
     <input {...register('name')} type="text" id="name" />
     <label htmlFor="sex">Пол</label>
-    <select {...register('sex', {setValueAs: Boolean})} id="sex" >
+    <select {...register('sex')} id="sex" >
       <option value="true">Мужчина</option>
       <option value="false">Женщина</option>
     </select>
@@ -33,13 +30,13 @@ function RegistrationModule({register}: {register: UseFormRegister<UserDTO & For
     </select>
     {/* {target && <input {...register('targetCustom')} type="text" placeholder="Напишите свою цель..." />} */}
     <label htmlFor="tags">Теги</label>
-    <input {...register('tags', {setValueAs: value => value.length < 1 ? undefined : value})} type="text" id="tags" />
+    <input {...register('tags')} type="text" id="tags" />
     <label htmlFor="description">Описание</label>
-    <textarea {...register('description', { setValueAs: valueToNull })} id="description" />
+    <textarea {...register('description')} id="description" />
     <label htmlFor="avatar">Аватар</label>
     <input {...register('avatar')} type="file" id="avatar" />
     <label htmlFor="city">Город</label>
-    <input {...register('city', {setValueAs: valueToNull})} type="text" id="city" />
+    <input {...register('city')} type="text" id="city" />
     <button>Отправить</button>
     </>
   )

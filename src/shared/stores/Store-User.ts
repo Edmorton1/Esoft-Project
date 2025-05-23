@@ -4,12 +4,13 @@ import StoreMessages from "@/pages/Messages/widgets/modules/store/Store-Messages
 import storeSocket from "@/shared/api/Store-Socket"
 import StoreTags from "@/shared/stores/Store-Tags"
 import StoreLikes from "@/shared/stores/StoreLikes"
-import { User } from "@t/general/Users"
-import { UserDTO } from "@t/general/dtoObjects"
-import { toSOSe, toCl } from "@shared/MAPPERS"
+import { FormSchema, User, UserSchema } from "@t/gen/Users"
+import { UserDTO } from "@t/gen/dtoObjects"
+import { toSOSe, toCl, toJSON } from "@shared/MAPPERS"
 import { serverPaths } from "@shared/PATHS"
 import { makeAutoObservable, runInAction } from "mobx"
-import { FormDTOClient } from "types/client/DTOFormClient"
+import { z } from "zod"
+import { RegistrationDTOClient, StoreUserRegistrationSchema } from "@/pages/Registration/modules/zod"
 
 export interface responseInterface {
   user: User,
@@ -87,14 +88,28 @@ class StoreUser {
     }
   }
 
-  registration = async (user: UserDTO & FormDTOClient) => {
-    // const request = toCl<responseInterface>((await $api.post(`${serverPaths.registration}`, user)))
-    console.log(user)
-    // localStorage.setItem("accessToken", request.accessToken)
+  registration = async (user: RegistrationDTOClient) => {
+    const {avatar, ...body} = user
+    const fd = new FormData()
+    fd.append('json', toJSON(body))
+    if (avatar && typeof avatar === 'object') {
+      fd.append('avatar', avatar[0])
+    }
+    const request = toCl<responseInterface>((await $api.post(`${serverPaths.registration}`, fd, {
+      headers: {
+        "Content-Type": "multipart/form-data"
+      }
+    })))
 
-    // runInAction(() => this.user = request.user)
-    // this.initial()
-    // return request.user.id
+    const response = StoreUserRegistrationSchema.parse(request)
+
+    console.log(request)
+    localStorage.setItem("accessToken", request.accessToken)
+
+    runInAction(() => this.user = request.user)
+    runInAction(() => StoreForm.form = response.form)
+    this.initial()
+    return request.user.id
   }
 }
 

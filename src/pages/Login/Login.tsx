@@ -2,7 +2,7 @@ import $api from "@/shared/api/api";
 import storeAuthorization from "@/shared/stores/Store-User";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import { UserDTO } from "@t/general/dtoObjects";
+import { UserDTO } from "@t/gen/dtoObjects";
 import { observer } from "mobx-react-lite";
 import { useForm } from "react-hook-form";
 

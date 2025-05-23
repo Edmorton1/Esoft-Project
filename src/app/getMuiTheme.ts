@@ -6,7 +6,7 @@ export const getMuiTheme = (mode: "light" | "dark") =>
       mode,
       primary: {
         // Основной цвет
-        main: "#f54284",
+        main: "#568bd1",
       },
       background: {
         default: mode === "dark" ? "#242424" : "#fff",

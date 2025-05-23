@@ -1,10 +1,11 @@
-import { tables, Tables } from "@t/general/types"
+import { tables, Tables, TablesPost } from "@t/gen/types"
 import { cacheEdit, cacheGet } from "@s/infrastructure/cache/redis"
 import pool from "@s/infrastructure/db/db"
 import { toArr, toTS } from "@shared/MAPPERS"
 import bcrypt from "bcrypt"
 import { checkForms } from "./ORMForms"
-import { toSQLPost, toSQLPut, toSQLWhere } from "@s/infrastructure/db/requests/SQLparsers"
+import { toSQLArray, toSQLArrayObj, toSQLPost, toSQLPut, toSQLWhere } from "@s/infrastructure/db/requests/SQLparsers"
+import { TagsDTO } from "@t/gen/dtoObjects"
 // interface CRUDRepositoryInterface {
 //   get(table: tables): Promise<Tables[] | Tables>,
 //   getById(id: string | number, table: tables): Promise<Tables>
@@ -64,17 +65,33 @@ class ORM {
     return cacheGet(key, callback)
   }
 
-  post = async <T extends tables>(dto: Partial<Tables[T]>, table: T, fields?: string): Promise<Tables[T][]> => {
+  post = async <T extends tables>(dto: TablesPost[T], table: T, fields?: string): Promise<Tables[T][]> => {
     // console.log("post", table, fields, dto)
-    if ("password" in dto && typeof dto.password == "string") {
+    if (typeof dto === 'object' && "password" in dto && typeof dto.password === "string") {
       const hashed = await bcrypt.hash(dto.password, 3)
-      dto.password = hashed as Tables[T][keyof Tables[T]]
+      // dto.password = hashed as Tables[T][keyof Tables[T]]
+      dto.password = hashed
     }
     
     const [keys, values, dollars] = toSQLPost(dto)
     console.log(`INSERT INTO ${table} (${keys}) VALUES(${dollars}) RETURNING *`, values)
     const request =  toTS<T>(await pool.query(`INSERT INTO ${table} (${keys}) VALUES(${dollars}) RETURNING ${fieldsSelect(fields)}`, [...values]))
 
+    cacheEdit(table, request)
+
+    return request
+  }
+
+  // ПОКА БУДЕТ ТОЛЬКО НА ТЭГАХ
+  postArr = async <T extends tables>(dto: TablesPost[T][], table: T, onConflictDoNothing: boolean = false, fields?: string): Promise<Tables[T][]> => {
+    const onConflict = onConflictDoNothing ? 'ON CONFLICT DO NOTHING' : 'ON CONFLICT (tag) DO UPDATE SET tag = EXCLUDED.tag'
+    //@ts-ignore
+    const [answer, keys, values] = typeof dto[0] === 'object' ? toSQLArrayObj(dto) : toSQLArray(dto, table === 'tags' ? 'tag' : table)
+    console.log({answer, keys, values})
+    console.log(`INSERT INTO ${table} (${keys}) VALUES ${answer} ${onConflict} RETURNING ${fieldsSelect(fields)}`, [...values])
+    const request =  toTS<T>(await pool.query(`INSERT INTO ${table} (${keys}) VALUES ${answer} ${onConflict} RETURNING ${fieldsSelect(fields)}`, [...values]))
+
+    // ПОТОМ ПРОВЕРИТЬ КЭШИ
     cacheEdit(table, request)
 
     return request

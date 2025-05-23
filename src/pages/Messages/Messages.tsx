@@ -2,14 +2,14 @@ import StoreMessages from "@/pages/Messages/widgets/modules/store/Store-Messages
 import { observer } from "mobx-react-lite"
 import { useForm } from "react-hook-form"
 import StoreForm from "@/shared/stores/Store-Form"
-import { MessageDTO } from "@t/general/dtoObjects"
 import MessageWidget from "./widgets/MessageWidget"
 import useMedia from "@/shared/hooks/useMedia"
 import VoiceMessage from "@/pages/Messages/widgets/modules/classes/VoiceMessage"
 import { useParams } from "react-router-dom"
+import { MessageDTOClient, MessageDTOClientSchema } from "@t/client/DTOClient"
 
 function Messages() {
-  const {register, handleSubmit} = useForm<MessageDTO>()
+  const {register, handleSubmit} = useForm<MessageDTOClient>()
 
   const {toid} = useParams()
     const [voiceRef] = useMedia(VoiceMessage, undefined, toid)
@@ -21,7 +21,7 @@ function Messages() {
       <div>Исходящие</div>
       <MessageWidget />
       <br />
-      <form onSubmit={handleSubmit((data: MessageDTO) => StoreMessages.send({...data, toid: toid!, fromid: StoreForm.form!.id!}))} style={{display: "flex", flexDirection: "column", width: "300px"}}>
+      <form onSubmit={handleSubmit((data) => StoreMessages.send(MessageDTOClientSchema.parse({...data, toid: toid!, fromid: StoreForm.form!.id!})))} style={{display: "flex", flexDirection: "column", width: "300px"}}>
         <div>Отправить сообщение</div>
         {/* <input {...register('fromid', {valueAsNumber: true})} type="number" placeholder="От кого?" /> */}
         {/* <input {...register('toid', {valueAsNumber: true})} type="number" placeholder="К кому?" /> */}

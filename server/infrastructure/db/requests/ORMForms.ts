@@ -1,5 +1,5 @@
-import { tables } from "@t/general/types"
-import { Form } from "@t/general/Users"
+import { tables } from "@t/gen/types"
+import { Form } from "@t/gen/Users"
 import pool from "@s/infrastructure/db/db"
 import { toSQLWhere } from "@s/infrastructure/db/requests/SQLparsers"
 import { toTS } from "@shared/MAPPERS"

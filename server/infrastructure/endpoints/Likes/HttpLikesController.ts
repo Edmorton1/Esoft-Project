@@ -1,5 +1,5 @@
-import { Likes } from "@t/general/Users";
-import { LikesDTO } from "@t/general/dtoObjects";
+import { Likes } from "@t/gen/Users";
+import { LikesDTO } from "@t/gen/dtoObjects";
 import { one, toSOSe } from "@shared/MAPPERS";
 import ORM from "@s/infrastructure/db/requests/ORM";
 import { clients } from "@s/socket";

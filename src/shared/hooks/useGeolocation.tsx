@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { LocationDTO } from '@t/general/dtoObjects';
+import { LocationDTO } from '@t/gen/dtoObjects';
 
 function useGeolocation(): LocationDTO | null {
   const [city, setCity] = useState<LocationDTO | null>(null);

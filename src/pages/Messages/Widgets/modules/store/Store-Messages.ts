@@ -1,11 +1,11 @@
 import $api from "@/shared/api/api"
 import { makeAutoObservable, runInAction, toJS } from "mobx"
-import { Message } from "@t/general/Users"
+import { Message } from "@t/gen/Users"
 import { toCl } from "@shared/MAPPERS"
 import StoreUser from "@/shared/stores/Store-User"
-import { MessageDTO, MessagePutDTO } from "@t/general/dtoObjects"
 import { serverPaths } from "@shared/PATHS"
 import { toFormData } from "@/shared/funcs/filefuncs"
+import { MessageDTOClient, MessagePutDTOClient } from "@t/client/DTOClient"
 
 class StoreMessages {
   messages: {sent: Message[]; received: Message[]} | null = null
@@ -21,7 +21,7 @@ class StoreMessages {
     runInAction(() => this.messages = msgs)
   }
 
-  send = async (data: MessageDTO) => {
+  send = async (data: MessageDTOClient) => {
     //@ts-ignore
     const formdata = await toFormData(data.files)
     console.log(data)
@@ -39,7 +39,7 @@ class StoreMessages {
     // storeSocket.socket.send(JSON.stringify(data))
   }
 
-  put = async (data: MessagePutDTO) => {
+  put = async (data: MessagePutDTOClient) => {
     const old = this.messages!.sent.find(e => e.id == data.id)!
     console.log(data, toJS(old))
     if (data.files.new == null && data.files.old == null && data.text == old.text) {

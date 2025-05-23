@@ -1,46 +1,44 @@
-import { JWTDTO, PayloadDTO } from "@t/general/dtoObjects";
-import { one } from "@shared/MAPPERS";
 import ORM from "@s/infrastructure/db/requests/ORM";
-import bcrypt from "bcrypt"
-import jwt from "jsonwebtoken"
+import UploadFileService from "@s/infrastructure/endpoints/Files/services/UploadFileService";
+import TokenHelper from "@s/infrastructure/endpoints/Token/services/TokenHelper";
+import { one } from "@shared/MAPPERS";
+import { FormDTO, UserDTO } from "@t/gen/dtoObjects";
+import { Form, FormSchema, Tags, User } from "@t/gen/Users";
+import { FormDTOServer } from "@t/server/DTOServer";
+import { Response } from "express";
 
 class TokenService {
+	registration = async (formDTO: Omit<FormDTOServer, 'password' | 'email' | 'tags'>, userDTO: UserDTO, tags: string[], res: Response): Promise<{form: Form, user: User, accessToken: string}> => {
+		const user = one(await ORM.post(userDTO, "users"));
+		const avatar = formDTO.avatar && (await UploadFileService.uploadAvatar(formDTO.avatar));
+		const formPost: FormDTO = {...formDTO, avatar, id: user.id};
+		const form = one(await ORM.post(formPost, "forms"));
 
-  generateTokens(payload: PayloadDTO) {
-    const accessToken = jwt.sign(payload, process.env.ACCESS_PRIVATE_KEY!, {expiresIn: "10d"})
-    const refreshToken = jwt.sign(payload, process.env.REFRESH_PRIVATE_KEY!, {expiresIn: "10d"})
-    
-    return [accessToken, refreshToken]
-  }
+		const accessToken = await TokenHelper.createTokens(user.id, user.role, res);
+		// console.log(form, "ФОРМА");``
 
-  async validateAccess(accessToken: string): Promise<JWTDTO | false> {
-    try {
+		let tagsTotal: Tags[] = [];
 
-      const token = jwt.verify(accessToken, process.env.ACCESS_PRIVATE_KEY!) as JWTDTO
-      if (one(await ORM.getById(token.id, 'users'))) {
-        return token
-      } else return false
-      
-    } catch {
-      return false
-    }
-  }
-  
-  async validateRefresh(refreshToken: string): Promise<JWTDTO | false> {
-    try {
-      const token = jwt.verify(refreshToken, process.env.REFRESH_PRIVATE_KEY!) as JWTDTO
-      const hashInDB = one(await ORM.getById(token.id, 'tokens')).token
+		if (tags.length > 0) {
+			const tagsDB = await ORM.postArr(tags, "tags");
+			const tagDBParseToUser = tagsDB.map(e => ({id: form.id, tagid: e.id}));
+			tagsTotal = (await ORM.postArr(tagDBParseToUser, "user_tags", true)).map(e => ({id: e.id, tag: tagsDB.find(tag => tag.id === e.tagid)!.tag}));
+		}
 
-      const hasDB = await bcrypt.compare(refreshToken, hashInDB)
-      // const hasUser = one(await this.ORM.getById(token.id, 'users'))
+		// const location = parseWKB
+		const formTotal = {...form, tags: tagsTotal};
+		console.log(formTotal)
+		const formParse = FormSchema.parse(formTotal)
+		console.log('formTotal', formParse)
 
-      if (hasDB) {
-        return token
-      } else return false
-    } catch {
-      return false
-    }
-  }
+		const total = {
+			form: formParse,
+			user,
+			accessToken,
+		};
+
+    return total
+	}
 }
 
-export default new TokenService
+export default new TokenService;

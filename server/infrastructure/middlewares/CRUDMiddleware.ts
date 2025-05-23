@@ -1,4 +1,4 @@
-import { tables } from "@t/general/types";
+import { tables } from "@t/gen/types";
 import { Request, Response, NextFunction } from "express";
 
 class CRUDMiddleware {

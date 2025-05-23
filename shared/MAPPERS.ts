@@ -1,4 +1,4 @@
-import { msg, MsgTypesClient, MsgTypesServer, SocketMessageClientInterface, SocketMessageServerInterface, Tables } from "@t/general/types"
+import { msg, MsgTypesClient, MsgTypesServer, SocketMessageClientInterface, SocketMessageServerInterface, Tables } from "@t/gen/types"
 
 export function toTS<T extends keyof Tables>(entity: any): Tables[T][] {
     // return entity.rows.length > 1 ? entity.rows : entity.rows[0]
@@ -58,3 +58,12 @@ export function toArr(data: string | null | undefined) {
 export function blobToFile(blob: Blob, fileName: string, type = blob.type): File {
   return new File([blob], fileName, { type });
 }
+
+// export const parseWKB = (hex: string) => {
+//   // Примерная декодировка — самописная или библиотека
+//   // Лучше не писать самому, а использовать библиотеку
+//   const buf = Buffer.from(hex, 'hex');
+//   const lng = buf.readDoubleLE(9);
+//   const lat = buf.readDoubleLE(17);
+//   return { lat, lng };
+// };

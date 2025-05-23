@@ -1,42 +1,27 @@
 import ORM from "@s/infrastructure/db/requests/ORM";
-import { UserDTO, TokenDTO } from "@t/general/dtoObjects";
+import { UserDTO, TokenReturnDTO, FormDTO } from "@t/gen/dtoObjects";
 import { Request, Response } from "express";
 import bcrypt from "bcrypt"
 import { one } from "@shared/MAPPERS";
+import TokenHelper from "@s/infrastructure/endpoints/Token/services/TokenHelper";
+import { Form, User, UserRoleType } from "@t/gen/Users";
+import { RegistrationDTOServerSchema } from "@t/server/DTOServer";
+import UploadFileService from "@s/infrastructure/endpoints/Files/services/UploadFileService";
 import TokenService from "@s/infrastructure/endpoints/Token/services/TokenService";
 
 class HttpTokenController {
+  registartion = async (req: Request, res: Response): Promise<Response<{form: Form, user: User, accessToken: string}>> => {
+  // registartion = async (req: Request, res: Response) => {
+    console.log("Грязные", JSON.parse(req.body.json))
+    console.log(req.file)
+    const data = RegistrationDTOServerSchema.parse({...JSON.parse(req.body.json), avatar: req.file})
+    // console.log(data)
+    const {email, password, tags, ...formDTO} = data
+    const userDTO: UserDTO = {email, password}
 
-  createTokens = async (id: number, role: string, res: Response) => {
-    // console.log(id, role)
-    // console.log("CREATE TOKENS")
-    const tokens = TokenService.generateTokens({id: id, role: role})
-    const [accessToken, refreshToken] = tokens
-    // await this.ORM.delete(id, 'tokens')
-    const refreshHash = await bcrypt.hash(refreshToken, 3)
-    const tokensInDB = await ORM.getById(id, 'tokens')
-    if (tokensInDB) {
-      await ORM.put({token: refreshHash}, id, 'tokens')
-    } else {
-      await ORM.post({id: id, token: refreshHash}, 'tokens')
-    }
-    res.cookie('refreshToken', refreshToken, {httpOnly: true, sameSite: "lax", maxAge: 1000 * 60 * 60 * 24})
-    return accessToken
-  }
+    const total = await TokenService.registration(formDTO, userDTO, tags, res)
 
-  returnDTO = (dto: TokenDTO, res: Response) => {
-    res.json({
-      user: dto.user,
-      accessToken: dto.accessToken
-    })
-  }
-
-  registartion = async (req: Request, res: Response) => {
-    const dto: UserDTO = req.body
-    const user = one(await ORM.post(dto, 'users'))
-    const accessToken = await this.createTokens(user.id, user.role, res)
-    
-    this.returnDTO({user, accessToken}, res)
+    return res.json(total)
   }
 
   login = async (req: Request, res: Response) => {
@@ -53,8 +38,8 @@ class HttpTokenController {
       return res.status(400).json('Неверный пароль')
     }
 
-    const accessToken = await this.createTokens(user.id, user.role, res)
-    this.returnDTO({user, accessToken}, res)
+    const accessToken = await TokenHelper.createTokens(user.id, user.role, res)
+    TokenHelper.returnDTO({user, accessToken}, res)
   }
   
   logout = async (req: Request, res: Response) => {
@@ -74,21 +59,21 @@ class HttpTokenController {
       accessToken = req.headers.authorization!.split(' ')[1]
     }
 
-    const verifyAccess = await TokenService.validateAccess(accessToken)
+    const verifyAccess = await TokenHelper.validateAccess(accessToken)
     
     if (verifyAccess) {
       // console.log('access')
       const user = one(await ORM.getById(verifyAccess.id, 'users'))
-      return this.returnDTO({user, accessToken}, res)
+      return TokenHelper.returnDTO({user, accessToken}, res)
     }
     
-    const verifyRefresh = await TokenService.validateRefresh(req.cookies.refreshToken)
+    const verifyRefresh = await TokenHelper.validateRefresh(req.cookies.refreshToken)
 
     if (!verifyAccess && verifyRefresh) {
       // console.log('refresh')
       const user = one(await ORM.getById(verifyRefresh.id, 'users'))
-      const accessToken = await this.createTokens(verifyRefresh.id, verifyRefresh.role, res)
-      return this.returnDTO({user, accessToken}, res)
+      const accessToken = await TokenHelper.createTokens(verifyRefresh.id, verifyRefresh.role, res)
+      return TokenHelper.returnDTO({user, accessToken}, res)
     }
     console.log('Не прошёл')
     res.clearCookie('refreshToken')

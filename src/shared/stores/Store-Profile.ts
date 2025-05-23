@@ -1,4 +1,4 @@
-import { Form } from "@t/general/Users"
+import { Form } from "@t/gen/Users"
 import { makeAutoObservable, runInAction } from "mobx"
 import $api from "@/shared/api/api"
 import { one, toCl } from "@shared/MAPPERS"

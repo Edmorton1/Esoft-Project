@@ -1,12 +1,12 @@
-import { msg, MsgTypesServer } from "@t/general/types";
-import { Message } from "@t/general/Users";
-import { MessagePutServer } from "@t/general/dtoObjects";
+import { msg, MsgTypesServer } from "@t/gen/types";
+import { Message } from "@t/gen/Users";
 import { toSOSe, one } from "@shared/MAPPERS";
 import ORM from "@s/infrastructure/db/requests/ORM";
 import { clients } from "@s/socket";
 import Yandex from "@s/yandex";
 import { Request, Response } from "express";
 import MessageFileService from "@s/infrastructure/endpoints/Message/services/MessageFileService";
+import { MessageDTOServer, MessagePutDTOServerSchema } from "@t/server/DTOServer";
 
 class HttpMessageController {
   sendSocket = <T extends msg>(data: Message, type: T, msg: MsgTypesServer[T]) => {
@@ -17,7 +17,7 @@ class HttpMessageController {
   }
 
   sendMessage = async (req: Request, res: Response) => {
-    const data: Message = req.body
+    const data: MessageDTOServer = req.body
     const files = req.files as Express.Multer.File[]
     console.log(files)
     const request = one(await ORM.post(data, 'messages'))
@@ -33,16 +33,16 @@ class HttpMessageController {
   editMessage = async (req: Request, res: Response) => {
     const {id} = req.params
     let total = null
+    const data = MessagePutDTOServerSchema.parse({...req.body, files: req.files})
+    // const data: MessagePutServerDTO = req.body
+    // const files = req.files as Express.Multer.File[]
 
-    const data: MessagePutServer = req.body
-    const files = req.files as Express.Multer.File[]
-
-    if (!files && !data.deleted) {
+    if (!data.files && !data.deleted) {
       total = one(await ORM.put({text: data.text}, id, 'messages'))
     } else {
-      console.log(files, data)
+      console.log(data.files, data)
       const ostavshiesa = await Yandex.deleteArr(id, data.deleted)
-      const paths = files.length > 0 ?  await MessageFileService.uploadFiles(id, files) : []
+      const paths = data.files.length > 0 ?  await MessageFileService.uploadFiles(id, data.files) : []
       // console.log([...deleted, ...paths])
       // console.log(ostavshiesa, paths)
   

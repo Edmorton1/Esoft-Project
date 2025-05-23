@@ -1,6 +1,6 @@
 import ToComponent from "@/pages/Messages/widgets/modules/components/ToComponent";
 import StoreForm from "@/shared/stores/Store-Form"
-import { Message } from "@t/general/Users"
+import { Message } from "@t/gen/Users"
 import { memo } from "react";
 
 interface propsInterface {

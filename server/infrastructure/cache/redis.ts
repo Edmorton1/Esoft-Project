@@ -1,4 +1,4 @@
-import { tables } from "@t/general/types"
+import { tables } from "@t/gen/types"
 import { frJSON, toJSON } from "@shared/MAPPERS"
 import Redis from "ioredis"
 

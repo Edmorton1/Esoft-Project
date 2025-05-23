@@ -1,7 +1,7 @@
 import $api from "@/shared/api/api";
 import StoreGlobal from "@/shared/api/Store-Global";
-import { Likes } from "@t/general/Users";
-import { LikesDTO } from "@t/general/dtoObjects";
+import { Likes } from "@t/gen/Users";
+import { LikesDTO } from "@t/gen/dtoObjects";
 import { toCl } from "@shared/MAPPERS";
 import { makeAutoObservable, runInAction } from "mobx";
 import StoreUser from "@/shared/stores/Store-User";

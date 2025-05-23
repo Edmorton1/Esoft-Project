@@ -26,3 +26,18 @@ export const toSQLWhere = (props: Record<any, any>, isform?: boolean): [any[], s
   const and = keys.map((e, i) => (`${isform ? `forms.` : ``}${e} = $${i + 1} and`)).join(' ').slice(0, -4)
   return [values, and]
 }
+
+export function toSQLArray(props: string[], key: string): [string, string, string[]]  {
+  const values = [...new Set(props)]
+  const answer = values.map((e, i) => `($${i + 1})`).join(', ')
+  return [answer, key, values]
+}
+
+export function toSQLArrayObj(props: object[]): [string, string, any[]] {
+  const valuesRaw = props.map(e => Object.entries(e).map(e => e[1]))
+  let count = 1
+  const answer = valuesRaw.flatMap((e, i) => {count += 2; return `($${count - 2}, $${count - 1})`}).join(', ')
+  console.log('answers', answer)
+  const keys = Object.keys(props[0])
+  return [answer, keys.join(', '), valuesRaw.flatMap(e => e)]
+}

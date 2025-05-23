@@ -1,5 +1,5 @@
 import CRUDController from "@s/infrastructure/endpoints/CRUD/CRUDController"
-import { tables } from "@t/general/types"
+import { tables } from "@t/gen/types"
 
 export const universalController = (method: keyof CRUDController, table: tables) => {
   const controller = new CRUDController(table)

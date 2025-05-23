@@ -1,10 +1,10 @@
 import express from "express"
-import { tables } from "@t/general/types"
+import { tables } from "@t/gen/types"
 import { universalController } from "@s/controllers"
 import multer from "multer"
 import { serverPaths } from "@shared/PATHS"
 import HttpTokenController from "@s/infrastructure/endpoints/Token/HttpTokenController"
-import HttpFormController from "@s/infrastructure/endpoints/Form/HttpFormController"
+// import HttpFormController from "@s/infrastructure/endpoints/Form/HttpFormController"
 import HttpMessageController from "@s/infrastructure/endpoints/Message/HttpMessageController"
 import HttpLikesController from "@s/infrastructure/endpoints/Likes/HttpLikesController"
 import HttpFilesController from "@s/infrastructure/endpoints/Files/HttpFilesController"
@@ -28,12 +28,12 @@ tablesArr.forEach(table => {
 // router.get('/byParams', universalController('getByParams', 'users'))
 
 router.get('/', (req, res) => {res.json('Работает'); console.log('Работает')})
-router.post(serverPaths.registration, HttpTokenController.registartion)
+router.post(serverPaths.registration, upload.single('avatar'), HttpTokenController.registartion)
 router.post(serverPaths.login, HttpTokenController.login)
 router.get(`${serverPaths.logout}/:id`, HttpTokenController.logout)
 router.get(serverPaths.refresh, HttpTokenController.refresh)
 
-router.post(serverPaths.createForm, HttpFormController.postForm)
+// router.post(serverPaths.createForm, HttpFormController.postForm)
 
 router.post(serverPaths.sendMessage, upload.array('files'), HttpMessageController.sendMessage)
 router.put(`${serverPaths.editMessage}/:id`, upload.array('files'), HttpMessageController.editMessage)

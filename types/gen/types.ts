@@ -1,13 +1,26 @@
-import { DataRes, Form, Likes, Message, Tags, Token, User, UserTags } from "@t/general/Users"
+import { MessageDTOClient } from "@t/client/DTOClient"
+import { FormDTO, LikesDTO, TagsDTO, UserDTO, UserTagsDTO } from "@t/gen/dtoObjects"
+import { Form, Likes, Message, Tags, Token, User, UserTags } from "@t/gen/Users"
+import { FormDTOServer, MessageDTOServer } from "@t/server/DTOServer"
 
 export type Tables = {
   users: User,
   forms: Form,
   likes: Likes,
   messages: Message,
-  data_res: DataRes,
+  // data_res: DataRes,
   tags: Tags,
   user_tags: UserTags,
+  tokens: Token
+}
+
+export type TablesPost = {
+  users: UserDTO,
+  forms: FormDTO,
+  likes: LikesDTO,
+  messages: MessageDTOServer,
+  tags: TagsDTO,
+  user_tags: UserTagsDTO,
   tokens: Token
 }
 
