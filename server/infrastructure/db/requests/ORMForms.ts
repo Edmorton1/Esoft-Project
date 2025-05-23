@@ -21,18 +21,18 @@ const getForm = async (fields?: string, id?: number | string, params?: Partial<F
   const [values, and] = toSQLWhere(params ?? {}, true)
   // fields = fields?.split(', ').filter(e => e != 'tags').map(e => `forms.${e}`).join(', ')
   // console.log(`ЗАПРОС ПОШЁЛ`, values, and, fields, id, params)
-  console.log('ЗАПРОС НА ФОРМУ ',`
-    SELECT 
-      ${toFields()}
-      json_agg(json_build_object('id', tags.id, 'tag', tags.tag)) AS tags
-    FROM forms
-    LEFT JOIN user_tags ON forms.id = user_tags.id
-    LEFT JOIN tags ON user_tags.tagid = tags.id
-    ${id ? `WHERE forms.id = ${id}` : ``}
-    ${params ? `WHERE ${and}` : ``}
-    GROUP BY forms.id
-    ${sqlparams || ''};
-  `)
+  // console.log('ЗАПРОС НА ФОРМУ ',`
+  //   SELECT 
+  //     ${toFields()}
+  //     json_agg(json_build_object('id', tags.id, 'tag', tags.tag)) AS tags
+  //   FROM forms
+  //   LEFT JOIN user_tags ON forms.id = user_tags.id
+  //   LEFT JOIN tags ON user_tags.tagid = tags.id
+  //   ${id ? `WHERE forms.id = ${id}` : ``}
+  //   ${params ? `WHERE ${and}` : ``}
+  //   GROUP BY forms.id
+  //   ${sqlparams || ''};
+  // `)
   const request = toTS<'forms'>(await pool.query(`
     SELECT 
       ${toFields()}

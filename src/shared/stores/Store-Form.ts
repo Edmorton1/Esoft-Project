@@ -1,5 +1,5 @@
 import $api from "@/shared/api/api";
-import { Form, Tags } from "@t/gen/Users";
+import { Form, FormSchema, Tags } from "@t/gen/Users";
 import { one, toCl } from "@shared/MAPPERS";
 import { serverPaths } from "@shared/PATHS";
 import { makeAutoObservable, runInAction } from "mobx";
@@ -16,7 +16,8 @@ class FormStore {
     console.log("forms", this.form)
     if (!this.form) {
       const data = one(toCl<Form[]>(await $api.get(`/forms/${id}`)))
-      runInAction(() => this.form = data)
+      const parsed = FormSchema.parse(data)
+      runInAction(() => this.form = parsed)
     }
   }
 
