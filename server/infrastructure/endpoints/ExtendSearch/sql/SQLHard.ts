@@ -6,6 +6,7 @@ type tagsTypes = {groups: string, id: number[]}[]
 
 class SQLHard {
   getUserTags = async (tags: string): Promise<tagsTypes> => {
+    console.log("GET USER TAGS")
     const [keys, values] = toSQLgetUserTags(tags)
     const request = (await pool.query(`
     WITH input_words AS (
@@ -34,6 +35,7 @@ class SQLHard {
   }
 
   getByTags = async (tags: tagsTypes, params: Record<string, string>, page: string, min_age: string, max_age: string) => {
+    console.log("GET BY TAGS")
     const [values, and] = toSQLWhere(params, false)
     const conditions: string[] = []
 

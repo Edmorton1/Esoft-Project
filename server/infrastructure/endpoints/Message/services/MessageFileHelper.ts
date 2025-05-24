@@ -1,7 +1,7 @@
 import FileService from "@s/infrastructure/endpoints/Files/services/FileService";
 import Yandex from "@s/yandex";
 
-class MessageFileService {
+class MessageFileHelper {
   uploadFiles = async (id: number | string, files: Express.Multer.File[]): Promise<string[]> => {
     const buffers = FileService.toBuffer(files)
     return await Promise.all(
@@ -14,4 +14,4 @@ class MessageFileService {
   }
 }
 
-export default new MessageFileService
+export default new MessageFileHelper

@@ -10,6 +10,8 @@ import HttpLikesController from "@s/infrastructure/endpoints/Likes/HttpLikesCont
 import HttpFilesController from "@s/infrastructure/endpoints/Files/HttpFilesController"
 import HttpExtendedSearchController from "@s/infrastructure/endpoints/ExtendSearch/HttpExtendedSearchController"
 import CRUDMiddleware from "@s/infrastructure/middlewares/CRUDMiddleware"
+import { db } from "@s/infrastructure/db/db"
+import ORM from "@s/infrastructure/db/requests/ORM"
 
 const upload = multer({storage: multer.memoryStorage()})
 const router = express.Router()
@@ -48,5 +50,43 @@ router.post(serverPaths.testCompressViedo, upload.single('video'), HttpFilesCont
 router.post(serverPaths.testCompressAudio, upload.single('audio'), HttpFilesController.TestConvertAudio)
 
 router.get(`${serverPaths.extendedSearch}`, HttpExtendedSearchController.getForms)
+
+router.get(`/knex`, async (req, res) => {
+  // const rres = db('forms')
+  //   .select('forms.*', db.raw(`json_agg(json_build_object('id', tags.id, 'tag', tags.tag)) AS tags`))
+  //   .leftJoin('user_tags', 'forms.id', 'user_tags.id')
+  //   .leftJoin('tags', 'forms.id', 'user_tags.tagid')
+  //   .groupBy('forms.id')
+  const rres = await db('users')
+    .insert({
+      email: "laria@mail.ru",
+      password: "123",
+      role: "user",
+    })
+    .returning('*')
+    // .where({id: 51, role: "user"})
+  // const SQL = rres.toSQL()
+  // console.log(SQL.sql)
+  res.json(rres)
+})
+
+router.post('/goi', async (req, res) => {
+  // const onConflict = onConflictDoNothing ? 'ON CONFLICT DO NOTHING' : 'ON CONFLICT (tag) DO UPDATE SET tag = EXCLUDED.tag'
+  // //@ts-ignore
+  // const [answer, keys, values] = typeof dto[0] === 'object' ? toSQLArrayObj(dto) : toSQLArray(dto, table === 'tags' ? 'tag' : table)
+  // console.log({answer, keys, values})
+  // console.log(`INSERT INTO ${table} (${keys}) VALUES ${answer} ${onConflict} RETURNING ${fieldsSelect(fields)}`, [...values])
+
+  // const request =  await pool.query(`INSERT INTO ${table} (${keys}) VALUES ${answer} ${onConflict} RETURNING ${fieldsSelect(fields)}`)
+  const tags = [{tag: 'dmcx'}, {tag: 'eretrs'}, {tag: 'fdhjg'}]
+  const user_tags = [{id: 183, tagid: 502}, {id: 183, tagid: 503}, {id: 183, tagid: 504}]
+  const request = await ORM.postArr(tags, 'tags')
+  const request2 = await ORM.postArr(user_tags, 'user_tags')
+
+
+  // Завтра дописать запросы на knex, порешать с формами
+
+  return res.json(request)
+})
 
 export default router

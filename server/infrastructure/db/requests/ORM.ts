@@ -1,11 +1,10 @@
 import { tables, Tables, TablesPost } from "@t/gen/types"
 import { cacheEdit, cacheGet } from "@s/infrastructure/cache/redis"
-import pool from "@s/infrastructure/db/db"
-import { toArr, toTS } from "@shared/MAPPERS"
+import {db} from "@s/infrastructure/db/db"
 import bcrypt from "bcrypt"
-import { checkForms } from "./ORMForms"
-import { toSQLArray, toSQLArrayObj, toSQLPost, toSQLPut, toSQLWhere } from "@s/infrastructure/db/requests/SQLparsers"
-import { TagsDTO } from "@t/gen/dtoObjects"
+import { fieldsToArr } from "@s/infrastructure/db/requests/utils"
+import requestToForm from "@s/infrastructure/db/requests/formKNEX"
+import e from "cors"
 // interface CRUDRepositoryInterface {
 //   get(table: tables): Promise<Tables[] | Tables>,
 //   getById(id: string | number, table: tables): Promise<Tables>
@@ -18,50 +17,65 @@ interface SQLParams {
   offset: number,
   limit: number
 }
-
+// SQLParams - это limit offset
 const fieldsKey = (fields?: string, sqlparams?: string) => `${fields ? '--fields: ' + fields : ''}${sqlparams ? '--sqlparams: ' + sqlparams : ''}`
-const fieldsSelect = (fields: string | undefined) => `${fields ? fields : '*'}`
 
 class ORM {
   get = async <T extends tables>(table: T, fields?: string, sqlparams?: string): Promise<Tables[T][]> => {
+    // console.log("GET", 'fields', fields)
     // console.log("get", table, fields, sqlparams)
 
-    const sql = toArr(sqlparams) || ''
+    // const sql = toArr(sqlparams) || ''
 
     const key = `${table}${fieldsKey(fields, sqlparams)}`
+    
+    let callback = undefined;
 
-    const callback = checkForms(table, async () => toTS<T>(await pool.query(`SELECT ${fieldsSelect(fields)} FROM ${table} ${sql}`)), fields, undefined, undefined, sqlparams)
+    if (table === 'forms') {
+      callback = async () => await requestToForm(fields)
+    } else {
+      callback = async () => await db(table)
+    }
+
     return cacheGet(key, callback)
   }
   getById = async <T extends tables>(id: number | string, table: T, fields?: string, sqlparams?: string): Promise<Tables[T][]> => {
+    console.log("GET BY ID")
     // console.log("getById", table, fields, sqlparams)
 
-    const sql = toArr(sqlparams) || ''
+    // const sql = toArr(sqlparams) || ''
     const key = `${table}-id-${id}${fieldsKey(fields)}`
 
-    const callback = checkForms(table, async () => toTS<T>(await pool.query(`SELECT ${fieldsSelect(fields)} FROM ${table} WHERE id = $1 ${sql}`, [id])), fields, id, undefined, sqlparams)
+    let callback = undefined;
+    
+    if (table === 'forms') {
+      const params = {id: Number(id)}
+      callback = async () => await requestToForm(fields, params)
+    } else {
+      callback = async () => await db(table).select(fieldsToArr(fields)).where('id', '=', id)
+    }
+
     return await cacheGet(key, callback)
   }
   
   getByParams = async <T extends tables>(params: Partial<Tables[T]>, table: T, fields?: string, sqlparams?: string): Promise<Tables[T][]> => {
+    console.log("GET BY PARAMS")
     // console.log("getByParams", params, table, fields, sqlparams)
+    // console.log('SQLPARAMS', sqlparams)
 
-    const [values, and] = toSQLWhere(params)
-    console.log("TOSQL", values, and)
+    // const sql = toArr(sqlparams) || ''
 
-    const sql = toArr(sqlparams) || ''
     const key = `${table}-${Object.entries(params).flat().join("-")}${fieldsKey(fields)}`
+    console.log(params, 'params')
 
-    // console.log(`SELECT ${fieldsSelect(fields)} FROM ${table} WHERE ${and} ${sql}`)
-    const callback = checkForms(table, 
-      async () => {
-        try {
-          return toTS<T>(await pool.query(`SELECT ${fieldsSelect(fields)} FROM ${table} WHERE ${and} ${sql}`, [...values]))
-        } catch(err) {
-          console.log(err)
-          return []
-        }
-      }, fields, undefined, params, sqlparams)
+    let callback = undefined;
+
+    if (table === 'forms') {
+      callback = async () => requestToForm(fields, params)
+    } else {
+      callback = async () => await db(table).select(fieldsToArr(fields)).where(params)
+    }
+    
     return cacheGet(key, callback)
   }
 
@@ -73,9 +87,7 @@ class ORM {
       dto.password = hashed
     }
     
-    const [keys, values, dollars] = toSQLPost(dto)
-    console.log(`INSERT INTO ${table} (${keys}) VALUES(${dollars}) RETURNING *`, values)
-    const request =  toTS<T>(await pool.query(`INSERT INTO ${table} (${keys}) VALUES(${dollars}) RETURNING ${fieldsSelect(fields)}`, [...values]))
+    const request = await db(table).insert(dto).returning(fieldsToArr(fields).length > 0 ? fieldsToArr(fields) : '*')
 
     cacheEdit(table, request)
 
@@ -84,14 +96,10 @@ class ORM {
 
   // ПОКА БУДЕТ ТОЛЬКО НА ТЭГАХ
   postArr = async <T extends tables>(dto: TablesPost[T][], table: T, onConflictDoNothing: boolean = false, fields?: string): Promise<Tables[T][]> => {
-    const onConflict = onConflictDoNothing ? 'ON CONFLICT DO NOTHING' : 'ON CONFLICT (tag) DO UPDATE SET tag = EXCLUDED.tag'
-    //@ts-ignore
-    const [answer, keys, values] = typeof dto[0] === 'object' ? toSQLArrayObj(dto) : toSQLArray(dto, table === 'tags' ? 'tag' : table)
-    console.log({answer, keys, values})
-    console.log(`INSERT INTO ${table} (${keys}) VALUES ${answer} ${onConflict} RETURNING ${fieldsSelect(fields)}`, [...values])
-    const request =  toTS<T>(await pool.query(`INSERT INTO ${table} (${keys}) VALUES ${answer} ${onConflict} RETURNING ${fieldsSelect(fields)}`, [...values]))
 
+    const request = await db(table).insert(dto).onConflict(Object.keys(dto[0])).merge().returning("*")
     // ПОТОМ ПРОВЕРИТЬ КЭШИ
+
     cacheEdit(table, request)
 
     return request
@@ -99,8 +107,8 @@ class ORM {
 
   put = async <T extends tables>(dto: Partial<Tables[T]>, id: number | string, table: T): Promise<Tables[T][]> => {
     // console.log("put", table, id, dto)
-    const [values, dollars] = toSQLPut(dto)
-    const request = toTS<T>(await pool.query(`UPDATE ${table} SET ${dollars} WHERE id = ${id} RETURNING *`, [...values]))
+
+    const request = await db(table).where("id", '=', id).update(dto).returning("*")
 
     cacheEdit(table, request)
     return request
@@ -108,7 +116,8 @@ class ORM {
 
   delete = async <T extends tables>(id: number | string, table: T): Promise<Tables[T][]> => {
     // console.log("delete", id, table)
-    const request = toTS<T>(await pool.query(`DELETE FROM ${table} WHERE id = $1 RETURNING *`, [id]))
+
+    const request = await db(table).where("id", "=", id).delete().returning("*")
     
     cacheEdit(table, request, 'delete')
     return request

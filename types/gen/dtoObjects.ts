@@ -1,4 +1,4 @@
-import { FormSchema, LocationSchema, UserSchema, UserTagsSchema } from "@t/gen/Users";
+import { FormSchema, LocationSchema, TagsSchema, UserSchema, UserTagsSchema } from "@t/gen/Users";
 import { zid, zstring } from "@t/shared/zodSnippets";
 import { z } from 'zod';
 
@@ -26,7 +26,7 @@ export const LocationDTOSchema = LocationSchema.extend({
   city: zstring,
 });
 
-export const TagsSchemaDTO = zstring
+export const TagsSchemaDTO = TagsSchema.pick({tag: true})
 
 export const UserTagsSchemaDTO = UserTagsSchema.pick({tagid: true})
 

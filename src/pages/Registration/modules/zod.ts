@@ -1,5 +1,6 @@
+import { RegistrationDTOServerSchema } from "@s/infrastructure/endpoints/Token/services/validation/RegistrationZOD";
+import { TagsSchemaDTO } from "@t/gen/dtoObjects";
 import { FormSchema, UserSchema } from "@t/gen/Users";
-import { RegistrationDTOServerSchema } from "@t/server/DTOServer";
 import { checkEmptyString, toCapitalize } from "@t/shared/zodSnippets";
 import { z } from "zod";
 
@@ -11,9 +12,9 @@ export const RegistrationDTOClientSchema = RegistrationDTOServerSchema.extend({
   sex: z.preprocess(val => Boolean(val), z.boolean()),
 
   tags: z.preprocess(val => {
-    if (checkEmptyString(val)) return val.split(',').map(e => e.trim().toLowerCase()).filter(e => e !== '')
+    if (checkEmptyString(val)) return val.split(',').map(e => e.trim().toLowerCase()).filter(e => e !== '').map(e => ({tag: e}))
     return []
-  }, z.array(z.string())),
+  }, z.array(TagsSchemaDTO)),
 
   city: z.preprocess(val => {
     if (checkEmptyString(val)) return toCapitalize(val)

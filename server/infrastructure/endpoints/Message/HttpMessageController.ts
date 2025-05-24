@@ -5,7 +5,7 @@ import ORM from "@s/infrastructure/db/requests/ORM";
 import { clients } from "@s/socket";
 import Yandex from "@s/yandex";
 import { Request, Response } from "express";
-import MessageFileService from "@s/infrastructure/endpoints/Message/services/MessageFileService";
+import MessageFileHelper from "@s/infrastructure/endpoints/Message/services/MessageFileHelper";
 import { MessageDTOServer, MessagePutDTOServerSchema } from "@t/server/DTOServer";
 
 class HttpMessageController {
@@ -19,10 +19,12 @@ class HttpMessageController {
   sendMessage = async (req: Request, res: Response) => {
     const data: MessageDTOServer = req.body
     const files = req.files as Express.Multer.File[]
+
+    
     console.log(files)
     const request = one(await ORM.post(data, 'messages'))
 
-    const paths = await MessageFileService.uploadFiles(request.id, files)
+    const paths = await MessageFileHelper.uploadFiles(request.id, files)
 
     const total = one(await ORM.put({files: paths}, request.id, 'messages'))
 
@@ -42,7 +44,7 @@ class HttpMessageController {
     } else {
       console.log(data.files, data)
       const ostavshiesa = await Yandex.deleteArr(id, data.deleted)
-      const paths = data.files.length > 0 ?  await MessageFileService.uploadFiles(id, data.files) : []
+      const paths = data.files.length > 0 ?  await MessageFileHelper.uploadFiles(id, data.files) : []
       // console.log([...deleted, ...paths])
       // console.log(ostavshiesa, paths)
   

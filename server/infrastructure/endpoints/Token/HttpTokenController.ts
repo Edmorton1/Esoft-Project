@@ -1,13 +1,12 @@
 import ORM from "@s/infrastructure/db/requests/ORM";
-import { UserDTO, TokenReturnDTO, FormDTO } from "@t/gen/dtoObjects";
+import { UserDTO } from "@t/gen/dtoObjects";
 import { Request, Response } from "express";
 import bcrypt from "bcrypt"
 import { one } from "@shared/MAPPERS";
 import TokenHelper from "@s/infrastructure/endpoints/Token/services/TokenHelper";
 import { Form, User, UserRoleType } from "@t/gen/Users";
-import { RegistrationDTOServerSchema } from "@t/server/DTOServer";
-import UploadFileService from "@s/infrastructure/endpoints/Files/services/UploadFileService";
 import TokenService from "@s/infrastructure/endpoints/Token/services/TokenService";
+import { RegistrationDTOServerSchema } from "@s/infrastructure/endpoints/Token/services/validation/RegistrationZOD";
 
 class HttpTokenController {
   registartion = async (req: Request, res: Response): Promise<Response<{form: Form, user: User, accessToken: string}>> => {
@@ -54,7 +53,7 @@ class HttpTokenController {
   refresh = async (req: Request, res: Response) => {
     // ТУТ ПОСМОТРЕТЬ ПОТОМ ГДЕ !
     const authHeader = req.headers.authorization
-    let accessToken: string = ''
+    let accessToken = ''
     if (authHeader?.startsWith('Bearer')) {
       accessToken = req.headers.authorization!.split(' ')[1]
     }

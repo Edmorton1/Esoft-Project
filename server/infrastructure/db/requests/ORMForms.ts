@@ -58,3 +58,40 @@ export const checkForms = (table: tables, callback: () => any, fields?: string, 
     return () => callback()
   }
 }
+
+// import { tables } from "@t/gen/types"
+// import { Form } from "@t/gen/Users"
+// import pool, { db } from "@s/infrastructure/db/db"
+// import { toSQLWhere } from "@s/infrastructure/db/requests/SQLparsers"
+// import { toTS } from "@shared/MAPPERS"
+// import { fieldsToArr } from "@s/infrastructure/db/requests/utils"
+
+// const getForm = async (fields?: string, id?: number | string, params?: Partial<Form>, sqlparams?: string): Promise<Form[]> => {
+
+//   console.log('fields', fields)
+//   const asd = fieldsToArr(fields).map(e => `fields.${e}`)
+//   console.log('parsed fields', asd)
+//   const request = db('forms')
+//     .select(
+//       asd.length > 0 ? asd : 'forms.*',
+//       db.raw(`json_agg(json_build_object('id', tags.id, 'tag', tags.tag)) AS tags`)
+//     )
+//     .leftJoin('user_tags', 'forms.id', 'user_tags.id')
+//     .leftJoin('tags', 'user_tags.tagid', 'tags.id')
+
+//     .groupBy('forms.id')
+  
+//   console.log("Zapros", request.toSQL().toNative())
+//   return await request
+// }
+
+// export const checkForms = (table: tables, callback: () => any, fields?: string, id?: string | number, params?: Partial<Form>, sqlparams?: string) => {
+//   // console.log(table, fields, params)
+//   if (table === 'forms' && (!fields || fields?.includes("tags"))) {
+//     // console.log(table, fields, id, params)
+//     return () => getForm(fields, id, params, sqlparams)
+//   } else {
+//     // console.log(table, fields, id, params)
+//     return () => callback()
+//   }
+// }

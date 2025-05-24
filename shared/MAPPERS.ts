@@ -52,7 +52,7 @@ export function one<T>(data: T[]): T {
 }
 
 export function toArr(data: string | null | undefined) {
-  return data?.trim().split(',')
+  return data?.trim().split(',').map(e => e.trim())
 }
 
 export function blobToFile(blob: Blob, fileName: string, type = blob.type): File {

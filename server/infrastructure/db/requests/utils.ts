@@ -1,0 +1,1 @@
+export const fieldsToArr = (fields: string | undefined) => fields?.trim()?.split(',').map(e => e.trim()) ?? []
