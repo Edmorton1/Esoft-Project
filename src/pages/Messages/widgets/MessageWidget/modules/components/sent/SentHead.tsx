@@ -1,12 +1,12 @@
-import FormSentForm from "@/pages/Messages/widgets/manipul/modules/FormSentForm"
-import StoreMessages from "@/pages/Messages/widgets/store/Store-Messages"
+import SentBody from "@/pages/Messages/widgets/MessageWidget/modules/components/sent/SentBody"
+import StoreMessages from "@/pages/Messages/widgets/MessageWidget/modules/store/Store-Messages"
 import StoreForm from "@/shared/stores/Store-Form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { MessageDTOClientSchema } from "@t/client/DTOClient"
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 
-function FormSentWidget({toid}: {toid: string}) {
+function SentHead({toid}: {toid: string}) {
   const {register, handleSubmit, setValue, formState: { errors }} = useForm({
     resolver: zodResolver(MessageDTOClientSchema),
     defaultValues: {
@@ -25,7 +25,7 @@ function FormSentWidget({toid}: {toid: string}) {
     StoreMessages.send(parsed)
   }
 
-  return <FormSentForm onSubmit={handleSubmit((data) => handleSend({...data, toid: toid, fromid: StoreForm.form!.id!}))} register={register} />
+  return <SentBody onSubmit={handleSubmit((data) => handleSend({...data, toid: toid, fromid: StoreForm.form!.id!}))} register={register} />
 }
 
-export default FormSentWidget
+export default SentHead

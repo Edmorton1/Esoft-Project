@@ -8,7 +8,7 @@ export const MessageDTOServerSchema = MessageSchema.pick({fromid: true, toid: tr
 
 export const MessagePutDTOServerSchema = MessageSchema.pick({fromid: true, toid: true, text: true}).extend({
   files: z.array(expressMulter),
-  deleted: z.array(z.string()).optional(),
+  deleted: z.array(z.string()),
 });
 
 export type MessageDTOServer = z.infer<typeof MessageDTOServerSchema>

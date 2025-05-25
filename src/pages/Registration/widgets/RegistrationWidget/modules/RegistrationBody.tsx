@@ -1,13 +1,34 @@
 import { UseFormRegister } from "react-hook-form";
+import FormControl from "@mui/material/FormControl";
+import Input from "@mui/material/Input";
+import InputLabel from "@mui/material/InputLabel";
+import FormHelperText from "@mui/material/FormHelperText";
+import FormError from "@/shared/ui/kit/FormError";
+import StoreUser from "@/shared/stores/Store-User";
+import StoreForm from "@/shared/stores/Store-Form";
 
-function RegistrationModule({register}: {register: UseFormRegister<any>}) {
+function RegistrationBody({register, onSubmit, errors}: {register: UseFormRegister<any>, onSubmit: (...args: any[]) => any, errors: any}) {
 
-  // const valueToNull = (value: string) => {
-  //   return value === '' ? null : value
-  // }
+  return <>
+  <div>Добро пожаловать: {StoreUser.user?.email}</div>
+  <button onClick={() => console.log(errors)}>errors</button>
+  <form onSubmit={onSubmit} style={{display: "flex", flexDirection: "column", width: "400px", gap: "10px"}}>
 
-  return (
-    <>
+    <FormControl error={!!errors.email}>
+      <InputLabel htmlFor="email">email</InputLabel>
+      <Input {...register('email')} type="text" id="email"/>
+      <FormError id={"email"} error={errors.email}></FormError>
+    </FormControl>
+          
+    <FormControl>
+      <InputLabel htmlFor="password">password</InputLabel>
+      <Input  {...register('password')} type="text" id="password" />
+      <FormHelperText id="email">Пароль должен...</FormHelperText>
+    </FormControl>
+
+    <button onClick={StoreUser.logout}>Выйти</button>
+    <button onClick={() => console.log(StoreUser.user)}>Вывести пользователя</button>
+    <button onClick={() => console.log(StoreForm.form)}>Вывести форму</button>
     <div>Создание анкеты</div>
     <br />
     <label htmlFor="name">Имя</label>
@@ -38,11 +59,11 @@ function RegistrationModule({register}: {register: UseFormRegister<any>}) {
     <label htmlFor="city">Город</label>
     <input {...register('city')} type="text" id="city" />
     <button>Отправить</button>
-    </>
-  )
+  </form>
+  </>
 }
 
-export default RegistrationModule
+export default RegistrationBody
 
 // import storeAuthorization from "@/store/Store-User";
 // import StoreForm from "@/store/Store-Form";

@@ -1,6 +1,6 @@
 import { SubmitHandler, UseFormRegister } from "react-hook-form"
 
-function FormSentForm({onSubmit, register}: {onSubmit: SubmitHandler<any>, register: UseFormRegister<any>}) {
+function SentBody({onSubmit, register}: {onSubmit: SubmitHandler<any>, register: UseFormRegister<any>}) {
 
 
   return <form onSubmit={onSubmit} style={{display: "flex", flexDirection: "column", width: "300px"}}>
@@ -13,4 +13,4 @@ function FormSentForm({onSubmit, register}: {onSubmit: SubmitHandler<any>, regis
   </form>
 }
 
-export default FormSentForm
+export default SentBody

@@ -5,7 +5,7 @@ import { toCl, toJSON } from "@shared/MAPPERS"
 import StoreUser from "@/shared/stores/Store-User"
 import { serverPaths } from "@shared/PATHS"
 import { toFormData } from "@/shared/funcs/filefuncs"
-import { MessageDTOClient, MessageDTOClientSchema, MessagePutDTOClient } from "@t/client/DTOClient"
+import { MessageDTOClient, MessagePutDTOClient, MessagePutDTOClientSchema } from "@t/client/DTOClient"
 
 class StoreMessages {
   messages: {sent: Message[]; received: Message[]} | null = null
@@ -25,10 +25,6 @@ class StoreMessages {
     const formdata = data.files ? await toFormData(data.files) : new FormData
     console.log(data)
 
-    // formdata.append('fromid', String(data.fromid))
-    // formdata.append('toid', String(data.toid))
-    // formdata.append('text', data.text)
-
     formdata.append('json', toJSON(data))
 
     console.log(formdata.get('files'), formdata.get('json'))
@@ -40,37 +36,36 @@ class StoreMessages {
     // storeSocket.socket.send(JSON.stringify(data))
   }
 
-  put = async (data: MessagePutDTOClient) => {
+  put = async (raw: MessagePutDTOClient) => {
+    const data = MessagePutDTOClientSchema.parse(raw)
+    let fd;
+
     const old = this.messages!.sent.find(e => e.id == data.id)!
     console.log(data, toJS(old), 'messagedto')
-    MessageDTOClientSchema.parse(data)
-    if (data.files.new == null && data.files.old == null && data.text == old.text) {
+
+    if (data.files.new == null && data.files.old.length === 0 && data.text == old.text) {
       return;
       
     }
-    if (data.files.new == null && data.files.old == null) {
-      await $api.put(`${serverPaths.editMessage}/${data.id}`, data)
-
-    } else {
-      const deleted = old.files?.filter(e => data.files.old?.includes(e))
-      const formdata = await toFormData(data.files.new!)
-      // Object.entries(data).forEach(e => formdata.append(e[0], String(e[1])))
-  
-      formdata.append('fromid', String(data.fromid))
-      formdata.append('toid', String(data.toid))
-      formdata.append('text', data.text)
-      deleted?.forEach(e => {
-        formdata.append('deleted[]', e.split('.net/')[1])
-      })
-  
-      // console.log(formdata.get('id'))
-  
-      const request = await $api.put(`${serverPaths.editMessage}/${data.id}`, formdata, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      })
+    if (data.files.new == null && data.files.old.length === 0) {
+      fd = new FormData
+      fd.append('json', toJSON(data))
+      // await $api.put(`${serverPaths.editMessage}/${data.id}`, fd)
+    } 
+    else {
+      data['deleted'] = old.files?.filter(e => !data.files.old?.includes(e)) ?? []
+      const newFiles = data.files.new!
+      
+      const cleanData = data as Partial<MessagePutDTOClient>
+      delete cleanData.files
+      
+      fd = await toFormData(newFiles)
+      fd.append('json', toJSON(cleanData))
     }
+    console.log(data)
+    const request = await $api.put(`${serverPaths.editMessage}/${data.id}`, fd, {
+        headers: {'Content-Type': 'multipart/form-data'}
+    })
   }
 
   delete = async (id: number) => {

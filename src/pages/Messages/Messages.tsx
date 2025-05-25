@@ -1,12 +1,10 @@
 import { observer } from "mobx-react-lite"
-import { useForm } from "react-hook-form"
 import StoreForm from "@/shared/stores/Store-Form"
-import MessageWidget from "./widgets/static/MessageWidget"
+import MessageWidget from "./widgets/MessageWidget/MessageWidget"
 import useMedia from "@/shared/hooks/useMedia"
-import VoiceMessage from "@/pages/Messages/widgets/static/modules/classes/VoiceMessage"
+import VoiceMessage from "@/pages/Messages/widgets/MessageWidget/modules/classes/VoiceMessage"
 import { useParams } from "react-router-dom"
-import { MessageDTOClient } from "@t/client/DTOClient"
-import FormSentWidget from "@/pages/Messages/widgets/manipul/FormSentWidget"
+import SentHead from "@/pages/Messages/widgets/MessageWidget/modules/components/sent/SentHead"
 
 function Messages() {
   const {toid} = useParams<{toid: string}>()
@@ -19,7 +17,7 @@ function Messages() {
       <div>Исходящие</div>
       <MessageWidget />
       <br />
-      <FormSentWidget toid={toid!}/>
+      <SentHead toid={toid!}/>
       <br />
       <br />
       <button onClick={() => console.log(voiceRef.current?.stream.getVideoTracks(), voiceRef.current?.stream.getAudioTracks())}>Посмотреть видео аудио дорожки</button>

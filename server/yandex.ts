@@ -41,19 +41,21 @@ class Yandex {
     return folder
   }
 
-  deleteArr = async (id: number | string, files?: string[]): Promise<string[]> => {
+  deleteArr = async (id: number | string, files: string[]): Promise<string[]> => {
     let folder = await this.getFolder(id)
+    files = files?.map(e => e.split('https://znakomstva.storage.yandexcloud.net/')[1])
     console.log('folder', folder)
     console.log(folder, files)
     for (const e of folder) {
-      if (!files?.includes(e)) {
+      if (files?.includes(e)) {
+        console.log("!FILES", e, folder, files)
         await s3.Remove(e);
         folder = folder.filter(item => item != e)
       }
     }
     console.log(folder)
 
-    return folder.map(e => 'https://znakomstva.storage.yandexcloud.net/' + e);
+    return folder.map(e => process.env.BUCKET_URL + e);
   }
 }
 

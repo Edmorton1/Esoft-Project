@@ -1,9 +1,9 @@
 import { tables, Tables, TablesPost } from "@t/gen/types"
 import { cacheEdit, cacheGet } from "@s/infrastructure/cache/redis"
-import {db} from "@s/infrastructure/db/db"
+import db from "@s/infrastructure/db/db"
 import bcrypt from "bcrypt"
 import { checkFirstType, fieldsToArr } from "@s/infrastructure/db/requests/utils"
-import requestToForm from "@s/infrastructure/db/requests/formKNEX"
+import requestToForm from "@s/infrastructure/db/requests/SQLform"
 import { getSchemaByTable } from "@t/shared/sharedTypes"
 
 interface SQLParams {

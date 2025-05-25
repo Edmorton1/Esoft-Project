@@ -1,4 +1,4 @@
-import { db } from "@s/infrastructure/db/db";
+import db from "@s/infrastructure/db/db";
 import { fieldsToArr } from "@s/infrastructure/db/requests/utils";
 import { Form } from "@t/gen/Users";
 import { Knex } from "knex";

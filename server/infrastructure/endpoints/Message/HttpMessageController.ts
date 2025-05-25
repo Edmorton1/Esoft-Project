@@ -35,12 +35,12 @@ class HttpMessageController {
   editMessage = async (req: Request, res: Response) => {
     const {id} = req.params
     let total = null
-    console.log(req.body, req.files)
-    const data = MessagePutDTOServerSchema.parse({...req.body, files: req.files})
+    console.log({...frJSON(req.body.json), files: req.files}, 'messageediting')
+    const data = MessagePutDTOServerSchema.parse({...frJSON(req.body.json), files: req.files})
     // const data: MessagePutServerDTO = req.body
     // const files = req.files as Express.Multer.File[]
 
-    if (!data.files && !data.deleted) {
+    if (data.files.length === 0 && data.deleted.length === 0) {
       total = one(await ORM.put({text: data.text}, id, 'messages'))
     } else {
       console.log(data.files, data)

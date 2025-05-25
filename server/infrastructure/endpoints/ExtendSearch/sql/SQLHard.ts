@@ -1,6 +1,4 @@
-import pool from "@s/infrastructure/db/db"
-import { toSQLWhere } from "@s/infrastructure/db/requests/SQLparsers"
-import { toTS } from "@shared/MAPPERS"
+import db from "@s/infrastructure/db/db"
 
 type tagsTypes = {groups: string, id: number[]}[]
 
@@ -8,7 +6,7 @@ class SQLHard {
   getUserTags = async (tags: string): Promise<tagsTypes> => {
     console.log("GET USER TAGS")
     const [keys, values] = toSQLgetUserTags(tags)
-    const request = (await pool.query(`
+    const sql = `
     WITH input_words AS (
       SELECT unnest(ARRAY[${keys.join(',')}]) AS word
     ),
@@ -27,53 +25,80 @@ class SQLHard {
       json_agg(id ORDER BY sim DESC) AS id
     FROM matched_tags
     GROUP BY groups;
-    `, [...values])).rows
+    `
 
-    console.log(request)
+    const request = db.raw(sql, [...values])
+
+    console.log(request.toSQL().toNative())
     
-    return request
+    return await request
   }
 
   getByTags = async (tags: tagsTypes, params: Record<string, string>, page: string, min_age: string, max_age: string) => {
     console.log("GET BY TAGS")
-    const [values, and] = toSQLWhere(params, false)
+    const and = toSQLWhere(params, false)
     const conditions: string[] = []
 
-    const ageMin = min_age && `f.age > ${min_age}`
-    const ageMax = max_age && `f.age < ${max_age}`
+    const ageMin = min_age && `forms.age > ${min_age}`
+    const ageMax = max_age && `forms.age < ${max_age}`
     const ageFilter = [ageMin, ageMax].filter(Boolean).join(' AND ')
 
     if (tags.length > 0) conditions.push(toSQLgetByTags(tags))
     if (and.length > 0) conditions.push(and)
     if (ageFilter) conditions.push(ageFilter)
 
-    const havingClause = conditions.length ? `HAVING ${conditions.join(' AND ')}` : ''
+    const havingClause = conditions.length ? `${conditions.join(' AND ')}` : ''
 
-    const request = toTS(await pool.query(`
-      SELECT
-        f.*,
-        json_agg(json_build_object('id', t.id, 'tag', t.tag)) AS tags
-      FROM forms f
-      LEFT JOIN user_tags ut ON ut.id = f.id
-      LEFT JOIN tags t ON ut.tagid = t.id
-      GROUP BY f.id
-        ${havingClause}
-    `, values))
+    // console.log(conditions, 'conditions')
+    const request = db('forms')
+      .select(
+        'forms.*',
+        db.raw(`json_agg(json_build_object('id', tags.id, 'tag', tags.tag)) AS tags`)
+      )
+      .leftJoin('user_tags', 'user_tags.id', 'forms.id')
+      .leftJoin('tags', 'user_tags.tagid', 'tags.id')
+      .groupBy('forms.id')
+      .havingRaw(havingClause)
 
-    return request
+    // console.log(request.toSQL().toNative())
+
+    return await request
   }
 }
 
 const toSQLgetByTags = (tags: tagsTypes): string => {
-  return (tags.map((e, i) => `COUNT(DISTINCT CASE WHEN ut.tagid IN (${e.id.join(',')}) THEN ut.tagid END) > 0${tags.length === i + 1 ? '' : ' AND '}`)).join(' ')
+  return (tags.map((e, i) => `COUNT(DISTINCT CASE WHEN user_tags.tagid IN (${e.id.join(',')}) THEN user_tags.tagid END) > 0${tags.length === i + 1 ? '' : ' AND '}`)).join(' ')
 }
 
 const toSQLgetUserTags = (rawTags: string): [string[], string[]] => {
   const tags = rawTags.split(',').map(e => e.trim())
-  
-  const keys = tags.map((e, i) => `$${i + 1}`)
+  const keys = tags.map(() => '?')
   return [keys, tags]
 }
+
+const toSQLWhere = (props: Record<any, any>, isform?: boolean): string => {
+  const keys = Object.keys(props).filter(e => props[e] !== '')
+  const and = keys
+    .map(e => `${isform ? `forms.` : ``}${e} = '${props[e]}'`)
+    .join(' AND ')
+  return and
+}
+
+// С ПЛЕЙСХОЛДЕРАМИ
+// const toSQLWhere = (props: Record<any, any>, isform?: boolean): [any[], string] => {
+//   const keys = Object.keys(props).filter(e => props[e] != '')
+//   const values = Object.values(props).filter(e => e != '')
+//   console.log(keys.length === values.length)
+//   const and = keys.map((e, i) => (`${isform ? `forms.` : ``}${e} = $${i + 1} and`)).join(' ').slice(0, -4)
+//   return [values, and]
+// }
+
+// const toSQLgetUserTags = (rawTags: string): [string[], string[]] => {
+//   const tags = rawTags.split(',').map(e => e.trim())
+//   const keys = tags.map((e, i) => `$${i + 1}`)
+//   return [keys, tags]
+// }
+
 
 export default new SQLHard
 

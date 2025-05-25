@@ -1,5 +1,5 @@
 import StoreForm from "@/shared/stores/Store-Form"
-import StoreMessages from "@/pages/Messages/widgets/store/Store-Messages"
+import StoreMessages from "@/pages/Messages/widgets/MessageWidget/modules/store/Store-Messages"
 import StoreTags from "@/shared/stores/Store-Tags"
 import StoreUser from "@/shared/stores/Store-User"
 import StoreUsers from "@/pages/Users/widgets/store/Store-Users"
