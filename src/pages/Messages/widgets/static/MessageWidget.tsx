@@ -1,5 +1,5 @@
 import { useState } from "react"
-import StoreMessages from "./modules/store/Store-Messages"
+import StoreMessages from "../store/Store-Messages"
 import MessageModule from "./modules/MessageModule"
 import { observer } from "mobx-react-lite"
 

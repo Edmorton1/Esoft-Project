@@ -1,4 +1,4 @@
-import { FormSchema, LocationSchema, TagsSchema, UserSchema, UserTagsSchema } from "@t/gen/Users";
+import { FormSchema, LocationSchema, MessageSchema, TagsSchema, UserSchema, UserTagsSchema } from "@t/gen/Users";
 import { zid, zstring } from "@t/shared/zodSnippets";
 import { z } from 'zod';
 
@@ -30,8 +30,10 @@ export const TagsSchemaDTO = TagsSchema.pick({tag: true})
 
 export const UserTagsSchemaDTO = UserTagsSchema.pick({tagid: true})
 
-export type UserDTO = z.infer<typeof UserDTOSchema>;
+export const MessageDTOSchema = MessageSchema.omit({created_at: true, id: true})
 
+export type MessageDTO = z.infer<typeof MessageDTOSchema>
+export type UserDTO = z.infer<typeof UserDTOSchema>;
 export type PayloadDTO = z.infer<typeof PayloadDTOSchema>;
 export type JWTDTO = z.infer<typeof JWTDTOSchema>;
 export type TokenReturnDTO = z.infer<typeof TokenReturnDTOSchema>;

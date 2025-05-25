@@ -1,17 +1,15 @@
-import StoreMessages from "@/pages/Messages/widgets/modules/store/Store-Messages"
 import { observer } from "mobx-react-lite"
 import { useForm } from "react-hook-form"
 import StoreForm from "@/shared/stores/Store-Form"
-import MessageWidget from "./widgets/MessageWidget"
+import MessageWidget from "./widgets/static/MessageWidget"
 import useMedia from "@/shared/hooks/useMedia"
-import VoiceMessage from "@/pages/Messages/widgets/modules/classes/VoiceMessage"
+import VoiceMessage from "@/pages/Messages/widgets/static/modules/classes/VoiceMessage"
 import { useParams } from "react-router-dom"
-import { MessageDTOClient, MessageDTOClientSchema } from "@t/client/DTOClient"
+import { MessageDTOClient } from "@t/client/DTOClient"
+import FormSentWidget from "@/pages/Messages/widgets/manipul/FormSentWidget"
 
 function Messages() {
-  const {register, handleSubmit} = useForm<MessageDTOClient>()
-
-  const {toid} = useParams()
+  const {toid} = useParams<{toid: string}>()
     const [voiceRef] = useMedia(VoiceMessage, undefined, toid)
   
   return (
@@ -21,16 +19,7 @@ function Messages() {
       <div>Исходящие</div>
       <MessageWidget />
       <br />
-      <form onSubmit={handleSubmit((data) => StoreMessages.send(MessageDTOClientSchema.parse({...data, toid: toid!, fromid: StoreForm.form!.id!})))} style={{display: "flex", flexDirection: "column", width: "300px"}}>
-        <div>Отправить сообщение</div>
-        {/* <input {...register('fromid', {valueAsNumber: true})} type="number" placeholder="От кого?" /> */}
-        {/* <input {...register('toid', {valueAsNumber: true})} type="number" placeholder="К кому?" /> */}
-        <label htmlFor="text">Текст</label>
-        <input {...register('text')} type="text" defaultValue={"text test"} id="text" />
-        <label htmlFor="files">Файлы</label>
-        <input {...register("files")} type="file" multiple id="files" />
-        <button>Отпраивть</button>
-      </form>
+      <FormSentWidget toid={toid!}/>
       <br />
       <br />
       <button onClick={() => console.log(voiceRef.current?.stream.getVideoTracks(), voiceRef.current?.stream.getAudioTracks())}>Посмотреть видео аудио дорожки</button>

@@ -62,6 +62,7 @@ export default defineConfig([
       // "@typescript-eslint/ban-ts-comment": "off",
       // "react-hooks/exhaustive-deps": "off",
       // "jsx-a11y/media-has-caption": "off",
+      "jsx-a11y/media-has-caption": "off"
 
       //НЕ ИСПОЛЬЗУЕМЫЕ ИМПОРТЫ
     //   "unused-imports/no-unused-imports": "error",

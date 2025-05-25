@@ -1,40 +1,41 @@
 import { msg, MsgTypesServer } from "@t/gen/types";
 import { Message } from "@t/gen/Users";
-import { toSOSe, one } from "@shared/MAPPERS";
+import { toSOSe, one, frJSON } from "@shared/MAPPERS";
 import ORM from "@s/infrastructure/db/requests/ORM";
 import { clients } from "@s/socket";
 import Yandex from "@s/yandex";
 import { Request, Response } from "express";
 import MessageFileHelper from "@s/infrastructure/endpoints/Message/services/MessageFileHelper";
-import { MessageDTOServer, MessagePutDTOServerSchema } from "@t/server/DTOServer";
+import { MessageDTOServerSchema, MessagePutDTOServerSchema } from "@t/server/DTOServer";
 
 class HttpMessageController {
-  sendSocket = <T extends msg>(data: Message, type: T, msg: MsgTypesServer[T]) => {
-    const clientFrom = clients.get(data.fromid)
-    const clientTo = clients.get(data.toid)
+  sendSocket = <T extends keyof MsgTypesServer>(fromid: number, toid: number, msg: MsgTypesServer[T], type: T) => {
+    console.log('socket', fromid, toid)
+    const clientFrom = clients.get(fromid)
+    const clientTo = clients.get(toid)
     clientFrom!.send(toSOSe(type, msg))
     clientTo?.send(toSOSe(type, msg))
   }
 
   sendMessage = async (req: Request, res: Response) => {
-    const data: MessageDTOServer = req.body
-    const files = req.files as Express.Multer.File[]
+    const data = MessageDTOServerSchema.parse({...frJSON(req.body.json), files: req.files})
+    const { files, ...message } = data
 
-    
     console.log(files)
-    const request = one(await ORM.post(data, 'messages'))
+    const request: Omit<Message, 'files'> = one(await ORM.post(message, 'messages'))
 
     const paths = await MessageFileHelper.uploadFiles(request.id, files)
 
     const total = one(await ORM.put({files: paths}, request.id, 'messages'))
 
-    this.sendSocket(total, 'message', total)
+    this.sendSocket(data.fromid, data.toid, total, 'message')
   }
 
   // ТУТ ПОФИКСИТЬ ПОТОМ
   editMessage = async (req: Request, res: Response) => {
     const {id} = req.params
     let total = null
+    console.log(req.body, req.files)
     const data = MessagePutDTOServerSchema.parse({...req.body, files: req.files})
     // const data: MessagePutServerDTO = req.body
     // const files = req.files as Express.Multer.File[]
@@ -51,7 +52,7 @@ class HttpMessageController {
       total = one(await ORM.put({files: [...ostavshiesa, ...paths], text: data.text}, id, 'messages'))
     }
     console.log('total', total)
-    this.sendSocket(total, 'edit_message', total)
+    this.sendSocket(data.fromid, data.toid, total, 'edit_message')
   }
 
   deleteMessage = async (req: Request<{id: number}>, res: Response) => {
@@ -61,7 +62,7 @@ class HttpMessageController {
     console.log(asd)
     // const data = one(await this.ORM.getById(id, 'messages'))
 
-    this.sendSocket(data, 'delete_message', id)
+    this.sendSocket(data.fromid, data.toid, id, "delete_message")
   }
 }
 

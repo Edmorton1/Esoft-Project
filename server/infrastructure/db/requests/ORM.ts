@@ -2,16 +2,9 @@ import { tables, Tables, TablesPost } from "@t/gen/types"
 import { cacheEdit, cacheGet } from "@s/infrastructure/cache/redis"
 import {db} from "@s/infrastructure/db/db"
 import bcrypt from "bcrypt"
-import { fieldsToArr } from "@s/infrastructure/db/requests/utils"
+import { checkFirstType, fieldsToArr } from "@s/infrastructure/db/requests/utils"
 import requestToForm from "@s/infrastructure/db/requests/formKNEX"
-import e from "cors"
-// interface CRUDRepositoryInterface {
-//   get(table: tables): Promise<Tables[] | Tables>,
-//   getById(id: string | number, table: tables): Promise<Tables>
-//   post(dto: any, table: tables): Promise<Tables[] | Tables>,
-//   put(dto: any, id: number | string, table: tables): Promise<Tables[] | Tables>,
-//   delete(id: number | string, table: tables): Promise<Tables[] | Tables>
-// }
+import { getSchemaByTable } from "@t/shared/sharedTypes"
 
 interface SQLParams {
   offset: number,
@@ -22,8 +15,8 @@ const fieldsKey = (fields?: string, sqlparams?: string) => `${fields ? '--fields
 
 class ORM {
   get = async <T extends tables>(table: T, fields?: string, sqlparams?: string): Promise<Tables[T][]> => {
-    // console.log("GET", 'fields', fields)
-    // console.log("get", table, fields, sqlparams)
+    console.log("GET", 'fields', fields)
+    console.log("get", table, fields, sqlparams)
 
     // const sql = toArr(sqlparams) || ''
 
@@ -37,11 +30,13 @@ class ORM {
       callback = async () => await db(table)
     }
 
-    return cacheGet(key, callback)
+    console.log('fields in orm', fields)
+    const total = await cacheGet(key, callback)
+    return checkFirstType(total, table, fields)
   }
   getById = async <T extends tables>(id: number | string, table: T, fields?: string, sqlparams?: string): Promise<Tables[T][]> => {
     console.log("GET BY ID")
-    // console.log("getById", table, fields, sqlparams)
+    console.log("getById", table, fields, sqlparams)
 
     // const sql = toArr(sqlparams) || ''
     const key = `${table}-id-${id}${fieldsKey(fields)}`
@@ -55,13 +50,15 @@ class ORM {
       callback = async () => await db(table).select(fieldsToArr(fields)).where('id', '=', id)
     }
 
-    return await cacheGet(key, callback)
+    console.log('check type', await cacheGet(key, callback), table)
+    const total = await cacheGet(key, callback)
+
+    return checkFirstType(total, table, fields)
   }
   
   getByParams = async <T extends tables>(params: Partial<Tables[T]>, table: T, fields?: string, sqlparams?: string): Promise<Tables[T][]> => {
     console.log("GET BY PARAMS")
-    // console.log("getByParams", params, table, fields, sqlparams)
-    // console.log('SQLPARAMS', sqlparams)
+    console.log("getByParams", params, table, fields, sqlparams)
 
     // const sql = toArr(sqlparams) || ''
 
@@ -76,7 +73,10 @@ class ORM {
       callback = async () => await db(table).select(fieldsToArr(fields)).where(params)
     }
     
-    return cacheGet(key, callback)
+    console.log('fields in orm', fields)
+    const total = await cacheGet(key, callback)
+
+    return checkFirstType(total, table, fields)
   }
 
   post = async <T extends tables>(dto: TablesPost[T], table: T, fields?: string): Promise<Tables[T][]> => {
@@ -90,6 +90,7 @@ class ORM {
     const request = await db(table).insert(dto).returning(fieldsToArr(fields).length > 0 ? fieldsToArr(fields) : '*')
 
     cacheEdit(table, request)
+    checkFirstType(request, table)
 
     return request
   }
@@ -111,6 +112,8 @@ class ORM {
     const request = await db(table).where("id", '=', id).update(dto).returning("*")
 
     cacheEdit(table, request)
+    checkFirstType(request, table)
+
     return request
   }
 

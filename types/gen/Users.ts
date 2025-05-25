@@ -27,7 +27,7 @@ export const MessageSchema = z.object({
   fromid: zid,
   toid: zid,
   text: zstring,
-  files: z.array(z.string().nonempty()).optional(),
+  files: z.preprocess(nullToUndefiend, z.array(z.string().nonempty()).optional()),
   created_at: z.coerce.date(),
 });
 

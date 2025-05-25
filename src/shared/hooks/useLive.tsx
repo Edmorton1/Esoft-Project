@@ -1,4 +1,4 @@
-import VoiceMessage from "@/pages/Messages/widgets/modules/classes/VoiceMessage";
+import VoiceMessage from "@/pages/Messages/widgets/static/modules/classes/VoiceMessage";
 import AudioControl from "@/pages/Room/WebRTC/AudioControl";
 import StoreRoom from "@/pages/Room/WebRTC/Store-Room";
 import VideoControl from "@/pages/Room/WebRTC/VideoControl";

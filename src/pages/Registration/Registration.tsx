@@ -11,7 +11,7 @@ import InputLabel from "@mui/material/InputLabel";
 import FormHelperText from "@mui/material/FormHelperText";
 import { zodResolver } from "@hookform/resolvers/zod"
 import FormError from "@/shared/ui/kit/FormError";
-import { RegistrationDTOClient, RegistrationDTOClientSchema } from "@/pages/Registration/modules/zod";
+import { RegistrationDTOClient, RegistrationDTOClientSchema } from "@/pages/Registration/modules/RegistrationZOD";
 
 function Registration() {
   const location = useGeolocation()!
@@ -31,8 +31,6 @@ function Registration() {
     if (location) {
       ({city, ...coords} = location)
     }
-
-
 
     const form: RegistrationDTOClient = {...data, location: coords}
     

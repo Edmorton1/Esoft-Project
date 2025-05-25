@@ -10,6 +10,8 @@ export const paths = {
   test: "/test"
 } as const
 
+// 'users', 'forms', 'likes', 'messages', 'tags', 'user_tags', 'tokens'
+
 export const serverPaths = {
   login: '/login',
   registration: '/registration',
@@ -30,7 +32,15 @@ export const serverPaths = {
   testCompressViedo: "/testCompressViedo",
   testCompressAudio: "/testCompressAudio",
 
-  extendedSearch: "/extendedSearch"
+  extendedSearch: "/extendedSearch",
+
+  users: "/users",
+  forms: "/forms",
+  likes: "/likes",
+  messages: "/messages",
+  tags: "/tags",
+  user_tags: "/user_tags",
+  tokens: "/tokens"  
 } as const
 
 // export type serverPathsTypes = keyof typeof serverPaths

@@ -4,6 +4,8 @@ import { one, toSOSe } from "@shared/MAPPERS";
 import ORM from "@s/infrastructure/db/requests/ORM";
 import { clients } from "@s/socket";
 import { Request, Response } from "express";
+import axios from "axios";
+import { logError } from "@shared/DECORATORS";
 
 class HttpLikesController {
   sendLike = async (req: Request, res: Response) => {
@@ -28,6 +30,13 @@ class HttpLikesController {
     clientTo?.send(toSOSe('delete_like', request.id))
 
     res.json(request)
+  }
+
+  //УДАЛИТЬ ПОТОМ
+  @logError
+  async decorator(req: Request, res: Response) {
+    const asd = await axios.get('/')
+    console.log(asd.data.asdsad)
   }
 }
 

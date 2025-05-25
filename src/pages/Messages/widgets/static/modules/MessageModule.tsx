@@ -1,7 +1,7 @@
 import { Message } from "@t/gen/Users"
 import { memo, useCallback, useEffect, useState } from "react"
 import MessageComponent from "./components/MessageComponent"
-import StoreMessages from "./store/Store-Messages"
+import StoreMessages from "../../store/Store-Messages"
 
 interface propsInterface {
   msg: Message,

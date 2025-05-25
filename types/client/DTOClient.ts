@@ -11,7 +11,7 @@ export const MessageDTOClientSchema = MessageSchema.pick({fromid: true, toid: tr
 
 export const MessagePutDTOClientSchema = MessageSchema.pick({id: true, fromid: true, toid: true, text: true}).extend({
   files: z.object({
-    new: z.union([z.custom<FileList>(val => val instanceof FileList), z.null()]),
+    new: z.custom<FileList>(val => val instanceof FileList).nullable(),
     old: z.array(z.string()).nullable(),
   }),
 });

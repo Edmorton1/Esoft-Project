@@ -14,10 +14,8 @@ export function toSQL(domainModel: any) {
   return domainModel
 }
 
-export const frJSON = <T>(data: string | any): T | null => {
-  if (typeof data == "string") {
-    return JSON.parse(data.toString())
-  } return null
+export const frJSON = <T>(data: string): any | undefined => {
+  return JSON.parse(data.toString())
 }
 
 export const toJSON = (data: any): string => {

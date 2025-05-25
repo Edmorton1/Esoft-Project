@@ -1,4 +1,4 @@
-import ToComponent from "@/pages/Messages/widgets/modules/components/ToComponent";
+import ToComponent from "@/pages/Messages/widgets/static/modules/components/ToComponent";
 import StoreForm from "@/shared/stores/Store-Form"
 import { Message } from "@t/gen/Users"
 import { memo } from "react";

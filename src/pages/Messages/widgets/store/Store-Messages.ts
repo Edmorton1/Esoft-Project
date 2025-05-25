@@ -1,11 +1,11 @@
 import $api from "@/shared/api/api"
 import { makeAutoObservable, runInAction, toJS } from "mobx"
 import { Message } from "@t/gen/Users"
-import { toCl } from "@shared/MAPPERS"
+import { toCl, toJSON } from "@shared/MAPPERS"
 import StoreUser from "@/shared/stores/Store-User"
 import { serverPaths } from "@shared/PATHS"
 import { toFormData } from "@/shared/funcs/filefuncs"
-import { MessageDTOClient, MessagePutDTOClient } from "@t/client/DTOClient"
+import { MessageDTOClient, MessageDTOClientSchema, MessagePutDTOClient } from "@t/client/DTOClient"
 
 class StoreMessages {
   messages: {sent: Message[]; received: Message[]} | null = null
@@ -15,23 +15,24 @@ class StoreMessages {
   }
 
   initial = async () => {
-    const sent = toCl<Message[]>(await $api.get(`/messages?fromid=${StoreUser.user?.id}`))?.sort((a, b) => a.id! - b.id!)
-    const received = toCl<Message[]>(await $api.get(`/messages?toid=${StoreUser.user?.id}`))?.sort((a, b) => a.id! - b.id!)
+    const sent = toCl<Message[]>(await $api.get(`${serverPaths.messages}?fromid=${StoreUser.user?.id}`))?.sort((a, b) => a.id! - b.id!)
+    const received = toCl<Message[]>(await $api.get(`${serverPaths.messages}?toid=${StoreUser.user?.id}`))?.sort((a, b) => a.id! - b.id!)
     const msgs = {sent, received}
     runInAction(() => this.messages = msgs)
   }
 
   send = async (data: MessageDTOClient) => {
-    //@ts-ignore
-    const formdata = await toFormData(data.files)
+    const formdata = data.files ? await toFormData(data.files) : new FormData
     console.log(data)
 
-    formdata.append('fromid', String(data.fromid))
-    formdata.append('toid', String(data.toid))
-    formdata.append('text', data.text)
+    // formdata.append('fromid', String(data.fromid))
+    // formdata.append('toid', String(data.toid))
+    // formdata.append('text', data.text)
 
-    console.log(formdata.get('files'))
-    const request = await $api.post('/sendMessage', formdata, {
+    formdata.append('json', toJSON(data))
+
+    console.log(formdata.get('files'), formdata.get('json'))
+    const request = await $api.post(serverPaths.sendMessage, formdata, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
@@ -41,7 +42,8 @@ class StoreMessages {
 
   put = async (data: MessagePutDTOClient) => {
     const old = this.messages!.sent.find(e => e.id == data.id)!
-    console.log(data, toJS(old))
+    console.log(data, toJS(old), 'messagedto')
+    MessageDTOClientSchema.parse(data)
     if (data.files.new == null && data.files.old == null && data.text == old.text) {
       return;
       
@@ -51,7 +53,7 @@ class StoreMessages {
 
     } else {
       const deleted = old.files?.filter(e => data.files.old?.includes(e))
-      const formdata = await toFormData(data.files.new)
+      const formdata = await toFormData(data.files.new!)
       // Object.entries(data).forEach(e => formdata.append(e[0], String(e[1])))
   
       formdata.append('fromid', String(data.fromid))

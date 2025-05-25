@@ -1,5 +1,5 @@
 import StoreForm from "@/shared/stores/Store-Form"
-import StoreMessages from "@/pages/Messages/widgets/modules/store/Store-Messages"
+import StoreMessages from "@/pages/Messages/widgets/store/Store-Messages"
 import StoreTags from "@/shared/stores/Store-Tags"
 import StoreUser from "@/shared/stores/Store-User"
 import StoreUsers from "@/pages/Users/widgets/store/Store-Users"
@@ -21,7 +21,7 @@ function Header() {
         <NavLink to={"/"}>{({ isActive }) => <button className={classNames({[style.active]: isActive})}>Главная</button>}</NavLink>
         <Link to={paths.registration}><button>Регистрация</button></Link>
         <Link to={paths.login}><button>Войти</button></Link>
-        <Link to={paths.messages}><button>Сообщения</button></Link>
+        <Link to={`${paths.messages}/16`}><button>Сообщения</button></Link>
         <Link to={paths.users}><button>Пользователи</button></Link>
         <Link to={`${paths.profile}/2`}><button>profile 2</button></Link>
         <Link to={paths.room}><button>ROOM</button></Link>

@@ -1,6 +1,6 @@
 import $api from "@/shared/api/api"
 import StoreForm from "@/shared/stores/Store-Form"
-import StoreMessages from "@/pages/Messages/widgets/modules/store/Store-Messages"
+import StoreMessages from "@/pages/Messages/widgets/store/Store-Messages"
 import storeSocket from "@/shared/api/Store-Socket"
 import StoreTags from "@/shared/stores/Store-Tags"
 import StoreLikes from "@/shared/stores/StoreLikes"
@@ -10,7 +10,7 @@ import { toSOSe, toCl, toJSON } from "@shared/MAPPERS"
 import { serverPaths } from "@shared/PATHS"
 import { makeAutoObservable, runInAction } from "mobx"
 import { z } from "zod"
-import { RegistrationDTOClient, StoreUserRegistrationSchema } from "@/pages/Registration/modules/zod"
+import { RegistrationDTOClient, StoreUserRegistrationSchema } from "@/pages/Registration/modules/RegistrationZOD"
 
 export interface responseInterface {
   user: User,

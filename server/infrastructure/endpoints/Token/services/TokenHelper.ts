@@ -31,7 +31,6 @@ class TokenHelper {
 			const hashInDB = one(await ORM.getById(token.id, "tokens")).token;
 
 			const hasDB = await bcrypt.compare(refreshToken, hashInDB);
-			// const hasUser = one(await this.ORM.getById(token.id, 'users'))
 
 			if (hasDB) {
 				return token;

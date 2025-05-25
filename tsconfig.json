@@ -18,6 +18,9 @@
       "strictFunctionTypes": true,
       "strictBindCallApply": true,
       "noFallthroughCasesInSwitch": true,
+
+      "experimentalDecorators": true,
+      "emitDecoratorMetadata": true,
       // "noUncheckedIndexedAccess": true,
       // "resolveJsonModule": true,
       // "types": ["NodeJS"],

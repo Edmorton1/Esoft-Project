@@ -1,5 +1,4 @@
-import { MessageDTOClient } from "@t/client/DTOClient"
-import { FormDTO, LikesDTO, TagsDTO, UserDTO, UserTagsDTO } from "@t/gen/dtoObjects"
+import { FormDTO, LikesDTO, MessageDTO, TagsDTO, UserDTO, UserTagsDTO } from "@t/gen/dtoObjects"
 import { Form, Likes, Message, Tags, Token, User, UserTags } from "@t/gen/Users"
 import { MessageDTOServer } from "@t/server/DTOServer"
 
@@ -18,7 +17,7 @@ export type TablesPost = {
   users: UserDTO,
   forms: FormDTO,
   likes: LikesDTO,
-  messages: MessageDTOServer,
+  messages: MessageDTO,
   tags: TagsDTO,
   user_tags: UserTagsDTO,
   tokens: Token

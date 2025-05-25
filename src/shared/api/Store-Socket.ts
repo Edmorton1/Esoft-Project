@@ -1,4 +1,4 @@
-import StoreMessages from "@/pages/Messages/widgets/modules/store/Store-Messages";
+import StoreMessages from "@/pages/Messages/widgets/store/Store-Messages";
 import StoreLikes from "@/shared/stores/StoreLikes";
 import { URL_SERVER_WS } from "@shared/URLS";
 import { frSOCl } from "@shared/MAPPERS";

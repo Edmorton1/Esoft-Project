@@ -16,8 +16,11 @@ export const setCache = async <T>(key: string, data: T): Promise<T> => {
   
 }
 
-export const getCahce = async <T>(key: string): Promise<T | null> => {
-  return frJSON<T>(await redis.get(key))
+export const getCahce = async <T>(key: string): Promise<T | undefined> => {
+  const raw = await redis.get(key)
+  if (typeof raw === 'string') {
+    return frJSON<T>(raw)
+  } return undefined
 }
 
 
