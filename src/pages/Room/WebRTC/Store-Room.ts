@@ -35,11 +35,20 @@ class StoreRoom {
     return this.Peer
   }
 
+  hangUp = async () => {
+    this.Peer?.hangUp()
+
+    this.Peer = null
+    this.isOpen = false
+
+    this.audioEnebaled = false
+    this.videoEnabled = false
+  }
+
   // --- БЛОК ВКЛЮЧЕНИЯ ОТКЛЮЧЕНИЯ
   enableAudio = () => {
     this.Peer?.stream?.getAudioTracks().forEach(track => {
 			track.enabled = true;
-      document.getElementById('')
 		});
     this.audioEnebaled = true
   }

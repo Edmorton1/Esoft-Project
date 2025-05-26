@@ -76,7 +76,7 @@ class HttpTokenController {
     }
     console.log('Не прошёл')
     res.clearCookie('refreshToken')
-    res.status(401).send('Нет валидных токенов')
+    res.sendStatus(401)
   }
 }
 

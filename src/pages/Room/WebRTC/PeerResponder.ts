@@ -38,10 +38,10 @@ class PeerResponder extends BasePeer {
   
   createAnswer = async () => {
     console.log("createAnswer")
-    this.answer = await this.peerConnection.createAnswer()
-    await this.peerConnection.setLocalDescription(this.answer)
-    this.sendAnswer(this.answer)
-    console.log('answer', this.answer)
+    const answer = await this.peerConnection.createAnswer()
+    await this.peerConnection.setLocalDescription(answer)
+    this.sendAnswer(answer)
+    console.log('answer', answer)
   }
 }
 

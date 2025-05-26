@@ -18,7 +18,7 @@ class HttpMessageController {
   }
 
   sendMessage = async (req: Request, res: Response) => {
-    const data = MessageDTOServerSchema.parse({...frJSON(req.body.json), files: req.files})
+    const data = MessageDTOServerSchema.parse({...frJSON(req.body.json)!, files: req.files})
     const { files, ...message } = data
 
     console.log(files)
@@ -36,7 +36,7 @@ class HttpMessageController {
     const {id} = req.params
     let total = null
     console.log({...frJSON(req.body.json), files: req.files}, 'messageediting')
-    const data = MessagePutDTOServerSchema.parse({...frJSON(req.body.json), files: req.files})
+    const data = MessagePutDTOServerSchema.parse({...frJSON(req.body.json)!, files: req.files})
     // const data: MessagePutServerDTO = req.body
     // const files = req.files as Express.Multer.File[]
 

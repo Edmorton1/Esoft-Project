@@ -14,7 +14,11 @@ export function toSQL(domainModel: any) {
   return domainModel
 }
 
-export const frJSON = <T>(data: string): any | undefined => {
+// export const frJSON = <T>(data: string): T | undefined => {
+//   return JSON.parse(data.toString())
+// }
+
+export const frJSON = <T>(data: string): T => {
   return JSON.parse(data.toString())
 }
 

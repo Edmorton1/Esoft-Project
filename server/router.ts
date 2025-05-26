@@ -28,6 +28,7 @@ tablesArr.forEach(table => {
 // router.get('/byParams', universalController('getByParams', 'users'))
 
 router.get('/', (req, res) => {res.json('Работает'); console.log('Работает')})
+
 router.post(serverPaths.registration, upload.single('avatar'), HttpTokenController.registartion)
 router.post(serverPaths.login, HttpTokenController.login)
 router.get(`${serverPaths.logout}/:id`, HttpTokenController.logout)
@@ -49,5 +50,11 @@ router.post(serverPaths.testCompressAudio, upload.single('audio'), HttpFilesCont
 
 router.get(`${serverPaths.extendedSearch}`, HttpExtendedSearchController.getForms)
 
-router.get('/dec', HttpLikesController.decorator)
+// router.get('/dec', (req, res) => {
+//   const body = req.body;
+//   console.log(body)
+//   res.header('lang', 'ru-RU')
+//   res.sendStatus(500)
+// })
+
 export default router

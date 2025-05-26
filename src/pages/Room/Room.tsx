@@ -31,11 +31,11 @@ function Room() {
     <button onClick={handlerCallClick}>Позвонить пользователю {hooCall}</button>
     <div>
       <input type="text" onChange={e => setText(e.target.value)}/>
-      <button onClick={() => StoreRoom?.Peer?.sendMessageCaller(text)}>Отправить сообщние</button>
+      <button onClick={() => StoreRoom?.Peer?.sendMessageCaller()}>Отправить сообщние</button>
       {/* <button onClick={() => StoreRoom.closeConnection()}>Бросить трубку</button> */}
     </div>
-    <button onClick={() => StoreRoom.videoEnabled ? StoreRoom.disableVideo() : StoreRoom.enableVideo()}>{StoreRoom.videoEnabled ? 'Отключить видео' : 'Включить видео'}</button>
-    <button onClick={() => StoreRoom.audioEnebaled ? StoreRoom.disableAudio() : StoreRoom.enableAudio()}>{StoreRoom.audioEnebaled ? 'Отключить аудио' : 'Включить аудио'}</button>
+    {/* <button onClick={() => StoreRoom.videoEnabled ? StoreRoom.disableVideo() : StoreRoom.enableVideo()}>{StoreRoom.videoEnabled ? 'Отключить видео' : 'Включить видео'}</button>
+    <button onClick={() => StoreRoom.audioEnebaled ? StoreRoom.disableAudio() : StoreRoom.enableAudio()}>{StoreRoom.audioEnebaled ? 'Отключить аудио' : 'Включить аудио'}</button> */}
     <br />
     <br />
     <div>dev</div>
@@ -47,5 +47,5 @@ function Room() {
   </>
 }
 
-export default observer(Room)
+export default Room
 

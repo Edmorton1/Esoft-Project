@@ -33,8 +33,8 @@ class PeerCaller extends BasePeer {
 
     this.dataChanel = setupDataChannel(this.peerConnection.createDataChannel('test'))
 
-    this.offer = await this.peerConnection.createOffer()
-    await this.peerConnection.setLocalDescription(this.offer)
+    const offer = await this.peerConnection.createOffer()
+    await this.peerConnection.setLocalDescription(offer)
     this.sendOffer(this.peerConnection.localDescription!)
     console.log(this.peerConnection.localDescription)
   }

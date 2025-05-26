@@ -1,8 +1,10 @@
 import setupDataChannel from "@/pages/Room/WebRTC/config/dataChannelConfig";
 import AudioControl from "@/pages/Room/WebRTC/AudioControl";
 import VideoControl from "@/pages/Room/WebRTC/VideoControl";
+import StoreRoom from "@/pages/Room/WebRTC/Store-Room";
 
 const setupPeerConnection = (peerConnection: RTCPeerConnection, dataChanel: RTCDataChannel) => {
+	console.log("SETUP PEER CONNECTION")
 	peerConnection.onicecandidate = e =>
 		console.log(
 			"icecandidate",
@@ -10,10 +12,10 @@ const setupPeerConnection = (peerConnection: RTCPeerConnection, dataChanel: RTCD
 		);
 
 	peerConnection.ondatachannel = e => {
-		if (dataChanel) {
+		// if (dataChanel) {
 			console.log("ПОМЕНЯЛСЯ datachannel");
-			dataChanel = setupDataChannel(e.channel);
-		}
+			StoreRoom.Peer?.updateDataChannel(setupDataChannel(e.channel));
+		// }
 	};
 	// РЕАКЦИЯ НА ЧУЖОЙ ТРЕК
 	peerConnection.ontrack = e => {

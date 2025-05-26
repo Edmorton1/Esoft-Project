@@ -1,3 +1,5 @@
+import ButtonAudio from "@/pages/Room/ButtonAudio";
+import ButtonVideo from "@/pages/Room/ButtonVideo";
 import PeerResponder from "@/pages/Room/WebRTC/PeerResponder";
 import StoreRoom from "@/pages/Room/WebRTC/Store-Room";
 import StoreTalking from "@/shared/ui/ModalTalking/StoreTalking";
@@ -10,7 +12,10 @@ import { observer } from "mobx-react-lite";
 
 function ModalCall() {
   const handleClose = () => StoreTalking.closeModal()
+
   const handleTake = () => {if (StoreRoom.Peer instanceof PeerResponder) StoreRoom.Peer.createAnswer()}
+
+  const handleHangUp = () => StoreRoom.hangUp()
 
   return (
     <>
@@ -22,8 +27,9 @@ function ModalCall() {
           ModalTalking
         </DialogContent>
         <DialogActions>
-          <Button color="success" variant="contained" onClick={handleTake}>Взять</Button>
-          <Button color="error" variant="contained">Не брать</Button>
+          <ButtonAudio />
+          <ButtonVideo />
+          <Button onClick={handleHangUp} variant="contained">Бросить трубку</Button>
         </DialogActions>
       </Dialog>
     </>
