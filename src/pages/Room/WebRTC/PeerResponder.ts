@@ -2,6 +2,8 @@ import BasePeer from "@/pages/Room/WebRTC/BasePeer";
 import StoreCall from "@/shared/ui/ModalCall/StoreCall";
 import StoreSocket from "@/shared/api/Store-Socket";
 import { toSOSe } from "@shared/MAPPERS";
+import MediaPermissions from "@/pages/Room/WebRTC/MediaPermissions";
+import StoreRoom from "@/pages/Room/WebRTC/Store-Room";
 
 class PeerResponder extends BasePeer {
   constructor(
@@ -25,6 +27,11 @@ class PeerResponder extends BasePeer {
   SocketGetOffer = async (offer: RTCSessionDescriptionInit) => {
     console.log("SOCKET GET OFFER", offer)
     await this.peerConnection.setRemoteDescription(offer)
+
+    this.stream = await MediaPermissions.setMediaResponder(this.peerConnection)
+    StoreRoom.disableVideo()
+    StoreRoom.enableAudio()
+
     StoreCall.openModal('assadsda')
     // await this.createAnswer()
   }

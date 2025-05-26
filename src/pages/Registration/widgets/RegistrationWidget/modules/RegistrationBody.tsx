@@ -1,4 +1,4 @@
-import { UseFormRegister } from "react-hook-form";
+import { FieldErrors, UseFormRegister } from "react-hook-form";
 import FormControl from "@mui/material/FormControl";
 import Input from "@mui/material/Input";
 import InputLabel from "@mui/material/InputLabel";
@@ -6,8 +6,9 @@ import FormHelperText from "@mui/material/FormHelperText";
 import FormError from "@/shared/ui/kit/FormError";
 import StoreUser from "@/shared/stores/Store-User";
 import StoreForm from "@/shared/stores/Store-Form";
+import { RegistrationDTOClient } from "@/pages/Registration/widgets/RegistrationWidget/modules/types/RegistrationZOD";
 
-function RegistrationBody({register, onSubmit, errors}: {register: UseFormRegister<any>, onSubmit: (...args: any[]) => any, errors: any}) {
+function RegistrationBody({register, onSubmit, errors}: {register: UseFormRegister<RegistrationDTOClient>, onSubmit: (...args: any[]) => any, errors: FieldErrors<RegistrationDTOClient>}) {
 
   return <>
   <div>Добро пожаловать: {StoreUser.user?.email}</div>
@@ -16,14 +17,20 @@ function RegistrationBody({register, onSubmit, errors}: {register: UseFormRegist
 
     <FormControl error={!!errors.email}>
       <InputLabel htmlFor="email">email</InputLabel>
-      <Input {...register('email')} type="text" id="email"/>
+      <Input {...register('email')} type="text" autoComplete="username" id="email"/>
       <FormError id={"email"} error={errors.email}></FormError>
     </FormControl>
           
     <FormControl>
       <InputLabel htmlFor="password">password</InputLabel>
-      <Input  {...register('password')} type="text" id="password" />
-      <FormHelperText id="email">Пароль должен...</FormHelperText>
+      <Input {...register('password')} type="password" autoComplete="new-password" id="password" />
+      <FormHelperText id="password">Пароль должен...</FormHelperText>
+    </FormControl>
+
+    <FormControl>
+      <InputLabel htmlFor="confirmPassword">Повторите пароль</InputLabel>
+      <Input {...register('confirmPassword')} type="password" autoComplete="new-password" id="confirmPassword" />
+      <FormHelperText id="confirmPassword">Пароль должен...</FormHelperText>
     </FormControl>
 
     <button onClick={StoreUser.logout}>Выйти</button>

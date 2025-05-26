@@ -1,6 +1,6 @@
 import StoreUsers from "@/pages/Users/widgets/store/Store-Users"
 import useUpdateParams from "@/shared/hooks/useChangeParams"
-import { cardsOnPage } from "@shared/CONST"
+import { CARDS_ON_PAGE } from "@shared/CONST"
 import { observer } from "mobx-react-lite"
 import { useState } from "react"
 
@@ -13,7 +13,7 @@ function Pagination() {
 
   const handleClick = (page: number) => {updateParams(key, page); setShow(false)}
   
-    const pages = (StoreUsers.users?.length ?? 0) / cardsOnPage
+    const pages = (StoreUsers.users?.length ?? 0) / CARDS_ON_PAGE
     const elements = []
 
   for (let i = 0; i < pages; i++) {

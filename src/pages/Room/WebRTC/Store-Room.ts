@@ -6,6 +6,9 @@ class StoreRoom {
   Peer: null | PeerCaller | PeerResponder = null
   isOpen: boolean = false
 
+  audioEnebaled: boolean = false;
+  videoEnabled: boolean = false;
+
   get peerConnection(): RTCPeerConnection {
     return this.Peer!.peerConnection
   }
@@ -31,6 +34,37 @@ class StoreRoom {
 
     return this.Peer
   }
+
+  // --- БЛОК ВКЛЮЧЕНИЯ ОТКЛЮЧЕНИЯ
+  enableAudio = () => {
+    this.Peer?.stream?.getAudioTracks().forEach(track => {
+			track.enabled = true;
+      document.getElementById('')
+		});
+    this.audioEnebaled = true
+  }
+
+  enableVideo = () => {
+    this.Peer?.stream?.getVideoTracks().forEach(track => {
+			track.enabled = true;
+		});
+    this.videoEnabled = true
+  }
+
+  disableAudio = () => {
+    this.Peer?.stream?.getAudioTracks().forEach(track => {
+			track.enabled = false;
+		});
+    this.audioEnebaled = false
+  }
+
+  disableVideo = () => {
+    this.Peer?.stream?.getVideoTracks().forEach(track => {
+			track.enabled = false;
+		});
+    this.videoEnabled = false
+  }
+  // --- БЛОК ВКЛЮЧЕНИЯ ОТКЛЮЧЕНИЯ
 
   // get isOpen() {
   //   const canal = this.Peer?.dataChanel?.readyState

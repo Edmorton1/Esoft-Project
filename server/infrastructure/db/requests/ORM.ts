@@ -27,7 +27,7 @@ class ORM {
     if (table === 'forms') {
       callback = async () => await requestToForm(fields)
     } else {
-      callback = async () => await db(table)
+      callback = async () => await db(table).select(fieldsToArr(fields))
     }
 
     console.log('fields in orm', fields)

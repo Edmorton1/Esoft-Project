@@ -24,7 +24,7 @@ class VoiceMessage {
     }
     
     this.mediaRecorder.onstop = () => {
-      document.getElementById('micro')?.remove()
+      document.getElementById('local-audio')?.remove()
       const blob = new Blob(this.chunks, {type: 'audio/ogg'})
       console.log(blob)
       const url = URL.createObjectURL(blob)
@@ -40,7 +40,7 @@ class VoiceMessage {
 
     this.mediaRecorder.onstart = e => {
       const audio = document.createElement('audio')
-      audio.id = 'micro'
+      audio.id = 'local-audio'
       audio.srcObject = this.stream
       audio.autoplay = true
       audio.muted = false
@@ -58,7 +58,7 @@ class VoiceMessage {
 
     const stopping = new Promise<Blob>(res => {
       this.mediaRecorder.onstop = () => {
-      document.getElementById('micro')?.remove()
+      document.getElementById('local-audio')?.remove()
       const blob = new Blob(this.chunks, {type: 'audio/ogg'})
       console.log(blob)
       const url = URL.createObjectURL(blob)
