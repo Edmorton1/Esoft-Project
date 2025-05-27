@@ -1,4 +1,4 @@
-import StoreBaseModal from "@/shared/ui/StoreBaseModal";
+import StoreBaseModal from "@/shared/ui/Store-BaseModal";
 
 class StoreTalking extends StoreBaseModal {
   constructor() {

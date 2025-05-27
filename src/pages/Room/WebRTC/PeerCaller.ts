@@ -4,6 +4,7 @@ import MediaPermissions from "@/pages/Room/WebRTC/MediaPermissions";
 import StoreRoom from "@/pages/Room/WebRTC/Store-Room";
 import StoreSocket from "@/shared/api/Store-Socket";
 import { toSOSe } from "@shared/MAPPERS";
+import VideoControl from "@/pages/Room/WebRTC/VideoControl";
 
 class PeerCaller extends BasePeer {
   constructor(
@@ -26,14 +27,24 @@ class PeerCaller extends BasePeer {
     StoreSocket.socket?.send(toSOSe('offer', {frid: this.frid, toid: this.toid, description: description}))
   }
 
+  // enableStreams = async () => {
+  //   this.stream = await MediaPermissions.setMediaCaller(this.peerConnection)
+
+  //   StoreRoom.enableVideo()
+  //   StoreRoom.enableAudio()
+
+  //   VideoControl.createLocalVideo(this.stream)
+  // }
+
   createOffer = async () => {
-    this.stream = await MediaPermissions.setMediaCaller(this.peerConnection)
-    StoreRoom.disableVideo()
-    StoreRoom.enableAudio()
+    await this.enableStreams()
 
     this.dataChanel = setupDataChannel(this.peerConnection.createDataChannel('test'))
 
-    const offer = await this.peerConnection.createOffer()
+    const offer = await this.peerConnection.createOffer({
+      offerToReceiveAudio: true,
+      offerToReceiveVideo: true
+    })
     await this.peerConnection.setLocalDescription(offer)
     this.sendOffer(this.peerConnection.localDescription!)
     console.log(this.peerConnection.localDescription)

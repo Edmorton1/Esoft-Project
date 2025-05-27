@@ -15,7 +15,7 @@ class FormStore {
   initial = async (id: number) => {
     console.log("forms", this.form)
     if (!this.form) {
-      const data = one(toCl<Form[]>(await $api.get(`/forms/${id}`)))
+      const data = one(toCl<Form[]>(await $api.get(`${serverPaths.forms}/${id}`)))
       const parsed = FormSchema.parse(data)
       runInAction(() => this.form = parsed)
     }
@@ -25,19 +25,19 @@ class FormStore {
     runInAction(() => this.form!.tags = tags)
   }
 
-  async postForm(data: RegistrationDTOClient) {
-    const request = toCl<Form>(await $api.post(`${serverPaths.createForm}`, data))
-    runInAction(() => this.form = request)
-    // console.log(request)
-  }
+  // async postForm(data: RegistrationDTOClient) {
+  //   const request = toCl<Form>(await $api.post(`${serverPaths.createForm}`, data))
+  //   runInAction(() => this.form = request)
+  //   // console.log(request)
+  // }
 
   async getById(id: number): Promise<Form> {
-    const request = one(toCl<Form[]>(await $api.get(`/forms/${id}`)))
+    const request = one(toCl<Form[]>(await $api.get(`${serverPaths.forms}/${id}`)))
     return request
   }
 
   async getAll(): Promise<Form[]> {
-    return toCl<Form[]>(await $api.get('/forms'))
+    return toCl<Form[]>(await $api.get(serverPaths.forms))
   }
 }
 

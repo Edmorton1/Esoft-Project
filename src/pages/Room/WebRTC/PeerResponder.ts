@@ -1,9 +1,10 @@
 import BasePeer from "@/pages/Room/WebRTC/BasePeer";
-import StoreCall from "@/shared/ui/ModalCall/StoreCall";
+import StoreCall from "@/shared/ui/ModalCall/Store-Call";
 import StoreSocket from "@/shared/api/Store-Socket";
 import { toSOSe } from "@shared/MAPPERS";
 import MediaPermissions from "@/pages/Room/WebRTC/MediaPermissions";
 import StoreRoom from "@/pages/Room/WebRTC/Store-Room";
+import VideoControl from "@/pages/Room/WebRTC/VideoControl";
 
 class PeerResponder extends BasePeer {
   constructor(
@@ -26,14 +27,22 @@ class PeerResponder extends BasePeer {
 
   SocketGetOffer = async (offer: RTCSessionDescriptionInit) => {
     console.log("SOCKET GET OFFER", offer)
-    await this.peerConnection.setRemoteDescription(offer)
 
-    this.stream = await MediaPermissions.setMediaResponder(this.peerConnection)
-    StoreRoom.disableVideo()
-    StoreRoom.enableAudio()
+    // await new Promise(res => setTimeout(() => res, 3000))
+    await this.enableStreams()
+
+    await this.peerConnection.setRemoteDescription(offer)
+    console.log('[REMOTE DESCRIPTION]: УСТАНОВЛЕНО!!!')
+    // await this.enableStreams()
+
+    // this.stream = await MediaPermissions.setMediaResponder(this.peerConnection)
+    // StoreRoom.enableVideo()
+    // StoreRoom.enableAudio()
+
+    // VideoControl.createLocalVideo(this.stream)
+
 
     StoreCall.openModal('assadsda')
-    // await this.createAnswer()
   }
   
   createAnswer = async () => {
@@ -41,7 +50,11 @@ class PeerResponder extends BasePeer {
     const answer = await this.peerConnection.createAnswer()
     await this.peerConnection.setLocalDescription(answer)
     this.sendAnswer(answer)
-    console.log('answer', answer)
+    
+    console.log(this.peerConnection.getSenders().forEach(sender => {
+      console.log('[SENDER]', sender.track?.kind, sender.track)
+    }))
+    console.log('[answer SDP]', answer.sdp)
   }
 }
 

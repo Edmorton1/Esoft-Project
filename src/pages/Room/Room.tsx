@@ -1,12 +1,12 @@
 import AudioControl from "@/pages/Room/WebRTC/AudioControl"
 import PeerResponder from "@/pages/Room/WebRTC/PeerResponder"
 import StoreRoom from "@/pages/Room/WebRTC/Store-Room"
-import StoreCall from "@/shared/ui/ModalCall/StoreCall"
+import StoreCall from "@/shared/ui/ModalCall/Store-Call"
 import VideoControl from "@/pages/Room/WebRTC/VideoControl"
 // import useLive from "@/shared/hooks/useLive"
 import StoreUser from "@/shared/stores/Store-User"
 import { useEffect, useState } from "react"
-import StoreTalking from "@/shared/ui/ModalTalking/StoreTalking"
+import StoreTalking from "@/shared/ui/ModalTalking/Store-Talking"
 import { observer } from "mobx-react-lite"
 
 // ФУНКЦИЯ
@@ -29,6 +29,7 @@ function Room() {
 
   return <>
     <button onClick={handlerCallClick}>Позвонить пользователю {hooCall}</button>
+    <button onClick={() => StoreRoom.makeCall(2, 1)}>Позвонить пользователю 1</button>
     <div>
       <input type="text" onChange={e => setText(e.target.value)}/>
       <button onClick={() => StoreRoom?.Peer?.sendMessageCaller()}>Отправить сообщние</button>

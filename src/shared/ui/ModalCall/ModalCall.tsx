@@ -1,11 +1,12 @@
 import PeerResponder from "@/pages/Room/WebRTC/PeerResponder";
 import StoreRoom from "@/pages/Room/WebRTC/Store-Room";
-import StoreCall from "@/shared/ui/ModalCall/StoreCall";
+import StoreCall from "@/shared/ui/ModalCall/Store-Call";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
+import { MODAL_CALL } from "@shared/CONST";
 import { observer } from "mobx-react-lite";
 // import PhoneIcon from '@mui/icons-material/Phone'
 // import CallEndIcon from "@mui/icons-material/CallEnd"
@@ -16,7 +17,7 @@ function ModalCall() {
 
   return (
     <>
-      <Dialog open={StoreCall.isOpen} onClose={handleClose}>
+      <Dialog open={StoreCall.isOpen} onClose={handleClose} id={MODAL_CALL}>
         <DialogTitle>
           {StoreCall.name} звонит!
         </DialogTitle>

@@ -5,7 +5,7 @@ import { FieldErrors, useForm } from "react-hook-form"
 import { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { RegistrationDTOClient, RegistrationDTOClientSchema } from "@/pages/Registration/widgets/RegistrationWidget/modules/types/RegistrationZOD";
-import StoreRegistration from "@/pages/Registration/widgets/RegistrationWidget/modules/stores/StoreRegistration";
+import StoreRegistration from "@/pages/Registration/widgets/RegistrationWidget/modules/stores/Store-Registration";
 import StoreUser from "@/shared/stores/Store-User";
 
 type ExtractFieldErrorType<E> = E extends FieldErrors<infer T> ? T : never

@@ -1,27 +1,29 @@
-import {LOCAL_VIDEO, REMOTE_VIDEO} from "@shared/CONST";
+import {LOCAL_VIDEO, MODAL_TALKING, REMOTE_VIDEO} from "@shared/CONST";
 
 class VideoControl {
-	createLocalVideo = (stream: MediaStream) => {
+	createLocalVideo = (stream: MediaStream): void => {
 		console.log("[VideoControl] Video получено:", stream);
 		// РЕАКЦИЯ НА СВОЙ
-		const video = document.createElement("video");
-		video.srcObject = stream;
-		video.controls = true;
-		video.autoplay = true;
-		video.muted = true;
-		video.style.width = "300px";
-		video.id = LOCAL_VIDEO;
-		document.body.appendChild(video);
+		const localVideo = document.createElement("video");
+		localVideo.srcObject = stream;
+		localVideo.controls = true;
+		localVideo.autoplay = true;
+		localVideo.muted = true;
+		localVideo.style.width = "300px";
+		localVideo.id = LOCAL_VIDEO;
+		document.getElementById(MODAL_TALKING)?.appendChild(localVideo);
+		// document.body.appendChild(video);
 	};
 
-	createRemoteVideo = (remoteStream: MediaStream) => {
+	createRemoteVideo = (remoteStream: MediaStream): void => {
 		const remoteVideo = document.createElement("video");
 		remoteVideo.srcObject = remoteStream;
 		remoteVideo.autoplay = true;
 		remoteVideo.controls = true;
 		remoteVideo.style.width = "300px";
 		remoteVideo.id = REMOTE_VIDEO;
-		document.body.appendChild(remoteVideo);
+		document.getElementById(MODAL_TALKING)?.appendChild(remoteVideo);
+    // document.body.appendChild(remoteVideo)
 	};
 }
 

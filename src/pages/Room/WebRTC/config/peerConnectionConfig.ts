@@ -3,7 +3,7 @@ import AudioControl from "@/pages/Room/WebRTC/AudioControl";
 import VideoControl from "@/pages/Room/WebRTC/VideoControl";
 import StoreRoom from "@/pages/Room/WebRTC/Store-Room";
 
-const setupPeerConnection = (peerConnection: RTCPeerConnection, dataChanel: RTCDataChannel) => {
+const setupPeerConnection = (peerConnection: RTCPeerConnection) => {
 	console.log("SETUP PEER CONNECTION")
 	peerConnection.onicecandidate = e =>
 		console.log(
@@ -21,11 +21,14 @@ const setupPeerConnection = (peerConnection: RTCPeerConnection, dataChanel: RTCD
 	peerConnection.ontrack = e => {
 		console.log("track", e.track);
 		const isVideo = e.track.kind === "video";
-		console.log("isVideo", e.track.kind);
+		console.log("e track kind", e.track.kind);
+		console.log('[STREAMS]', e.streams)
 		const remoteStream = e.streams[0];
 		if (isVideo) {
+			console.log('ДЕЛАЕМ РЕМОТ ВИДЕО')
 			VideoControl.createRemoteVideo(remoteStream);
 		} else {
+			console.log("РЕМОТ АУДИО")
 			AudioControl.createRemoteAudio(remoteStream);
 		}
 	};

@@ -5,3 +5,6 @@ export const REMOTE_AUDIO = 'remote-audio'
 
 export const LOCAL_VIDEO = 'local-video'
 export const LOCAL_AUDIO = 'local-auido'
+
+export const MODAL_CALL = 'modal-call'
+export const MODAL_TALKING = 'modal-talking'

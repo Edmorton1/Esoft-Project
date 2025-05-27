@@ -1,5 +1,3 @@
-import StoreRoom from "@/pages/Room/WebRTC/Store-Room";
-
 class MediaPermissions {
 	private getDevices = async () => {
 		const devices = await navigator.mediaDevices.enumerateDevices();
@@ -7,7 +5,7 @@ class MediaPermissions {
 		const hasVideoInput = devices.some(device => device.kind === "videoinput" && device.label);
 		const hasAudioInput = devices.some(device => device.kind === "audioinput" && device.label);
 
-    devices.forEach(e => console.log(e.label))
+    devices.forEach(e => console.log(e.label, hasVideoInput))
 		return [hasVideoInput, hasAudioInput];
 	};
 
@@ -31,25 +29,30 @@ class MediaPermissions {
     return [videoAllowed, audioAllowed]
   }
 
-  setMediaCaller = async (peerConnection: RTCPeerConnection): Promise<MediaStream> => {
+  setMediaStream = async (peerConnection: RTCPeerConnection): Promise<[MediaStream, boolean, boolean]> => {
     const [videoAllowed, audioAllowed] = await this.checkPermissons()
-    const stream = await navigator.mediaDevices.getUserMedia({video: videoAllowed,audio: audioAllowed});
+    console.log('Видео включено ', videoAllowed)
+    const stream = await navigator.mediaDevices.getUserMedia({video: videoAllowed, audio: audioAllowed});
 
     stream.getTracks().forEach(track => {
+      console.log('[ADD TRACK]', track.kind)
       peerConnection.addTrack(track, stream);
     });
 
-    return stream
+    return [stream, videoAllowed, audioAllowed]
   }
 
-  setMediaResponder = async (peerConnection: RTCPeerConnection): Promise<MediaStream> => {
-    const [videoAllowed, audioAllowed] = await this.checkPermissons()
+  // setMediaResponder = async (peerConnection: RTCPeerConnection): Promise<MediaStream> => {
+  //   const [videoAllowed, audioAllowed] = await this.checkPermissons()
     
-    const stream = await navigator.mediaDevices.getUserMedia({video: videoAllowed,audio: audioAllowed})
-    stream.getTracks().forEach(track => peerConnection.addTrack(track, stream))
+  //   const stream = await navigator.mediaDevices.getUserMedia({video: videoAllowed, audio: audioAllowed})
+    
+  //   stream.getTracks().forEach(track =>{ 
+  //     peerConnection.addTrack(track, stream)
+  //   });
 
-    return stream
-  }
+  //   return stream
+  // }
 }
 
 export default new MediaPermissions
