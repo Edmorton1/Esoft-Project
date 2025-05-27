@@ -22,7 +22,7 @@ export const frJSON = <T>(data: string): T => {
   return JSON.parse(data.toString())
 }
 
-export const toJSON = (data: any): string => {
+export const toJSON = <T>(data: T): string => {
   return JSON.stringify(data)
 }
 

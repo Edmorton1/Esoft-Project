@@ -32,6 +32,12 @@ const setupPeerConnection = (peerConnection: RTCPeerConnection) => {
 			AudioControl.createRemoteAudio(remoteStream);
 		}
 	};
+	// peerConnection.onconnectionstatechange = () => {
+	// 	console.log('[ON CONNECTION SET CHANGE]', peerConnection.connectionState)
+	// 	if (peerConnection.connectionState === 'failed' || peerConnection.connectionState === 'closed') {
+
+	// 	}
+	// }
 
   return peerConnection
 };

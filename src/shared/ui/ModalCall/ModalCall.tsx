@@ -13,7 +13,9 @@ import { observer } from "mobx-react-lite";
 
 function ModalCall() {
   const handleClose = () => StoreCall.closeModal()
-  const handleTake = () => {if (StoreRoom.Peer instanceof PeerResponder) StoreRoom.Peer.createAnswer()}
+  const handleTake = () => {if (StoreRoom.Peer instanceof PeerResponder) StoreRoom.Peer.createAnswer(); StoreCall.closeModal()}
+
+  const handleCancel = () => {StoreRoom.cancel(); StoreCall.closeModal()}
 
   return (
     <>
@@ -29,8 +31,8 @@ function ModalCall() {
             <PhoneIcon/>
           </Box>
           <CallEndIcon/> */}
-          <Button color="success" variant="contained" onClick={handleTake}>Взять</Button>
-          <Button color="error" variant="contained">Не брать</Button>
+          <Button onClick={handleTake} color="success" variant="contained" >Взять</Button>
+          <Button onClick={handleCancel} color="error" variant="contained">Не брать</Button>
         </DialogActions>
       </Dialog>
     </>

@@ -36,7 +36,9 @@ export interface MsgTypesServer {
 
   offer: {frid: number, toid: number, description: RTCSessionDescriptionInit},
   answer: {id: number, description: RTCSessionDescriptionInit},
-  candidate: {isCaller: boolean, id: number, candidate: RTCIceCandidate}
+  candidate: {isCaller: boolean, id: number, candidate: RTCIceCandidate},
+  
+  cancel: number
 }
 
 export type OverdriveProperty<T, R> = Omit<T, keyof R> & R
@@ -44,6 +46,7 @@ export type OverdriveProperty<T, R> = Omit<T, keyof R> & R
 export type MsgTypesClient = OverdriveProperty<MsgTypesServer, {
   answer: RTCSessionDescriptionInit,
   candidate: {isCaller: boolean, candidate: RTCIceCandidate},
+  cancel: undefined
 }>
 
 export type SocketMessageClientInterface = {

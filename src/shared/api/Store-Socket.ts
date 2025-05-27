@@ -74,6 +74,9 @@ class SocketStore {
             StoreRoom.Peer!.SocketGetCandidate(data.candidate)
           }
           break
+        case "cancel":
+          console.log("CANCEL CANCEL")
+          StoreRoom.cleaning()
           // StoreRoom.SocketGetCandidate(data)
       }
 

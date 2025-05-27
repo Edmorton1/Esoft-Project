@@ -34,6 +34,9 @@ function createWebSocketServer(server: any) {
           break
         case "candidate":
           clients.get(data.id)?.send(toSOCl('candidate', {isCaller: data.isCaller, candidate: data.candidate}))
+          break
+        case "cancel":
+          clients.get(data)?.send(toSOCl('cancel', undefined))
       }
         
       // console.log(data)

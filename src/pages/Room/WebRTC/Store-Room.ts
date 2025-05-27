@@ -1,5 +1,12 @@
+import AudioControl from "@/pages/Room/WebRTC/AudioControl"
+import { dataChannelTypes } from "@/pages/Room/WebRTC/config/messageTypes"
 import PeerCaller from "@/pages/Room/WebRTC/PeerCaller"
 import PeerResponder from "@/pages/Room/WebRTC/PeerResponder"
+import VideoControl from "@/pages/Room/WebRTC/VideoControl"
+import StoreSocket from "@/shared/api/Store-Socket"
+import { LOCAL_AUDIO, LOCAL_VIDEO, REMOTE_VIDEO } from "@shared/CONST"
+import { toJSON } from "@shared/MAPPERS"
+import { MsgTypesServer, SocketMessageServerInterface } from "@t/gen/types"
 import { makeAutoObservable } from "mobx"
 
 class StoreRoom {
@@ -34,15 +41,27 @@ class StoreRoom {
 
     return this.Peer
   }
-
-  hangUp = async () => {
-    this.Peer?.hangUp()
-
+  getBackStates = () => {
     this.Peer = null
     this.isOpen = false
 
     this.audioEnebaled = false
     this.videoEnabled = false
+  }
+
+  hangUp = () => {
+    this.Peer?.hangUp()
+    this.getBackStates()
+  }
+
+  cleaning = () => {
+    this.Peer?.cleaning()
+    this.getBackStates()
+  }
+
+  cancel = () => {
+    StoreSocket.socket?.send(toJSON<SocketMessageServerInterface>({type: "cancel", data: this.Peer!.frid!}))
+    this.cleaning()
   }
 
   // --- БЛОК ВКЛЮЧЕНИЯ ОТКЛЮЧЕНИЯ
@@ -53,25 +72,43 @@ class StoreRoom {
     this.audioEnebaled = true
   }
 
-  enableVideo = () => {
-    this.Peer?.stream?.getVideoTracks().forEach(track => {
-			track.enabled = true;
-		});
-    this.videoEnabled = true
-  }
-
   disableAudio = () => {
     this.Peer?.stream?.getAudioTracks().forEach(track => {
 			track.enabled = false;
 		});
     this.audioEnebaled = false
   }
+  
+  enableVideo = (isLocal: boolean) => {
+    const unHideEl = (el: HTMLElement | null) => el && (el.style.display = '')
+    if (isLocal) {
+      const el = document.getElementById(LOCAL_VIDEO)
+      this.Peer?.stream?.getVideoTracks().forEach(track => {
+        track.enabled = true;
+      });
+      this.videoEnabled = true
+      el ? unHideEl(el) :  VideoControl.createLocalVideo(this.Peer!.stream!)
+      this.Peer?.dataChanel?.send(toJSON<dataChannelTypes>({type: "enablingVideo", data: true}))
+    } else {
+      const el = document.getElementById(REMOTE_VIDEO)
+      unHideEl(el)
+    }
+  }
 
-  disableVideo = () => {
-    this.Peer?.stream?.getVideoTracks().forEach(track => {
-			track.enabled = false;
-		});
-    this.videoEnabled = false
+  disableVideo = (isLocal: boolean) => {
+    const hideEl = (el: HTMLElement | null) => el && (el.style.display = 'none')
+    if (isLocal) {
+      const el = document.getElementById(LOCAL_VIDEO)
+      this.Peer?.stream?.getVideoTracks().forEach(track => {
+        track.enabled = false;
+      });
+      this.videoEnabled = false
+      hideEl(el)
+      this.Peer?.dataChanel?.send(toJSON<dataChannelTypes>({type: "enablingVideo", data: false}))
+    } else {
+      const el = document.getElementById(REMOTE_VIDEO)
+      hideEl(el)
+    }
   }
   // --- БЛОК ВКЛЮЧЕНИЯ ОТКЛЮЧЕНИЯ
 

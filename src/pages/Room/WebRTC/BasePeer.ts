@@ -1,7 +1,7 @@
+import { dataChannelTypes } from "@/pages/Room/WebRTC/config/messageTypes";
 import setupPeerConnection from "@/pages/Room/WebRTC/config/peerConnectionConfig";
 import MediaPermissions from "@/pages/Room/WebRTC/MediaPermissions";
 import StoreRoom from "@/pages/Room/WebRTC/Store-Room";
-import VideoControl from "@/pages/Room/WebRTC/VideoControl";
 import { LOCAL_AUDIO, LOCAL_VIDEO, REMOTE_AUDIO, REMOTE_VIDEO } from "@shared/CONST";
 import { toJSON } from "@shared/MAPPERS";
 
@@ -18,25 +18,29 @@ abstract class BasePeer {
     this.peerConnection = setupPeerConnection(this.peerConnection)
 	}
 
-  hangUp = () => {
-    console.log("HANG UP")
-    this.dataChanel!.send(toJSON({type: 'hangUp'}))
-
+  cleaning = () => {
+    console.log('ПОЛНАЯ ОЧИСТКА')
     this.stream?.getTracks().forEach(track => track.stop())
     this.stream = null
 
+    this.peerConnection.getSenders().forEach(sender => this.peerConnection.removeTrack(sender))
+    this.peerConnection.close();
+
+    [REMOTE_VIDEO, REMOTE_AUDIO, LOCAL_VIDEO, LOCAL_AUDIO].forEach(id => {
+      document.getElementById(id)?.remove()
+    })
+
+    this.peerConnection = setupPeerConnection(new RTCPeerConnection())
+
     this.dataChanel?.close()
     this.dataChanel = null
+  }
 
-    this.peerConnection.getSenders().forEach(sender => this.peerConnection.removeTrack(sender))
-    this.peerConnection.close()
+  hangUp = () => {
+    console.log("HANG UP")
+    this.dataChanel!.send(toJSON<dataChannelTypes>({type: 'hangUp'}))
 
-    this.peerConnection = new RTCPeerConnection()
-
-    document.getElementById(REMOTE_VIDEO)?.remove()
-    document.getElementById(LOCAL_VIDEO)?.remove()
-    document.getElementById(REMOTE_AUDIO)?.remove()
-    document.getElementById(LOCAL_AUDIO)?.remove()
+    this.cleaning()
   }
 
   updateDataChannel = (dataChanel: RTCDataChannel) => {
@@ -44,22 +48,17 @@ abstract class BasePeer {
   }
 
 	SocketGetCandidate = async (candidate: RTCIceCandidate) => {
-    const func = async () => {
+    const callback = async () => {
       if (this.peerConnection.remoteDescription) {
         console.log("REMOTE EST")
         this.peerConnection.addIceCandidate(candidate);
       } else {
         console.log("WAITING")
-        setTimeout(() => func(), 50) 
+        setTimeout(() => callback(), 50) 
       }
     }
 
-    func()
-    // const asd = await new Promise(res => {
-    //   if (this.peerConnection.remoteDescription) {
-        
-    //   }
-    // })
+    callback()
 	};
 
 	sendMessageCaller = () => {
@@ -72,10 +71,8 @@ abstract class BasePeer {
     console.log('[CHECK STREAM TRACKS]', stream.getTracks().map(t => t.kind))
     this.stream = stream
 
-    StoreRoom.enableVideo()
-    StoreRoom.enableAudio()
-
-    videoAllowed && VideoControl.createLocalVideo(stream)
+    videoAllowed && StoreRoom.enableVideo(true)
+    audioAllowed && StoreRoom.enableAudio()
     console.log("[ENABLE STREAMS]: УСТАНОВЛЕН!!!")
   }
 }
