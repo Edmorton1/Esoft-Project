@@ -5,6 +5,7 @@ import { toSOSe } from "@shared/MAPPERS";
 import MediaPermissions from "@/pages/Room/WebRTC/MediaPermissions";
 import StoreRoom from "@/pages/Room/WebRTC/Store-Room";
 import VideoControl from "@/pages/Room/WebRTC/controllers/VideoControl";
+import StoreForm from "@/shared/stores/Store-Form";
 
 class PeerResponder extends BasePeer {
   constructor(
@@ -22,7 +23,7 @@ class PeerResponder extends BasePeer {
 
   private sendAnswer = (description: RTCSessionDescriptionInit) => {
     console.log('Отправка ансвера')
-    StoreSocket.socket?.send(toSOSe('answer', {id: this.frid, description: description}))
+    StoreSocket.socket?.send(toSOSe('answer', {toForm: StoreForm.form!, frid: this.frid, description: description}))
   }
 
   SocketGetOffer = async (offer: RTCSessionDescriptionInit) => {
@@ -42,7 +43,7 @@ class PeerResponder extends BasePeer {
     // VideoControl.createLocalVideo(this.stream)
 
 
-    StoreCall.openModal('assadsda')
+    StoreCall.openModal()
   }
   
   createAnswer = async () => {

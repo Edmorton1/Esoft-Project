@@ -9,6 +9,7 @@ import * as styles from "@/shared/css/ModalCall.module.scss"
 import ThreeButtons from "@/pages/Room/Buttons";
 import Typography from "@mui/material/Typography";
 import Clock from "@/pages/Room/Clock";
+import StoreCall from "@/pages/Room/ModalCall/Store-Call";
 
 function ModalCall() {
   const handleClose = () => StoreTalking.closeModal();
@@ -34,12 +35,12 @@ function ModalCall() {
 
           <Box
             className={styles.wrapper__avatar}
-            src="/placeholder.png"
+            src={StoreCall.anotherForm?.avatar || "/placeholder.png"}
             component={"img"}>
           </Box>
           
           <Box className={styles.wrapper__text}>
-            <Typography variant="h6">Леха</Typography>
+            <Typography variant="h6">{StoreCall.anotherForm?.name}</Typography>
             <Clock />
           </Box>
 

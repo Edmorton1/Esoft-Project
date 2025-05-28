@@ -8,6 +8,7 @@ import { LOCAL_AUDIO, LOCAL_VIDEO, REMOTE_VIDEO } from "@shared/CONST"
 import { toJSON } from "@shared/MAPPERS"
 import { MsgTypesServer, SocketMessageServerInterface } from "@t/gen/types"
 import { makeAutoObservable } from "mobx"
+import StoreTalking from "@/pages/Room/ModalTalking/Store-Talking"
 
 class StoreRoom {
   Peer: null | PeerCaller | PeerResponder = null
@@ -52,16 +53,19 @@ class StoreRoom {
   hangUp = () => {
     this.Peer?.hangUp()
     this.getBackStates()
+    StoreTalking.closeTimer()
   }
 
   cleaning = () => {
     this.Peer?.cleaning()
     this.getBackStates()
+    StoreTalking.closeTimer()
   }
 
   cancel = () => {
     StoreSocket.socket?.send(toJSON<SocketMessageServerInterface>({type: "cancel", data: this.Peer!.frid!}))
     this.cleaning()
+    StoreTalking.closeTimer()
   }
 
   // --- БЛОК ВКЛЮЧЕНИЯ ОТКЛЮЧЕНИЯ

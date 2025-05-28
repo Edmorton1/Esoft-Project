@@ -66,7 +66,7 @@ export const FormSchema = z.object({
   description: z.preprocess(nullToUndefiend, zstring.optional()).optional(),
   city: z.preprocess(nullToUndefiend, zstring.optional()).optional(),
   location: z.preprocess(nullToUndefiend, z.union([LocationSchema, z.string()]).optional()),
-  tags: z.preprocess(nullToUndefiend, z.array(TagsSchema)),
+  tags: z.preprocess(nullToUndefiend, z.array(TagsSchema).optional()),
   // likes: z.array(z.number()).optional(),
   // message: z.array(MessageSchema).optional(),
 });

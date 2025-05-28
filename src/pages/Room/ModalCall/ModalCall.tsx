@@ -22,7 +22,7 @@ function ModalCall() {
     <>
       <Dialog open={StoreCall.isOpen} onClose={handleClose} id={MODAL_CALL}>
         <DialogTitle>
-          {StoreCall.name} звонит!
+          {StoreCall.anotherForm?.name} звонит!
         </DialogTitle>
         <DialogContent>
           Алло братан возьми трубу

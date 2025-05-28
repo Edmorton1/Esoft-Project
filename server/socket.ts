@@ -30,7 +30,7 @@ function createWebSocketServer(server: any) {
           break
         case "answer":
           console.log("Ансвер получен")
-          clients.get(data.id)?.send(toSOCl('answer', data.description))
+          clients.get(data.frid)?.send(toSOCl('answer', {toForm: data.toForm, description: data.description}))
           break
         case "candidate":
           clients.get(data.id)?.send(toSOCl('candidate', {isCaller: data.isCaller, candidate: data.candidate}))

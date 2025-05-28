@@ -6,6 +6,7 @@ import { makeAutoObservable, runInAction } from "mobx";
 import StoreRoom from "@/pages/Room/WebRTC/Store-Room";
 import { assertPeerCaller } from "@t/gen/TypeGuards";
 import { FormSchema } from "@t/gen/Users";
+import StoreCall from "@/pages/Room/ModalCall/Store-Call";
 
 class SocketStore {
   socket: WebSocket | null = null
@@ -61,15 +62,23 @@ class SocketStore {
         case "offer": {
           console.log(data);
           const anotherForm = FormSchema.parse(data.frForm)
-          StoreRoom.createPeers(data.frid, data.toid, false).SocketGetOffer(data.description)
+          StoreCall.anotherForm = anotherForm
+          StoreRoom.createPeers(anotherForm.id, data.toid, false).SocketGetOffer(data.description)
           break
         }
 
-        case "answer":
+        case "answer": {
           console.log('answer socket', data);
+          const toForm = FormSchema.parse(data.toForm)
+          
+          StoreCall.anotherForm = toForm
+
+          console.log(StoreRoom.Peer)
           assertPeerCaller(StoreRoom.Peer!)
-          StoreRoom.Peer.SocketGetAnswer(data)
+          StoreRoom.Peer.SocketGetAnswer(data.description)
           break
+        }
+
         case "candidate":
           // console.log('Отправка кандидатов')
           if (data.isCaller) {

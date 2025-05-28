@@ -35,7 +35,7 @@ export interface MsgTypesServer {
   delete_like: number
 
   offer: {frForm: Form, toid: number, description: RTCSessionDescriptionInit},
-  answer: {id: number, description: RTCSessionDescriptionInit},
+  answer: {toForm: Form, frid: number, description: RTCSessionDescriptionInit},
   candidate: {isCaller: boolean, id: number, candidate: RTCIceCandidate},
   
   cancel: number
@@ -44,7 +44,7 @@ export interface MsgTypesServer {
 export type OverdriveProperty<T, R> = Omit<T, keyof R> & R
 
 export type MsgTypesClient = OverdriveProperty<MsgTypesServer, {
-  answer: RTCSessionDescriptionInit,
+  answer: {toForm: Form, description: RTCSessionDescriptionInit},
   candidate: {isCaller: boolean, candidate: RTCIceCandidate},
   cancel: undefined
 }>

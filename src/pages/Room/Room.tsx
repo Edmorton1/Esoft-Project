@@ -42,7 +42,7 @@ function Room() {
     <div>dev</div>
     <button>Посмотреть потоки</button>
     <button onClick={() => {if (StoreRoom.Peer instanceof PeerResponder) StoreRoom.Peer.createAnswer()}}>Взять трубку</button>
-    <button onClick={() => StoreCall.openModal('Ramzan')}>Modal</button>
+    <button onClick={() => StoreCall.openModal()}>Modal</button>
     <button onClick={() => StoreTalking.openModal()}>Modal Talking</button>
     {/* <button onClick={() => StoreRoom.setOpenTrue()}>DataChannel opened?</button> */}
   </>
