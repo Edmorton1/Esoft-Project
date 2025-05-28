@@ -7,7 +7,8 @@ class StoreTalking extends StoreBaseModal {
     makeObservable(this, {
       timer: observable,
       startTimer: action,
-      closeTimer: action
+      closeTimer: action,
+      clean: action
     })
   }
   timer = false
@@ -18,6 +19,11 @@ class StoreTalking extends StoreBaseModal {
 
   closeTimer = () => {
     this.timer = false
+  }
+
+  clean = () => {
+    this.timer = false
+    this.isOpen = false
   }
 
 }

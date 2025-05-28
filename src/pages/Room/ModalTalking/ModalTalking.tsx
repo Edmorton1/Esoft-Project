@@ -87,15 +87,11 @@ function ModalCall() {
         setShowInterface(true)
       }
   }, [StoreTalking.isOpen])
-
-  const mouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  
+  const mouseOver = () => {
     setShowInterface(true)
-    e.preventDefault()
-    const parent = e.currentTarget
-    const child = e.target
-    console.log('Реакцяи')
 
-    debounce(() => manyVideos !== 'none' && setShowInterface(false))
+    debounce(() => {manyVideos !== 'none' && setShowInterface(false); console.log('2 сек прошло')})
   }
 
   const mouseLeave = () => {
@@ -121,7 +117,7 @@ function ModalCall() {
           className={styles.wrapper}
           component={"div"}
 
-          onMouseMove={mouseDown}
+          onMouseMove={mouseOver}
           onMouseLeave={mouseLeave}
           onClick={onClick}
         >
@@ -132,14 +128,14 @@ function ModalCall() {
           /> */}
           <Fade in={showInterface}>
             <Box className={styles.wrapper__info}>
-              {manyVideos === 'none' && <Box
+              {(manyVideos === 'none' && StoreCall.anotherForm) && <Box
                 className={styles.wrapper__avatar}
                 src={StoreCall.anotherForm?.avatar || "/placeholder.png"}
                 component={"img"}>
               </Box>}
             
 
-                <Typography variant="h6">{StoreCall.anotherForm?.name || "ТЕСТОВОЕ ИМЯ"}</Typography>
+                {StoreCall.anotherForm?.name && <Typography variant="h6">{StoreCall.anotherForm.name}</Typography>}
                 <Clock />
                 <button onClick={() => devEnableVideo(LOCAL_VIDEO)}>Добавить локал видео</button>
                 <button onClick={() => devDisableVideo(LOCAL_VIDEO)}>Удалить локал</button>
@@ -163,16 +159,3 @@ function ModalCall() {
 }
 
 export default observer(ModalCall);
-
-// return (
-//   <>
-//     <Dialog open={StoreTalking.isOpen} onClose={handleClose} keepMounted>
-//         ModalTalking
-//         ModalTalking
-//         <div id={MODAL_TALKING}>sdasdasdasdaas</div>
-//         <ButtonAudio />
-//         <ButtonVideo />
-//         <Button onClick={handleHangUp} variant="contained">Бросить трубку</Button>
-//     </Dialog>
-//   </>
-// )

@@ -1,3 +1,4 @@
+import StoreTalking from "@/pages/Room/ModalTalking/Store-Talking";
 import setupDataChannel from "@/pages/Room/WebRTC/config/dataChannelConfig";
 import AudioControl from "@/pages/Room/WebRTC/controllers/AudioControl";
 import VideoControl from "@/pages/Room/WebRTC/controllers/VideoControl";
@@ -32,11 +33,13 @@ const setupPeerConnection = (peerConnection: RTCPeerConnection) => {
 			AudioControl.createRemoteAudio(remoteStream);
 		}
 	};
+	// Он коннекшн фейлед ждёт 15 сек и отключает
 	peerConnection.onconnectionstatechange = () => {
 		console.log('[ON CONNECTION SET CHANGE]', peerConnection.connectionState)
-		// if (peerConnection.connectionState === 'failed' || peerConnection.connectionState === 'closed') {
-
-		// }
+		if (peerConnection.connectionState === 'closed') {
+			console.log('[PEER CONNECTION] CLOSE: КАНАЛ ЗАКРЫЛСЯ')
+			StoreRoom.cleaning()
+		}
 	}
 
   return peerConnection

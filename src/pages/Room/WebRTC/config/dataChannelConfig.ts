@@ -9,13 +9,10 @@ const setupDataChannel = (channel: RTCDataChannel, event?: RTCDataChannelEvent):
   }
   console.log('SETUP DATA')
 // СЮДА В БУДУЩЕМ ДОБАВИТЬ ОБРАБОТКУ ЗВУКА И ВИДЕО
-  channel!.onopen = () => {console.log('Channel opened!'); StoreRoom.isOpen = true; StoreTalking.startTimer()}
+  channel!.onopen = () => {console.log('Channel opened!'); StoreRoom.isOpen = true; StoreTalking.openModal(); StoreTalking.startTimer()}
   channel.onmessage = msg => {
     const parsed = frJSON<dataChannelTypes>(msg.data)
     switch(parsed.type) {
-      case 'hangUp':
-        StoreRoom.hangUp()
-        break
       case 'enablingVideo':
         if (parsed.data) {
           StoreRoom.enableVideo(false)

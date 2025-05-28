@@ -9,6 +9,7 @@ import { toJSON } from "@shared/MAPPERS"
 import { MsgTypesServer, SocketMessageServerInterface } from "@t/gen/types"
 import { makeAutoObservable } from "mobx"
 import StoreTalking from "@/pages/Room/ModalTalking/Store-Talking"
+import StoreCall from "@/pages/Room/ModalCall/Store-Call"
 
 class StoreRoom {
   Peer: null | PeerCaller | PeerResponder = null
@@ -28,6 +29,7 @@ class StoreRoom {
   makeCall = (frid: number, toid: number) => {
     this.Peer = new PeerCaller(frid, toid)
     this.Peer.createOffer()
+    StoreTalking.openModal()
   }
 
   createPeers (frid: number, toid: number, isCaller: true): PeerCaller
@@ -43,6 +45,8 @@ class StoreRoom {
     return this.Peer
   }
   getBackStates = () => {
+    StoreCall.clean()
+    StoreTalking.clean()
     this.Peer = null
     this.isOpen = false
 

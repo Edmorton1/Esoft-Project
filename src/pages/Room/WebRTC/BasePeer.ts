@@ -38,7 +38,8 @@ abstract class BasePeer {
 
   hangUp = () => {
     console.log("HANG UP")
-    this.dataChanel!.send(toJSON<dataChannelTypes>({type: 'hangUp'}))
+    // this.dataChanel!.send(toJSON<dataChannelTypes>({type: 'hangUp'}))
+    this.dataChanel?.close()
 
     this.cleaning()
   }

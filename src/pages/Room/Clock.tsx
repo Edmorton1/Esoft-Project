@@ -19,11 +19,14 @@ const Clock = () => {
 
     return () => {if (timeInterval) clearInterval(timeInterval)}
   }, [StoreTalking.timer])
+
+  const timer = `${Math.floor(seconds / 3600)}:${String(Math.floor((seconds % 3600) / 60)).padStart(2, '0')}:${String(seconds % 60).padStart(2, '0')}`
+  const placeholder = `Вызов...`
   
   return <>
   {/* <Button onClick={() => StoreTalking.startTimer()} variant="contained">Начать отчёт</Button>
   <Button onClick={() => StoreTalking.closeTimer()} variant="contained">Закончит отчёт</Button> */}
-  <Typography>{Math.floor(seconds / 3600)}:{String(Math.floor((seconds % 3600) / 60)).padStart(2, '0')}:{String(seconds % 60).padStart(2, '0')}</Typography>
+  <Typography>{seconds === 0 ? placeholder : timer}</Typography>
   </>
 
 }
