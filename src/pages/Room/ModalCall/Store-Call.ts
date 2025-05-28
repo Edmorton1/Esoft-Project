@@ -11,10 +11,10 @@ class StoreCall extends StoreBaseModal {
     // })
   }
 
-  openModal() {
-    this.isOpen = true;
-    console.log("THIS", this.isOpen)
-  };
+  // openModal() {
+  //   this.isOpen = true;
+  //   console.log("THIS", this.isOpen)
+  // };
 }
 
 export default new StoreCall

@@ -1,3 +1,5 @@
+$m: 30px;
+
 .wrapper {
   position: absolute;
   top: 50%;
@@ -5,25 +7,32 @@
   transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
+  // width: 60%;
+  // height: 70%;
+  width: 60vw;
+  height: 70vh;
+  // margin-top: 30px;
+  // margin-bottom: 30px;
 
-  &__video {
-    position: absolute;
-    top: 0;
-    left: 0;
-    // background-color: green;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: 0;
-  }
+  // &__video {
+  //   position: absolute;
+  //   top: 0;
+  //   left: 0;
+  //   // background-color: green;
+  //   width: 100%;
+  //   height: 100%;
+  //   object-fit: cover;
+  //   z-index: 0;
+  // }
 
   &__controls {
-    z-index: 1;
+    z-index: 2;
     width: 80%;
     display: flex;
     justify-content: space-around;
+    margin-bottom: $m;
     // margin-bottom: 24px; // эквивалент theme.spacing(3)
   }
 
@@ -34,8 +43,12 @@
     border-radius: 50%;
   }
 
-  &__text {
-    z-index: 1;
+  &__info {
+    z-index: 2;
     margin-bottom: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: $m;
   }
 }
