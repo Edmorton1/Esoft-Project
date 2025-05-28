@@ -1,7 +1,8 @@
 import StoreBaseModal from "@/shared/ui/Store-BaseModal"
+import { Form } from "@t/gen/Users";
 
 class StoreCall extends StoreBaseModal {
-  name = '';
+  anotherForm: Form | null = null;
 
   constructor() {
     super();
@@ -10,9 +11,8 @@ class StoreCall extends StoreBaseModal {
     // })
   }
 
-  openModal(name: string) {
+  openModal() {
     this.isOpen = true;
-    this.name = name;
     console.log("THIS", this.isOpen)
   };
 }

@@ -1,3 +1,4 @@
+import StoreTalking from "@/pages/Room/ModalTalking/Store-Talking";
 import { dataChannelTypes } from "@/pages/Room/WebRTC/config/messageTypes";
 import StoreRoom from "@/pages/Room/WebRTC/Store-Room";
 import { frJSON } from "@shared/MAPPERS";
@@ -8,7 +9,7 @@ const setupDataChannel = (channel: RTCDataChannel, event?: RTCDataChannelEvent):
   }
   console.log('SETUP DATA')
 // СЮДА В БУДУЩЕМ ДОБАВИТЬ ОБРАБОТКУ ЗВУКА И ВИДЕО
-  channel!.onopen = () => {console.log('Channel opened!'); StoreRoom.isOpen = true}
+  channel!.onopen = () => {console.log('Channel opened!'); StoreRoom.isOpen = true; StoreTalking.startTimer()}
   channel.onmessage = msg => {
     const parsed = frJSON<dataChannelTypes>(msg.data)
     switch(parsed.type) {

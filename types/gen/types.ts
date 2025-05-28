@@ -34,7 +34,7 @@ export interface MsgTypesServer {
   like: Likes
   delete_like: number
 
-  offer: {frid: number, toid: number, description: RTCSessionDescriptionInit},
+  offer: {frForm: Form, toid: number, description: RTCSessionDescriptionInit},
   answer: {id: number, description: RTCSessionDescriptionInit},
   candidate: {isCaller: boolean, id: number, candidate: RTCIceCandidate},
   

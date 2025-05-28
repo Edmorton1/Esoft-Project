@@ -1,0 +1,40 @@
+.wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+
+  &__video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    // background-color: green;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+  }
+
+  &__controls {
+    z-index: 1;
+    width: 80%;
+    display: flex;
+    justify-content: space-around;
+    // margin-bottom: 24px; // эквивалент theme.spacing(3)
+  }
+
+  &__avatar {
+    z-index: 1;
+    width: 200px;
+    border-radius: 50%;
+  }
+
+  &__text {
+    z-index: 1;
+    margin-bottom: 12px;
+  }
+}

@@ -5,6 +5,7 @@ import { frSOCl } from "@shared/MAPPERS";
 import { makeAutoObservable, runInAction } from "mobx";
 import StoreRoom from "@/pages/Room/WebRTC/Store-Room";
 import { assertPeerCaller } from "@t/gen/TypeGuards";
+import { FormSchema } from "@t/gen/Users";
 
 class SocketStore {
   socket: WebSocket | null = null
@@ -57,10 +58,13 @@ class SocketStore {
           StoreLikes.sendDelete(data)
           break
 
-        case "offer":
+        case "offer": {
           console.log(data);
+          const anotherForm = FormSchema.parse(data.frForm)
           StoreRoom.createPeers(data.frid, data.toid, false).SocketGetOffer(data.description)
           break
+        }
+
         case "answer":
           console.log('answer socket', data);
           assertPeerCaller(StoreRoom.Peer!)

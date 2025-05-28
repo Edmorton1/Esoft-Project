@@ -6,7 +6,7 @@ import Initialization from "@/app/Initialization";
 import Header from "@/shared/components/Header";
 import { paths } from "@shared/PATHS";
 import ChangeTheme from "@/app/ChangeTheme";
-import "@/app/App.scss"
+import "@/shared/css/App.scss"
 
 // ДЛЯ АССИНХРОННЫХ ОПЕРАЦИЙ ИСПОЛЬЗОВАТЬ suspense
 

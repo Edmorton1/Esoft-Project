@@ -1,4 +1,4 @@
-import ModalCall from "@/shared/ui/ModalCall/ModalCall"
+import ModalCall from "@/pages/Room/ModalCall/ModalCall"
 import { useState } from "react"
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";

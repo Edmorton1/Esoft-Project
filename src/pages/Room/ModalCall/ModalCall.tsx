@@ -1,6 +1,7 @@
 import PeerResponder from "@/pages/Room/WebRTC/PeerResponder";
 import StoreRoom from "@/pages/Room/WebRTC/Store-Room";
-import StoreCall from "@/shared/ui/ModalCall/Store-Call";
+import StoreCall from "@/pages/Room/ModalCall/Store-Call";
+import StoreTalking from "@/pages/Room/ModalTalking/Store-Talking";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -13,7 +14,7 @@ import { observer } from "mobx-react-lite";
 
 function ModalCall() {
   const handleClose = () => StoreCall.closeModal()
-  const handleTake = () => {if (StoreRoom.Peer instanceof PeerResponder) StoreRoom.Peer.createAnswer(); StoreCall.closeModal()}
+  const handleTake = () => {if (StoreRoom.Peer instanceof PeerResponder) StoreRoom.Peer.createAnswer(); StoreCall.closeModal(); StoreTalking.openModal()}
 
   const handleCancel = () => {StoreRoom.cancel(); StoreCall.closeModal()}
 

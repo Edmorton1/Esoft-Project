@@ -1,10 +1,10 @@
 import BasePeer from "@/pages/Room/WebRTC/BasePeer";
-import StoreCall from "@/shared/ui/ModalCall/Store-Call";
+import StoreCall from "@/pages/Room/ModalCall/Store-Call";
 import StoreSocket from "@/shared/api/Store-Socket";
 import { toSOSe } from "@shared/MAPPERS";
 import MediaPermissions from "@/pages/Room/WebRTC/MediaPermissions";
 import StoreRoom from "@/pages/Room/WebRTC/Store-Room";
-import VideoControl from "@/pages/Room/WebRTC/VideoControl";
+import VideoControl from "@/pages/Room/WebRTC/controllers/VideoControl";
 
 class PeerResponder extends BasePeer {
   constructor(

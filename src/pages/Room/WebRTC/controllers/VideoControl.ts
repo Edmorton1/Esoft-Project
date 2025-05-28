@@ -9,7 +9,7 @@ class VideoControl {
 		localVideo.controls = true;
 		localVideo.autoplay = true;
 		localVideo.muted = true;
-		localVideo.style.width = "300px";
+		localVideo.style.width = "1000px";
 		localVideo.id = LOCAL_VIDEO;
 		document.getElementById(MODAL_TALKING)?.appendChild(localVideo);
 		// document.body.appendChild(video);
@@ -20,7 +20,7 @@ class VideoControl {
 		remoteVideo.srcObject = remoteStream;
 		remoteVideo.autoplay = true;
 		remoteVideo.controls = true;
-		remoteVideo.style.width = "300px";
+		remoteVideo.style.width = "1000px";
 		remoteVideo.id = REMOTE_VIDEO;
 		document.getElementById(MODAL_TALKING)?.appendChild(remoteVideo);
     // document.body.appendChild(remoteVideo)
