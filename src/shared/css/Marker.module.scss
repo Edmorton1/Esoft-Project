@@ -1,0 +1,48 @@
+$a: 200px;
+$b: 100px;
+
+.map {
+  width: 700px;
+  height: 500px;
+
+  // div {
+  //   div {
+  //     div {
+  //       pointer-events: none;
+  //     }
+  //   }
+  // }
+
+  &__marker {
+    background-color: blue;
+    // position: absolute;
+    width: $a !important;
+    height: $a !important;
+    // transform: translate(-50%, -100%);
+
+  &__room {
+    color: red !important;
+    // font-size: $a !important;
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  &__avatar {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    width: $b;
+    height: $b;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid white;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: white;
+
+    // pointer-events: all;
+  }
+}
+}
+
+

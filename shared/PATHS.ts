@@ -6,6 +6,7 @@ export const paths = {
   profile: '/profile',
   settings: '/settings',
   room: '/room',
+  map: '/map',
 
   test: "/test"
 } as const

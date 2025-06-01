@@ -67,6 +67,7 @@
     "webpack-dev-server": "^5.2.0"
   },
   "dependencies": {
+    "@2gis/mapgl": "^1.60.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@hookform/resolvers": "^5.0.1",
