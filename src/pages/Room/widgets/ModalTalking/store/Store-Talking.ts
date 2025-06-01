@@ -24,6 +24,7 @@ class StoreTalking extends StoreBaseModal {
   clean = () => {
     this.timer = false
     this.isOpen = false
+    this.closeMount()
   }
 
 }

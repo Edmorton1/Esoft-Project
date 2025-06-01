@@ -1,6 +1,6 @@
 import { useRef } from "react";
 
-function useMouseDebounce() {
+function useDebounceCallback() {
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   const handleMove = (callback: () => void, delay: number = 2000) => {
@@ -16,4 +16,4 @@ function useMouseDebounce() {
   return handleMove
 }
 
-export default useMouseDebounce
+export default useDebounceCallback

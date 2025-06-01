@@ -1,4 +1,3 @@
-import StoreTalking from "@/pages/Room/ModalTalking/Store-Talking";
 import setupDataChannel from "@/pages/Room/WebRTC/config/dataChannelConfig";
 import AudioControl from "@/pages/Room/WebRTC/controllers/AudioControl";
 import VideoControl from "@/pages/Room/WebRTC/controllers/VideoControl";

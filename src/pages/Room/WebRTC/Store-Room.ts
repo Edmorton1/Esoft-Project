@@ -1,15 +1,14 @@
-import AudioControl from "@/pages/Room/WebRTC/controllers/AudioControl"
 import { dataChannelTypes } from "@/pages/Room/WebRTC/config/messageTypes"
-import PeerCaller from "@/pages/Room/WebRTC/PeerCaller"
-import PeerResponder from "@/pages/Room/WebRTC/PeerResponder"
+import PeerCaller from "@/pages/Room/WebRTC/logic/PeerCaller"
+import PeerResponder from "@/pages/Room/WebRTC/logic/PeerResponder"
 import VideoControl from "@/pages/Room/WebRTC/controllers/VideoControl"
 import StoreSocket from "@/shared/api/Store-Socket"
-import { LOCAL_AUDIO, LOCAL_VIDEO, REMOTE_VIDEO } from "@shared/CONST"
+import { LOCAL_VIDEO, REMOTE_VIDEO } from "@shared/CONST"
 import { toJSON } from "@shared/MAPPERS"
-import { MsgTypesServer, SocketMessageServerInterface } from "@t/gen/types"
+import { SocketMessageServerInterface } from "@t/gen/types"
 import { makeAutoObservable } from "mobx"
-import StoreTalking from "@/pages/Room/ModalTalking/Store-Talking"
-import StoreCall from "@/pages/Room/ModalCall/Store-Call"
+import StoreTalking from "@/pages/Room/widgets/ModalTalking/store/Store-Talking"
+import StoreCall from "@/pages/Room/widgets/ModalCall/store/Store-Call"
 
 class StoreRoom {
   Peer: null | PeerCaller | PeerResponder = null
@@ -29,6 +28,8 @@ class StoreRoom {
   makeCall = (frid: number, toid: number) => {
     this.Peer = new PeerCaller(frid, toid)
     this.Peer.createOffer()
+
+    StoreTalking.openMount()
     StoreTalking.openModal()
   }
 
@@ -67,6 +68,7 @@ class StoreRoom {
   }
 
   cancel = () => {
+    StoreCall.closeModal()
     StoreSocket.socket?.send(toJSON<SocketMessageServerInterface>({type: "cancel", data: this.Peer!.frid!}))
     this.cleaning()
     StoreTalking.closeTimer()

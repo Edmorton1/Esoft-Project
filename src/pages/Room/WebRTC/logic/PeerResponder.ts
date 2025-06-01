@@ -1,11 +1,12 @@
-import BasePeer from "@/pages/Room/WebRTC/BasePeer";
-import StoreCall from "@/pages/Room/ModalCall/Store-Call";
+import BasePeer from "@/pages/Room/WebRTC/logic/BasePeer";
+import StoreCall from "@/pages/Room/widgets/ModalCall/store/Store-Call";
 import StoreSocket from "@/shared/api/Store-Socket";
 import { toSOSe } from "@shared/MAPPERS";
-import MediaPermissions from "@/pages/Room/WebRTC/MediaPermissions";
+import MediaPermissions from "@/pages/Room/WebRTC/logic/MediaPermissions";
 import StoreRoom from "@/pages/Room/WebRTC/Store-Room";
 import VideoControl from "@/pages/Room/WebRTC/controllers/VideoControl";
 import StoreForm from "@/shared/stores/Store-Form";
+import StoreTalking from "@/pages/Room/widgets/ModalTalking/store/Store-Talking";
 
 class PeerResponder extends BasePeer {
   constructor(
@@ -43,10 +44,15 @@ class PeerResponder extends BasePeer {
     // VideoControl.createLocalVideo(this.stream)
 
 
+    StoreCall.openMount()
     StoreCall.openModal()
   }
   
   createAnswer = async () => {
+    StoreCall.closeModal();
+    // StoreTalking.openMount()
+    StoreTalking.openModal()
+
     console.log("createAnswer")
     const answer = await this.peerConnection.createAnswer()
     await this.peerConnection.setLocalDescription(answer)

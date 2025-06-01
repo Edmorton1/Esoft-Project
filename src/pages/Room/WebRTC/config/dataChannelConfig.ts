@@ -1,4 +1,4 @@
-import StoreTalking from "@/pages/Room/ModalTalking/Store-Talking";
+import StoreTalking from "@/pages/Room/widgets/ModalTalking/store/Store-Talking";
 import { dataChannelTypes } from "@/pages/Room/WebRTC/config/messageTypes";
 import StoreRoom from "@/pages/Room/WebRTC/Store-Room";
 import { frJSON } from "@shared/MAPPERS";

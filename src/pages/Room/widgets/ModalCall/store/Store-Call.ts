@@ -20,6 +20,7 @@ class StoreCall extends StoreBaseModal {
   clean = () => {
     this.anotherForm = null;
     this.isOpen = false
+    this.closeMount()
   }
 }
 

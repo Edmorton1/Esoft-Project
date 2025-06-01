@@ -2,9 +2,12 @@ import { noAuthorizeErrorAxios } from "@/shared/api/api"
 import StoreUser from "@/shared/stores/Store-User"
 import { useEffect } from "react"
 import Alert from "@/shared/ui/Alert"
-import ModalCall from "@/pages/Room/ModalCall/ModalCall"
-import CallLine from "@/shared/ui/CallLine"
-import ModalTalking from "@/pages/Room/ModalTalking/ModalTalking"
+import ModalCall from "@/pages/Room/widgets/ModalCall/ModalCall"
+import CallLine from "@/pages/Room/widgets/CallLine/CallLine"
+import ModalTalking from "@/pages/Room/widgets/ModalTalking/ModalTalkingHead"
+import StoreCall from "@/pages/Room/widgets/ModalCall/store/Store-Call"
+import StoreTalking from "@/pages/Room/widgets/ModalTalking/store/Store-Talking"
+import { observer } from "mobx-react-lite"
 
 function Initialization() {
 
@@ -20,10 +23,10 @@ function Initialization() {
   
   return <>
     <Alert />
-    <ModalCall />
-    <ModalTalking />
+    {StoreCall.mount && <ModalCall />}
+    {StoreTalking.mount && <ModalTalking />}
     <CallLine />
   </>
 }
 
-export default Initialization
+export default observer(Initialization)

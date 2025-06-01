@@ -1,5 +1,5 @@
 import setupDataChannel from "@/pages/Room/WebRTC/config/dataChannelConfig";
-import BasePeer from "@/pages/Room/WebRTC/BasePeer";
+import BasePeer from "@/pages/Room/WebRTC/logic/BasePeer";
 import StoreSocket from "@/shared/api/Store-Socket";
 import { toSOSe } from "@shared/MAPPERS";
 import StoreForm from "@/shared/stores/Store-Form";

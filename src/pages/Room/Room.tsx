@@ -1,12 +1,12 @@
 import AudioControl from "@/pages/Room/WebRTC/controllers/AudioControl"
-import PeerResponder from "@/pages/Room/WebRTC/PeerResponder"
+import PeerResponder from "@/pages/Room/WebRTC/logic/PeerResponder"
 import StoreRoom from "@/pages/Room/WebRTC/Store-Room"
-import StoreCall from "@/pages/Room/ModalCall/Store-Call"
+import StoreCall from "@/pages/Room/widgets/ModalCall/store/Store-Call"
 import VideoControl from "@/pages/Room/WebRTC/controllers/VideoControl"
 // import useLive from "@/shared/hooks/useLive"
 import StoreUser from "@/shared/stores/Store-User"
 import { useEffect, useState } from "react"
-import StoreTalking from "@/pages/Room/ModalTalking/Store-Talking"
+import StoreTalking from "@/pages/Room/widgets/ModalTalking/store/Store-Talking"
 import { observer } from "mobx-react-lite"
 
 // ФУНКЦИЯ

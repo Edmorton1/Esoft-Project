@@ -1,4 +1,4 @@
-import StoreTalking from "@/pages/Room/ModalTalking/Store-Talking"
+import StoreTalking from "@/pages/Room/widgets/ModalTalking/store/Store-Talking"
 import Button from "@mui/material/Button"
 import Typography from "@mui/material/Typography"
 import { observer } from "mobx-react-lite"

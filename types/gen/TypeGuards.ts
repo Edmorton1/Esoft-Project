@@ -1,5 +1,5 @@
-import PeerCaller from "@/pages/Room/WebRTC/PeerCaller";
-import PeerResponder from "@/pages/Room/WebRTC/PeerResponder";
+import PeerCaller from "@/pages/Room/WebRTC/logic/PeerCaller";
+import PeerResponder from "@/pages/Room/WebRTC/logic/PeerResponder";
 import { Form, FormSchema } from "@t/gen/Users";
 import { z } from "zod";
 

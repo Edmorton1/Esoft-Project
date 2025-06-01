@@ -1,4 +1,4 @@
-import getMuiTheme from "@/app/Theme";
+import getMuiTheme from "@/app/getMuiTheme";
 import { ThemeProvider } from "@emotion/react"
 import { useEffect, useMemo, useState } from "react";
 import CssBaseline from "@mui/material/CssBaseline";

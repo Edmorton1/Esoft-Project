@@ -6,7 +6,8 @@ import { makeAutoObservable, runInAction } from "mobx";
 import StoreRoom from "@/pages/Room/WebRTC/Store-Room";
 import { assertPeerCaller } from "@t/gen/TypeGuards";
 import { FormSchema } from "@t/gen/Users";
-import StoreCall from "@/pages/Room/ModalCall/Store-Call";
+import StoreCall from "@/pages/Room/widgets/ModalCall/store/Store-Call";
+import StoreTalking from "@/pages/Room/widgets/ModalTalking/store/Store-Talking";
 
 class SocketStore {
   socket: WebSocket | null = null
@@ -62,6 +63,9 @@ class SocketStore {
         case "offer": {
           console.log(data);
           const anotherForm = FormSchema.parse(data.frForm)
+
+          StoreTalking.openMount()
+          
           StoreCall.anotherForm = anotherForm
           StoreRoom.createPeers(anotherForm.id, data.toid, false).SocketGetOffer(data.description)
           break
