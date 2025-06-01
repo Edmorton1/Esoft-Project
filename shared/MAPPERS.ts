@@ -69,3 +69,22 @@ export function blobToFile(blob: Blob, fileName: string, type = blob.type): File
 //   const lat = buf.readDoubleLE(17);
 //   return { lat, lng };
 // };
+
+export function parseWkbPoint(wkbHex: string): [number, number] {
+	const buffer = new ArrayBuffer(wkbHex.length / 2);
+	const view = new DataView(buffer);
+
+	for (let i = 0; i < wkbHex.length; i += 2) {
+		view.setUint8(i / 2, parseInt(wkbHex.substr(i, 2), 16));
+	}
+
+	// Byte order: 1 = little endian
+	const littleEndian = view.getUint8(0) === 1;
+
+	// skip 1 (byte order) + 4 (geometry type) + 4 (SRID)
+	const offset = 9;
+	const lng = view.getFloat64(offset, littleEndian);      // X
+	const lat = view.getFloat64(offset + 8, littleEndian);  // Y
+
+	return [lng, lat];
+}
