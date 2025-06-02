@@ -6,7 +6,7 @@ import CardHeader from "@mui/material/CardHeader";
 import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import {serverPaths} from "@shared/PATHS";
+import {paths, serverPaths} from "@shared/PATHS";
 
 function PopupMap({id}: {id: number}) {
 	const form = useGetBy<"forms">(`${serverPaths.forms}/${id}`, {
@@ -15,13 +15,17 @@ function PopupMap({id}: {id: number}) {
 
 	return (
 		<Card className={styles.map__popup}>
-			<CardHeader className={styles.map__popup_header}
-				title={
-					<Typography variant="h6" sx={{fontWeight: 600}}>
-						{form?.name}
-					</Typography>
-				}
-			/>
+			<a href={`${paths.profile}/${id}`} target="_blank" rel="noopener noreferrer">
+				<CardHeader
+					className={styles.map__popup_header}
+					title={
+						<Typography variant="h6" sx={{fontWeight: 600}}>
+							{form?.name}
+						</Typography>
+					}
+				/>
+			</a>
+
 			<CardContent className={styles.map__popup_content}>
 				<Typography variant="body2" color="text.secondary">
 					Возраст: <strong>{form?.age}</strong>

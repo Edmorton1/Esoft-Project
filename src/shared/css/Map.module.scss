@@ -6,11 +6,12 @@
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    border: 3px solid blue;
+    border: 2px solid blue;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    transition: all 0.3s;
 
     // pointer-events: all !important;
    img {
@@ -18,6 +19,10 @@
     height: 100%;
     border-radius: 50%;
    }
+
+    &:hover {
+      border: 2px solid red !important;
+    }
   }
   
   &__popup {
