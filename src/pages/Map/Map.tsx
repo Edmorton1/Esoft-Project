@@ -1,17 +1,18 @@
 import {GISKEY} from "@/envClient";
-import preCoords from "@/pages/Map/coords";
-import MapWrapper from "@/pages/Map/MapWrapper";
+import MapWrapper from "@/pages/Map/components/MapWrapper";
 import useGeolocation from "@/shared/hooks/useGeolocation";
 import {load} from "@2gis/mapgl";
-import {ReactElement, useEffect, useRef} from "react";
-import MarkerMap from "@/pages/Map/MarkerMap";
+import {useEffect, useRef, useState} from "react";
+import MarkerMap from "@/pages/Map/components/MarkerMap";
 import ReactDOM from "react-dom/client";
 import {Clusterer, InputMarker} from "@2gis/mapgl-clusterer";
-import {HtmlMarker, Map} from "@2gis/mapgl/types";
 import StoreMap from "@/pages/Map/store/Store-Map";
+import PopupMap from "@/pages/Map/components/PopupMap";
+import { Map } from "@2gis/mapgl/types";
 
 function MapPage() {
 	const containerRef = useRef<HTMLDivElement>(null);
+	const [popupData, setPoputData] = useState<{ id: number; lngLat: [number, number] } | null>(null);
 
 	const coords = useGeolocation();
 
@@ -35,9 +36,11 @@ function MapPage() {
 				radius: 60,
 			});
 
+			map.on('click', () => console.log('click map'))
+
 			const forms = await StoreMap.getForms();
 
-			function createMarkerElement(element: React.ReactElement) {
+			function reactToHtml(element: React.ReactElement) {
 				const el = document.createElement("div");
 				ReactDOM.createRoot(el).render(element);
 				return el;
@@ -51,31 +54,37 @@ function MapPage() {
 			const markers: InputMarker[] = forms.map(e => ({
 				type: "html",
 				coordinates: e.location!,
-				html: createMarkerElement(
-					<MarkerMap map={map} avatar={e.avatar as string} />,
+				html: reactToHtml(
+					<MarkerMap map={map} avatar={e.avatar} sex={e.sex} />,
 				),
 				preventMapInteractions: false,
+				payload: {id: e.id},
 			}));
 
 			clusterer.load(markers);
 
-			// map.on("click", e => {
-			//   console.log(e)
-			//   marker?.destroy()
-			//   // marker = new mapgl.Marker(map, {
-			//   //   coordinates: e.lngLat,
-			//   //   // icon: "https://static.vecteezy.com/system/resources/thumbnails/036/497/738/small_2x/ai-generated-black-man-in-business-suit-for-a-meeting-isolated-on-transparent-background-png.png",
-			//   // })
-			//   marker = new mapgl.CircleMarker(map, {
-			//     coordinates: e.lngLat
-			//   })
-			// })
-			// marker?.on('click', (e) => console.log(e))
+			const popupContainer = document.createElement("div")
+			const popup = new mapgl.HtmlMarker(map, {
+				coordinates: [0, 0],
+				html: popupContainer,
+				anchor: [80, 145],
+				zIndex: 1,
+			})
+			const popupRoot = ReactDOM.createRoot(popupContainer)
+
+			clusterer.on('click', e => {
+				//@ts-ignore
+				const id = e.target.data.payload.id
+				popup.setCoordinates(e.lngLat)
+				map.setCenter(e.lngLat)
+				popupRoot.render(<PopupMap id={id}/>)
+				console.log(id)
+			})
 		};
 
 		setup();
 
-		return () => map && map.destroy();
+		return () => {map && map.destroy(); clusterer && clusterer.destroy()};
 	}, [containerRef, coords]);
 
 	return (

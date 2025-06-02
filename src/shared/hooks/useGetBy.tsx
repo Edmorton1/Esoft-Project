@@ -15,11 +15,12 @@ function useGetBy<T extends tables>(fullUrl: string, options?: optionsInterface)
 
   const [value, setValue] = useState<any | null>(null)
   const [url, params] = fullUrl.split('?')
-  const endpoint = params ? `${url}?${params}` : `/${url}`
+  const endpoint = params ? `${url}?${params}` : `${url}`
 
   useEffect(() => {
     const fetchData = async () => {
     const response = await $api.get(endpoint)
+      console.log(response, 'response')
     const request = toCl<Tables[T][]>(response)
 
     const result = options?.returnOne ? one(request) : request

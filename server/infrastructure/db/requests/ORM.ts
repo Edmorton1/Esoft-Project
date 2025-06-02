@@ -44,7 +44,11 @@ class ORM {
     let callback = undefined;
     
     if (table === 'forms') {
+
+      console.log("[FORMS]: ЗАПРОС К ФОРМЕ")
       const params = {id: Number(id)}
+
+      console.log("TO NATIVE", requestToForm(fields, params).toSQL().toNative())
       callback = async () => await requestToForm(fields, params)
     } else {
       callback = async () => await db(table).select(fieldsToArr(fields)).where('id', '=', id)

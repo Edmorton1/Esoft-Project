@@ -4,6 +4,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import * as styles from "@/shared/css/ModalTalking.module.scss";
 import { manyVideosTypes } from "@/pages/Room/widgets/ModalTalking/ModalTalkingHead";
+import { PLACEHOLDER_IMG } from "@shared/PUBLIC_IMG";
 
 function Info({manyVideos}: {manyVideos: manyVideosTypes}) {
 	return (
@@ -11,7 +12,7 @@ function Info({manyVideos}: {manyVideos: manyVideosTypes}) {
 			{manyVideos === "none" && StoreCall.anotherForm && (
 				<Box
 					className={styles.wrapper__avatar}
-					src={StoreCall.anotherForm?.avatar || "/placeholder.png"}
+					src={StoreCall.anotherForm?.avatar || PLACEHOLDER_IMG}
 					component={"img"}
 				/>
 			)}
