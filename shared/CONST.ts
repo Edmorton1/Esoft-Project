@@ -8,3 +8,5 @@ export const LOCAL_AUDIO = 'local-auido'
 
 export const MODAL_CALL = 'modal-call'
 export const MODAL_TALKING = 'modal-talking'
+
+export const STANDART_ZOOM = 13
