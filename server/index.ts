@@ -10,6 +10,7 @@ dotenv.config()
 import https from "https"
 import fs from 'fs'
 import path from 'path'
+import logger from "@s/logger"
 
 const app = express()
 
@@ -37,7 +38,7 @@ app.use('/', router)
 // app.get('/', (req, res) => {
 //   // Получаем IP из заголовков
 //   const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
-//   console.log("User's IP:", ip);  // Выводим IP в консоль
+//   logger.info("User's IP:", ip);  // Выводим IP в консоль
 
 //   res.send(`Your IP is: ${ip}`);
 // });
@@ -45,4 +46,4 @@ app.use('/', router)
 // ОТКЛЮЧЕНИЕ ВАРНИНГА У ЯНДЕКСА и require У FileType
 process.removeAllListeners('warning');
 
-server.listen(PORT, '0.0.0.0', () => console.log(`СЕРВЕР ЗАПУЩЕН НА ПОРТУ: ${PORT},: ${process.env.URL_SERVER} КЛИЕНТ: ${process.env.URL_CLIENT}`))
+server.listen(PORT, '0.0.0.0', () => logger.info(`СЕРВЕР ЗАПУЩЕН НА ПОРТУ: ${PORT},: ${process.env.URL_SERVER} КЛИЕНТ: ${process.env.URL_CLIENT}`))

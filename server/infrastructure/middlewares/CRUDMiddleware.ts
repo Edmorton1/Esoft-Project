@@ -1,3 +1,4 @@
+import logger from "@s/logger";
 import { tables } from "@t/gen/types";
 import { Request, Response, NextFunction } from "express";
 
@@ -7,7 +8,7 @@ class CRUDMiddleware {
   ) {}
 
   CRUDshort = (req: Request, res: Response, next: NextFunction) => {
-    console.log(this.table)
+    logger.info(this.table)
     if (this.table === 'forms' || this.table === 'user_tags') {
       res.set('Cache-Control', `public, max-age=${60 * 5}, must-revalidate`);
     }

@@ -1,4 +1,5 @@
 import FileService from "@s/infrastructure/endpoints/Files/services/FileService";
+import logger from "@s/logger";
 import Yandex from "@s/yandex";
 
 class UploadFileService {
@@ -6,11 +7,11 @@ class UploadFileService {
     const buffer = avatar.buffer
     const compress = await FileService.imageCompress(buffer)
 
-    console.log(compress.length)
+    logger.info(compress.length)
     // res.type("webp")
     // res.send(compress)
     const yandex = await Yandex.upload(compress,'.webp', '/avatars/')
-    console.log('ЛОКАЦИЯ АВАТАРА', yandex!.Location)
+    logger.info('ЛОКАЦИЯ АВАТАРА', yandex!.Location)
     return yandex!.Location
 	};
 }

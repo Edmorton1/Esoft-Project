@@ -7,14 +7,15 @@ import TokenHelper from "@s/infrastructure/endpoints/Token/services/TokenHelper"
 import { Form, User, UserRoleType } from "@t/gen/Users";
 import TokenService from "@s/infrastructure/endpoints/Token/services/TokenService";
 import { RegistrationDTOServerSchema } from "@s/infrastructure/endpoints/Token/services/validation/RegistrationZOD";
+import logger from "@s/logger";
 
 class HttpTokenController {
   registartion = async (req: Request, res: Response): Promise<Response<{form: Form, user: User, accessToken: string}>> => {
   // registartion = async (req: Request, res: Response) => {
-    console.log("Грязные", JSON.parse(req.body.json))
-    console.log(req.file)
+    logger.info("Грязные", JSON.parse(req.body.json))
+    logger.info(req.file)
     const data = RegistrationDTOServerSchema.parse({...JSON.parse(req.body.json), avatar: req.file})
-    // console.log(data)
+    // logger.info(data)
     const {email, password, tags, ...formDTO} = data
     const userDTO: UserDTO = {email, password}
 
@@ -26,7 +27,7 @@ class HttpTokenController {
   login = async (req: Request, res: Response) => {
     const dto: UserDTO = req.body
     const user = one(await ORM.getByParams({email: dto.email}, 'users'))
-    console.log(user.id, user.role)
+    logger.info(user.id, user.role)
 
     if (!user) {
       return res.status(400).json('Такой почты нет')
@@ -61,7 +62,7 @@ class HttpTokenController {
     const verifyAccess = await TokenHelper.validateAccess(accessToken)
     
     if (verifyAccess) {
-      // console.log('access')
+      // logger.info('access')
       const user = one(await ORM.getById(verifyAccess.id, 'users'))
       return TokenHelper.returnDTO({user, accessToken}, res)
     }
@@ -69,12 +70,12 @@ class HttpTokenController {
     const verifyRefresh = await TokenHelper.validateRefresh(req.cookies.refreshToken)
 
     if (!verifyAccess && verifyRefresh) {
-      // console.log('refresh')
+      // logger.info('refresh')
       const user = one(await ORM.getById(verifyRefresh.id, 'users'))
       const accessToken = await TokenHelper.createTokens(verifyRefresh.id, verifyRefresh.role, res)
       return TokenHelper.returnDTO({user, accessToken}, res)
     }
-    console.log('Не прошёл')
+    logger.info('Не прошёл')
     res.clearCookie('refreshToken')
     res.sendStatus(401)
   }

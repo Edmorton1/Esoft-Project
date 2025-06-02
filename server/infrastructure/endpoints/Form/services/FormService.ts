@@ -8,7 +8,7 @@
 //     if (tagId) {
 //       await ORM.post({id: userId, tagid: tagId}, 'user_tags')
 //     } else {
-//       console.log('PUSH TAGS', userId, tag)
+//       logger.info('PUSH TAGS', userId, tag)
 //       const tagInDB = one(await ORM.post({tag}, 'tags'))
 //       await ORM.post({id: userId, tagid: tagInDB.id}, 'user_tags')
 //     }

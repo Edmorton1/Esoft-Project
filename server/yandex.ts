@@ -1,6 +1,7 @@
 import EasyYandexS3 from 'easy-yandex-s3';
 import dotenv from "dotenv"
 import { randomUUID } from 'crypto';
+import logger from '@s/logger';
 dotenv.config()
 
 export const s3 = new EasyYandexS3({
@@ -44,16 +45,16 @@ class Yandex {
   deleteArr = async (id: number | string, files: string[]): Promise<string[]> => {
     let folder = await this.getFolder(id)
     files = files?.map(e => e.split('https://znakomstva.storage.yandexcloud.net/')[1])
-    console.log('folder', folder)
-    console.log(folder, files)
+    logger.info('folder', folder)
+    logger.info([folder, files])
     for (const e of folder) {
       if (files?.includes(e)) {
-        console.log("!FILES", e, folder, files)
+        logger.info("!FILES", e, folder, files)
         await s3.Remove(e);
         folder = folder.filter(item => item != e)
       }
     }
-    console.log(folder)
+    logger.info(folder)
 
     return folder.map(e => process.env.BUCKET_URL + e);
   }

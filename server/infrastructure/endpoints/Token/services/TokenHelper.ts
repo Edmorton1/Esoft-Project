@@ -41,8 +41,8 @@ class TokenHelper {
 	}
 
 	createTokens = async (id: number, role: UserRoleType, res: Response) => {
-		// console.log(id, role)
-		// console.log("CREATE TOKENS")
+		// logger.info(id, role)
+		// logger.info("CREATE TOKENS")
 		const tokens = this.generateTokens({id: id, role: role});
 		const [accessToken, refreshToken] = tokens;
 		// await this.ORM.delete(id, 'tokens')

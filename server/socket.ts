@@ -1,3 +1,4 @@
+import logger from "@s/logger";
 import { frSOSe, toSOCl } from "@shared/MAPPERS";
 import WebSocket from "ws";
 
@@ -11,7 +12,7 @@ function createWebSocketServer(server: any) {
   const wss = new WebSocket.Server({ server })
 
   wss.on('connection', (wsClient: WebSocketWidh) => {
-    console.log('WEB SOCKET WORK')
+    logger.info('WEB SOCKET WORK')
     // clients.set(-1, [wsClient])
 
     // ws.send('ПРИВЕТ С СЕРВЕРА')
@@ -25,11 +26,11 @@ function createWebSocketServer(server: any) {
           break
         
         case "offer":
-          console.log('clients', clients.keys())
+          logger.info('clients', clients.keys())
           clients.get(data.toid)?.send(toSOCl("offer", data))
           break
         case "answer":
-          console.log("Ансвер получен")
+          logger.info("Ансвер получен")
           clients.get(data.frid)?.send(toSOCl('answer', {toForm: data.toForm, description: data.description}))
           break
         case "candidate":
@@ -39,11 +40,10 @@ function createWebSocketServer(server: any) {
           clients.get(data)?.send(toSOCl('cancel', undefined))
       }
         
-      // console.log(data)
     })
     wsClient.on('close', () => {
       clients.delete(wsClient.id)
-      console.log('КЛИЕНТ ЗАКРЫЛСЯ')
+      logger.info('КЛИЕНТ ЗАКРЫЛСЯ')
     })
   })
 }

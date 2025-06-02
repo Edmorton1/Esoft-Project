@@ -2,6 +2,7 @@ import ORM from "@s/infrastructure/db/requests/ORM";
 import UploadFileService from "@s/infrastructure/endpoints/Files/services/UploadFileService";
 import TokenHelper from "@s/infrastructure/endpoints/Token/services/TokenHelper";
 import { FormDTOServer } from "@s/infrastructure/endpoints/Token/services/validation/RegistrationZOD";
+import logger from "@s/logger";
 import { one } from "@shared/MAPPERS";
 import { FormDTO, TagsDTO, UserDTO } from "@t/gen/dtoObjects";
 import { Form, FormSchema, Tags, User } from "@t/gen/Users";
@@ -14,7 +15,7 @@ class TokenService {
 		const formPost: FormDTO = {...formDTO, avatar, id: user.id};
 		const form = one(await ORM.post(formPost, "forms"));
 
-		// console.log(form, "ФОРМА");``
+		// logger.info(form, "ФОРМА");``
 
 		let tagsTotal: Tags[] = [];
 
@@ -26,9 +27,9 @@ class TokenService {
 
 		// const location = parseWKB
 		const formTotal = {...form, tags: tagsTotal};
-		console.log(formTotal)
+		logger.info(formTotal)
 		const formParse = FormSchema.parse(formTotal)
-		console.log('formTotal', formParse)
+		logger.info('formTotal', formParse)
 
 		const accessToken = await TokenHelper.createTokens(user.id, user.role, res);
 

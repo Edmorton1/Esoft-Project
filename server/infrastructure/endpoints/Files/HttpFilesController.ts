@@ -3,6 +3,7 @@ import ORM from "../../db/requests/ORM";
 import FileService from "./services/FileService";
 import { fileTypeFromBuffer } from "file-type";
 import Yandex from "@s/yandex";
+import logger from "@s/logger";
 // import fileType from "file-type"
 
 class HttpFilesController {
@@ -12,7 +13,7 @@ class HttpFilesController {
     const buffer = req.file!.buffer
     const compress = await FileService.imageCompress(buffer)
 
-    console.log(compress.length)
+    logger.info(compress.length)
     // res.type("webp")
     // res.send(compress)
     const yandex = await Yandex.upload(compress,'.webp', '/avatars/')
@@ -29,7 +30,7 @@ class HttpFilesController {
     const buffer = req.file!.buffer!
     const extention = (await fileTypeFromBuffer(buffer))!.ext
     const total = await FileService.videoCompress(buffer, extention)
-    console.log(total.length)
+    logger.info(total.length)
     res.type('mp4')
     res.send(buffer)
   }
@@ -42,9 +43,9 @@ class HttpFilesController {
     // ogg: 2133090
     const buffer = req.file!.buffer!
     const extention = (await fileTypeFromBuffer(buffer))!.ext
-    console.log(req.file, extention)
+    logger.info(req.file, extention)
     const total = await FileService.audioCompress(buffer, extention)
-    console.log('разница:', buffer.length - total.length, buffer.length, total.length)
+    logger.info('разница:', buffer.length - total.length, buffer.length, total.length)
     res.type('wav')
     res.send(total)
   }

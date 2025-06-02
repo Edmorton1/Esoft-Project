@@ -8,7 +8,7 @@ class MessageFileHelper {
       buffers.map(async (e, i) => {
         const [newBuffer, ext] = await FileService.compress(e)
         const load = await Yandex.upload(newBuffer, ext ,`/messages/${id}/`)
-        // console.log(load.Location)
+        // logger.info(load.Location)
       return load!.Location
     }))
   }

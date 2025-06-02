@@ -6,6 +6,7 @@ import { clients } from "@s/socket";
 import { Request, Response } from "express";
 import axios from "axios";
 import { logError } from "@shared/DECORATORS";
+import logger from "@s/logger";
 
 class HttpLikesController {
   sendLike = async (req: Request, res: Response) => {
@@ -15,7 +16,7 @@ class HttpLikesController {
     const like: LikesDTO = req.body
     const {userid, liked_userid} = like
     const request = one(await ORM.post(like, 'likes', 'id, liked_userid'))
-    console.log(clients.keys())
+    logger.info(clients.keys())
     const clientTo = clients.get(liked_userid)
     clientTo?.send(toSOSe('like', request))
     
@@ -24,7 +25,7 @@ class HttpLikesController {
 
   sendDelete = async (req: Request<{id: number}>, res: Response) => {
     const {id} = req.params
-    console.log(id)
+    logger.info(id)
     const request: Likes = one(await ORM.delete(id, 'likes'))
     const clientTo = clients.get(request.liked_userid)
     clientTo?.send(toSOSe('delete_like', request.id))
@@ -36,7 +37,7 @@ class HttpLikesController {
   @logError
   async decorator(req: Request, res: Response) {
     const asd = await axios.get('/')
-    console.log(asd.data.asdsad)
+    logger.info(asd.data.asdsad)
   }
 }
 

@@ -1,10 +1,11 @@
 import db from "@s/infrastructure/db/db"
+import logger from "@s/logger"
 
 type tagsTypes = {groups: string, id: number[]}[]
 
 class SQLHard {
   getUserTags = async (tags: string): Promise<tagsTypes> => {
-    console.log("GET USER TAGS")
+    logger.info("GET USER TAGS")
     const [keys, values] = toSQLgetUserTags(tags)
     const sql = `
     WITH input_words AS (
@@ -29,13 +30,13 @@ class SQLHard {
 
     const request = db.raw(sql, [...values])
 
-    console.log(request.toSQL().toNative())
+    logger.info(request.toSQL().toNative())
     
     return await request
   }
 
   getByTags = async (tags: tagsTypes, params: Record<string, string>, page: string, min_age: string, max_age: string) => {
-    console.log("GET BY TAGS")
+    logger.info("GET BY TAGS")
     const and = toSQLWhere(params, false)
     const conditions: string[] = []
 
@@ -49,7 +50,7 @@ class SQLHard {
 
     const havingClause = conditions.length ? `${conditions.join(' AND ')}` : ''
 
-    // console.log(conditions, 'conditions')
+    // logger.info(conditions, 'conditions')
     const request = db('forms')
       .select(
         'forms.*',
@@ -60,7 +61,7 @@ class SQLHard {
       .groupBy('forms.id')
       .havingRaw(havingClause)
 
-    // console.log(request.toSQL().toNative())
+    // logger.info(request.toSQL().toNative())
 
     return await request
   }
@@ -88,7 +89,7 @@ const toSQLWhere = (props: Record<any, any>, isform?: boolean): string => {
 // const toSQLWhere = (props: Record<any, any>, isform?: boolean): [any[], string] => {
 //   const keys = Object.keys(props).filter(e => props[e] != '')
 //   const values = Object.values(props).filter(e => e != '')
-//   console.log(keys.length === values.length)
+//   logger.info(keys.length === values.length)
 //   const and = keys.map((e, i) => (`${isform ? `forms.` : ``}${e} = $${i + 1} and`)).join(' ').slice(0, -4)
 //   return [values, and]
 // }
@@ -112,7 +113,7 @@ export default new SQLHard
 
 //   const keys = tags.map((e, i) => `$${i + 1}`)
 //   const sim = tags.map((e, i) => `similarity(tag, ${keys[i]})${i + 1 === keys.length ? '' : ','}` )
-//   console.log(keys, sim)
+//   logger.info(keys, sim)
 //   return [keys, tags, sim]
 // }
 

@@ -1,6 +1,7 @@
 import { tables } from "@t/gen/types"
 import ORM from "@s/infrastructure/db/requests/ORM"
 import { Request, Response } from "express"
+import logger from "@s/logger";
 
 class CRUDController {
   constructor(
@@ -24,7 +25,7 @@ class CRUDController {
     res.json(request)
   }
   post = async (req: Request, res: Response) => {
-    console.log(req.body)
+    logger.info(req.body)
     const dto = req.body
     const request = await ORM.post(dto, this.table)
     res.json(request)
@@ -43,7 +44,7 @@ class CRUDController {
 
   // async getByParams(req: Request, res: Response) {
   //   const {table, ...params} = frJSON<{table: tables, params: Partial<Tables[tables]>}>(req.query.params)!
-  //   // console.log(params)
+  //   // logger.info(params)
   //   //@ts-ignore
   //   const request = await this.ORM.getByParams(params, table)
   //   res.json(request)

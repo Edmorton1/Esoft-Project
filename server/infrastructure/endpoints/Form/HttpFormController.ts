@@ -18,9 +18,9 @@
 // class HttpFormController {
 //   postForm = async (req: Request, res: Response) => {
 //     const data = req.body
-//     console.log(data)
+//     logger.info(data)
 //     RegistrationDTOServerSchema.parse(data)
-//     console.log('ZODD пропустил')
+//     logger.info('ZODD пропустил')
 //     const rawTags: string[] = data.tags
 //     delete data.tags
 //     const form = one(await ORM.post(data, 'forms'))

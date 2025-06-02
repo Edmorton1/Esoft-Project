@@ -8,6 +8,7 @@ import { promises, unlink, writeFile } from "fs";
 import { PassThrough, Readable } from "stream";
 import { randomUUID } from "crypto";
 import { fileTypeFromBuffer } from "file-type";
+import logger from "@s/logger";
 
 ffmpeg.setFfmpegPath(ffmpegPath!);
 
@@ -49,7 +50,7 @@ class FileService {
           '-f mp4'
         ])
         .outputFormat('mp4')
-        // .on('stderr', line => console.log('[ffmpeg]', line))
+        // .on('stderr', line => logger.info('[ffmpeg]', line))
         .on('end', async () => {
           try {
             const outputBuffer = await promises.readFile(output);
@@ -103,14 +104,14 @@ class FileService {
     const type = (await fileTypeFromBuffer(buffer))
     const ext = type!.ext
     const mime = type!.mime
-    console.log('EXT MIME', ext, mime)
+    logger.info('EXT MIME', ext, mime)
 
     if (mime.includes('image')) {
       return [await this.imageCompress(buffer), 'webp']
     }
     // ПЕРЕДЕЛЫВАЮ video/webm ИЗ-ЗА АУДИО
     else if (mime.includes('audio') || mime === 'video/webm') {
-      console.log('AUDIO MIME INCLUDE TRUE')
+      logger.info('AUDIO MIME INCLUDE TRUE')
       return [await this.audioCompress(buffer, ext), 'ogg']
     }
     else if (mime.includes('video')) {
