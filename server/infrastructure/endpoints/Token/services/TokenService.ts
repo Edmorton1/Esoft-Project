@@ -27,7 +27,8 @@ class TokenService {
 
 		// const location = parseWKB
 		const formTotal = {...form, tags: tagsTotal};
-		logger.info(formTotal)
+		logger.info({formTotal})
+		//ТУТ ВЫДАЁТ ОШИБКУ
 		const formParse = FormSchema.parse(formTotal)
 		logger.info('formTotal', formParse)
 

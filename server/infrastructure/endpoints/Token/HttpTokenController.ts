@@ -12,10 +12,10 @@ import logger from "@s/logger";
 class HttpTokenController {
   registartion = async (req: Request, res: Response): Promise<Response<{form: Form, user: User, accessToken: string}>> => {
   // registartion = async (req: Request, res: Response) => {
-    logger.info("Грязные", JSON.parse(req.body.json))
+    logger.info({dataRow: JSON.parse(req.body.json)}, "Грязные")
     logger.info(req.file)
     const data = RegistrationDTOServerSchema.parse({...JSON.parse(req.body.json), avatar: req.file})
-    // logger.info(data)
+    logger.info({До_Загрузки: data})
     const {email, password, tags, ...formDTO} = data
     const userDTO: UserDTO = {email, password}
 

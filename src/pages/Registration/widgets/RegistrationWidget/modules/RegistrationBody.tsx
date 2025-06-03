@@ -7,12 +7,16 @@ import FormError from "@/shared/ui/kit/FormError";
 import StoreUser from "@/shared/stores/Store-User";
 import StoreForm from "@/shared/stores/Store-Form";
 import { RegistrationDTOClient } from "@/pages/Registration/widgets/RegistrationWidget/modules/types/RegistrationZOD";
+import StoreRegistration from "@/pages/Registration/widgets/stores/Store-Registration";
+import { toJS } from "mobx";
 
 function RegistrationBody({register, onSubmit, errors}: {register: UseFormRegister<RegistrationDTOClient>, onSubmit: (...args: any[]) => any, errors: FieldErrors<RegistrationDTOClient>}) {
 
   return <>
   <div>Добро пожаловать: {StoreUser.user?.email}</div>
   <button onClick={() => console.log(errors)}>errors</button>
+  <button onClick={() => console.log(toJS(StoreRegistration.defaultCoords))}>LOG</button>
+  {/* <button onClick={() => StoreRegistration.setDefaultCoords({city: "asdasd", lng: 123, lat: 123})}>sadasd</button> */}
   <form onSubmit={onSubmit} style={{display: "flex", flexDirection: "column", width: "400px", gap: "10px"}}>
 
     <FormControl error={!!errors.email}>

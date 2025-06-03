@@ -30,7 +30,7 @@ type TableKeys<T extends keyof Tables> = keyof Tables[T]
 export const getSchemaByTable = <T extends keyof typeof schemas>(table: T, fields?: string): typeof schemas[T] => {
 
   console.log(fields, 'fields')
-  const parsedFields = fieldsToArr(fields)
+  const parsedFields = fieldsToArr(fields, table)
   const picked= fields && Object.fromEntries(parsedFields.map(field => [field, true])) as shemaFields<T>
 
   console.log('pick', picked)

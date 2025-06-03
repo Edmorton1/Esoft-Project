@@ -1,4 +1,4 @@
-import StoreRegistration from "@/pages/Registration/widgets/RegistrationWidget/modules/stores/Store-Registration";
+import StoreRegistration from "@/pages/Registration/widgets/stores/Store-Registration";
 import { RegistrationDTOServerSchema } from "@s/infrastructure/endpoints/Token/services/validation/RegistrationZOD";
 import { TagsSchemaDTO } from "@t/gen/dtoObjects";
 import { FormSchema, UserSchema } from "@t/gen/Users";

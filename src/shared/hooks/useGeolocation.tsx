@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { LocationDTO } from '@t/gen/dtoObjects';
 
-function useGeolocation(): LocationDTO | null {
+function useGeolocation(callback?: (location: LocationDTO) => void): LocationDTO | null {
   const [city, setCity] = useState<LocationDTO | null>(null);
 
   useEffect(() => {
@@ -16,7 +16,10 @@ function useGeolocation(): LocationDTO | null {
           try {
             const { data } = await axios.get(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`);
             // console.log(data.address.city);
-            setCity({city: data.address.city, lng, lat});
+            const parsed = {city: data.address.city, lng, lat}
+            setCity(parsed);
+            callback && callback(parsed)
+            
           } catch (error) {
             console.error("Ошибка при запросе геоданных:", error);
           }

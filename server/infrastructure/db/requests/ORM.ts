@@ -29,7 +29,7 @@ class ORM {
     if (table === 'forms') {
       callback = async () => await requestToForm(fields)
     } else {
-      callback = async () => await db(table).select(fieldsToArr(fields))
+      callback = async () => await db(table).select(fieldsToArr(fields, table))
     }
 
     logger.info('fields in orm', fields)
@@ -53,7 +53,7 @@ class ORM {
       logger.info("TO NATIVE", requestToForm(fields, params).toSQL().toNative())
       callback = async () => await requestToForm(fields, params)
     } else {
-      callback = async () => await db(table).select(fieldsToArr(fields)).where('id', '=', id)
+      callback = async () => await db(table).select(fieldsToArr(fields, table)).where('id', '=', id)
     }
 
     logger.info('check type', await cacheGet(key, callback), table)
@@ -76,7 +76,7 @@ class ORM {
     if (table === 'forms') {
       callback = async () => requestToForm(fields, params)
     } else {
-      callback = async () => await db(table).select(fieldsToArr(fields)).where(params)
+      callback = async () => await db(table).select(fieldsToArr(fields, table)).where(params)
     }
     
     logger.info('fields in orm', fields)
@@ -92,8 +92,17 @@ class ORM {
       // dto.password = hashed as Tables[T][keyof Tables[T]]
       dto.password = hashed
     }
-    
-    const request = await db(table).insert(dto).returning(fieldsToArr(fields).length > 0 ? fieldsToArr(fields) : '*')
+    if (typeof dto === 'object' && 'location' in dto && typeof dto.location?.lat === 'number' && typeof dto.location?.lng === 'number') {
+      const {lng, lat} = dto.location
+      const pointWKT = `POINT(${lng} ${lat})`;
+      const parsedKnex = db.raw(`ST_GeomFromText(?, 4326)`, [pointWKT])
+      //@ts-ignore
+      dto.location = parsedKnex
+    }
+    const parsedFields = fieldsToArr(fields, table)
+
+    const request = await db(table).insert(dto).returning(parsedFields)
+    logger.info({request})
 
     cacheEdit(table, request)
     checkFirstType(request, table)

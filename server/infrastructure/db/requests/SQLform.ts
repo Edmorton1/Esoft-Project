@@ -1,4 +1,5 @@
 import db from "@s/infrastructure/db/db";
+import { AllRowsForm } from "@s/infrastructure/db/requests/AllRowsFormWithoutLocation";
 import { fieldsToArr } from "@s/infrastructure/db/requests/utils";
 import logger from "@s/logger";
 import { Form } from "@t/gen/Users";
@@ -6,15 +7,13 @@ import { Knex } from "knex";
 
 function requestToForm(fields?: string, params?: Partial<Form>): Knex.QueryBuilder<any> {
 
-  const rows = [`forms.id`, `forms.name`, `forms.sex`, `forms.age`, `forms.avatar`, `forms.description`, `forms.target`, `forms.city`]
-
 	// const params = {id: "116"};
 
 	let query = db('forms');
-  logger.info('toNative1', query.toSQL().toNative());
+  logger.info({sql: query.toSQL().toNative()}, 'toNative1');
 
-  const parsedFields = fieldsToArr(fields).filter(e => e !== "tags");
-	const selectedFields = parsedFields.length > 0 ? parsedFields.map(e => `forms.${e}`).filter(e => e !== `forms.location`) : rows;
+  const parsedFields = fieldsToArr(fields, 'forms').filter(e => e !== "tags");
+	const selectedFields = parsedFields.length > 0 ? parsedFields.map(e => `forms.${e}`).filter(e => e !== `forms.location`) : AllRowsForm;
 	const totalFields = fields?.includes("tags") || parsedFields?.length === 0
     ? [
         ...selectedFields,

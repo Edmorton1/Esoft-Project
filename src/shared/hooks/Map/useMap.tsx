@@ -7,10 +7,8 @@ import {STANDART_ZOOM} from "@shared/CONST";
 import ResetZoomButton from "@/shared/hooks/Map/ResetZoomButton";
 import { createRoots } from "@/shared/hooks/Map/createRoot";
 
-function useMap(
-	containerRef: React.RefObject<HTMLDivElement | null>,
-	coords: LocationDTO | null,
-): mapDTO {
+function useMap(containerRef: React.RefObject<HTMLDivElement | null>, coords: LocationDTO | null,): mapDTO {
+	
 	const [mapgl, setMapgl] = useState<mapDTO[0]>(null);
 	const [map, setMap] = useState<mapDTO[1]>(null);
 
