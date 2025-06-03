@@ -4,7 +4,7 @@ import MaleIcon from "@mui/icons-material/Male";
 import FemaleIcon from "@mui/icons-material/Female";
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import Button from "@mui/material/Button";
-import MapButton, { sxStyleMap } from "@/pages/Map/components/MapButton";
+import MapButton, { sxStyleMap } from "@/shared/hooks/Map/MapButton";
 
 function SexButton() {
 	const handleSex = () => StoreMap.changeSex();

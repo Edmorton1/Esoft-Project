@@ -1,7 +1,7 @@
 import PopupMap from "@/pages/Map/components/PopupMap";
 import createMarkers from "@/pages/Map/functions/markers";
-import { createRootsDynamic } from "@/pages/Map/functions/parsers";
-import {ClustererDTO, mapDTO} from "@/pages/Map/functions/types";
+import { createRootsDynamic } from "@/shared/hooks/Map/createRoot";
+import {ClustererDTO, mapDTO} from "@/shared/hooks/Map/types";
 import StoreMap from "@/pages/Map/store/Store-Map";
 import {Clusterer} from "@2gis/mapgl-clusterer";
 import {reaction} from "mobx";

@@ -1,4 +1,4 @@
-import { sexType } from "@/pages/Map/functions/types";
+import { sexType } from "@/shared/hooks/Map/types";
 import $api from "@/shared/api/api";
 import {toCl} from "@shared/MAPPERS";
 import {serverPaths} from "@shared/PATHS";

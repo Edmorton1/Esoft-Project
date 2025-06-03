@@ -1,4 +1,4 @@
-import {createRoots} from "@/pages/Map/functions/parsers";
+import {createRoots} from "@/shared/hooks/Map/createRoot";
 import StoreMap from "@/pages/Map/store/Store-Map";
 import {InputMarker} from "@2gis/mapgl-clusterer";
 import MarkerMap from "@/pages/Map/components/MarkerMap";

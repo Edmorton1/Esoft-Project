@@ -2,13 +2,12 @@ import {GISKEY} from "@/envClient";
 import {load} from "@2gis/mapgl";
 import {useEffect, useState} from "react";
 import {LocationDTO} from "@t/gen/dtoObjects";
-import {mapDTO} from "@/pages/Map/functions/types";
+import {mapDTO} from "@/shared/hooks/Map/types";
 import {STANDART_ZOOM} from "@shared/CONST";
-import {createRoots} from "@/pages/Map/functions/parsers";
-import ResetZoomButton from "@/pages/Map/components/ResetZoomButton";
-import SexButton from "@/pages/Map/components/SexButton";
+import ResetZoomButton from "@/shared/hooks/Map/ResetZoomButton";
+import { createRoots } from "@/shared/hooks/Map/createRoot";
 
-function useMapInstance(
+function useMap(
 	containerRef: React.RefObject<HTMLDivElement | null>,
 	coords: LocationDTO | null,
 ): mapDTO {
@@ -28,24 +27,16 @@ function useMapInstance(
 			});
 			setMap(map);
 
-			const zoomContainer = createRoots(<ResetZoomButton coords={coords} map={map} />)
-			new mapgl.Control(map,
-				zoomContainer,
-				{position: 'topRight'}
-			)
-			
-			const sexContainer = createRoots(<SexButton />)
-			new mapgl.Control(map,
-				sexContainer,
-				{position: "topRight"}
-			)
+			const zoomContainer = createRoots(
+				<ResetZoomButton coords={coords} map={map} />,
+			);
+			new mapgl.Control(map, zoomContainer, {position: "topRight"});
 		});
 
-		return map?.destroy()
-		
+		return map?.destroy();
 	}, [containerRef, coords]);
 
 	return [mapgl, map];
 }
 
-export default useMapInstance;
+export default useMap;

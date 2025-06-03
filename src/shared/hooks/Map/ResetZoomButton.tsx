@@ -1,10 +1,8 @@
-import StoreMap from "@/pages/Map/store/Store-Map";
 import { Map } from "@2gis/mapgl/types";
 import { STANDART_ZOOM } from "@shared/CONST";
 import { LocationDTO } from "@t/gen/dtoObjects";
 import GpsNotFixedIcon from '@mui/icons-material/GpsNotFixed';
-import Button from "@mui/material/Button";
-import MapButton, { sxStyleMap } from "@/pages/Map/components/MapButton";
+import MapButton, { sxStyleMap } from "@/shared/hooks/Map/MapButton";
 
 function ResetZoomButton({map, coords}: {map: Map, coords: LocationDTO}) {
 	const handleReset = () => {
