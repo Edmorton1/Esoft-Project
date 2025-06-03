@@ -3,16 +3,28 @@ import { AllRowsFormShort } from "@s/infrastructure/db/requests/AllRowsFormWitho
 import logger from "@s/logger";
 import { tables } from "@t/gen/types"
 import { getSchemaByTable } from "@t/shared/sharedTypes"
+import type { Knex } from "knex";
+import { z } from "zod";
 
-export const fieldsToArr = (fields: string | undefined, table: tables) => {
+type RawString = (string | Knex.Raw<any>)[]
+
+export const fieldsToArr = (fields: string | undefined, table: tables, includeTags: boolean = false): RawString => {
   if (table === 'forms') {
-    const parsed = fields?.trim()?.split(',').map(e => e.trim()) ?? [...AllRowsFormShort, 'location']
-    const asd = parsed.map(item => item === 'location' ? db.raw(`jsonb_build_object(
-      'lng', ST_X(location::geometry),
-      'lat', ST_Y(location::geometry)
-    ) AS location`) : item)
-    logger.info({parsingFields: asd})
-   return asd
+    let parsed: RawString = fields?.trim()?.split(',').map(e => 'forms.' + e.trim()) ?? [...AllRowsFormShort.map(e => 'forms.' + e), 'forms.location', 'forms.tags']
+    parsed = parsed.map(item => {
+      if (item === 'forms.location') {
+        return db.raw(`jsonb_build_object(
+          'lng', ST_X(location::geometry),
+          'lat', ST_Y(location::geometry)
+        ) AS location`)
+      } else if (item === 'forms.tags' && includeTags) {
+        return db.raw(`json_agg(json_build_object('id', tags.id, 'tag', tags.tag)) AS tags`)
+      } return item
+    })
+
+
+    logger.info({parsingFields: parsed})
+   return parsed
   };
   const parsed = fields?.trim()?.split(',').map(e => e.trim()) ?? ['*']
   logger.info({parsingFields: parsed})
@@ -23,7 +35,10 @@ export const fieldsToArr = (fields: string | undefined, table: tables) => {
 export const checkFirstType = <T extends Array<any>>(data: T, table: tables, fields?: string): T => {
   if (data.length > 0) {
     logger.info({data, table});
-    getSchemaByTable(table, fields).parse(data[0])
+    const schema = z.array(getSchemaByTable(table, fields))
+    //@ts-ignore
+    return schema.parse(data)
+  } else {
+    return data
   }
-  return data
 }

@@ -1,4 +1,4 @@
-import { nullToUndefiend, zid, zstring } from '@t/shared/zodSnippets';
+import { nullToUndefined, zid, zstring } from '@t/shared/zodSnippets';
 import { z } from 'zod';
 
 export const TargetTypeSchema = z.enum(['friend', 'relation', 'chat', 'hobby', 'other']);
@@ -27,7 +27,7 @@ export const MessageSchema = z.object({
   fromid: zid,
   toid: zid,
   text: zstring,
-  files: z.preprocess(nullToUndefiend, z.array(z.string().nonempty()).optional()),
+  files: z.preprocess(nullToUndefined, z.array(z.string().nonempty()).optional()),
   created_at: z.coerce.date(),
 });
 
@@ -62,12 +62,12 @@ export const FormSchema = z.object({
   age: z.number().positive().min(18).max(122),
   target: TargetTypeSchema,
   // targetCustom: z.string().optional(),
-  avatar: z.preprocess(nullToUndefiend, z.string().nonempty().optional()).optional(),
-  description: z.preprocess(nullToUndefiend, zstring.optional()).optional(),
-  city: z.preprocess(nullToUndefiend, zstring.optional()).optional(),
+  avatar: z.preprocess(nullToUndefined, z.string().nonempty().optional()).optional(),
+  description: z.preprocess(nullToUndefined, zstring.optional()).optional(),
+  city: z.preprocess(nullToUndefined, zstring.optional()).optional(),
   // location: z.preprocess(nullToUndefiend, z.union([LocationSchema, z.string()]).optional()),
-  location: z.preprocess(nullToUndefiend, LocationSchema.optional()),
-  tags: z.preprocess(nullToUndefiend, z.array(TagsSchema).optional()),
+  location: z.preprocess(nullToUndefined, LocationSchema.optional()),
+  tags: z.preprocess(nullToUndefined, z.array(TagsSchema).optional()),
   // likes: z.array(z.number()).optional(),
   // message: z.array(MessageSchema).optional(),
 });

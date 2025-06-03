@@ -19,10 +19,22 @@ export const expressMulter = z.custom<Express.Multer.File>(val => {
 
 export const checkEmptyString = (val: unknown): val is string => typeof val === 'string' && val.trim() !== ''
 export const toCapitalize = (val: string) => val.charAt(0).toUpperCase() + val.slice(1).toLowerCase()
-export const nullToUndefiend = (val: unknown) => {
-  if (val === null) {
-    return undefined
-  } else {
-    return val
+
+export const nullToUndefined = (val: unknown): unknown => {
+  if (val === null) return undefined;
+
+  if (Array.isArray(val)) {
+    const cleanedArray = val.map(nullToUndefined);
+    const allUndefined = cleanedArray.every(item => item === undefined);
+    return allUndefined ? undefined : cleanedArray;
   }
-}
+
+  if (typeof val === 'object' && val !== null) {
+    const entries = Object.entries(val);
+    const cleaned = entries.map(([key, value]) => [key, nullToUndefined(value)]);
+    const allUndefined = cleaned.every(([_, v]) => v === undefined);
+    return allUndefined ? undefined : Object.fromEntries(cleaned);
+  }
+
+  return val;
+};

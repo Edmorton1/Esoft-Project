@@ -12,19 +12,20 @@ function requestToForm(fields?: string, params?: Partial<Form>): Knex.QueryBuild
 	let query = db('forms');
   logger.info({sql: query.toSQL().toNative()}, 'toNative1');
 
-  const parsedFields = fieldsToArr(fields, 'forms').filter(e => e !== "tags");
-	const selectedFields = parsedFields.length > 0 ? parsedFields.map(e => `forms.${e}`).filter(e => e !== `forms.location`) : AllRowsForm;
-	const totalFields = fields?.includes("tags") || parsedFields?.length === 0
-    ? [
-        ...selectedFields,
-        db.raw(`json_agg(json_build_object('id', tags.id, 'tag', tags.tag)) AS tags`),
-      ]
-    : selectedFields;
+  // const parsedFields = fieldsToArr(fields, 'forms').filter(e => e !== "tags");
+	// const selectedFields = parsedFields.length > 0 ? parsedFields.map(e => `forms.${e}`).filter(e => e !== `forms.location`) : AllRowsForm;
+	// const totalFields = fields?.includes("tags") || parsedFields?.length === 0
+  //   ? [
+  //       ...selectedFields,
+  //       db.raw(`json_agg(json_build_object('id', tags.id, 'tag', tags.tag)) AS tags`),
+  //     ]
+  //   : selectedFields;
 
-  totalFields.push(db.raw(`jsonb_build_object(
-    'lng', ST_X(location::geometry),
-    'lat', ST_Y(location::geometry)
-  ) AS location`))
+  // totalFields.push(db.raw(`jsonb_build_object(
+  //   'lng', ST_X(location::geometry),
+  //   'lat', ST_Y(location::geometry)
+  // ) AS location`))
+  const totalFields = fieldsToArr(fields, 'forms', true)
 
   query = query.select(totalFields)
     .leftJoin("user_tags", "forms.id", "user_tags.id")
