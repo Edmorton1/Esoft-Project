@@ -1,6 +1,6 @@
 import PopupMap from "@/pages/Map/components/PopupMap";
 import createMarkers from "@/pages/Map/functions/markers";
-import createRoots from "@/pages/Map/functions/parsers";
+import { createRootsDynamic } from "@/pages/Map/functions/parsers";
 import {ClustererDTO, mapDTO} from "@/pages/Map/functions/types";
 import StoreMap from "@/pages/Map/store/Store-Map";
 import {Clusterer} from "@2gis/mapgl-clusterer";
@@ -32,7 +32,7 @@ function useClusterer(
 			},
 		);
 
-		const [popupContainer, popupRoot] = createRoots();
+		const [popupContainer, popupRoot] = createRootsDynamic();
 
 		map.on("click", () => {
 			console.log("click map");
@@ -66,6 +66,8 @@ function useClusterer(
 				map.setZoom(zoom + 1.5);
 			}
 		});
+
+		return () => clusterer.destroy()! && disposer()
 	}, [mapgl, map]);
 
 	return clustererState;

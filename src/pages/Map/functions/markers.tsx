@@ -1,4 +1,4 @@
-import createRoots from "@/pages/Map/functions/parsers";
+import {createRoots} from "@/pages/Map/functions/parsers";
 import StoreMap from "@/pages/Map/store/Store-Map";
 import {InputMarker} from "@2gis/mapgl-clusterer";
 import MarkerMap from "@/pages/Map/components/MarkerMap";
@@ -8,8 +8,7 @@ const createMarkers = async (map: Map) => {
 	const forms = await StoreMap.getForms();
 
 	const markers: InputMarker[] = forms.map(e => {
-		const [container, root] = createRoots();
-		root.render(<MarkerMap map={map} avatar={e.avatar} sex={e.sex} />);
+		const container = createRoots(<MarkerMap map={map} avatar={e.avatar} sex={e.sex} />);
 
 		return {
 			type: "html",

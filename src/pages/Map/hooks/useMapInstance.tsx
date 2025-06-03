@@ -4,6 +4,9 @@ import {useEffect, useState} from "react";
 import {LocationDTO} from "@t/gen/dtoObjects";
 import {mapDTO} from "@/pages/Map/functions/types";
 import {STANDART_ZOOM} from "@shared/CONST";
+import {createRoots} from "@/pages/Map/functions/parsers";
+import ResetZoomButton from "@/pages/Map/components/ResetZoomButton";
+import SexButton from "@/pages/Map/components/SexButton";
 
 function useMapInstance(
 	containerRef: React.RefObject<HTMLDivElement | null>,
@@ -23,9 +26,23 @@ function useMapInstance(
 				key: GISKEY,
 				disableZoomOnScroll: false,
 			});
-
 			setMap(map);
+
+			const zoomContainer = createRoots(<ResetZoomButton coords={coords} map={map} />)
+			new mapgl.Control(map,
+				zoomContainer,
+				{position: 'topRight'}
+			)
+			
+			const sexContainer = createRoots(<SexButton />)
+			new mapgl.Control(map,
+				sexContainer,
+				{position: "topRight"}
+			)
 		});
+
+		return map?.destroy()
+		
 	}, [containerRef, coords]);
 
 	return [mapgl, map];
