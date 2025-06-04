@@ -9,8 +9,9 @@ import { z } from "zod";
 type RawString = (string | Knex.Raw<any>)[]
 
 export const fieldsToArr = (fields: string | undefined, table: tables, includeTags: boolean = false): RawString => {
+  logger.info({ЗАПРОС_НА_ПОЛЯ: fields})
   if (table === 'forms') {
-    let parsed: RawString = fields?.trim()?.split(',').map(e => 'forms.' + e.trim()) ?? [...AllRowsFormShort.map(e => 'forms.' + e), 'forms.location', 'forms.tags']
+    let parsed: RawString = fields?.trim()?.split(',').map(e => 'forms.' + e.trim()) ?? [...AllRowsFormShort.map(e => 'forms.' + e), 'forms.location', includeTags && 'forms.tags'].filter(e => e !== false)
     parsed = parsed.map(item => {
       if (item === 'forms.location') {
         return db.raw(`jsonb_build_object(
@@ -36,6 +37,8 @@ export const checkFirstType = <T extends Array<any>>(data: T, table: tables, fie
   if (data.length > 0) {
     logger.info({data, table});
     const schema = z.array(getSchemaByTable(table, fields))
+    logger.info({SCHEMA: schema})
+    logger.info({SCHEMA_PARSE: schema.parse(data)})
     //@ts-ignore
     return schema.parse(data)
   } else {

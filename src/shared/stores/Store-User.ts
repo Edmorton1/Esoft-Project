@@ -24,22 +24,6 @@ class StoreUser {
     makeAutoObservable(this)
   }
 
-  // waitUser(): Promise<void> {
-  //   return new Promise(resolve => {
-  //     if (this.user !== undefined) {
-  //       resolve()
-  //     } else {
-  //       const interval = setInterval(() => {
-  //         console.log('ЖДЁМ')
-  //         if (this.user !== undefined) {
-  //           clearInterval(interval)
-  //           resolve()
-  //         }
-  //       }, 100)
-  //     }
-  //   })
-  // }
-
   loadModules = async (logout: boolean = false) => {
     if (!logout) {
       await StoreLikes.initial()

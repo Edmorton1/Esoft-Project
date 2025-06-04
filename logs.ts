@@ -54,29 +54,3 @@
 // // Promise {<pending>}
 // // 2VM292:1 icecandidate {"type":"answer","sdp":"v=0\r\no=- 8373933126683409288 3 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0\r\na=extmap-allow-mixed\r\na=msid-semantic: WMS\r\nm=application 9 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 0.0.0.0\r\na=candidate:3261939081 1 udp 2113937151 4ac42386-4d00-46e4-b15e-09eff84a44e2.local 52800 typ host generation 0 network-cost 999\r\na=ice-ufrag:gkbV\r\na=ice-pwd:EDI1Fjm62dLoA+BRH5LoH0hp\r\na=ice-options:trickle\r\na=fingerprint:sha-256 C3:8A:62:9C:AA:A9:97:1E:1D:84:14:3D:68:E2:32:97:F7:5A:D5:A2:A6:0C:4E:19:3A:8C:7C:A0:6C:37:13:56\r\na=setup:active\r\na=mid:0\r\na=sctp-port:5000\r\na=max-message-size:262144\r\n"}
 // // VM516:5 Channel opened!
-
-const actions = {
-  ASD: 'asdasd',
-  numba: 123
-} as const
-
-enum Asdis {
-  Write = 123,
-  Dasd = 'fgfg'
-}
-
-const asda = (Asdis.Write)
-
-// type asd = typeof actions[keyof typeof actions]
-
-type loda = keyof typeof actions
-
-const adsdsd: loda = 'ASD'
-
-interface asd {
-  asd: 'asd'
-}
-
-interface adasda extends asd {
-  asda: 'aas'
-}

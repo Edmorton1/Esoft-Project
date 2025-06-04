@@ -11,6 +11,7 @@ import HttpFilesController from "@s/infrastructure/endpoints/Files/HttpFilesCont
 import HttpExtendedSearchController from "@s/infrastructure/endpoints/ExtendSearch/HttpExtendedSearchController"
 import CRUDMiddleware from "@s/infrastructure/middlewares/CRUDMiddleware"
 import logger, { httpLogger } from "@s/logger"
+import RegistrationValidationMid from "@s/infrastructure/middlewares/RegistrationValidationMid"
 
 const upload = multer({storage: multer.memoryStorage()})
 const router = express.Router()
@@ -32,7 +33,7 @@ tablesArr.forEach(table => {
 
 router.get('/', (req, res) => {res.json('Работает'); logger.info('Работает')})
 
-router.post(serverPaths.registration, upload.single('avatar'), HttpTokenController.registartion)
+router.post(serverPaths.registration, upload.single('avatar'), RegistrationValidationMid, HttpTokenController.registartion)
 router.post(serverPaths.login, HttpTokenController.login)
 router.get(`${serverPaths.logout}/:id`, HttpTokenController.logout)
 router.get(serverPaths.refresh, HttpTokenController.refresh)

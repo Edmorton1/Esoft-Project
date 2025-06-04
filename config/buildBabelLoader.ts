@@ -5,6 +5,7 @@ export function buildBabelLoader(options: BuildOptions) {
 	const isProd = options.mode == "production";
 
 	return {
+		cacheDirectory: true,
 		presets: [
 			"@babel/preset-env",
 			"@babel/preset-typescript",

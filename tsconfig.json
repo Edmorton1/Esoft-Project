@@ -30,7 +30,8 @@
         "@/*": ["./src/*"],
         "@s/*": ["./server/*"],
         "@shared/*": ["./shared/*"],
-        "@t/*": ["./types/*"]
+        "@t/*": ["./types/*"],
+        "@test/*": ["./tests/*"]
       }
     },
     "ts-node": {

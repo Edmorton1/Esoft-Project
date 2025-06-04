@@ -4,22 +4,16 @@ import { Request, Response } from "express";
 import bcrypt from "bcrypt"
 import { one } from "@shared/MAPPERS";
 import TokenHelper from "@s/infrastructure/endpoints/Token/services/TokenHelper";
-import { Form, User, UserRoleType } from "@t/gen/Users";
+import { Form, User } from "@t/gen/Users";
 import TokenService from "@s/infrastructure/endpoints/Token/services/TokenService";
-import { RegistrationDTOServerSchema } from "@s/infrastructure/endpoints/Token/services/validation/RegistrationZOD";
 import logger from "@s/logger";
+import { RequestReg } from "@s/infrastructure/middlewares/RegistrationValidationMid";
 
 class HttpTokenController {
   registartion = async (req: Request, res: Response): Promise<Response<{form: Form, user: User, accessToken: string}>> => {
-  // registartion = async (req: Request, res: Response) => {
-    logger.info({dataRow: JSON.parse(req.body.json)}, "Грязные")
-    logger.info(req.file)
-    const data = RegistrationDTOServerSchema.parse({...JSON.parse(req.body.json), avatar: req.file})
-    logger.info({До_Загрузки: data})
-    const {email, password, tags, ...formDTO} = data
-    const userDTO: UserDTO = {email, password}
 
-    const total = await TokenService.registration(formDTO, userDTO, tags, res)
+    const r = req as RequestReg
+    const total = await TokenService.registration(r.form, r.user, r.tags, res)
 
     return res.json(total)
   }
