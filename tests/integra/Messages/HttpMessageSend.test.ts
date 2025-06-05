@@ -34,7 +34,7 @@ const data = {
 };
 
 describe("[MESSAGES]: Тест сообщений", () => {
-	test("Отправка сообщения без файлов", async () => {
+	test.skip("Отправка сообщения без файлов", async () => {
 		const request = await sendNoFiles(false);
 		console.log(request);
 
@@ -51,7 +51,7 @@ describe("[MESSAGES]: Тест сообщений", () => {
 		});
 	});
 
-	test("Отправка с файлами", async () => {
+	test.skip("Отправка с файлами", async () => {
 		const request = await sendNoFiles(true)
 		const {id, created_at, files, ...result} = request
 

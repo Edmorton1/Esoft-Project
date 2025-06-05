@@ -1,13 +1,14 @@
 import { msg, MsgTypesServer } from "@t/gen/types";
 import { Message } from "@t/gen/Users";
-import { toSOSe, one, frJSON } from "@shared/MAPPERS";
+import { toSOSe, one } from "@shared/MAPPERS";
 import ORM from "@s/infrastructure/db/requests/ORM";
 import { clients } from "@s/socket";
 import Yandex from "@s/yandex";
 import { Request, Response } from "express";
 import MessageFileHelper from "@s/infrastructure/endpoints/Message/services/MessageFileHelper";
-import { MessageDTOServerSchema, MessagePutDTOServerSchema } from "@t/server/DTOServer";
 import logger from "@s/logger";
+import { ReqEditMessage, ReqSendMessage } from "@s/infrastructure/endpoints/Message/middlewares/MessageMiddleware";
+import { RequestDelete } from "@s/infrastructure/middlewares/DeleteMiddleware";
 
 class HttpMessageController {
   sendSocket = <T extends keyof MsgTypesServer>(fromid: number, toid: number, msg: MsgTypesServer[T], type: T) => {
@@ -19,54 +20,48 @@ class HttpMessageController {
   }
 
   sendMessage = async (req: Request, res: Response) => {
-    const data = MessageDTOServerSchema.parse({...frJSON(req.body.json)!, files: req.files})
-    const { files, ...message } = data
+    const r = req as ReqSendMessage
 
-    // logger.info(files)
-    const request: Omit<Message, 'files'> = one(await ORM.post(message, 'messages'))
+    const request: Omit<Message, 'files'> = one(await ORM.post(r.message, 'messages'))
 
-    const paths = await MessageFileHelper.uploadFiles(request.id, files)
+    const paths = await MessageFileHelper.uploadFiles(request.id, r.files)
 
     const total = one(await ORM.put({files: paths}, request.id, 'messages'))
 
-    this.sendSocket(data.fromid, data.toid, total, 'message')
+    this.sendSocket(r.message.fromid, r.message.toid, total, 'message')
     res.json(total)
   }
 
-  // ТУТ ПОФИКСИТЬ ПОТОМ
   editMessage = async (req: Request, res: Response) => {
-    const {id} = req.params
-    let total = null
-    logger.info({parsed: frJSON(req.body.json)}, 'messageediting')
-    const data = MessagePutDTOServerSchema.parse({...frJSON(req.body.json)!, files: req.files})
-    // const data: MessagePutServerDTO = req.body
-    // const files = req.files as Express.Multer.File[]
+    const r = req as ReqEditMessage
 
-    if (data.files.length === 0 && data.deleted.length === 0) {
-      total = one(await ORM.put({text: data.text}, id, 'messages'))
+    let total = null
+
+    logger.info({data: [r.data.toid, r.data.text], id: r.id})
+    if (r.data.files.length === 0 && r.data.deleted.length === 0) {
+      total = one(await ORM.put({text: r.data.text}, r.id, 'messages'))
     } else {
-      logger.info(id, data.deleted)
-      const ostavshiesa = await Yandex.deleteArr(id, data.deleted)
-      const paths = data.files.length > 0 ?  await MessageFileHelper.uploadFiles(id, data.files) : []
-      // logger.info([...deleted, ...paths])
-      // logger.info(ostavshiesa, paths)
+      logger.info({id: r.id, data: r.data.deleted})
+      const ostavshiesa = await Yandex.deleteArr(r.id, r.data.deleted)
+      const paths = r.data.files.length > 0 ?  await MessageFileHelper.uploadFiles(r.id, r.data.files) : []
   
-      total = one(await ORM.put({files: [...ostavshiesa, ...paths], text: data.text}, id, 'messages'))
+      total = one(await ORM.put({files: [...ostavshiesa, ...paths], text: r.data.text}, r.id, 'messages'))
     }
+
     logger.info({total})
-    this.sendSocket(data.fromid, data.toid, total, 'edit_message')
+    this.sendSocket(r.data.fromid, r.data.toid, total, 'edit_message')
 
     res.json(total)
   }
 
-  deleteMessage = async (req: Request<{id: number}>, res: Response) => {
-    const { id } = req.params
-    const data = one(await ORM.delete(id, 'messages'))
-    const asd = await Yandex.deleteFolder(id)
-    logger.info(asd)
-    // const data = one(await this.ORM.getById(id, 'messages'))
+  deleteMessage = async (req: Request, res: Response) => {
+    const r = req as RequestDelete
 
-    this.sendSocket(data.fromid, data.toid, id, "delete_message")
+    const data = one(await ORM.delete(r.id, 'messages'))
+    const asd = await Yandex.deleteFolder(r.id)
+    logger.info(asd)
+
+    this.sendSocket(data.fromid, data.toid, r.id, "delete_message")
     res.json(data)
   }
 }

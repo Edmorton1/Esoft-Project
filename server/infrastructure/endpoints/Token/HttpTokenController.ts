@@ -9,6 +9,11 @@ import TokenService from "@s/infrastructure/endpoints/Token/services/TokenServic
 import logger from "@s/logger";
 import { RequestReg } from "@s/infrastructure/endpoints/Token/middlewares/RegistrationValidationMid";
 
+export interface LoginErrorTypes {
+  type: "email" | "password",
+  message: string
+}
+
 class HttpTokenController {
   registartion = async (req: Request, res: Response): Promise<Response<{form: Form, user: User, accessToken: string}>> => {
 
@@ -25,13 +30,13 @@ class HttpTokenController {
 
     if (!user) {
       logger.info({user, STATUS: "ТАКОГОЙ ПОЧТЫ НЕТ"})
-      return res.status(400).json('Такой почты нет')
+      return res.status(400).json(<LoginErrorTypes>{type: "email", message: "Такой почты нет"})
     }
 
     const passwordValidate =  await bcrypt.compare(dto.password, user.password)
     if (!passwordValidate) {
       logger.info({user, STATUS: "НЕВЕРНЫЙ ПАРОЛЬ"})
-      return res.status(400).json('Неверный пароль')
+      return res.status(400).json(<LoginErrorTypes>{type: "password", message: 'Неверный пароль'})
     }
 
     logger.info({user, STATUS: "ВОШЁЛ"})

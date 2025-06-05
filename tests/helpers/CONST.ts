@@ -11,3 +11,5 @@ export const paths = [
   // path.resolve(__dirname, "../helpers/files/audio2.mp3"),
   path.resolve(__dirname, "../helpers/files/video.mp4")
 ]
+
+export const AVATAR_PATH = path.resolve(__dirname, "../helpers/files/guitar.jpg")

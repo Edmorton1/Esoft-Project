@@ -122,13 +122,16 @@ class ORM {
     return request
   }
 
-  put = async <T extends tables>(dto: Partial<Tables[T]>, id: number | string, table: T): Promise<Tables[T][]> => {
-    // logger.info("put", table, id, dto)
+  put = async <T extends tables>(dto: Partial<Tables[T]>, id: number | string, table: T, fields?: string): Promise<Tables[T][]> => {
+    logger.info({table, id, dto, method: "PUT"})
 
-    const request = await db(table).where("id", '=', id).update(dto).returning("*")
+    const parsedFields = fieldsToArr(fields, table)
+
+    const request = await db(table).where("id", '=', id).update(dto).returning(parsedFields)
+    logger.info({request})
 
     cacheEdit(table, request)
-    checkFirstType(request, table)
+    checkFirstType(request, table, fields)
 
     return request
   }

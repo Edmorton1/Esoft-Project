@@ -4,12 +4,13 @@ import FileService from "./services/FileService";
 import { fileTypeFromBuffer } from "file-type";
 import Yandex from "@s/yandex";
 import logger from "@s/logger";
+import { z } from "zod";
 // import fileType from "file-type"
 
 class HttpFilesController {
   postAvatar = async (req: Request, res: Response) => {
     
-    const {id} = req.params
+    const id = z.coerce.number().parse(req.params.id)
     const buffer = req.file!.buffer
     const compress = await FileService.imageCompress(buffer)
 
@@ -17,7 +18,7 @@ class HttpFilesController {
     // res.type("webp")
     // res.send(compress)
     const yandex = await Yandex.upload(compress,'.webp', '/avatars/')
-    await ORM.put({avatar: yandex!.Location}, id, 'forms')
+    await ORM.put({avatar: yandex!.Location}, id, 'forms', 'avatar')
     res.json(yandex!.Location)
   }
 

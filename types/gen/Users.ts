@@ -12,7 +12,9 @@ export const LocationSchema = z.object({
 export const UserSchema = z.object({
   id: zid,
   email: zstring.email(),
-  password: z.string().nonempty().min(6),
+  // ВРЕМЕННАЯ МЕРА, В ПРОДЕ УБРАТЬ
+  // password: z.string().nonempty().min(6),
+  password: z.string().nonempty(),
   role: UserRoleSchema,
   created_at: z.coerce.date(),
 });

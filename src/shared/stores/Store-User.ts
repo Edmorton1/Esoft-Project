@@ -4,13 +4,15 @@ import StoreMessages from "@/pages/Messages/widgets/MessageWidget/modules/store/
 import storeSocket from "@/shared/api/Store-Socket"
 import StoreTags from "@/shared/stores/Store-Tags"
 import StoreLikes from "@/shared/stores/StoreLikes"
-import { FormSchema, User, UserSchema } from "@t/gen/Users"
+import { User } from "@t/gen/Users"
 import { UserDTO } from "@t/gen/dtoObjects"
 import { toSOSe, toCl, toJSON } from "@shared/MAPPERS"
 import { serverPaths } from "@shared/PATHS"
 import { makeAutoObservable, runInAction } from "mobx"
-import { z } from "zod"
 import { RegistrationDTOClient, StoreUserRegistrationSchema } from "@/pages/Registration/widgets/RegistrationWidget/modules/types/RegistrationZOD"
+import { UseFormSetError } from "react-hook-form"
+import axios from "axios"
+import { LoginErrorTypes } from "@s/infrastructure/endpoints/Token/HttpTokenController"
 
 export interface responseInterface {
   user: User,
@@ -40,11 +42,31 @@ class StoreUser {
     }
   }
   
-  login = async (data: UserDTO) => {
-    const request = toCl<responseInterface>(await $api.post(`${serverPaths.login}`, data))
-    localStorage.setItem("accessToken", request.accessToken)
+  login = async (data: UserDTO, setError: UseFormSetError<UserDTO>) => {
+    try {
+      const request = toCl<responseInterface>(await $api.post(`${serverPaths.login}`, data))
+      localStorage.setItem("accessToken", request.accessToken)
 
-    await this.initial()
+      await this.initial()
+    } catch(error: unknown) {
+      console.log(error)
+      if (axios.isAxiosError(error)) {
+        const status = error.status
+        const response = error.response?.data as LoginErrorTypes
+        if (status === 400 && response.type === "email") {
+          setError("email", {
+            message: response.message,
+            type: "manual"
+          })
+        } else if (status === 400 && response.type === "password") {
+          setError("password", {
+            message: response.message,
+            type: "manual"
+          })
+        }
+      }
+    }
+
   }
 
   logout = async () => {
@@ -58,6 +80,7 @@ class StoreUser {
 
   initial = async () => {
     const request = toCl<responseInterface>(await $api.get(serverPaths.refresh))
+    console.log(request, 'request')
     if (request?.accessToken) {
       runInAction(() => this.user = request.user)
       await StoreForm.initial(request.user.id)

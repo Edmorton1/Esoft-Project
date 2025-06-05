@@ -13,6 +13,7 @@ import logger, { httpLogger } from "@s/logger"
 import RegistrationValidationMid from "@s/infrastructure/endpoints/Token/middlewares/RegistrationValidationMid"
 import LikesMiddleware from "@s/infrastructure/endpoints/Likes/middlewares/LikesMiddleware"
 import DeleteMiddleware from "@s/infrastructure/middlewares/DeleteMiddleware"
+import MessageMiddleware from "@s/infrastructure/endpoints/Message/middlewares/MessageMiddleware"
 
 const upload = multer({storage: multer.memoryStorage()})
 const router = express.Router()
@@ -41,9 +42,9 @@ router.get(serverPaths.refresh, HttpTokenController.refresh)
 
 // router.post(serverPaths.createForm, HttpFormController.postForm)
 
-router.post(serverPaths.sendMessage, upload.array('files'), HttpMessageController.sendMessage)
-router.put(`${serverPaths.editMessage}/:id`, upload.array('files'), HttpMessageController.editMessage)
-router.delete(`${serverPaths.deleteMessage}/:id`, HttpMessageController.deleteMessage)
+router.post(serverPaths.sendMessage, upload.array('files'), MessageMiddleware.sendMessage , HttpMessageController.sendMessage)
+router.put(`${serverPaths.editMessage}/:id`, upload.array('files'), MessageMiddleware.editMessage, HttpMessageController.editMessage)
+router.delete(`${serverPaths.deleteMessage}/:id`, DeleteMiddleware, HttpMessageController.deleteMessage)
 
 router.post(serverPaths.likesSend, LikesMiddleware.sendLike, HttpLikesController.sendLike)
 router.delete(`${serverPaths.likesDelete}/:id`, DeleteMiddleware, HttpLikesController.sendDelete)
