@@ -9,13 +9,14 @@ import StoreForm from "@/shared/stores/Store-Form";
 import { RegistrationDTOClient } from "@/pages/Registration/widgets/RegistrationWidget/modules/types/RegistrationZOD";
 import StoreRegistration from "@/pages/Registration/widgets/stores/Store-Registration";
 import { toJS } from "mobx";
+import { observer } from "mobx-react-lite";
 
 function RegistrationBody({register, onSubmit, errors}: {register: UseFormRegister<RegistrationDTOClient>, onSubmit: (...args: any[]) => any, errors: FieldErrors<RegistrationDTOClient>}) {
 
   return <>
   <div>Добро пожаловать: {StoreUser.user?.email}</div>
   <button onClick={() => console.log(errors)}>errors</button>
-  <button onClick={() => console.log(toJS(StoreRegistration.defaultCoords))}>LOG</button>
+  <button onClick={() => console.log(toJS(StoreRegistration.defaultCoords), toJS(StoreRegistration.coords))}>LOG</button>
   {/* <button onClick={() => StoreRegistration.setDefaultCoords({city: "asdasd", lng: 123, lat: 123})}>sadasd</button> */}
   <form onSubmit={onSubmit} style={{display: "flex", flexDirection: "column", width: "400px", gap: "10px"}}>
 
@@ -68,56 +69,10 @@ function RegistrationBody({register, onSubmit, errors}: {register: UseFormRegist
     <label htmlFor="avatar">Аватар</label>
     <input {...register('avatar')} type="file" id="avatar" />
     <label htmlFor="city">Город</label>
-    <input {...register('city')} type="text" id="city" />
+    <input disabled={!!StoreRegistration.coords || !!StoreRegistration.defaultCoords} {...register('city')} type="text" id="city" />
     <button>Отправить</button>
   </form>
   </>
 }
 
-export default RegistrationBody
-
-// import storeAuthorization from "@/store/Store-User";
-// import StoreForm from "@/store/Store-Form";
-// import { Form } from "@s/core/domain/Users";
-// import { useForm, UseFormHandleSubmit } from "react-hook-form";
-// import { UserDTO } from "@s/core/dtoObjects";
-// import handleAllSubmits, { RawForm } from "@/modules/handleSubmits";
-
-// function FormCreate({handleSubmitRegistration}: {handleSubmitRegistration: UseFormHandleSubmit<UserDTO, UserDTO>}) {
-//     const { register, handleSubmit } = useForm<RawForm>();
-
-//   return (
-//     <>
-//     <div>Добро пожаловать, {storeAuthorization.user?.email}</div>
-//     <br />
-//     <div>Создание анкеты</div>
-//     <br />
-//     <form onSubmit={(e) => handleAllSubmits(handleSubmitRegistration, handleSubmit, e)} style={{display: "flex", flexDirection: "column", width: "400px", gap: "10px"}}>
-//       <label>Имя</label>
-//       <input {...register('name')} type="text" value={"Коля"} />
-//       <label>Фамилия</label>
-//       <input {...register('surname')} type="text" value={"Коля"} />
-//       <label>Пол</label>
-//       <select {...register('sex', {setValueAs: Boolean})} value={"1"}>
-//         <option value="true">Мужчина</option>
-//         <option value="false">Женщина</option>
-//       </select>
-//       <label>Возраст</label>
-//       <input {...register('age', {valueAsNumber: true})} type="number" value={20} />
-//       <label>Цель</label>
-//       <input {...register('target')} type="text" value={"Коля"} />
-//       <label>Район</label>
-//       <input {...register('hood')} type="text" value={"Коля"} />
-//       <label>Теги</label>
-//       <input {...register('tags')} type="text" value={"Рыбалка, качалка, гитарка"} />
-//       <label>Описание</label>
-//       <textarea {...register('description')} value={"Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque illo voluptatibus distinctio inventore officiis quisquam aspernatur fuga voluptatum assumenda dicta similique maxime, quia vel dolore! Soluta error reprehenderit sint voluptatibus?"}></textarea>
-//       <button>Отправить</button>
-//       {/* <label>Аватар</label>
-//       <input {...register('avatar')} type="file" /> */}
-//     </form>
-//     </>
-//   )
-// }
-
-// export default FormCreate
+export default observer(RegistrationBody)

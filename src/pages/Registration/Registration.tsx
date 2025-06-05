@@ -6,7 +6,7 @@ import { LocationDTO } from "@t/gen/dtoObjects"
 
 function Registration() {
   
-  useGeolocation((data: LocationDTO) => StoreRegistration.setDefaultCoords(data))
+  useGeolocation((data: LocationDTO) => {console.log(data, 'set data'); StoreRegistration.setDefaultCoords(data)})
 
   return <>
     <RegistrationWidget/>

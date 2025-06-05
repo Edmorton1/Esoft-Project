@@ -4,8 +4,12 @@ import { Form } from "@t/gen/Users"
 import { createContext } from "react"
 import useGetById from "@/shared/hooks/useGetBy"
 import useUpdateParams from "@/shared/hooks/useChangeParams"
+import { FormWithDistanse } from "@t/gen/types"
+import StoreForm from "@/shared/stores/Store-Form"
+import { observer } from "mobx-react-lite"
+import { toJSON } from "@shared/MAPPERS"
 
-export const UsersContext = createContext<Form | null>(null)
+export const UsersContext = createContext<FormWithDistanse | null>(null)
 
 function UsersCardWidget() {
   const [params] = useUpdateParams()
@@ -18,17 +22,18 @@ function UsersCardWidget() {
   const sex = params.sex || ''
   const min_age = params.min_age || ''
   const max_age = params.max_age || ''
+  const avatar = params.avatar || ''
+
+  const location = toJSON([StoreForm.form?.location?.lng, StoreForm.form?.location?.lat])
+
+  const max_distance = params.max_distance || ''
 
   console.log(params)
   // useGetById('forms', `sqlparams=limit 3 offset ${(page - 1) * 3}`, 'array', StoreUsers.initial)
 
   // http://localhost:5000/users?max_age=46&min_age=40&tags=%D0%BC%D1%83%D0%B7%D0%B8%D0%BA%D0%B0&sex=woman
 
-  // ПОТОМ СЮДА СОРТИРОВКУ age и аватар И target_custom
-  // ПОТО РЕАКТ КВЕРИ И ЧЕРНОВИКИ СООБЩЕНИЙ
-  // ЕЩЁ ЗАКЭШИРОВАТЬ ПОДБОР ПОЛЬЗ
-
-  useGetById(`/extendedSearch?tags=${tags}&page=${page}&target=${target}&city=${city}&sex=${sex === 'man' ? 'true' : sex === 'woman' ? 'false' : ''}&min_age=${min_age}&max_age=${max_age}`, {callback: StoreUsers.initial})
+  useGetById(`/extendedSearch?tags=${tags}&page=${page}&target=${target}&city=${city}&sex=${sex === 'man' ? 'true' : sex === 'woman' ? 'false' : ''}&min_age=${min_age}&max_age=${max_age}&avatar=${avatar}&location=${location}&max_distance=${max_distance}`, {callback: StoreUsers.initial})
 
   return <>
     {/* <Pagination /> */}
@@ -42,4 +47,4 @@ function UsersCardWidget() {
   </>
 }
 
-export default UsersCardWidget
+export default observer(UsersCardWidget)

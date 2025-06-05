@@ -13,6 +13,7 @@ function UsersCardInfo() {
     <div>Описание: {context.description}</div>
     <div>Город: {context.city}</div>
     <div>Тэги: {context.tags?.map(e => e.tag).join(', ')}</div>
+    <div>{context.distance ? `Расстояние: ${context.distance} км` : ''}</div>
     <br />
   </>
 }

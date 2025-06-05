@@ -1,5 +1,7 @@
 import db from "@s/infrastructure/db/db"
 import logger from "@s/logger"
+import { CARDS_ON_PAGE } from "@shared/CONST"
+import { lnglatType } from "@t/gen/types"
 
 type tagsTypes = {groups: string, id: number[]}[]
 
@@ -30,30 +32,53 @@ class SQLHard {
 
     const request = db.raw(sql, [...values])
 
-    logger.info(request.toSQL().toNative())
+    logger.info({toNativeUserTags: request.toSQL().toNative()})
     
-    return await request
+    return (await request).rows
   }
 
-  getByTags = async (tags: tagsTypes, params: Record<string, string>, page: string, min_age: string, max_age: string) => {
+  getByTags = async (tags: tagsTypes, params: Record<string, string>, page: string, min_age: string, max_age: string, avatar: string, location: lnglatType | [null, null], max_distance: string) => {
     logger.info("GET BY TAGS")
     const and = toSQLWhere(params, false)
     const conditions: string[] = []
 
+    logger.info({TAGS_TAGS: tags})
+
     const ageMin = min_age && `forms.age > ${min_age}`
     const ageMax = max_age && `forms.age < ${max_age}`
     const ageFilter = [ageMin, ageMax].filter(Boolean).join(' AND ')
+    
+    const havingMaxDistance = `(
+    ST_Distance(
+            location::geography,
+            ST_SetSRID(ST_MakePoint(37.6173, 55.7558), 4326)::geography
+        ) / 1000
+    ) < ${max_distance}`
 
+    if (max_distance && location[0] !== null && location[1] !== null) conditions.push(await havingMaxDistance)
     if (tags.length > 0) conditions.push(toSQLgetByTags(tags))
     if (and.length > 0) conditions.push(and)
     if (ageFilter) conditions.push(ageFilter)
+    if (avatar === 'true') conditions.push('NOT forms.avatar IS NULL')
 
     const havingClause = conditions.length ? `${conditions.join(' AND ')}` : ''
+    
+    const offset = (Number(page) - 1) * CARDS_ON_PAGE
 
-    // logger.info(conditions, 'conditions')
+    logger.info({offset: offset === -1 ? 0 : offset, CARDS_ON_PAGE})
+    
+    const selectDistance = db.raw(`	ROUND(
+          (ST_Distance(
+            location::geography,
+            ST_SetSRID(ST_MakePoint(?, ?), 4326)::geography
+          ) / 1000)::numeric,
+          2
+        ) AS distance`, location!)
+
     const request = db('forms')
       .select(
         'forms.*',
+        selectDistance,
         db.raw(`json_agg(json_build_object('id', tags.id, 'tag', tags.tag)) AS tags`)
       )
       .leftJoin('user_tags', 'user_tags.id', 'forms.id')
@@ -61,9 +86,22 @@ class SQLHard {
       .groupBy('forms.id')
       .havingRaw(havingClause)
 
-    // logger.info(request.toSQL().toNative())
+      .offset(offset === -1 ? 0 : offset)
+      .limit(CARDS_ON_PAGE)
+    
+      const pagesCount = db.countDistinct('forms.id')
+        .from('forms')
+        .leftJoin('user_tags', 'user_tags.id', 'forms.id')
+        .leftJoin('tags', 'user_tags.tagid', 'tags.id')
+        .whereRaw(havingClause)
 
-    return await request
+    // logger.info({PAGES_SQL: pagesCount.toSQL().toNative()})
+    // logger.info({PAGES_COUNT: await pagesCount})
+
+    logger.info({DATA_RES: await request})
+    logger.info({toNativeByTags: request.toSQL().toNative()})
+
+    return {forms: await request, count: Math.ceil(Number((await pagesCount)[0].count) / CARDS_ON_PAGE)}
   }
 }
 

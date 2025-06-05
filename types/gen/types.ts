@@ -65,3 +65,9 @@ export interface YandexPost {
   key: string,
   Bucket: string
 }
+
+export interface FormWithDistanse extends Form {
+  distance?: number
+}
+
+export type lnglatType = [number, number]

@@ -3,7 +3,6 @@ import { Form, FormSchema, Tags } from "@t/gen/Users";
 import { one, toCl } from "@shared/MAPPERS";
 import { serverPaths } from "@shared/PATHS";
 import { makeAutoObservable, runInAction } from "mobx";
-import { RegistrationDTOClient } from "@/pages/Registration/widgets/RegistrationWidget/modules/types/RegistrationZOD";
 
 class FormStore {
   form: Form | null | undefined = undefined

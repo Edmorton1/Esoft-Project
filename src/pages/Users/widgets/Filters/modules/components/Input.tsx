@@ -1,7 +1,9 @@
 import useDebounceParams from "@/shared/hooks/useDebounceParams"
 import { ChangeEvent } from "react"
 
-function Input({keyName}: {keyName: string}) {
+type inputType = 'text' | 'number'
+
+function Input({keyName, type}: {keyName: string, type: inputType}) {
   console.log("input")
   const [debParams, setDebParams] = useDebounceParams(keyName)
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => setDebParams(e.target.value)
