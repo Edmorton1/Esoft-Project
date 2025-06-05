@@ -19,6 +19,7 @@ export function toSQL(domainModel: any) {
 // }
 
 export const frJSON = <T>(data: string): T => {
+  // console.log('frJSON', data)
   return JSON.parse(data.toString())
 }
 

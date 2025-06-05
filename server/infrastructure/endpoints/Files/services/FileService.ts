@@ -8,7 +8,7 @@ import { promises, unlink, writeFile } from "fs";
 import { PassThrough, Readable } from "stream";
 import { randomUUID } from "crypto";
 import { fileTypeFromBuffer } from "file-type";
-import logger from "@s/logger";
+// import logger from "@s/logger";
 
 ffmpeg.setFfmpegPath(ffmpegPath!);
 
@@ -82,7 +82,7 @@ class FileService {
         .audioBitrate(96)
         .toFormat('ogg')
         .on('error', (err) => {
-          console.error(err);
+          // console.error(err);
           reject(err);
         })
         .pipe(outputStream, { end: true });
@@ -104,14 +104,14 @@ class FileService {
     const type = (await fileTypeFromBuffer(buffer))
     const ext = type!.ext
     const mime = type!.mime
-    logger.info('EXT MIME', ext, mime)
+    // logger.info('EXT MIME', ext, mime)
 
     if (mime.includes('image')) {
       return [await this.imageCompress(buffer), 'webp']
     }
     // ПЕРЕДЕЛЫВАЮ video/webm ИЗ-ЗА АУДИО
     else if (mime.includes('audio') || mime === 'video/webm') {
-      logger.info('AUDIO MIME INCLUDE TRUE')
+      // logger.info('AUDIO MIME INCLUDE TRUE')
       return [await this.audioCompress(buffer, ext), 'ogg']
     }
     else if (mime.includes('video')) {

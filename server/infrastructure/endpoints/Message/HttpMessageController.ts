@@ -14,7 +14,7 @@ class HttpMessageController {
     logger.info('socket', fromid, toid)
     const clientFrom = clients.get(fromid)
     const clientTo = clients.get(toid)
-    clientFrom!.send(toSOSe(type, msg))
+    clientFrom?.send(toSOSe(type, msg))
     clientTo?.send(toSOSe(type, msg))
   }
 
@@ -22,7 +22,7 @@ class HttpMessageController {
     const data = MessageDTOServerSchema.parse({...frJSON(req.body.json)!, files: req.files})
     const { files, ...message } = data
 
-    logger.info(files)
+    // logger.info(files)
     const request: Omit<Message, 'files'> = one(await ORM.post(message, 'messages'))
 
     const paths = await MessageFileHelper.uploadFiles(request.id, files)
@@ -30,13 +30,14 @@ class HttpMessageController {
     const total = one(await ORM.put({files: paths}, request.id, 'messages'))
 
     this.sendSocket(data.fromid, data.toid, total, 'message')
+    res.json(total)
   }
 
   // ТУТ ПОФИКСИТЬ ПОТОМ
   editMessage = async (req: Request, res: Response) => {
     const {id} = req.params
     let total = null
-    logger.info({parsed: frJSON(req.body.json), files: req.files}, 'messageediting')
+    logger.info({parsed: frJSON(req.body.json)}, 'messageediting')
     const data = MessagePutDTOServerSchema.parse({...frJSON(req.body.json)!, files: req.files})
     // const data: MessagePutServerDTO = req.body
     // const files = req.files as Express.Multer.File[]
@@ -44,7 +45,7 @@ class HttpMessageController {
     if (data.files.length === 0 && data.deleted.length === 0) {
       total = one(await ORM.put({text: data.text}, id, 'messages'))
     } else {
-      logger.info({files: data.files, data})
+      logger.info(id, data.deleted)
       const ostavshiesa = await Yandex.deleteArr(id, data.deleted)
       const paths = data.files.length > 0 ?  await MessageFileHelper.uploadFiles(id, data.files) : []
       // logger.info([...deleted, ...paths])
@@ -54,6 +55,8 @@ class HttpMessageController {
     }
     logger.info({total})
     this.sendSocket(data.fromid, data.toid, total, 'edit_message')
+
+    res.json(total)
   }
 
   deleteMessage = async (req: Request<{id: number}>, res: Response) => {
@@ -64,6 +67,7 @@ class HttpMessageController {
     // const data = one(await this.ORM.getById(id, 'messages'))
 
     this.sendSocket(data.fromid, data.toid, id, "delete_message")
+    res.json(data)
   }
 }
 

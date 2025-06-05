@@ -86,7 +86,7 @@ class ORM {
   }
 
   post = async <T extends tables>(dto: TablesPost[T], table: T, fields?: string): Promise<Tables[T][]> => {
-    // logger.info("post", table, fields, dto)
+    logger.info({table, fields, dto})
     if (typeof dto === 'object' && "password" in dto && typeof dto.password === "string") {
       const hashed = await bcrypt.hash(dto.password, 3)
       // dto.password = hashed as Tables[T][keyof Tables[T]]
@@ -102,10 +102,11 @@ class ORM {
     const parsedFields = fieldsToArr(fields, table)
 
     const request = await db(table).insert(dto).returning(parsedFields)
-    logger.info({request})
+    
+    logger.info({request, parsedFields})
 
     cacheEdit(table, request)
-    checkFirstType(request, table)
+    checkFirstType(request, table, fields)
 
     return request
   }

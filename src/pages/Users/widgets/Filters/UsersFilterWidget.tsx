@@ -35,6 +35,7 @@ function UsersFilterWidget() {
     </div>
     <label htmlFor="max_distance">Максимальное расстояние</label>
     <Input keyName="max_distance" type="number" />
+    <div>ДОБАВИТЬ СОРТИРОВКУ</div>
   </>
 }
 

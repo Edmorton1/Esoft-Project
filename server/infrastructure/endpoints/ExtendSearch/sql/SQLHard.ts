@@ -88,16 +88,19 @@ class SQLHard {
 
       .offset(offset === -1 ? 0 : offset)
       .limit(CARDS_ON_PAGE)
-    
-      const pagesCount = db.countDistinct('forms.id')
-        .from('forms')
+      
+      const subquery = db('forms')
+        .select('forms.id')
         .leftJoin('user_tags', 'user_tags.id', 'forms.id')
         .leftJoin('tags', 'user_tags.tagid', 'tags.id')
-        .whereRaw(havingClause)
+        .groupBy('forms.id')
+        .havingRaw(havingClause);
 
-    // logger.info({PAGES_SQL: pagesCount.toSQL().toNative()})
-    // logger.info({PAGES_COUNT: await pagesCount})
+      const pagesCount = db
+        .count('* as count')
+        .from(subquery.as('filtered_forms'));
 
+    logger.info({PAGES_COUNT_SQL: pagesCount.toSQL().toNative()})
     logger.info({DATA_RES: await request})
     logger.info({toNativeByTags: request.toSQL().toNative()})
 
@@ -123,57 +126,4 @@ const toSQLWhere = (props: Record<any, any>, isform?: boolean): string => {
   return and
 }
 
-// С ПЛЕЙСХОЛДЕРАМИ
-// const toSQLWhere = (props: Record<any, any>, isform?: boolean): [any[], string] => {
-//   const keys = Object.keys(props).filter(e => props[e] != '')
-//   const values = Object.values(props).filter(e => e != '')
-//   logger.info(keys.length === values.length)
-//   const and = keys.map((e, i) => (`${isform ? `forms.` : ``}${e} = $${i + 1} and`)).join(' ').slice(0, -4)
-//   return [values, and]
-// }
-
-// const toSQLgetUserTags = (rawTags: string): [string[], string[]] => {
-//   const tags = rawTags.split(',').map(e => e.trim())
-//   const keys = tags.map((e, i) => `$${i + 1}`)
-//   return [keys, tags]
-// }
-
-
 export default new SQLHard
-
-// return await pool.query(`SELECT tags.id, tags.tag
-//   FROM user_tags
-//   LEFT JOIN tags ON user_tags.tagid = tags.id
-//   WHERE USER_TAGS.ID = $1; `, [id]
-
-// const toSQLgetUserTags = (rawTags: string): [string[], string[], string[]] => {
-//   const tags = rawTags.split(',').map(e => e.trim())
-
-//   const keys = tags.map((e, i) => `$${i + 1}`)
-//   const sim = tags.map((e, i) => `similarity(tag, ${keys[i]})${i + 1 === keys.length ? '' : ','}` )
-//   logger.info(keys, sim)
-//   return [keys, tags, sim]
-// }
-
-    // SELECT 
-    //   f.*, 
-    //   COUNT(DISTINCT matched.tagid) AS matched_count,
-    //   COALESCE(
-    //     json_agg(
-    //       json_build_object('id', t.id, 'tag', t.tag)
-    //     ) FILTER (WHERE t.id IS NOT NULL),
-    //     '[]'
-    //   ) AS tags
-    // FROM forms f
-    // LEFT JOIN user_tags ut ON ut.id = f.id
-    // LEFT JOIN tags t ON ut.tagid = t.id
-    // ${haveTags}
-    // GROUP BY f.id
-    // ${secondTags}
-    // ORDER BY matched_count DESC;
-
-      //     ${haveTags}
-      // ${count > 0 ? 'AND' : ''}
-      // ${haveParams}
-      // ${count > 1 ? 'AND' : ''}
-      // ${totalAge}

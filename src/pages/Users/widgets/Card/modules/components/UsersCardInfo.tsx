@@ -1,10 +1,15 @@
 import { UsersContext } from "@/pages/Users/widgets/Card/UsersCardWidget"
+import StoreForm from "@/shared/stores/Store-Form"
+import StoreLikes from "@/shared/stores/StoreLikes"
 import { useContext } from "react"
 
 function UsersCardInfo() {
   const context = useContext(UsersContext)!
 
+  const handleLike = () => StoreLikes.sendLike({userid: StoreForm.form!.id!, liked_userid: context.id})
+
   return <>
+    <button onClick={handleLike}>Лайкнуть</button>
     <img src={context.avatar!} alt="" />
     <div>Имя: {context.name}</div>
     <div>Пол: {context.sex === true ? 'Мужчина' : 'Женщина'}</div>

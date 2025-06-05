@@ -7,7 +7,8 @@ const db = knex({
 		password: "stalin",
 		host: "localhost",
 		port: 5432,
-		database: "Znakomstva Site",
+		// database: "Znakomstva Site",
+		database: "Znakomstva TEST",
 	},
 });
 

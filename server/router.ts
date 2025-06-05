@@ -4,14 +4,15 @@ import { universalController } from "@s/controllers"
 import multer from "multer"
 import { serverPaths } from "@shared/PATHS"
 import HttpTokenController from "@s/infrastructure/endpoints/Token/HttpTokenController"
-// import HttpFormController from "@s/infrastructure/endpoints/Form/HttpFormController"
 import HttpMessageController from "@s/infrastructure/endpoints/Message/HttpMessageController"
 import HttpLikesController from "@s/infrastructure/endpoints/Likes/HttpLikesController"
 import HttpFilesController from "@s/infrastructure/endpoints/Files/HttpFilesController"
 import HttpExtendedSearchController from "@s/infrastructure/endpoints/ExtendSearch/HttpExtendedSearchController"
 import CRUDMiddleware from "@s/infrastructure/middlewares/CRUDMiddleware"
 import logger, { httpLogger } from "@s/logger"
-import RegistrationValidationMid from "@s/infrastructure/middlewares/RegistrationValidationMid"
+import RegistrationValidationMid from "@s/infrastructure/endpoints/Token/middlewares/RegistrationValidationMid"
+import LikesMiddleware from "@s/infrastructure/endpoints/Likes/middlewares/LikesMiddleware"
+import DeleteMiddleware from "@s/infrastructure/middlewares/DeleteMiddleware"
 
 const upload = multer({storage: multer.memoryStorage()})
 const router = express.Router()
@@ -44,8 +45,8 @@ router.post(serverPaths.sendMessage, upload.array('files'), HttpMessageControlle
 router.put(`${serverPaths.editMessage}/:id`, upload.array('files'), HttpMessageController.editMessage)
 router.delete(`${serverPaths.deleteMessage}/:id`, HttpMessageController.deleteMessage)
 
-router.post(serverPaths.likesGet, HttpLikesController.sendLike)
-router.delete(`${serverPaths.likesDelete}/:id`, HttpLikesController.sendDelete)
+router.post(serverPaths.likesSend, LikesMiddleware.sendLike, HttpLikesController.sendLike)
+router.delete(`${serverPaths.likesDelete}/:id`, DeleteMiddleware, HttpLikesController.sendDelete)
 
 router.post(`${serverPaths.postAvatar}/:id`, upload.single('avatar'),  HttpFilesController.postAvatar)
 

@@ -7,7 +7,7 @@ import TokenHelper from "@s/infrastructure/endpoints/Token/services/TokenHelper"
 import { Form, User } from "@t/gen/Users";
 import TokenService from "@s/infrastructure/endpoints/Token/services/TokenService";
 import logger from "@s/logger";
-import { RequestReg } from "@s/infrastructure/middlewares/RegistrationValidationMid";
+import { RequestReg } from "@s/infrastructure/endpoints/Token/middlewares/RegistrationValidationMid";
 
 class HttpTokenController {
   registartion = async (req: Request, res: Response): Promise<Response<{form: Form, user: User, accessToken: string}>> => {
@@ -21,17 +21,20 @@ class HttpTokenController {
   login = async (req: Request, res: Response) => {
     const dto: UserDTO = req.body
     const user = one(await ORM.getByParams({email: dto.email}, 'users'))
-    logger.info(user.id, user.role)
+    logger.info({user})
 
     if (!user) {
+      logger.info({user, STATUS: "ТАКОГОЙ ПОЧТЫ НЕТ"})
       return res.status(400).json('Такой почты нет')
     }
 
     const passwordValidate =  await bcrypt.compare(dto.password, user.password)
     if (!passwordValidate) {
+      logger.info({user, STATUS: "НЕВЕРНЫЙ ПАРОЛЬ"})
       return res.status(400).json('Неверный пароль')
     }
 
+    logger.info({user, STATUS: "ВОШЁЛ"})
     const accessToken = await TokenHelper.createTokens(user.id, user.role, res)
     TokenHelper.returnDTO({user, accessToken}, res)
   }

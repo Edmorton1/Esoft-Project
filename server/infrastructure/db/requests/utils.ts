@@ -27,17 +27,23 @@ export const fieldsToArr = (fields: string | undefined, table: tables, includeTa
     logger.info({parsingFields: parsed})
    return parsed
   };
+
+  logger.info({BEFORE_PARSED: fields})
+  // if (Array.isArray(fields)) {
+  //   return fields
+  // }
+  
   const parsed = fields?.trim()?.split(',').map(e => e.trim()) ?? ['*']
-  logger.info({parsingFields: parsed})
+  logger.info({parsingFieldsInUtils: parsed})
   return parsed
 }
 
 // ПУТСОЙ МАССИВ РАЗРЕШЁН
 export const checkFirstType = <T extends Array<any>>(data: T, table: tables, fields?: string): T => {
   if (data.length > 0) {
-    logger.info({data, table});
+    logger.info({data, table, fields});
     const schema = z.array(getSchemaByTable(table, fields))
-    logger.info({SCHEMA: schema})
+    // logger.info({SCHEMA: schema})
     logger.info({SCHEMA_PARSE: schema.parse(data)})
     //@ts-ignore
     return schema.parse(data)

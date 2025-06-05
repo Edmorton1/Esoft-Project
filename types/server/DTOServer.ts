@@ -1,5 +1,5 @@
 import { MessageSchema } from "@t/gen/Users";
-import { expressMulter, zid } from "@t/shared/zodSnippets";
+import {expressMulter} from "@t/shared/zodSnippets";
 import z from "zod"
 
 export const MessageDTOServerSchema = MessageSchema.pick({fromid: true, toid: true, text: true}).extend({
