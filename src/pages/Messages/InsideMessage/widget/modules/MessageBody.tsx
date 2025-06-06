@@ -1,6 +1,6 @@
-import FormEdit from "@/pages/Messages/widgets/MessageWidget/modules/components/edit/FormEdit";
-import FileComponent from "@/pages/Messages/widgets/MessageWidget/modules/components/file/FileComponent";
-import ToComponent from "@/pages/Messages/widgets/MessageWidget/modules/components/static/ToComponent";
+import FormEdit from "@/pages/Messages/InsideMessage/widget/modules/components/edit/FormEdit";
+import FileComponent from "@/pages/Messages/InsideMessage/widget/modules/components/file/FileComponent";
+import ToComponent from "@/pages/Messages/InsideMessage/widget/modules/components/static/ToComponent";
 import StoreForm from "@/shared/stores/Store-Form"
 import { Message } from "@t/gen/Users"
 import { memo } from "react";

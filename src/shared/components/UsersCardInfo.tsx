@@ -1,9 +1,6 @@
-import { UsersContext } from "@/pages/Users/widgets/Card/UsersCardWidget"
-import StoreForm from "@/shared/stores/Store-Form"
 import StoreLikes from "@/shared/stores/StoreLikes"
 import { FormWithDistanse } from "@t/gen/types"
 import { observer } from "mobx-react-lite"
-import { useContext } from "react"
 
 function UsersCardInfo({handleLike, form}: {handleLike: () => void, form: FormWithDistanse}) {
   return <>

@@ -3,12 +3,15 @@ import StoreGlobal from "@/shared/api/Store-Global";
 import { Likes } from "@t/gen/Users";
 import { LikesDTO } from "@t/gen/dtoObjects";
 import { toCl } from "@shared/MAPPERS";
-import { makeAutoObservable, runInAction } from "mobx";
+import { makeAutoObservable, runInAction, toJS } from "mobx";
 import StoreUser from "@/shared/stores/Store-User";
 import { serverPaths } from "@shared/PATHS";
+import StoreForm from "@/shared/stores/Store-Form";
+import { FormWithDistanse } from "@t/gen/types";
 
 class StoreLikes {
   likes: {sent: {id: number, liked_userid: number}[]; received: {id: number, userid: number}[]} | null = null
+  liked: FormWithDistanse[] | null = null
 
   constructor() {
     makeAutoObservable(this)
@@ -37,8 +40,10 @@ class StoreLikes {
     }
   }
 
-  likedUser = async () => {
-    const forms = toCl(await $api.get(`${serverPaths.likes}?liked_userid=2`))
+  likedUser = async (data: FormWithDistanse[]) => {
+    // const forms = toCl(await $api.get(`${serverPaths.likesGet}/2?lat=${StoreForm.form?.location?.lat}&lng=${StoreForm.form?.location?.lng}`))
+    this.liked = data
+    console.log(toJS(data))
   }
 
   sendDelete = async (id: number) => {

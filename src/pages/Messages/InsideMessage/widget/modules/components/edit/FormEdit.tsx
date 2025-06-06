@@ -1,4 +1,4 @@
-import { MessageContext } from "@/pages/Messages/widgets/MessageWidget/modules/MessageHead";
+import { MessageContext } from "@/pages/Messages/InsideMessage/widget/modules/MessageHead";
 import { useContext } from "react";
 
 function FormEdit() {

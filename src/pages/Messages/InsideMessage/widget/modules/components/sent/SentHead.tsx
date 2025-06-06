@@ -1,5 +1,5 @@
-import SentBody from "@/pages/Messages/widgets/MessageWidget/modules/components/sent/SentBody"
-import StoreMessages from "@/pages/Messages/widgets/MessageWidget/modules/store/Store-Messages"
+import SentBody from "@/pages/Messages/InsideMessage/widget/modules/components/sent/SentBody"
+import StoreMessages from "@/pages/Messages/store/Store-Messages"
 import StoreForm from "@/shared/stores/Store-Form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { MessageDTOClientSchema } from "@t/client/DTOClient"

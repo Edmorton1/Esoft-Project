@@ -12,8 +12,9 @@ import CRUDMiddleware from "@s/infrastructure/middlewares/CRUDMiddleware"
 import logger, { httpLogger } from "@s/logger"
 import RegistrationValidationMid from "@s/infrastructure/endpoints/Token/middlewares/RegistrationValidationMid"
 import LikesMiddleware from "@s/infrastructure/endpoints/Likes/middlewares/LikesMiddleware"
-import DeleteMiddleware from "@s/infrastructure/middlewares/DeleteMiddleware"
 import MessageMiddleware from "@s/infrastructure/endpoints/Message/middlewares/MessageMiddleware"
+import HttpMessageOutsideController from "@s/infrastructure/endpoints/MessageOutside/HttpMessageOutsideController"
+import SharedMiddlewares from "@s/infrastructure/middlewares/SharedMiddlewares"
 
 const upload = multer({storage: multer.memoryStorage()})
 const router = express.Router()
@@ -44,11 +45,11 @@ router.get(serverPaths.refresh, HttpTokenController.refresh)
 
 router.post(serverPaths.sendMessage, upload.array('files'), MessageMiddleware.sendMessage , HttpMessageController.sendMessage)
 router.put(`${serverPaths.editMessage}/:id`, upload.array('files'), MessageMiddleware.editMessage, HttpMessageController.editMessage)
-router.delete(`${serverPaths.deleteMessage}/:id`, DeleteMiddleware, HttpMessageController.deleteMessage)
+router.delete(`${serverPaths.deleteMessage}/:id`, SharedMiddlewares.OnlyIdMiddleware, HttpMessageController.deleteMessage)
 
 router.post(serverPaths.likesSend, LikesMiddleware.sendLike, HttpLikesController.sendLike)
-router.delete(`${serverPaths.likesDelete}/:id`, DeleteMiddleware, HttpLikesController.sendDelete)
-router.get(`${serverPaths.likesGet}/:id`)
+router.delete(`${serverPaths.likesDelete}/:id`, SharedMiddlewares.OnlyIdMiddleware, HttpLikesController.sendDelete)
+router.get(`${serverPaths.likesGet}/:id`, LikesMiddleware.likesGet, HttpLikesController.likesGet)
 
 router.post(`${serverPaths.postAvatar}/:id`, upload.single('avatar'),  HttpFilesController.postAvatar)
 
@@ -56,6 +57,8 @@ router.post(serverPaths.testCompressViedo, upload.single('video'), HttpFilesCont
 router.post(serverPaths.testCompressAudio, upload.single('audio'), HttpFilesController.TestConvertAudio)
 
 router.get(`${serverPaths.extendedSearch}`, HttpExtendedSearchController.getForms)
+
+router.get(`${serverPaths.outsideMessages}/:id`, SharedMiddlewares.OnlyIdMiddleware, HttpMessageOutsideController.outsideMessages)
 
 // router.get('/dec', (req, res) => {
 //   const body = req.body;

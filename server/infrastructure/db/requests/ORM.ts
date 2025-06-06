@@ -84,20 +84,6 @@ class ORM {
     return checkFirstType(total, table, fields)
   }
 
-  getManyByParam = async <T extends tables>(param: keyof Tables[T], need: any[], table: T, fields?: string) => {
-    logger.info({GET_BY_MANY_PARAMS: ""})
-
-    let callback = undefined;
-
-    if (table === 'forms') {
-      callback = async () => requestToForm(fields)
-    } else {
-      callback = async () => await db(table).select(fieldsToArr(fields, table))
-    }
-
-    
-  }
-
   post = async <T extends tables>(dto: TablesPost[T], table: T, fields?: string): Promise<Tables[T][]> => {
     logger.info({table, fields, dto})
     if (typeof dto === 'object' && "password" in dto && typeof dto.password === "string") {

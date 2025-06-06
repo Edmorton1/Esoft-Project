@@ -1,0 +1,3 @@
+function getAllLastMessages(id: number) {
+
+}

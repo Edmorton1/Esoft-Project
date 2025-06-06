@@ -1,4 +1,4 @@
-import StoreMessages from "@/pages/Messages/widgets/MessageWidget/modules/store/Store-Messages";
+import StoreMessages from "@/pages/Messages/store/Store-Messages";
 import { fileToFileList } from "@/shared/funcs/filefuncs";
 import StoreForm from "@/shared/stores/Store-Form";
 import { blobToFile } from "@shared/MAPPERS";

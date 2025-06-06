@@ -1,6 +1,6 @@
 import $api from "@/shared/api/api"
 import StoreForm from "@/shared/stores/Store-Form"
-import StoreMessages from "@/pages/Messages/widgets/MessageWidget/modules/store/Store-Messages"
+import StoreMessages from "@/pages/Messages/store/Store-Messages"
 import storeSocket from "@/shared/api/Store-Socket"
 import StoreTags from "@/shared/stores/Store-Tags"
 import StoreLikes from "@/shared/stores/StoreLikes"

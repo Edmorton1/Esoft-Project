@@ -30,7 +30,7 @@ function useMap(containerRef: React.RefObject<HTMLDivElement | null>, coords: Lo
 			new mapgl.Control(map, zoomContainer, {position: "topRight"});
 		});
 
-		return map?.destroy();
+		return () => map?.destroy();
 	}, [containerRef, coords]);
 
 	return [mapgl, map];

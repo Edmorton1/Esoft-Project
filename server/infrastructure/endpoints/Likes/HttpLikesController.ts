@@ -4,8 +4,9 @@ import ORM from "@s/infrastructure/db/requests/ORM";
 import { clients } from "@s/socket";
 import { Request, Response } from "express";
 import logger from "@s/logger";
-import { RequestLike } from "@s/infrastructure/endpoints/Likes/middlewares/LikesMiddleware";
-import { RequestDelete } from "@s/infrastructure/middlewares/DeleteMiddleware";
+import { RequestGet, RequestLike } from "@s/infrastructure/endpoints/Likes/middlewares/LikesMiddleware";
+import { RequestOnlyId } from "@s/infrastructure/middlewares/SharedMiddlewares";
+import { getManyByParam } from "@s/infrastructure/endpoints/Likes/sql/SQLLikes";
 
 class HttpLikesController {
   sendLike = async (req: Request, res: Response) => {
@@ -23,7 +24,7 @@ class HttpLikesController {
   }
 
   sendDelete = async (req: Request, res: Response) => {
-    const r = req as RequestDelete
+    const r = req as RequestOnlyId
 
     logger.info(r.id)
 
@@ -34,6 +35,16 @@ class HttpLikesController {
     res.json(request)
   }
 
+  likesGet = async (req: Request, res: Response) => {
+    const r = req as RequestGet
+
+    logger.info(r.id)
+    const ids = (await ORM.getByParams({liked_userid: r.id}, 'likes', 'userid')).map(e => e.userid)
+    logger.info({ids})
+
+    const respo = await getManyByParam("id", ids, r.lnglat)
+    res.json(respo)
+  }
   //УДАЛИТЬ ПОТОМ
   // @logError
   // async decorator(req: Request, res: Response) {

@@ -37,6 +37,8 @@ export const serverPaths = {
 
   extendedSearch: "/extendedSearch",
 
+  outsideMessages: "/outsideMessages",
+
   users: "/users",
   forms: "/forms",
   likes: "/likes",

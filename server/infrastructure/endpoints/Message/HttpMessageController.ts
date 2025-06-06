@@ -8,7 +8,7 @@ import { Request, Response } from "express";
 import MessageFileHelper from "@s/infrastructure/endpoints/Message/services/MessageFileHelper";
 import logger from "@s/logger";
 import { ReqEditMessage, ReqSendMessage } from "@s/infrastructure/endpoints/Message/middlewares/MessageMiddleware";
-import { RequestDelete } from "@s/infrastructure/middlewares/DeleteMiddleware";
+import { RequestOnlyId } from "@s/infrastructure/middlewares/SharedMiddlewares";
 
 class HttpMessageController {
   sendSocket = <T extends keyof MsgTypesServer>(fromid: number, toid: number, msg: MsgTypesServer[T], type: T) => {
@@ -55,7 +55,7 @@ class HttpMessageController {
   }
 
   deleteMessage = async (req: Request, res: Response) => {
-    const r = req as RequestDelete
+    const r = req as RequestOnlyId
 
     const data = one(await ORM.delete(r.id, 'messages'))
     const asd = await Yandex.deleteFolder(r.id)
