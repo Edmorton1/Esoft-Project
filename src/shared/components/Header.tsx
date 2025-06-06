@@ -6,7 +6,6 @@ import StoreUsers from "@/pages/Users/widgets/store/Store-Users"
 import StoreLikes from "@/shared/stores/StoreLikes"
 import { toJS } from "mobx"
 import { Link, NavLink, Outlet } from "react-router-dom"
-// import ThemeButton from "@/shared/components/ThemeButton OLD"
 import { paths } from "@shared/PATHS"
 import * as style from "@/shared/css/Shared.module.scss"
 import classNames from "classnames"
@@ -26,6 +25,7 @@ function Header() {
         <Link to={`${paths.profile}/2`}><button>profile 2</button></Link>
         <Link to={paths.room}><button>ROOM</button></Link>
         <Link to={paths.map}><button>MAP</button></Link>
+        <Link to={paths.liked}><button>Liked</button></Link>
         <button onClick={() => console.log(
           'User: ', toJS(StoreUser.user),
           'Form:', toJS(StoreForm.form),

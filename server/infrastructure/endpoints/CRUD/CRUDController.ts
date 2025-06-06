@@ -8,12 +8,14 @@ class CRUDController {
     readonly table: tables
   ) {}
   
-  get = async (req: Request<object, object, object, {fields?: string, sqlparams?: string}>, res: Response) => {
-    const { fields, sqlparams, ...params } = req.query;
+  get = async (req: Request<object, object, object, {fields?: string, sqlparams?: string, lnglat: string}>, res: Response) => {
+    const { fields, sqlparams, lnglat, ...params } = req.query;
     delete req.query.fields
     delete req.query.sqlparams
 
     if (Object.keys(req.query).length > 0) {
+      logger.info({REQ_QUERY: req.query})
+      logger.info({SQL_PARAMS: sqlparams})
       return res.json(await ORM.getByParams(params, this.table, fields, sqlparams))
     }
     res.json(await ORM.get(this.table, fields, sqlparams))
@@ -41,14 +43,6 @@ class CRUDController {
     const request = await ORM.delete(id, this.table)
     res.json(request)
   }
-
-  // async getByParams(req: Request, res: Response) {
-  //   const {table, ...params} = frJSON<{table: tables, params: Partial<Tables[tables]>}>(req.query.params)!
-  //   // logger.info(params)
-  //   //@ts-ignore
-  //   const request = await this.ORM.getByParams(params, table)
-  //   res.json(request)
-  // }
 }
 
 export default CRUDController

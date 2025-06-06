@@ -1,5 +1,5 @@
 import {BrowserRouter, Routes, Route} from "react-router";
-import { LazyFourHundredFour, LazyLogin, LazyMain, LazyMap, LazyMessages, LazyProfile, LazyRegistration, LazyRoom, LazySettings, LazyTest, LazyUsers } from "@/app/index.lazy";
+import { LazyFourHundredFour, LazyLiked, LazyLogin, LazyMain, LazyMap, LazyMessages, LazyProfile, LazyRegistration, LazyRoom, LazySettings, LazyTest, LazyUsers } from "@/app/index.lazy";
 import SocketStore from "@/shared/api/Store-Socket";
 import {Suspense, useEffect} from "react";
 import Initialization from "@/app/Initialization";
@@ -32,6 +32,7 @@ function App() {
 							<Route path={`${paths.profile}/:id`} element={<LazyProfile />} />
 							<Route path={paths.settings} element={<LazySettings/>}/>
 							<Route path={paths.map} element={<LazyMap />} />
+							<Route path={paths.liked} element={<LazyLiked />} />
 							
 							<Route path={paths.room} element={<LazyRoom />} />
 							<Route path="*" element={<LazyFourHundredFour />} />

@@ -8,7 +8,8 @@ export const paths = {
   room: '/room',
   map: '/map',
 
-  test: "/test"
+  test: "/test",
+  liked: "/liked"
 } as const
 
 // 'users', 'forms', 'likes', 'messages', 'tags', 'user_tags', 'tokens'
@@ -27,6 +28,7 @@ export const serverPaths = {
 
   likesSend: "/likesSend",
   likesDelete: "/likesDelete",
+  likesGet: "/likesGet",
 
   postAvatar: "/postAvatar",
 

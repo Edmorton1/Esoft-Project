@@ -48,6 +48,7 @@ router.delete(`${serverPaths.deleteMessage}/:id`, DeleteMiddleware, HttpMessageC
 
 router.post(serverPaths.likesSend, LikesMiddleware.sendLike, HttpLikesController.sendLike)
 router.delete(`${serverPaths.likesDelete}/:id`, DeleteMiddleware, HttpLikesController.sendDelete)
+router.get(`${serverPaths.likesGet}/:id`)
 
 router.post(`${serverPaths.postAvatar}/:id`, upload.single('avatar'),  HttpFilesController.postAvatar)
 

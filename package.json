@@ -10,7 +10,8 @@
     "dev": "chcp 65001 && nodemon -r tsconfig-paths/register server/index.ts",
     "dev:railway": "ts-node server/index.ts",
     "typecheck": "tsc --noEmit",
-    "test": "jest tests/ --runInBand --detectOpenHandles"
+    "test:integra": "jest tests/integra --runInBand --detectOpenHandles",
+    "test:unit": "chcp 65001 && jest tests/unit"
   },
   "author": "",
   "license": "ISC",

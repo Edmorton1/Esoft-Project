@@ -19,6 +19,7 @@ class StoreLikes {
     const sent = toCl<Likes[]>(await $api.get(`${serverPaths.likes}?userid=${StoreUser.user!.id}&fields=id, liked_userid`))
     const received = toCl<Likes[]>(await $api.get(`${serverPaths.likes}?liked_userid=${StoreUser.user!.id}&fields=id, userid`))
     runInAction(() => this.likes = {sent, received})
+    // console.log('[SNET]', await $api.get(`${serverPaths.likes}?userid=${StoreUser.user!.id}&fields=id, liked_userid`))
     // console.log(toJS(this.likes))
   }
 
@@ -34,6 +35,10 @@ class StoreLikes {
     catch(err) {
       console.log(err)
     }
+  }
+
+  likedUser = async () => {
+    const forms = toCl(await $api.get(`${serverPaths.likes}?liked_userid=2`))
   }
 
   sendDelete = async (id: number) => {

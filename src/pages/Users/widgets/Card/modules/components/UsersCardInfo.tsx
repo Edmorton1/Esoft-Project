@@ -1,26 +1,24 @@
 import { UsersContext } from "@/pages/Users/widgets/Card/UsersCardWidget"
 import StoreForm from "@/shared/stores/Store-Form"
 import StoreLikes from "@/shared/stores/StoreLikes"
+import { FormWithDistanse } from "@t/gen/types"
+import { observer } from "mobx-react-lite"
 import { useContext } from "react"
 
-function UsersCardInfo() {
-  const context = useContext(UsersContext)!
-
-  const handleLike = () => StoreLikes.sendLike({userid: StoreForm.form!.id!, liked_userid: context.id})
-
+function UsersCardInfo({handleLike, form}: {handleLike: () => void, form: FormWithDistanse}) {
   return <>
-    <button onClick={handleLike}>Лайкнуть</button>
-    <img src={context.avatar!} alt="" />
-    <div>Имя: {context.name}</div>
-    <div>Пол: {context.sex === true ? 'Мужчина' : 'Женщина'}</div>
-    <div>Возраст: {context.age}</div>
-    <div>Цель: {context.target}</div>
-    <div>Описание: {context.description}</div>
-    <div>Город: {context.city}</div>
-    <div>Тэги: {context.tags?.map(e => e.tag).join(', ')}</div>
-    <div>{context.distance ? `Расстояние: ${context.distance} км` : ''}</div>
+    <button onClick={handleLike}>{StoreLikes.likes?.sent.some(e => e.liked_userid === form!.id) ? 'Убрать лайк' : 'Лайкнуть'}</button>
+    <img src={form.avatar!} alt="" />
+    <div>Имя: {form.name}</div>
+    <div>Пол: {form.sex === true ? 'Мужчина' : 'Женщина'}</div>
+    <div>Возраст: {form.age}</div>
+    <div>Цель: {form.target}</div>
+    <div>Описание: {form.description}</div>
+    <div>Город: {form.city}</div>
+    <div>Тэги: {form.tags?.map(e => e.tag).join(', ')}</div>
+    <div>{form.distance ? `Расстояние: ${form.distance} км` : ''}</div>
     <br />
   </>
 }
 
-export default UsersCardInfo
+export default observer(UsersCardInfo)

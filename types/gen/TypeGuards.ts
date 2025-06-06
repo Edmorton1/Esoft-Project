@@ -1,7 +1,7 @@
 import PeerCaller from "@/pages/Room/WebRTC/logic/PeerCaller";
 import PeerResponder from "@/pages/Room/WebRTC/logic/PeerResponder";
-import { Form, FormSchema } from "@t/gen/Users";
-import { z } from "zod";
+import { Knex } from "knex";
+
 
 export function assertPeerCaller(value: PeerCaller | PeerResponder): asserts value is PeerCaller {
   if (!(value instanceof PeerCaller)) throw new Error("Это не PeerCaller!")

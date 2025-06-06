@@ -4,7 +4,6 @@ import db from "@s/infrastructure/db/db"
 import bcrypt from "bcrypt"
 import { checkFirstType, fieldsToArr } from "@s/infrastructure/db/requests/utils"
 import requestToForm from "@s/infrastructure/db/requests/SQLform"
-import { getSchemaByTable } from "@t/shared/sharedTypes"
 import logger from "../../../logger"
 
   logger.info('asdsdadas')
@@ -83,6 +82,20 @@ class ORM {
     const total = await cacheGet(key, callback)
 
     return checkFirstType(total, table, fields)
+  }
+
+  getManyByParam = async <T extends tables>(param: keyof Tables[T], need: any[], table: T, fields?: string) => {
+    logger.info({GET_BY_MANY_PARAMS: ""})
+
+    let callback = undefined;
+
+    if (table === 'forms') {
+      callback = async () => requestToForm(fields)
+    } else {
+      callback = async () => await db(table).select(fieldsToArr(fields, table))
+    }
+
+    
   }
 
   post = async <T extends tables>(dto: TablesPost[T], table: T, fields?: string): Promise<Tables[T][]> => {
