@@ -1,6 +1,5 @@
 import { FormDTO, LikesDTO, MessageDTO, TagsDTO, UserDTO, UserTagsDTO } from "@t/gen/dtoObjects"
 import { Form, Likes, Message, Tags, Token, User, UserTags } from "@t/gen/Users"
-import { MessageDTOServer } from "@t/server/DTOServer"
 
 export type Tables = {
   users: User,

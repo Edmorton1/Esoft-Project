@@ -25,6 +25,7 @@ export const serverPaths = {
   sendMessage: "/sendMessage",
   editMessage: "/editMessage",
   deleteMessage: "/deleteMessage",
+  getMessage: "/getMessage",
 
   likesSend: "/likesSend",
   likesDelete: "/likesDelete",

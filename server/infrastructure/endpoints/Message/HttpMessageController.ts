@@ -1,4 +1,4 @@
-import { msg, MsgTypesServer } from "@t/gen/types";
+import { MsgTypesServer } from "@t/gen/types";
 import { Message } from "@t/gen/Users";
 import { toSOSe, one } from "@shared/MAPPERS";
 import ORM from "@s/infrastructure/db/requests/ORM";
@@ -7,8 +7,9 @@ import Yandex from "@s/yandex";
 import { Request, Response } from "express";
 import MessageFileHelper from "@s/infrastructure/endpoints/Message/services/MessageFileHelper";
 import logger from "@s/logger";
-import { ReqEditMessage, ReqSendMessage } from "@s/infrastructure/endpoints/Message/middlewares/MessageMiddleware";
+import { ReqEditMessage, ReqGetMessage, ReqSendMessage } from "@s/infrastructure/endpoints/Message/middlewares/MessageMiddleware";
 import { RequestOnlyId } from "@s/infrastructure/middlewares/SharedMiddlewares";
+import MessageSQL from "@s/infrastructure/endpoints/Message/SQL/MessageSQL";
 
 class HttpMessageController {
   sendSocket = <T extends keyof MsgTypesServer>(fromid: number, toid: number, msg: MsgTypesServer[T], type: T) => {
@@ -17,6 +18,16 @@ class HttpMessageController {
     const clientTo = clients.get(toid)
     clientFrom?.send(toSOSe(type, msg))
     clientTo?.send(toSOSe(type, msg))
+  }
+
+  getMessage = async (req: Request, res: Response) => {
+    const r = req as ReqGetMessage
+    logger.info({toid: r.toid, frid: r.frid})
+
+    // ЗАВТРА ДОПИСАТЬ ЛИБО В ОРМ ЛИБО САМОМУ SQL НАПИСАТЬ
+    const result = await MessageSQL.getMessage(r.frid, r.toid)
+
+    res.json(result)
   }
 
   sendMessage = async (req: Request, res: Response) => {

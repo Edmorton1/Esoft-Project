@@ -5,9 +5,16 @@ import MessageWidget from "@/pages/Messages/InsideMessage/widget/MessageWidget"
 import VoiceMessage from "@/pages/Messages/InsideMessage/widget/modules/classes/VoiceMessage"
 import { useParams } from "react-router-dom"
 import SentHead from "@/pages/Messages/InsideMessage/widget/modules/components/sent/SentHead"
+import useGetBy from "@/shared/hooks/useGetBy"
+import { serverPaths } from "@shared/PATHS"
+import { z } from "zod"
+import StoreUser from "@/shared/stores/Store-User"
+import StoreMessages from "@/pages/Messages/store/Store-Messages"
 
 function Messages() {
-  const {toid} = useParams<{toid: string}>()
+  const toid = z.coerce.number().parse(useParams().toid)
+  useGetBy(`${serverPaths.getMessage}/${StoreUser.user?.id}/${toid}`, {callback: (data) => StoreMessages.initial(data)})
+
     // const [voiceRef] = useMedia(VoiceMessage, undefined, toid)
   
   return (

@@ -15,11 +15,13 @@ function useGetBy<T extends tables>(fullUrl: string, options?: optionsInterface)
 
   const [value, setValue] = useState<any | null>(null)
   const [url, params] = fullUrl.split('?')
-  const endpoint = params ? `${url}?${params}` : `${url}`
+  // const endpoint = params ? `${url}?${params}` : `${url}`
 
   useEffect(() => {
+    if (fullUrl.includes('undefined')) return;
+    
     const fetchData = async () => {
-    const response = await $api.get(endpoint)
+    const response = await $api.get(params ? `${url}?${params}` : `${url}`)
       console.log(response, 'response')
     const request = toCl<Tables[T][]>(response)
 
@@ -30,7 +32,7 @@ function useGetBy<T extends tables>(fullUrl: string, options?: optionsInterface)
     }
 
     fetchData()
-  }, [fullUrl])
+  }, [fullUrl, url, params])
 
   return value
 }

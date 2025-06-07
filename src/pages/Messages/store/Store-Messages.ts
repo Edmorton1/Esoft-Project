@@ -6,19 +6,23 @@ import StoreUser from "@/shared/stores/Store-User"
 import { serverPaths } from "@shared/PATHS"
 import { toFormData } from "@/shared/funcs/filefuncs"
 import { MessageDTOClient, MessagePutDTOClient, MessagePutDTOClientSchema } from "@t/client/DTOClient"
+import { MessageStackInterface } from "@t/gen/Schemas"
 
 class StoreMessages {
-  messages: {sent: Message[]; received: Message[]} | null = null
+  messages: MessageStackInterface | null = null
   
   constructor() {
     makeAutoObservable(this)
   }
 
-  initial = async () => {
-    const sent = toCl<Message[]>(await $api.get(`${serverPaths.messages}?fromid=${StoreUser.user?.id}`))?.sort((a, b) => a.id! - b.id!)
-    const received = toCl<Message[]>(await $api.get(`${serverPaths.messages}?toid=${StoreUser.user?.id}`))?.sort((a, b) => a.id! - b.id!)
-    const msgs = {sent, received}
-    runInAction(() => this.messages = msgs)
+  initial = async (data: MessageStackInterface) => {
+    this.messages = data
+    // const sent = toCl<Message[]>(await $api.get(`${serverPaths.messages}?fromid=${StoreUser.user?.id}`))?.sort((a, b) => a.id! - b.id!)
+    // const received = toCl<Message[]>(await $api.get(`${serverPaths.messages}?toid=${StoreUser.user?.id}`))?.sort((a, b) => a.id! - b.id!)
+    // const msgs = {sent, received}
+    // runInAction(() => this.messages = msgs)
+
+    
   }
 
   send = async (data: MessageDTOClient) => {

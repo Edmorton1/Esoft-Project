@@ -29,7 +29,7 @@ class StoreUser {
   loadModules = async (logout: boolean = false) => {
     if (!logout) {
       await StoreLikes.initial()
-      await StoreMessages.initial()
+      // await StoreMessages.initial()
       await StoreTags.initial()
     } else {
       runInAction(() => {

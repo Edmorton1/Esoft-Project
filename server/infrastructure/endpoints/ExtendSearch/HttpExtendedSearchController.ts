@@ -1,4 +1,4 @@
-import SQLHard from "@s/infrastructure/endpoints/ExtendSearch/sql/SQLHard"
+import SQLHard from "@s/infrastructure/endpoints/ExtendSearch/SQL/SQLHard"
 import logger from "@s/logger"
 import { frJSON } from "@shared/MAPPERS"
 import { lnglatType } from "@t/gen/types"

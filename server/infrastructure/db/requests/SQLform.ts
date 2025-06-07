@@ -4,8 +4,7 @@ import logger from "@s/logger";
 import { Form } from "@t/gen/Users";
 import { Knex } from "knex";
 
-function requestToForm(fields?: string, params?: Partial<Form>,
-  manyParams?: {name: string, params: any[]}): Knex.QueryBuilder<any> {
+function requestToForm(fields?: string, params?: Partial<Form>, manyParams?: {name: string, params: any[]}): Knex.QueryBuilder<any> {
 
 	let query = db('forms');
   logger.info({sql: query.toSQL().toNative()}, 'toNative1');

@@ -5,6 +5,7 @@ import bcrypt from "bcrypt"
 import { checkFirstType, fieldsToArr } from "@s/infrastructure/db/requests/utils"
 import requestToForm from "@s/infrastructure/db/requests/SQLform"
 import logger from "../../../logger"
+import { Form } from "@t/gen/Users"
 
   logger.info('asdsdadas')
 interface SQLParams {
@@ -82,6 +83,14 @@ class ORM {
     const total = await cacheGet(key, callback)
 
     return checkFirstType(total, table, fields)
+  }
+
+  // ПОКА БУДЕТ ТОЛЬКО К ФОРМЕ
+  getManyParams = async (params: any[], fields?: string): Promise<Form[]> => {
+    // const parsedFields = fieldsToArr(fields, 'forms')
+    const request = await requestToForm(fields, undefined, {name: "id", params})
+    
+    return request
   }
 
   post = async <T extends tables>(dto: TablesPost[T], table: T, fields?: string): Promise<Tables[T][]> => {

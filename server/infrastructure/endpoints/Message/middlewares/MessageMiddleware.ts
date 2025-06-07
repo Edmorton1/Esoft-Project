@@ -1,9 +1,15 @@
 import logger from "@s/logger"
 import { frJSON } from "@shared/MAPPERS"
 import { MessageDTO } from "@t/gen/dtoObjects"
+import { zstrnum } from "@t/gen/Schemas"
 import { MessageDTOServerSchema, MessagePutDTOServer, MessagePutDTOServerSchema } from "@t/server/DTOServer"
 import { Request, Response, NextFunction } from "webpack-dev-server"
 import { z } from "zod"
+
+export interface ReqGetMessage extends Request {
+  frid: number,
+  toid: number
+}
 
 export interface ReqSendMessage extends Request {
   message: MessageDTO,
@@ -16,6 +22,17 @@ export interface ReqEditMessage extends Request {
 }
 
 class MessageMiddleware {
+  getMessage = (req: Request, res: Response, next: NextFunction) => {
+    const r = req as ReqGetMessage
+
+    const frid = zstrnum.parse(req.params.frid)
+    const toid = zstrnum.parse(req.params.toid)
+
+    r.frid = frid
+    r.toid = toid
+    next()
+  };
+
   sendMessage = (req: Request, res: Response, next: NextFunction) => {
     const r = req as ReqSendMessage
 

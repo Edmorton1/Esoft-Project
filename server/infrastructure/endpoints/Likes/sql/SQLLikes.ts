@@ -5,7 +5,7 @@ import logger from "@s/logger";
 import { lnglatType, Tables, tables } from "@t/gen/types";
 
 // export const getManyByParam = async <T extends tables>(param: keyof Tables[T], need: any[], table: T, fields?: string) => {
-export const getManyByParam = async <T extends tables>(param: keyof Tables[T], need: any[], distance?: lnglatType) => {
+export const getManyByParam = async <T extends tables>(name: keyof Tables[T], need: any[], distance?: lnglatType) => {
 	logger.info({GET_BY_MANY_PARAMS: ""});
 
 	// let callback = undefined;
@@ -30,7 +30,7 @@ export const getManyByParam = async <T extends tables>(param: keyof Tables[T], n
   // const fields = 'id, name sex, avatar, age, description, target, city, tags, location'
 
   const totalFields = fieldsToArr(undefined, 'forms', true)
-  const query = requestToForm(undefined, undefined, {name: param as string, params: need})
+  const query = requestToForm(undefined, undefined, {name: name as string, params: need})
   knexDistance && totalFields.push(knexDistance)
 
   query.select(totalFields)

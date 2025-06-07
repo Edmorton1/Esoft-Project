@@ -6,7 +6,7 @@ import { MessageDTOClientSchema } from "@t/client/DTOClient"
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 
-function SentHead({toid}: {toid: string}) {
+function SentHead({toid}: {toid: number}) {
   const {register, handleSubmit, setValue, formState: { errors }} = useForm({
     resolver: zodResolver(MessageDTOClientSchema),
     defaultValues: {

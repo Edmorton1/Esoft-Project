@@ -1,3 +1,4 @@
+import { MessageFormType } from "@t/gen/Schemas"
 import { makeAutoObservable } from "mobx"
 
 class StoreMessage {
@@ -5,7 +6,12 @@ class StoreMessage {
     makeAutoObservable(this)
   }
 
-  // lastMessages = 
+  lastMessages: MessageFormType[] | null = null
+
+  initial = (data: MessageFormType[]) => {
+    console.log(data)
+    this.lastMessages = data
+  }
 }
 
 export default new StoreMessage

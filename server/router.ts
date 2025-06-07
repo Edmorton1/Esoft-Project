@@ -46,6 +46,7 @@ router.get(serverPaths.refresh, HttpTokenController.refresh)
 router.post(serverPaths.sendMessage, upload.array('files'), MessageMiddleware.sendMessage , HttpMessageController.sendMessage)
 router.put(`${serverPaths.editMessage}/:id`, upload.array('files'), MessageMiddleware.editMessage, HttpMessageController.editMessage)
 router.delete(`${serverPaths.deleteMessage}/:id`, SharedMiddlewares.OnlyIdMiddleware, HttpMessageController.deleteMessage)
+router.get(`${serverPaths.getMessage}/:frid/:toid`, MessageMiddleware.getMessage, HttpMessageController.getMessage)
 
 router.post(serverPaths.likesSend, LikesMiddleware.sendLike, HttpLikesController.sendLike)
 router.delete(`${serverPaths.likesDelete}/:id`, SharedMiddlewares.OnlyIdMiddleware, HttpLikesController.sendDelete)

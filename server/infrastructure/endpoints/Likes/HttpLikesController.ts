@@ -42,8 +42,8 @@ class HttpLikesController {
     const ids = (await ORM.getByParams({liked_userid: r.id}, 'likes', 'userid')).map(e => e.userid)
     logger.info({ids})
 
-    const respo = await getManyByParam("id", ids, r.lnglat)
-    res.json(respo)
+    const response = await getManyByParam("id", ids, r.lnglat)
+    res.json(response)
   }
   //УДАЛИТЬ ПОТОМ
   // @logError
