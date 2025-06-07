@@ -8,11 +8,7 @@ function MessageWidget() {
   const [editMessage, setEditMessage] = useState<null | number>(null)
 
   return <>
-    {StoreMessages.messages?.sent?.map(msg => (
-      <MessageHead key={msg.id} msg={msg} editing={editMessage === msg.id} setEditMessage={setEditMessage} />
-    ))}
-    <div>Входящие</div>
-    {StoreMessages.messages?.received?.map(msg => (
+    {StoreMessages.messages?.map(msg => (
       <MessageHead key={msg.id} msg={msg} editing={editMessage === msg.id} setEditMessage={setEditMessage}/>
     ))}
   </>

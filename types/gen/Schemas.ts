@@ -14,10 +14,17 @@ const nullToArr = <T extends z.ZodTypeAny>(schema: T) => z.preprocess(val => {
   } return val
 }, z.array(schema))
 
-export const MessageStackSchema = z.object({
-  sent: nullToArr(MessageSchema),
-  received: nullToArr(MessageSchema)
-})
+// export const MessageStackSchema = z.object({
+//   sent: nullToArr(MessageSchema),
+//   received: nullToArr(MessageSchema)
+// })
 
+// export const MessageStackSchema = MessageSchema.extend({
+//   isauthor: z.boolean()
+// })
+
+// export const MessageStackSchemaArr = z.array(MessageStackSchema)
+
+// export type MessageStackInterface = z.infer<typeof MessageStackSchema>
 export type MessageFormType = z.infer<typeof MessageFormSchema>
-export type MessageStackInterface = z.infer<typeof MessageStackSchema>
+// export type MessageStackInterfaceArr = z.infer<typeof MessageStackSchemaArr>

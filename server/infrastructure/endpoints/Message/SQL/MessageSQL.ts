@@ -1,30 +1,28 @@
 import db from "@s/infrastructure/db/db"
 import logger from "@s/logger"
-import { MessageStackInterface, MessageStackSchema } from "@t/gen/Schemas"
 import { Message, MessageSchema } from "@t/gen/Users"
 import { z } from "zod"
 
 class MessageSQL {
-  async getMessage(frid: number, toid: number): Promise<MessageStackInterface> {
+  async getMessage(frid: number, toid: number): Promise<Message[]> {
     const query = db.raw(`
-      SELECT json_build_object(
-        'received', (
-          SELECT json_agg(row_to_json(messages))
-          FROM messages
-          WHERE fromid = ? AND toid = ?
-        ),
-        'sent', (
-          SELECT json_agg(row_to_json(messages))
-          FROM messages
-          WHERE fromid = ? AND toid = ?
-        )
-      ) as messages
-    `, [toid, frid, frid, toid])
+      SELECT 
+      CASE
+        WHEN fromid = ? THEN true
+        ELSE false
+      END as isAuthor, 
+      *
+      FROM messages
+      WHERE fromid = ? AND toid = ?
+      OR fromid = ? AND toid = ?
+      ORDER BY id DESC
+    `, [frid, frid, toid, toid, frid])
     
     logger.info({SQL: query.toSQL().toNative()})
-    const total = (await query).rows[0].messages
+    
+    const total = (await query).rows
 
-    const parsed = MessageStackSchema.parse(total)
+    const parsed = z.array(MessageSchema).parse(total)
 
     return parsed
   }

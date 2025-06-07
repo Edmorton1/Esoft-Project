@@ -1,22 +1,25 @@
 import $api from "@/shared/api/api"
 import { makeAutoObservable, runInAction, toJS } from "mobx"
-import { Message } from "@t/gen/Users"
+import { Form, Message } from "@t/gen/Users"
 import { toCl, toJSON } from "@shared/MAPPERS"
 import StoreUser from "@/shared/stores/Store-User"
 import { serverPaths } from "@shared/PATHS"
 import { toFormData } from "@/shared/funcs/filefuncs"
 import { MessageDTOClient, MessagePutDTOClient, MessagePutDTOClientSchema } from "@t/client/DTOClient"
-import { MessageStackInterface } from "@t/gen/Schemas"
 
 class StoreMessages {
-  messages: MessageStackInterface | null = null
+  messages: Message[] | null = null
+  form: Form | null = null
   
   constructor() {
     makeAutoObservable(this)
   }
 
-  initial = async (data: MessageStackInterface) => {
-    this.messages = data
+  initial = async (data: {messages: Message[], form: Form}) => {
+    this.messages = data.messages
+    this.form = data.form
+    
+    console.log(this.messages, this.form)
     // const sent = toCl<Message[]>(await $api.get(`${serverPaths.messages}?fromid=${StoreUser.user?.id}`))?.sort((a, b) => a.id! - b.id!)
     // const received = toCl<Message[]>(await $api.get(`${serverPaths.messages}?toid=${StoreUser.user?.id}`))?.sort((a, b) => a.id! - b.id!)
     // const msgs = {sent, received}
@@ -44,7 +47,7 @@ class StoreMessages {
     const data = MessagePutDTOClientSchema.parse(raw)
     let fd;
 
-    const old = this.messages!.sent.find(e => e.id == data.id)!
+    const old = this.messages!.find(e => e.id == data.id)!
     console.log(data, toJS(old), 'messagedto')
 
     if (data.files.new == null && data.files.old.length === 0 && data.text == old.text) {
@@ -80,20 +83,20 @@ class StoreMessages {
   socketGet = (data: Message) => {
     // console.log(StoreUser.user.id, data.toid, data.fromid)
     if (data.toid === StoreUser.user!.id) {
-      return this.messages!.received.push(data)
+      return this.messages!.push(data)
     }
-    return this.messages!.sent.push(data)
+    return this.messages!.push(data)
   }
   
   socketPut = (data: Message) => {
     console.log(data)
-    this.messages!.received = this.messages!.received.map(e => e.id === data.id ? {...e, text: data.text, files: data.files} : e)
-    this.messages!.sent = this.messages!.sent.map(e => e.id === data.id ? {...e, text: data.text, files: data.files} : e)
+    this.messages! = this.messages!.map(e => e.id === data.id ? {...e, text: data.text, files: data.files} : e)
+    this.messages! = this.messages!.map(e => e.id === data.id ? {...e, text: data.text, files: data.files} : e)
   }
 
   socketDelete = (id: number) => {
-    this.messages!.received = this.messages!.received.filter(e => e.id != id)
-    this.messages!.sent = this.messages!.sent.filter(e => e.id != id)
+    this.messages! = this.messages!.filter(e => e.id != id)
+    this.messages! = this.messages!.filter(e => e.id != id)
   }
 }
 

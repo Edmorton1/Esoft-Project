@@ -1,5 +1,5 @@
 import { MsgTypesServer } from "@t/gen/types";
-import { Message } from "@t/gen/Users";
+import { Form, Message } from "@t/gen/Users";
 import { toSOSe, one } from "@shared/MAPPERS";
 import ORM from "@s/infrastructure/db/requests/ORM";
 import { clients } from "@s/socket";
@@ -20,14 +20,15 @@ class HttpMessageController {
     clientTo?.send(toSOSe(type, msg))
   }
 
-  getMessage = async (req: Request, res: Response) => {
+  getMessage = async (req: Request, res: Response<{messages: Message[], form: Form}>) => {
     const r = req as ReqGetMessage
     logger.info({toid: r.toid, frid: r.frid})
 
     // ЗАВТРА ДОПИСАТЬ ЛИБО В ОРМ ЛИБО САМОМУ SQL НАПИСАТЬ
-    const result = await MessageSQL.getMessage(r.frid, r.toid)
+    const messages = await MessageSQL.getMessage(r.frid, r.toid)
+    const form = one(await ORM.getById(r.toid, 'forms'))
 
-    res.json(result)
+    res.json({messages, form})
   }
 
   sendMessage = async (req: Request, res: Response) => {
