@@ -1,0 +1,115 @@
+import FormError from "@/shared/ui/kit/FormError";
+import FormControl from "@mui/material/FormControl";
+import FormControlLabel, { FormControlLabelProps } from "@mui/material/FormControlLabel";
+import FormLabel from "@mui/material/FormLabel";
+import Input from "@mui/material/Input";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import Select from "@mui/material/Select";
+import TextField from "@mui/material/TextField";
+import { ReactElement, ReactNode } from "react";
+import { Control, Controller, FieldError, UseFormRegister } from "react-hook-form";
+
+interface inputInterface {
+  text: string,
+  id: string,
+  error?: FieldError,
+  children?: ReactNode
+  register: UseFormRegister<any>,
+  type?: string,
+  disabled?: boolean
+}
+
+export function InputMui({text, id, error, register, children, disabled, type = 'text'}: inputInterface) {
+  
+  return <FormControl error={!!error}>
+    <TextField label={text} {...register(id, {valueAsNumber: type === 'number'})} type={type} id={id} disabled={disabled} variant="standard" error={!!error} slotProps={{inputLabel: disabled !== undefined ? {shrink: disabled !== undefined} : undefined}} />
+    <FormError id={id} error={error}></FormError>
+    {children}
+  </FormControl>
+}
+
+interface inputNumberInterface {
+  text: string,
+  id: string,
+  error?: FieldError,
+  children?: ReactNode
+  register: UseFormRegister<any>,
+}
+
+export function InputNumberMui({text, id, error, register, children}: inputNumberInterface) {
+  
+  return <FormControl error={!!error}>
+    <TextField label={text} {...register(id, {valueAsNumber: true, min: 18, max: 122})} type={"number"} id={id} variant="standard" error={!!error} />
+    <FormError id={id} error={error}></FormError>
+    {children}
+  </FormControl>
+}
+
+interface selectInterface {
+  text: string,
+  id: string,
+  error?: FieldError,
+  children?: ReactNode
+  control: Control<any>
+}
+
+export function SelectMui({text, id, error, control, children}: selectInterface) {
+  return <FormControl fullWidth error={!!error}>
+      <InputLabel id={id}>{text}</InputLabel>
+      <Controller
+        name={id}
+        control={control}
+        // defaultValue=""
+        render={({ field }) => (
+          <Select labelId={id} label={text} {...field}>
+            {children}
+          </Select>
+        )}
+      />
+      <FormError id={id} error={error}></FormError>
+    </FormControl>
+}
+
+interface radioInterface {
+  text: string,
+  id: string,
+  error?: FieldError,
+  // children: ReactElement<FormControlLabelProps>
+  children: ReactNode
+  control: Control<any>
+}
+
+export function RadioGroupMui({error, text, id, children, control}: radioInterface) {
+  return <FormControl id={id} error={!!error}>
+    <FormLabel>{text}</FormLabel>
+    <Controller 
+      name={id}
+      control={control}
+      render={({field}) => (
+        <RadioGroup row {...field}>
+          {children}
+        </RadioGroup>
+      )}
+    />
+    <FormError id={id} error={error}></FormError>
+  </FormControl>
+}
+
+interface textareaInterface {
+  label: string,
+  id: string,
+  error?: FieldError,
+  children?: ReactNode
+  register: UseFormRegister<any>,
+}
+
+export function TextAreaMui({label, error, id, register, children}: textareaInterface) {
+  return <FormControl error={!!error}>
+    <TextField {...register(id)} label={label} error={!!error} multiline minRows={3} id={id}/>
+    <FormError id={id} error={error}></FormError>
+    {children}
+  </FormControl>
+}

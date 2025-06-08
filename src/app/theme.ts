@@ -11,7 +11,7 @@ export const getMuiTheme = (mode: "light" | "dark"): Theme => {
 			background: {
 				default: mode === "dark" ? "#242424" : "#fff",
 				// Цвет карточек визуально выделяющихся компмонентов
-				paper: mode === "dark" ? "#1d1d1d" : "#f5f5f5",
+				paper: mode === "dark" ? "#333333" : "#f5f5f5",
 			},
 		},
 	});

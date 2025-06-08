@@ -12,15 +12,27 @@ export const RegistrationDTOClientSchema = RegistrationDTOServerSchema.extend({
   
   avatar: z.union([z.instanceof(FileList), z.string()]).optional(),
 
-  sex: z.preprocess(val => Boolean(val), z.boolean()),
+  sex: z.preprocess(val => {
+    if (val === 'true') {
+      return true
+    } else if (val === 'false') {
+      return false
+    } return val
+  }, z.boolean()),
 
-  tags: z.preprocess(val => {
-    if (checkEmptyString(val)) {
-      const tags = val.split(',').map(e => e.trim().toLowerCase()).filter(e => e !== '' && e)
-      return Array.from(new Set(tags)).map(e => ({tag: e}))
-    }
-    return []
-  }, z.array(TagsSchemaDTO)),
+  // tags: z.preprocess(val => {
+  //   if (checkEmptyString(val)) {
+  //     const tags = val.split(',').map(e => e.trim().toLowerCase()).filter(e => e !== '' && e)
+  //     return Array.from(new Set(tags)).map(e => ({tag: e}))
+  //   }
+  //   return []
+  // }, z.array(TagsSchemaDTO)),
+
+  // tags: z.preprocess(val => {
+  //   if (Array.isArray(val) && val.every(e => typeof e === 'string')) {
+  //     return val.map(e => e.trim().toLowerCase())
+  //   } return val
+  // }, z.array(TagsSchemaDTO)),
 
   city: z.preprocess(val => {
     if (checkEmptyString(val)) return toCapitalize(val)

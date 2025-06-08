@@ -20,16 +20,14 @@ function Profile() {
     return <FourHundredFour />
   }
 
-  return (
-    <main style={{display: "flex", flexDirection: "column"}}>
-      <div>{StoreProfile.profile.id === StoreForm.form?.id ? 'Ващ аккаунт' : "Не ваш"}</div>
-      <Link to={"/settings"}>Настройки</Link>
-      {StoreProfile.profile?.id}
-      <input type="file" onChange={AvatarOnChange} />;
-      <img src={StoreProfile.profile.avatar!} alt="" />
-      {/* <button onClick={() => console.log(toJS(StoreProfile.profile))}>asd</button> */}
-    </main>
-  )
+  return <div style={{display: "flex", flexDirection: "column"}}>
+    <div>{StoreProfile.profile.id === StoreForm.form?.id ? 'Ващ аккаунт' : "Не ваш"}</div>
+    <Link to={"/settings"}>Настройки</Link>
+    {StoreProfile.profile?.id}
+    <input type="file" onChange={AvatarOnChange} />;
+    <img src={StoreProfile.profile.avatar!} alt="" />
+    {/* <button onClick={() => console.log(toJS(StoreProfile.profile))}>asd</button> */}
+  </div>
 }
 
 export default observer(Profile)

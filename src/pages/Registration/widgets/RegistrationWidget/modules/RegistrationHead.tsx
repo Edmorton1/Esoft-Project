@@ -11,7 +11,7 @@ import { LocationDTO } from "@t/gen/dtoObjects";
 type ExtractFieldErrorType<E> = E extends FieldErrors<infer T> ? T : never
 
 function Registration() {
-  const { register, handleSubmit, setValue, setError, formState: {errors} } = useForm({resolver: zodResolver(RegistrationDTOClientSchema)});
+  const { register, handleSubmit, setValue, setError, watch, formState: {errors}, control } = useForm({resolver: zodResolver(RegistrationDTOClientSchema), defaultValues: {tags: []}});
 
   useEffect(() => {
     if (StoreRegistration.defaultCoords?.city) {
@@ -42,11 +42,11 @@ function Registration() {
     const form: RegistrationDTOClient = {...data, location}
     
     console.log(form)
-    await StoreUser.registration(form)
+    // await StoreUser.registration(form)
   }
 
   //@ts-ignore
-  return <RegistrationBody register={register} onSubmit={handleSubmit(data => registrationHandle(data))} errors={errors} />
+  return <RegistrationBody register={register} onSubmit={handleSubmit(data => registrationHandle(data))} errors={errors} control={control} watch={watch} setValue={setValue} />
 }
 
 export default observer(Registration)

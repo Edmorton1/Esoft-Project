@@ -12,8 +12,16 @@
 
 body {
   margin: 40px !important;
+  display: flex;
+  justify-content: center;
   // background-color: var(--bg-color);
   // color: var(--ft-color);
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 * {
