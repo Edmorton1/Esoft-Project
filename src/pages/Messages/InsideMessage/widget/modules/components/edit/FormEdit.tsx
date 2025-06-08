@@ -1,5 +1,8 @@
 import { MessageContext } from "@/pages/Messages/InsideMessage/widget/modules/MessageHead";
 import { useContext } from "react";
+import * as style from "@/shared/css/FormEdit.module.scss"
+import Box from "@mui/material/Box";
+import Paper from "@mui/material/Paper";
 
 function FormEdit() {
 
@@ -14,8 +17,8 @@ function FormEdit() {
     ))
   }
 
-	return <>
-	<button onClick={() => console.log(ctx.files)}>Вывести файлы</button>
+	return <Paper className={style.main}>
+		<button onClick={() => console.log(ctx.files)}>Вывести файлы</button>
 		<input type="text" onChange={ctx.textInput} defaultValue={ctx.value} />
 		<br />
 		<div>
@@ -25,7 +28,7 @@ function FormEdit() {
 		<div>Добавить</div>
 		<input onChange={ctx.inputNewFile} type="file" multiple />
 		<button onClick={ctx.submitClick}>Готово</button>
-	</>
+	</Paper>
 }
 
 export default FormEdit;

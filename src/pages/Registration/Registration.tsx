@@ -10,7 +10,6 @@ function Registration() {
 
   return <>
     <RegistrationWidget/>
-    <MapWidget />
   </>
 }
 

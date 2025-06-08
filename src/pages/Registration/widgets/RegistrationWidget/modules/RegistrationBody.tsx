@@ -18,6 +18,8 @@ import Chip from "@mui/material/Chip";
 import { useState } from "react";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
+import MapWidget from "@/pages/Registration/widgets/MapWidget/MapWidget";
+import Container from "@mui/material/Container";
 
 interface propsInterface {
   register: UseFormRegister<RegistrationDTOClient>,
@@ -43,69 +45,85 @@ function RegistrationBody({register, onSubmit, errors, control, watch, setValue}
   {/* <button onClick={() => StoreRegistration.setDefaultCoords({city: "asdasd", lng: 123, lat: 123})}>sadasd</button> */}
 
   <form onSubmit={onSubmit} className={style.main}>
-  <Title>Registration</Title>
+  <Title>Регистрация</Title>
 
-  <Stack spacing={3} sx={{backgroundColor: "red"}}>
-    {/* <Paper></Paper> */}
-    <InputMui error={errors.email} id="email" register={register} text="Почта" />
+  <Paper>
+    <Stack className={style.main__registration}>
+      {/* <Paper></Paper> */}
+      <InputMui error={errors.email} id="email" register={register} text="Почта" />
 
-    <InputMui type="password" error={errors.password} id="password" register={register} text="Пароль">
-      <FormHelperText id="password">Пароль должен...</FormHelperText>
-    </InputMui>
+      <InputMui type="password" error={errors.password} id="password" register={register} text="Пароль">
+        <FormHelperText id="password">Пароль должен...</FormHelperText>
+      </InputMui>
 
-    <InputMui type="password" error={errors.confirmPassword} id="confirmPassword" register={register} text="Повторите пароль" />
-  </Stack>
+      <InputMui type="password" error={errors.confirmPassword} id="confirmPassword" register={register} text="Повторите пароль" />
+    </Stack>
+  </Paper>
 
-  <Title>Questionnaire</Title>
+
+  <Title>Анкета</Title>
 
     {/* <button onClick={StoreUser.logout}>Выйти</button>
     <button onClick={() => console.log(StoreUser.user)}>Вывести пользователя</button>
     <button onClick={() => console.log(StoreForm.form)}>Вывести форму</button> */}
-  
-  <InputMui error={errors.name} id="name" register={register} text="Имя" />
+  <Paper>
+    <Stack className={style.main__anketa} >
 
-  <RadioGroupMui control={control} id="sex" text="Пол" error={errors.sex} >
-    <FormControlLabel value="true" control={<Radio/>} label="Мужчина" />
-    <FormControlLabel value="false" control={<Radio/>} label="Женщина" />
-  </RadioGroupMui>
+      <Box className={style.main__anketa_top}>
+        <InputMui error={errors.name} id="name" register={register} text="Имя" />
 
-  <InputNumberMui error={errors.age} id="age" register={register} text="Возраст" />
-    
-  <SelectMui control={control} id="target" text="Цель" error={errors.target}>
-    <MenuItem value="relation">Отношения</MenuItem>
-    <MenuItem value="friend">Дружба</MenuItem>
-    <MenuItem value="chat">Чатинг</MenuItem>
-    <MenuItem value="hobby">Хобби</MenuItem>
-  </SelectMui>
+        <InputNumberMui error={errors.age} id="age" register={register} text="Возраст" />
 
-    {/* {target && <input {...register('targetCustom')} type="text" placeholder="Напишите свою цель..." />} */}
-    
-    <FormControl>
-      <FormLabel>Тэги</FormLabel>
-      <Box sx={{display: "flex", gap: 1}}>
-        <TextField label="Напишите тег" variant="outlined" value={input} onChange={e => setInput(e.target.value)} sx={{ flex: 1 }} />
-        <Button variant="contained" onClick={() => {
-          if (input.trim() !== '') {
-            setValue('tags', [...tags, {tag: input.trim()}]);
-            setInput('')
-          }
-        }}>Добавить</Button>
+        <RadioGroupMui control={control} id="sex" text="Пол" error={errors.sex} >
+          <FormControlLabel value="true" control={<Radio/>} label="Мужчина" />
+          <FormControlLabel value="false" control={<Radio/>} label="Женщина" />
+        </RadioGroupMui>
+          
+        <SelectMui control={control} id="target" text="Цель" error={errors.target}>
+          <MenuItem value="relation">Отношения</MenuItem>
+          <MenuItem value="friend">Дружба</MenuItem>
+          <MenuItem value="chat">Чатинг</MenuItem>
+          <MenuItem value="hobby">Хобби</MenuItem>
+        </SelectMui>
+
+        {/* {target && <input {...register('targetCustom')} type="text" placeholder="Напишите свою цель..." />} */}
+        
+        <FormControl>
+          <FormLabel>Тэги</FormLabel>
+          <Box sx={{display: "flex", gap: 1}}>
+            <TextField label="Напишите тег" variant="outlined" value={input} onChange={e => setInput(e.target.value)} sx={{ flex: 1 }} />
+            <Button variant="contained" onClick={() => {
+              if (input.trim() !== '' && !tags.map(e => e.tag).includes(input)) {
+                setValue('tags', [...tags, {tag: input.trim()}]);
+                setInput('')
+              }
+            }}>Добавить</Button>
+          </Box>
+          {tags.length > 0 && <Box sx={{padding: "3px", gap: "4px", display: "flex", flexWrap: "wrap", backgroundColor:"background.alt"}}>
+            {tags.map(e => <Chip 
+              key={e.tag} 
+              label={e.tag} 
+              variant="outlined" 
+              onDelete={() => setValue('tags', tags.filter(tag => tag.tag !== e.tag))} />)}
+          </Box>}
+        </FormControl>
+
+        <TextAreaMui id="description" label="Описание" register={register} error={errors.description} />
+
+        {/* <label htmlFor="avatar">Аватар</label> */}
+        <TextField type="file" label="Загрузить аватар" slotProps={{inputLabel: {shrink: true}}}></TextField>
+        {/* <input {...register('avatar')} type="file" id="avatar" /> */}
+
+        <InputMui id="city" text="Город" register={register} disabled={!!StoreRegistration.coords || !!StoreRegistration.defaultCoords} />
       </Box>
-      <Paper sx={{padding: 2}}>
-        {tags.map(e => <Chip key={e.tag} label={e.tag} variant="outlined" onDelete={() => setValue('tags', tags.filter(tag => tag.tag !== e.tag))} />)}
-      </Paper>
-    </FormControl>
 
-    <TextAreaMui id="description" label="Описание" register={register} error={errors.description} />
+      <MapWidget />
+      <Button variant="contained" type="submit">Готво</Button>
+      
+    </Stack>
+  </Paper>
 
-    {/* <label htmlFor="avatar">Аватар</label> */}
-    <TextField type="file" label="Загрузить аватар" slotProps={{inputLabel: {shrink: true}}}></TextField>
-    {/* <input {...register('avatar')} type="file" id="avatar" /> */}
-
-    <InputMui id="city" text="Город" register={register} disabled={!!StoreRegistration.coords || !!StoreRegistration.defaultCoords} />
-
-    <Button variant="contained" type="submit">Готво</Button>
-    {/* <button>Готово</button> */}
+  {/* <button>Готово</button> */}
   </form>
   </>
 }

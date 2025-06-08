@@ -15,48 +15,44 @@ import AppBar from "@mui/material/AppBar"
 import Toolbar from "@mui/material/Toolbar"
 import Icon from "@mui/material/Icon"
 import Box from "@mui/material/Box"
+import { grey } from "@mui/material/colors"
 
 function Header() {
   return (
     <>
-    {/* <Box>
-      <AppBar>
+    <header>
+      <AppBar position="fixed">
         <Toolbar>
-          <Icon></Icon>
+        <nav>
+          <NavLink to={"/"}>{({ isActive }) => <button className={classNames({[style.active]: isActive})}>Главная</button>}</NavLink>
+          <Link to={paths.registration}><button>Регистрация</button></Link>
+          <Link to={paths.login}><button>Войти</button></Link>
+          <Link to={paths.messages}><button>Сообщения</button></Link>
+          <Link to={paths.users}><button>Пользователи</button></Link>
+          <Link to={`${paths.profile}/2`}><button>profile 2</button></Link>
+          <Link to={paths.room}><button>ROOM</button></Link>
+          <Link to={paths.map}><button>MAP</button></Link>
+          <Link to={paths.liked}><button>Liked</button></Link>
+          <button onClick={() => console.log(
+            'User: ', toJS(StoreUser.user),
+            'Form:', toJS(StoreForm.form),
+            'Messages:', toJS(StoreMessages.messages),
+            'Likes:', toJS(StoreLikes.likes),
+            "Tags:", toJS(StoreTags.tags),
+            toJS(StoreUsers.users)
+            )}>Вывести сторы
+          </button>
+          <button onClick={() => StoreGlobal.sendInfo('asadas', 'blue')}>Инфо</button>
+          <ThemeButton />
+        </nav>
         </Toolbar>
       </AppBar>
-    </Box> */}
-
-    <header>
-      <nav>
-        <NavLink to={"/"}>{({ isActive }) => <button className={classNames({[style.active]: isActive})}>Главная</button>}</NavLink>
-        <Link to={paths.registration}><button>Регистрация</button></Link>
-        <Link to={paths.login}><button>Войти</button></Link>
-        <Link to={paths.messages}><button>Сообщения</button></Link>
-        <Link to={paths.users}><button>Пользователи</button></Link>
-        <Link to={`${paths.profile}/2`}><button>profile 2</button></Link>
-        <Link to={paths.room}><button>ROOM</button></Link>
-        <Link to={paths.map}><button>MAP</button></Link>
-        <Link to={paths.liked}><button>Liked</button></Link>
-        <button onClick={() => console.log(
-          'User: ', toJS(StoreUser.user),
-          'Form:', toJS(StoreForm.form),
-          'Messages:', toJS(StoreMessages.messages),
-          'Likes:', toJS(StoreLikes.likes),
-          "Tags:", toJS(StoreTags.tags),
-          toJS(StoreUsers.users)
-          )}>Вывести сторы
-        </button>
-        <button onClick={() => StoreGlobal.sendInfo('asadas', 'blue')}>Инфо</button>
-        <ThemeButton />
-      </nav>
-        <br />
-        <br />
     </header>
       
-      <main>
+      <Box component="main" sx={{backgroundColor: "background.alt"}}>
+      {/* <main> */}
         <Outlet />
-      </main>
+      </Box>
     </>
   )
 }

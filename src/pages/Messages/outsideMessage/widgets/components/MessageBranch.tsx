@@ -16,26 +16,18 @@ interface propsInterface {
 }
 
 function MessageBranch({id, avatar, name, text, created_at}: propsInterface) {
-  return <Link to={`${paths.messages}/${id}`}>
-    <Card sx={{ mb: 2 }}>
-      <CardHeader
+  return <Link to={`${paths.messages}/${id}`} style={{width: "100%"}}>
+    <Card>
+      <CardHeader sx={{p: 0.5, pl: 2}}
         avatar={<Avatar src={avatar ?? PLACEHOLDER_IMG} />}
-        title={<Typography variant="subtitle1">{name}</Typography>}
-        subheader={new Date(created_at).toLocaleString()}
+        title={<Typography>{name}</Typography>}
+        subheader={<>
+          <Typography>{new Date(created_at).toLocaleString()}</Typography>
+          <Typography color="text.primary">{text}</Typography>
+        </>}
       />
-      <CardContent sx={{ pt: 0 }}>
-        <Typography variant="body1">{text}</Typography>
-      </CardContent>
     </Card>
   </Link>
 }
 
 export default MessageBranch
-
-  // return <Link to={`${paths.messages}/${id}`}>
-  //   <div>{avatar}</div>
-  //   <div>{name}</div>
-  //   <div>{text}</div>
-  //   <div>{new Date(created_at).toString()}</div>
-  //   <br />
-  // </Link>

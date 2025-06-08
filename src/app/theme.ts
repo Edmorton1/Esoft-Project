@@ -9,9 +9,11 @@ export const getMuiTheme = (mode: "light" | "dark"): Theme => {
 				main: "#7F00FF",
 			},
 			background: {
-				default: mode === "dark" ? "#242424" : "#fff",
+				default: mode === "dark" ? "#242424" : "#e6e6e6",
+				//@ts-ignore
+				alt: mode === 'dark' ? "#303030" : "#f2f2f2",
 				// Цвет карточек визуально выделяющихся компмонентов
-				paper: mode === "dark" ? "#333333" : "#f5f5f5",
+				paper: mode === "dark" ? "#333333" : "#ffffff",
 			},
 		},
 	});

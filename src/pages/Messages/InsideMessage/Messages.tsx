@@ -10,23 +10,29 @@ import { serverPaths } from "@shared/PATHS"
 import { z } from "zod"
 import StoreUser from "@/shared/stores/Store-User"
 import StoreMessages from "@/pages/Messages/store/Store-Messages"
+import { useEffect } from "react"
 
 function Messages() {
   const toid = z.coerce.number().parse(useParams().toid)
+
   useGetBy(`${serverPaths.getMessage}/${StoreUser.user?.id}/${toid}`, {callback: (data) => StoreMessages.initial(data)})
+
+  useEffect(() => {
+    window.scrollTo(0, document.body.scrollHeight)
+  }, [])
   
     // const [voiceRef] = useMedia(VoiceMessage, undefined, toid)
   
   return (
     <>
-      <div>Пользователь: {StoreForm.form?.name}</div>
+      {/* <div>Пользователь: {StoreForm.form?.name}</div>
       <div>Сообщения</div>
-      <div>Исходящие</div>
+      <div>Исходящие</div> */}
       <MessageWidget />
-      <br />
+      {/* <br /> */}
       <SentHead toid={toid!}/>
-      <br />
-      <br />
+      {/* <br />
+      <br /> */}
       {/* <button onClick={() => console.log(voiceRef.current?.stream.getVideoTracks(), voiceRef.current?.stream.getAudioTracks())}>Посмотреть видео аудио дорожки</button>
       <br />
       <br />

@@ -83,9 +83,9 @@ interface radioInterface {
 }
 
 export function RadioGroupMui({error, text, id, children, control}: radioInterface) {
-  return <FormControl id={id} error={!!error}>
-    <FormLabel>{text}</FormLabel>
-    <Controller 
+  return <FormControl sx={{display: "flex", justifyContent: "center", alignItems: "center"}} id={id} error={!!error}>
+    <FormLabel sx={{display: "flex", alignItems: "center", justifyContent: "center"}}>{text}</FormLabel>
+    <Controller
       name={id}
       control={control}
       render={({field}) => (
