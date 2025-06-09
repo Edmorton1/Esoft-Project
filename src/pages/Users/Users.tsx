@@ -15,22 +15,19 @@ function Users() {
   return (
     <Suspense>
       <>
-        <button onClick={StoreUser.logout}>Выйти</button>
+        {/* <button onClick={StoreUser.logout}>Выйти</button>
         <button onClick={() => StoreGlobal.sendInfo(String(Math.random()))}>Тру</button>
         <button onClick={() => console.log(toJS(StoreGlobal.data))}>Тру</button>
-        <button onClick={() => console.log(toJS(StoreLikes.likes))}>Вывести стор</button>
+        <button onClick={() => console.log(toJS(StoreLikes.likes))}>Вывести стор</button> */}
         <UserPagination />
 
-        <br />
-        <br />
-
-        <div style={{display: "flex", justifyContent: "space-around"}}>
-          <main>
+        <div style={{display: "flex"}}>
+          <div style={{width: "100%"}}>
             <UsersCardWidget />
-          </main>
-          <main style={{display: "flex", flexDirection: "column"}}>
+          </div>
+          <div style={{width: "600px", display: "flex", flexDirection: "column", alignItems: "center"}}>
             <UsersFilterWidget />
-          </main>
+          </div>
         </div>
       </>
     </Suspense>

@@ -79,13 +79,13 @@ interface radioInterface {
   error?: FieldError,
   // children: ReactElement<FormControlLabelProps>
   children: ReactNode
-  control: Control<any>
+  control?: Control<any>
 }
 
 export function RadioGroupMui({error, text, id, children, control}: radioInterface) {
   return <FormControl sx={{display: "flex", justifyContent: "center", alignItems: "center"}} id={id} error={!!error}>
     <FormLabel sx={{display: "flex", alignItems: "center", justifyContent: "center"}}>{text}</FormLabel>
-    <Controller
+    {control ? <Controller
       name={id}
       control={control}
       render={({field}) => (
@@ -93,7 +93,11 @@ export function RadioGroupMui({error, text, id, children, control}: radioInterfa
           {children}
         </RadioGroup>
       )}
-    />
+    /> : (
+      <RadioGroup row name={id}>
+        {children}
+      </RadioGroup>
+    )}
     <FormError id={id} error={error}></FormError>
   </FormControl>
 }

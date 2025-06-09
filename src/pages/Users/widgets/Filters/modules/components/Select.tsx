@@ -1,36 +1,37 @@
 import useUpdateParams from "@/shared/hooks/useChangeParams";
-import { ChangeEvent, useState } from "react";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 
-function Select() {
-  const [target, setTarget] = useState(false)
+function SelectParams() {
   const key = "target"
   const [params, updateParams, removeParams] = useUpdateParams()
 
-  const inputHandle = (e: ChangeEvent<HTMLInputElement>) => updateParams(key, e.target.value)
-  const selectChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    if (e.target.value === "other") {
-      removeParams(key)
-      setTarget(true)
-    } else if (e.target.value === "any") {
-      setTarget(false)
+  const selectChange = (e: SelectChangeEvent) => {
+    if (e.target.value === "any") {
       removeParams(key)
     } else  {
-      setTarget(false);
       updateParams(key, e.target.value)
     }
   }
 
-  return <>
-  <select onChange={selectChange} name={key} id={key}>
-    <option value="any">Любая</option>
-    <option value="relation">Отношения</option>
-    <option value="friend">Дружба</option>
-    <option value="chat">Чатинг</option>
-    <option value="hobby">Хобби</option>
-    <option value="other">Другое</option>
-  </select>
-  {target && <input onChange={inputHandle} type="text" placeholder="Напишите цель..." />}
-  </>
+  return <FormControl fullWidth>
+    <InputLabel id="target">Цель</InputLabel>
+    <Select
+      labelId="target"
+      value={params.target || "any"}
+      label="Цель"
+      onChange={selectChange}
+      defaultValue="any"
+    >
+      <MenuItem value="any">Любая</MenuItem>
+      <MenuItem value="relation">Отношения</MenuItem>
+      <MenuItem value="friend">Дружба</MenuItem>
+      <MenuItem value="chat">Чатинг</MenuItem>
+      <MenuItem value="hobby">Хобби</MenuItem>
+    </Select>
+  </FormControl>
 }
 
-export default Select
+export default SelectParams

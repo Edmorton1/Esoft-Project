@@ -42,7 +42,7 @@ function Registration() {
     const form: RegistrationDTOClient = {...data, location}
     
     console.log(form)
-    // await StoreUser.registration(form)
+    await StoreUser.registration(form)
   }
 
   //@ts-ignore
