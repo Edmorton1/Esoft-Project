@@ -11,7 +11,7 @@ import { observer } from "mobx-react-lite"
 
 function UsersCardInfo({handleLike, form}: {handleLike: () => void, form: FormWithDistanse}) {
   return <Card>
-    <Avatar src={form.avatar!} sx={{width: 500, height: 500, borderRadius: 0}} />
+    <Avatar src={form.avatar!} sx={{width: 400, height: 400, borderRadius: 0}} />
     <CardContent sx={{display: "flex", flexDirection: "column"}}>
       <Typography><strong>Имя: </strong>{form.name}</Typography>
       <Typography><strong>Пол: </strong>{form.sex === true ? 'Мужчина' : 'Женщина'}</Typography>

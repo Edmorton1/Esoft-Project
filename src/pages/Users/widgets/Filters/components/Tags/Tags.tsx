@@ -1,4 +1,4 @@
-import Tag from "@/pages/Users/widgets/Filters/modules/components/Tags/Tag";
+import Tag from "@/pages/Users/widgets/Filters/components/Tags/Tag";
 import useUpdateParams from "@/shared/hooks/useChangeParams";
 import StoreForm from "@/shared/stores/Store-Form";
 import StoreTags from "@/shared/stores/Store-Tags";

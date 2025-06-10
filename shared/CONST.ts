@@ -1,4 +1,4 @@
-export const CARDS_ON_PAGE = 3
+export const CARDS_ON_PAGE = 4
 
 export const REMOTE_VIDEO = 'remote-video'
 export const REMOTE_AUDIO = 'remote-audio'

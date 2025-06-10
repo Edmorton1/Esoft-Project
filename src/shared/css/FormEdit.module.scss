@@ -1,8 +1,8 @@
 @use "./const.scss" as c;
 
 .main {
-  position: fixed;
-  bottom: c.$p;
-  left: 50%;
-  transform: translateX(-50%);
+	position: fixed;
+	bottom: c.$p;
+	left: 50%;
+	transform: translateX(-50%);
 }

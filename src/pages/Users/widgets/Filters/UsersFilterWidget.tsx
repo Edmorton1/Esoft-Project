@@ -1,17 +1,18 @@
-import CheckboxParams from "@/pages/Users/widgets/Filters/modules/components/Checkbox"
-import SelectParams from "@/pages/Users/widgets/Filters/modules/components/Select"
-import Tags from "@/pages/Users/widgets/Filters/modules/components/Tags/Tags"
-import Input from "@/pages/Users/widgets/Filters/modules/components/Input"
+import CheckboxParams from "@/pages/Users/widgets/Filters/components/Checkbox"
+import SelectParams from "@/pages/Users/widgets/Filters/components/Select"
+import Tags from "@/pages/Users/widgets/Filters/components/Tags/Tags"
+import Input from "@/pages/Users/widgets/Filters/components/Input"
 import Typography from "@mui/material/Typography"
 import { RadioGroupMui } from "@/shared/components/MuiComponents"
 import FormControlLabel from "@mui/material/FormControlLabel"
-import TwinRange from "@/pages/Users/widgets/Filters/modules/components/TwinRange"
+import TwinRange from "@/pages/Users/widgets/Filters/components/TwinRange"
+import Paper from "@mui/material/Paper"
 
 
 function UsersFilterWidget() {
   console.log("FILTER RE")
 
-  return <>
+  return <Paper>
     <Typography variant="h5">Показывать только</Typography>
 
     <RadioGroupMui text="Пол" id="sex">
@@ -31,7 +32,7 @@ function UsersFilterWidget() {
 
     <Input label="Максимальное расстояние" keyName="max_distance" type="number" />
     <div>ДОБАВИТЬ СОРТИРОВКУ</div>
-  </>
+  </Paper>
 }
 
 export default UsersFilterWidget
