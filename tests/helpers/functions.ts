@@ -1,4 +1,4 @@
-import { StoreUserRegistration } from "@/pages/Registration/widgets/RegistrationWidget/modules/types/RegistrationZOD";
+import { StoreUserRegistration } from "@/pages/Registration/widgets/RegistrationWidget/types/RegistrationZOD";
 import { toCl } from "@shared/MAPPERS";
 import { serverPaths } from "@shared/PATHS";
 import $test from "@test/helpers/$test";

@@ -22,7 +22,14 @@ function buildLoaders(options: BuildOptions): ModuleOptions["rules"] {
 						},
 					},
 				},
-				"sass-loader",
+				{
+					loader: "sass-loader",
+					options: {
+						sassOptions: {
+							includePaths: [options.paths.src]
+						}
+					}
+				},
 			],
 		},
 		{
@@ -31,7 +38,14 @@ function buildLoaders(options: BuildOptions): ModuleOptions["rules"] {
 			use: [
 				isProd ? MiniCssExtractPlugin.loader : "style-loader",
         "css-loader",
-				"sass-loader",
+				{
+					loader: "sass-loader",
+					options: {
+						sassOptions: {
+							includePaths: [options.paths.src]
+						}
+					}
+				},
 			],
 		},
 		{

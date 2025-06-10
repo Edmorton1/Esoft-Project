@@ -10,3 +10,4 @@ export const MODAL_CALL = 'modal-call'
 export const MODAL_TALKING = 'modal-talking'
 
 export const STANDART_ZOOM = 13
+export const MESSAGE_ON_PAGE = 8

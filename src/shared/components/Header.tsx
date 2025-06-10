@@ -7,20 +7,16 @@ import StoreLikes from "@/shared/stores/StoreLikes"
 import { toJS } from "mobx"
 import { Link, NavLink, Outlet } from "react-router-dom"
 import { paths } from "@shared/PATHS"
-import * as style from "@/shared/css/Shared.module.scss"
+import * as style from "@/shared/css/components/Shared.module.scss"
 import classNames from "classnames"
 import StoreGlobal from "@/shared/api/Store-Global"
 import ThemeButton from "@/shared/components/ThemeButton"
 import AppBar from "@mui/material/AppBar"
 import Toolbar from "@mui/material/Toolbar"
-import Icon from "@mui/material/Icon"
 import Box from "@mui/material/Box"
-import { grey } from "@mui/material/colors"
 
 function Header() {
-  return (
-    <>
-    <header>
+  return <>
       <AppBar position="fixed">
         <Toolbar>
         <nav>
@@ -47,14 +43,11 @@ function Header() {
         </nav>
         </Toolbar>
       </AppBar>
-    </header>
       
-      <Box component="main" sx={{backgroundColor: "background.alt"}}>
-      {/* <main> */}
+      <Box component={"main"} sx={{backgroundColor: "background.alt"}}>
         <Outlet />
       </Box>
     </>
-  )
 }
 
 export default Header

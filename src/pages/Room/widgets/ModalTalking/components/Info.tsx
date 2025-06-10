@@ -2,7 +2,7 @@ import Clock from "@/pages/Room/widgets/ModalTalking/components/Clock";
 import StoreCall from "@/pages/Room/widgets/ModalCall/store/Store-Call";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import * as styles from "@/shared/css/ModalTalking.module.scss";
+import * as styles from "@/shared/css/modules/ModalTalking.module.scss";
 import { manyVideosTypes } from "@/pages/Room/widgets/ModalTalking/ModalTalkingHead";
 import { PLACEHOLDER_IMG } from "@shared/PUBLIC_IMG";
 

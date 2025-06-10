@@ -1,6 +1,6 @@
 import React, { forwardRef } from 'react';
 import { CSSTransition } from 'react-transition-group';
-import * as animations from "@/shared/css/ErrorAnimations.module.scss";
+import * as animations from "@/shared/css/animations/ErrorAnimations.module.scss";
 import { createPortal } from "react-dom";
 const {enter, enterActive, exit, exitActive} = animations
 

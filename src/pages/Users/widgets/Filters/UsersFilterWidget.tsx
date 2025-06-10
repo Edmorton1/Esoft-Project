@@ -7,12 +7,13 @@ import { RadioGroupMui } from "@/shared/components/MuiComponents"
 import FormControlLabel from "@mui/material/FormControlLabel"
 import TwinRange from "@/pages/Users/widgets/Filters/components/TwinRange"
 import Paper from "@mui/material/Paper"
+import * as style from "@/shared/css/pages/Users.module.scss"
 
 
 function UsersFilterWidget() {
   console.log("FILTER RE")
 
-  return <Paper>
+  return <Paper component={"aside"} className={style.section__filters}>
     <Typography variant="h5">Показывать только</Typography>
 
     <RadioGroupMui text="Пол" id="sex">

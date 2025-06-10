@@ -10,22 +10,24 @@ import { MessageDTOClient, MessagePutDTOClient, MessagePutDTOClientSchema } from
 class StoreMessages {
   messages: Message[] | null = null
   form: Form | null = null
+  cursor: number | null = null
   
   constructor() {
     makeAutoObservable(this)
   }
 
-  initial = async (data: {messages: Message[], form: Form}) => {
-    this.messages = data.messages
-    this.form = data.form
+  get = async (data: {messages: Message[], form: Form}) => {
+    if (this.messages !== null) {
+      this.messages.unshift(...data.messages)
+    } else {
+      this.messages = data.messages
+      this.form = data.form
+    }
+    console.log("THIS CURSOR NEW ", data.messages, this.cursor)
+    this.cursor = data.messages[0]?.id
     
     console.log(this.messages, this.form)
-    // const sent = toCl<Message[]>(await $api.get(`${serverPaths.messages}?fromid=${StoreUser.user?.id}`))?.sort((a, b) => a.id! - b.id!)
-    // const received = toCl<Message[]>(await $api.get(`${serverPaths.messages}?toid=${StoreUser.user?.id}`))?.sort((a, b) => a.id! - b.id!)
-    // const msgs = {sent, received}
-    // runInAction(() => this.messages = msgs)
-
-    
+    console.log(toJS(this.messages))    
   }
 
   send = async (data: MessageDTOClient) => {

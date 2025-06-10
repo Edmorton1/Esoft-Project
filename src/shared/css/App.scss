@@ -1,4 +1,4 @@
-@use "./const.scss" as c;
+@use "@/shared/css/const" as c;
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
 // :root {
@@ -12,14 +12,16 @@
 // }
 
 main {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: c.$g;
+  // display: flex;
+  // flex-direction: column;
+  // align-items: flex-start;
+  // gap: c.$g;
 
-  max-width: c.$mw;
+  // max-width: c.$w;
+  width: c.$w;
+  // justify-self: center;
   margin: 0 auto;
-  margin-top: 75px;
+  margin-top: c.$hh;
   padding: c.$p;
 }
 

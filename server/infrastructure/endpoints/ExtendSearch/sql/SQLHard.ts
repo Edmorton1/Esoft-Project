@@ -55,7 +55,7 @@ class SQLHard {
         ) / 1000
     ) < ${max_distance}`
 
-    if (max_distance && location[0] !== null && location[1] !== null) conditions.push(await havingMaxDistance)
+    // if (max_distance && location[0] !== null && location[1] !== null) conditions.push(await havingMaxDistance)
     if (tags.length > 0) conditions.push(toSQLgetByTags(tags))
     if (and.length > 0) conditions.push(and)
     if (ageFilter) conditions.push(ageFilter)

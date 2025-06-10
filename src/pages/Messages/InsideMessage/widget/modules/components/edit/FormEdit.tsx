@@ -1,7 +1,6 @@
 import { MessageContext } from "@/pages/Messages/InsideMessage/widget/modules/MessageHead";
 import { useContext } from "react";
-import * as style from "@/shared/css/FormEdit.module.scss"
-import Box from "@mui/material/Box";
+import * as style from "@/shared/css/modules/FormEdit.module.scss"
 import Paper from "@mui/material/Paper";
 
 function FormEdit() {

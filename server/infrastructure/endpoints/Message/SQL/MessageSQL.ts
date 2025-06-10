@@ -1,28 +1,37 @@
 import db from "@s/infrastructure/db/db"
 import logger from "@s/logger"
+import { MESSAGE_ON_PAGE } from "@shared/CONST"
 import { Message, MessageSchema } from "@t/gen/Users"
 import { z } from "zod"
 
 class MessageSQL {
-  async getMessage(frid: number, toid: number): Promise<Message[]> {
-    const query = db.raw(`
-      SELECT 
-      CASE
-        WHEN fromid = ? THEN true
-        ELSE false
-      END as isAuthor, 
-      *
-      FROM messages
-      WHERE fromid = ? AND toid = ?
-      OR fromid = ? AND toid = ?
-      ORDER BY id DESC
-    `, [frid, frid, toid, toid, frid])
+  async getMessage(frid: number, toid: number, cursor?: number): Promise<Message[]> {
+
+    let subquery = db('messages')
+      .select(
+        db.raw(`CASE WHEN fromid = ? THEN true ELSE false END as isAuthor`, [frid]),
+        '*'
+      )
+      .where(builder => {
+        builder.where({fromid: frid, toid: toid})
+          .orWhere({fromid: toid, toid: frid})
+      })
+      .orderBy('id', 'desc')
+      .limit(MESSAGE_ON_PAGE)
+    
+    if (cursor) {
+      subquery = subquery.where('id', '<', cursor)
+    }
+ 
+    const query = db.select('*').from(subquery).orderBy('id', 'asc')
     
     logger.info({SQL: query.toSQL().toNative()})
     
-    const total = (await query).rows
+    const total = await query
 
     const parsed = z.array(MessageSchema).parse(total)
+
+    logger.info({ГОТОВЫЙ_ЗАПРОС: total})
 
     return parsed
   }
@@ -30,16 +39,16 @@ class MessageSQL {
 
 export default new MessageSQL
 
-// SELECT 
-  // json_build_object(
-	// 'received', (
-	//   SELECT json_agg(row_to_json(messages))
-	//   FROM messages
-	//   WHERE fromid = 19 AND toid = 16
-// 	),
-// 	'sent', (
-// 	  SELECT json_agg(row_to_json(messages))
-// 	  FROM messages
-// 	  WHERE fromid = 16 AND toid = 19
-// 	)
-//   );
+    // const query = db.raw(`
+    //   SELECT 
+    //   CASE
+    //     WHEN fromid = ? THEN true
+    //     ELSE false
+    //   END as isAuthor, 
+    //   *
+    //   FROM messages
+    //   WHERE ((fromid = ? AND toid = ?) OR (fromid = ? AND toid = ?))
+    //   AND id < ?
+    //   ORDER BY id DESC
+    //   LIMIT 3
+    // `, [frid, frid, toid, toid, frid, cursor])

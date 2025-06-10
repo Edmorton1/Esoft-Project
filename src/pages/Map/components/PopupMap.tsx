@@ -1,4 +1,4 @@
-import * as styles from "@/shared/css/Map.module.scss";
+import * as styles from "@/shared/css/modules/Map.module.scss";
 import useGetBy from "@/shared/hooks/useGetBy";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";

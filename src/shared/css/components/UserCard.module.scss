@@ -1,0 +1,26 @@
+.container {
+  position: static;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  &__avatar {
+    width: 100%;
+    height: 250px;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    margin: 5px;
+    border-radius: 10px;
+    height: 100%;
+  }
+}

@@ -1,4 +1,3 @@
-import logger from "@s/logger"
 import { frJSON } from "@shared/MAPPERS"
 import { MessageDTO } from "@t/gen/dtoObjects"
 import { zstrnum } from "@t/gen/Schemas"
@@ -8,7 +7,8 @@ import { z } from "zod"
 
 export interface ReqGetMessage extends Request {
   frid: number,
-  toid: number
+  toid: number,
+  cursor?: number
 }
 
 export interface ReqSendMessage extends Request {
@@ -27,9 +27,14 @@ class MessageMiddleware {
 
     const frid = zstrnum.parse(req.params.frid)
     const toid = zstrnum.parse(req.params.toid)
+    const parsed = zstrnum.safeParse(req.query.cursor)
+
+    const cursor = parsed.success ? parsed.data : undefined
 
     r.frid = frid
     r.toid = toid
+    r.cursor = cursor
+
     next()
   };
 

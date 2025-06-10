@@ -4,7 +4,7 @@ import { observer } from "mobx-react-lite"
 import { Link, useParams } from "react-router-dom"
 import FourHundredFour from "../../shared/Errors/404"
 import StoreForm from "@/shared/stores/Store-Form"
-import { AvatarOnChange } from "@/pages/Registration/widgets/RegistrationWidget/modules/funcs/funcDropAva"
+import { AvatarOnChange } from "@/pages/Registration/widgets/RegistrationWidget/funcs/funcDropAva"
 import Loading from "../../shared/ui/Loading"
 
 function Profile() {
@@ -20,7 +20,7 @@ function Profile() {
     return <FourHundredFour />
   }
 
-  return <div style={{display: "flex", flexDirection: "column"}}>
+  return <div>
     <div>{StoreProfile.profile.id === StoreForm.form?.id ? 'Ващ аккаунт' : "Не ваш"}</div>
     <Link to={"/settings"}>Настройки</Link>
     {StoreProfile.profile?.id}

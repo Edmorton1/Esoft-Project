@@ -1,6 +1,6 @@
 import SQLHard from "@s/infrastructure/endpoints/ExtendSearch/SQL/SQLHard"
 import logger from "@s/logger"
-import { frJSON } from "@shared/MAPPERS"
+import { frJSON, toJSON } from "@shared/MAPPERS"
 import { lnglatType } from "@t/gen/types"
 import { Request, Response } from "express"
 
@@ -20,6 +20,8 @@ class HttpExtendedSearchController {
     logger.info(tagsArr)
     logger.info(zapisi.forms.length)
 
+    // res.set('x-total-count', toJSON(zapisi.count))
+    res.set('x-pages-count', toJSON(zapisi.count))
     res.json(zapisi)
   }
 }

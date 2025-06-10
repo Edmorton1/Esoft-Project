@@ -22,10 +22,9 @@ class HttpMessageController {
 
   getMessage = async (req: Request, res: Response<{messages: Message[], form: Form}>) => {
     const r = req as ReqGetMessage
-    logger.info({toid: r.toid, frid: r.frid})
+    logger.info({toid: r.toid, frid: r.frid, cursor: r.cursor})
 
-    // ЗАВТРА ДОПИСАТЬ ЛИБО В ОРМ ЛИБО САМОМУ SQL НАПИСАТЬ
-    const messages = await MessageSQL.getMessage(r.frid, r.toid)
+    const messages = await MessageSQL.getMessage(r.frid, r.toid, r.cursor)
     const form = one(await ORM.getById(r.toid, 'forms'))
 
     res.json({messages, form})

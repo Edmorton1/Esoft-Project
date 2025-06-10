@@ -1,0 +1,21 @@
+@use "@/shared/css/const" as c;
+
+.form {
+  //asd
+  position: static;
+  width: 100%;
+
+  &__paper {
+    display: flex;
+    flex-direction: column;
+    gap: c.$p;
+    padding: 25px;
+
+    &_anketa {
+      // background-color: red;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: c.$p;
+    }
+  }
+}

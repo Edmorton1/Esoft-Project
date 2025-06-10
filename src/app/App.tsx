@@ -7,7 +7,7 @@ import Header from "@/shared/components/Header";
 import { paths } from "@shared/PATHS";
 import ChangeTheme from "@/app/ChangeTheme";
 import "@/shared/css/App.scss"
-import "@/shared/css/LocalRemoteVideo.scss"
+import "@/shared/css/modules/LocalRemoteVideo.scss"
 
 // ДЛЯ АССИНХРОННЫХ ОПЕРАЦИЙ ИСПОЛЬЗОВАТЬ suspense
 

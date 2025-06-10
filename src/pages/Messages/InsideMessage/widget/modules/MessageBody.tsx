@@ -24,11 +24,12 @@ function MessageBody({editing, msg, changeClick, deleteClick}: propsInterface) {
   const isAuthor = msg.fromid === StoreForm.form?.id
   // console.log('COMPONENT RENDER', msg.id, editing, files)
   
-  return <Paper onClick={changeClick} elevation={editing ? 1 : 0} sx={{width: "100%", cursor: "pointer", bgcolor: editing ? "background.paper" : "transparent"}}>
-    <CardHeader sx={{p: 0.5}}
+  return <Paper component={"article"} onClick={changeClick} elevation={editing ? 1 : 0} sx={{width: "100%", cursor: "pointer", bgcolor: editing ? "background.paper" : "transparent"}}>
+    <CardHeader
       avatar={<Avatar src={isAuthor ? StoreForm.form?.avatar ?? PLACEHOLDER_IMG : StoreMessages.form?.avatar ?? PLACEHOLDER_IMG} />}
       title={<Typography variant="subtitle1" color="primary">{isAuthor ? StoreForm.form?.name : StoreMessages.form?.name}</Typography>}
-      subheader={<div style={{display: "flex", justifyContent: "space-between"}}>
+      // subheader={<div style={{display: "flex", justifyContent: "space-between"}}>
+      subheader={<div>
         <Typography color="text.primary">{msg.text}</Typography>
         <Typography>{new Date(msg.created_at).toLocaleString()}</Typography>
         {editing && <FormEdit />}

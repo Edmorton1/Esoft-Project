@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Fade from "@mui/material/Fade";
 import Modal from "@mui/material/Modal";
 import { MODAL_TALKING } from "@shared/CONST";
-import * as styles from "@/shared/css/ModalTalking.module.scss"
+import * as styles from "@/shared/css/modules/ModalTalking.module.scss"
 import ThreeButtons from "@/pages/Room/widgets/ModalTalking/components/ThreeButtons";
 import { manyVideosTypes } from "@/pages/Room/widgets/ModalTalking/ModalTalkingHead";
 import Info from "@/pages/Room/widgets/ModalTalking/components/Info";
@@ -24,7 +24,7 @@ function ModalTalkingBody({handleClose, showInterface, containerRef, mouseOver, 
 	return (
 		<Modal open={StoreTalking.isOpen} onClose={handleClose} keepMounted>
 			<Fade in={StoreTalking.isOpen}>
-				<Box sx={{bgcolor: "background.paper", cursor: showInterface ? "auto" : "none",}}
+				<Box sx={{bgcolor: "background.paper", cursor: showInterface ? "auto" : "none"}}
 					id={MODAL_TALKING}
 					ref={containerRef}
 					className={styles.main}

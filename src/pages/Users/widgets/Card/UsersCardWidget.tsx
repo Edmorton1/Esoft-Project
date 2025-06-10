@@ -8,6 +8,7 @@ import { FormWithDistanse } from "@t/gen/types"
 import StoreForm from "@/shared/stores/Store-Form"
 import { observer } from "mobx-react-lite"
 import { toJSON } from "@shared/MAPPERS"
+import * as style from "@/shared/css/pages/Users.module.scss"
 
 export const UsersContext = createContext<FormWithDistanse | null>(null)
 
@@ -35,16 +36,13 @@ function UsersCardWidget() {
 
   useGetById(`/extendedSearch?tags=${tags}&page=${page}&target=${target}&city=${city}&sex=${sex === 'man' ? 'true' : sex === 'woman' ? 'false' : ''}&min_age=${min_age}&max_age=${max_age}&avatar=${avatar}&location=${location}&max_distance=${max_distance}`, {callback: StoreUsers.initial})
 
-  return <>
-    {/* <Pagination /> */}
+  return <section className={style.section__users}>
     {StoreUsers.users?.map(anUser => (
-      <div key={anUser.id}>
-        <UsersContext.Provider value={anUser}>
+        <UsersContext.Provider key={anUser.id} value={anUser}>
           <UsersCardModule />
         </UsersContext.Provider>
-      </div>
     ))}
-  </>
+  </section>
 }
 
 export default observer(UsersCardWidget)

@@ -1,5 +1,5 @@
 import { memo } from "react";
-import * as styles from "@/shared/css/Map.module.scss";
+import * as styles from "@/shared/css/modules/Map.module.scss";
 
 function MapWrapper({ref}: {ref: React.RefObject<HTMLDivElement | null>}) {
 

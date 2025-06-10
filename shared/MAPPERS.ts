@@ -1,3 +1,4 @@
+import logger from "@s/logger"
 import { msg, MsgTypesClient, MsgTypesServer, SocketMessageClientInterface, SocketMessageServerInterface, Tables } from "@t/gen/types"
 
 export function toTS<T extends keyof Tables>(entity: any): Tables[T][] {
@@ -20,6 +21,7 @@ export function toSQL(domainModel: any) {
 
 export const frJSON = <T>(data: string): T => {
   // console.log('frJSON', data)
+  // logger.info({data})
   return JSON.parse(data.toString())
 }
 
