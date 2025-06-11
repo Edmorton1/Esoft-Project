@@ -10,11 +10,11 @@ import { observer } from "mobx-react-lite"
 import * as style from "@/shared/css/components/UserCard.module.scss"
 import { PLACEHOLDER_IMG } from "@shared/PUBLIC_IMG"
 import Divider from "@mui/material/Divider"
-import { useState } from "react"
+import { ReactNode, useState } from "react"
 import ReadMore from "@/shared/components/ReadMore"
 import { Tags } from "@t/gen/Users"
 
-function UsersCardInfo({handleLike, form}: {handleLike: () => void, form: FormWithDistanse}) {
+function UsersCardInfo({form, children}: {form: FormWithDistanse, children?: ReactNode}) {
   return <Card component={"article"} className={style.container}>
     {/* <Avatar src={form.avatar!} className={style.container__avatar} /> */}
     <div className={style.container__avatar}>
@@ -46,7 +46,7 @@ function UsersCardInfo({handleLike, form}: {handleLike: () => void, form: FormWi
         renderItem={(e: Tags) => <Chip variant="outlined" key={e.tag} label={e.tag} />} />
 
       {form.distance && <Typography><strong>Расстояние: </strong>{form.distance} км</Typography>}
-      <Button color="success" variant="contained" onClick={handleLike}>{StoreLikes.likes?.sent.some(e => e.liked_userid === form!.id) ? 'Убрать лайк' : 'Лайкнуть'}</Button>
+      {children}
     </CardContent>
     {/* <img src={form.avatar!} alt="" /> */}
   </Card>

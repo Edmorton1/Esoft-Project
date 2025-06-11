@@ -1,0 +1,11 @@
+@use "@/shared/css/const" as c;
+
+.section {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: c.$g;
+  
+  // article {
+  //   height: 100%;
+  // }
+}

@@ -6,12 +6,12 @@ import { toCl } from "@shared/MAPPERS";
 import { makeAutoObservable, runInAction, toJS } from "mobx";
 import StoreUser from "@/shared/stores/Store-User";
 import { serverPaths } from "@shared/PATHS";
-import StoreForm from "@/shared/stores/Store-Form";
 import { FormWithDistanse } from "@t/gen/types";
 
 class StoreLikes {
-  likes: {sent: {id: number, liked_userid: number}[]; received: {id: number, userid: number}[]} | null = null
-  liked: FormWithDistanse[] | null = null
+  likes: {sent: {id: number, liked_userid: number}[]; received: {id: number, userid: number}[]} | null = null;
+  liked: FormWithDistanse[] | null = null;
+  cursor: number | null = null
 
   constructor() {
     makeAutoObservable(this)
@@ -24,6 +24,23 @@ class StoreLikes {
     runInAction(() => this.likes = {sent, received})
     // console.log('[SNET]', await $api.get(`${serverPaths.likes}?userid=${StoreUser.user!.id}&fields=id, liked_userid`))
     // console.log(toJS(this.likes))
+  }
+
+  likedUser = async (data: FormWithDistanse[]) => {
+    // const forms = toCl(await $api.get(`${serverPaths.likesGet}/2?lat=${StoreForm.form?.location?.lat}&lng=${StoreForm.form?.location?.lng}`))
+    // this.liked = data
+    // console.log(toJS(data))
+    if (this.liked !== null) {
+      this.liked.unshift(...data)
+    } else {
+      this.liked = data
+    }
+    
+    console.log("THIS CURSOR NEW ", data, this.cursor)
+    this.cursor = data[data.length - 1]?.id
+        
+    // console.log(this.liked, this.liked)
+    console.log(toJS(this.liked))  
   }
 
   delete = async (liked_userid: number) => {
@@ -40,12 +57,6 @@ class StoreLikes {
     }
   }
 
-  likedUser = async (data: FormWithDistanse[]) => {
-    // const forms = toCl(await $api.get(`${serverPaths.likesGet}/2?lat=${StoreForm.form?.location?.lat}&lng=${StoreForm.form?.location?.lng}`))
-    this.liked = data
-    console.log(toJS(data))
-  }
-
   sendDelete = async (id: number) => {
     const like = this.likes?.received.find(e => e.id == id)
     runInAction(() => this.likes?.received.filter(e => e.id != id))
@@ -56,7 +67,7 @@ class StoreLikes {
     const request: Likes = toCl(await $api.post(`${serverPaths.likesSend}?fields=id, liked_userid`, data))
     console.log(request)
     runInAction(() => this.likes?.sent.push(request))
-    console.log(request)
+    console.log('Like agredd', request)
   }
 
   socketGet = async (data: Likes) => {

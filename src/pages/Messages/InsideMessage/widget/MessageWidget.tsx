@@ -1,8 +1,7 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react"
+import { useRef, useState } from "react"
 import StoreMessages from "../../store/Store-Messages"
 import MessageHead from "./modules/MessageHead"
 import { observer } from "mobx-react-lite"
-import $api from "@/shared/api/api"
 import { serverPaths } from "@shared/PATHS"
 import StoreUser from "@/shared/stores/Store-User"
 import useInfinitPagination from "@/shared/hooks/useInfinitPagination"
@@ -12,9 +11,9 @@ function MessageWidget({toid}: {toid: number}) {
 
   console.log("RERENDER")
   const ref = useRef<HTMLElement>(null)
-  const scrollHandle = useInfinitPagination(ref, `${serverPaths.getMessage}/${StoreUser.user?.id}/${toid}?cursor=${StoreMessages.cursor}`)
+  const scrollHandle = useInfinitPagination(ref, `${serverPaths.getMessage}/${StoreUser.user?.id}/${toid}?cursor=${StoreMessages.cursor}`, StoreMessages.cursor === null, (data) => StoreMessages.get(data.data))
 
-  return <section ref={ref} style={{height: "750px", overflowY: "auto", overflowX: "hidden"}} onScroll={scrollHandle}>
+  return <section ref={ref} style={{height: "700px", overflowY: "auto", overflowX: "hidden"}} onScroll={scrollHandle}>
   <button onClick={() => ref.current?.scrollTo(0, 10000)}>Скролнуть</button>
   {/* return <section> */}
     {StoreMessages.messages?.map(msg => (

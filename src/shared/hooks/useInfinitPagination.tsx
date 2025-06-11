@@ -1,15 +1,12 @@
-import StoreMessages from "@/pages/Messages/store/Store-Messages"
 import $api from "@/shared/api/api"
-import StoreUser from "@/shared/stores/Store-User"
-import { serverPaths } from "@shared/PATHS"
-import { useEffect, useLayoutEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 
 // interface propsInterface {
 //   ref: React.RefObject<HTMLElement | null>,
 //   url: string
 // }
 
-function useInfinitPagination(ref: React.RefObject<HTMLElement | null>, url: string) {
+function useInfinitPagination(ref: React.RefObject<HTMLElement | null>, url: string, firstRender: boolean, callback: (data: any) => void) {
   const [stop, setStop] = useState(false)
   const [fetching, setFetching] = useState(false)
 
@@ -25,9 +22,9 @@ function useInfinitPagination(ref: React.RefObject<HTMLElement | null>, url: str
   useEffect(() => {
     console.log(ref.current?.clientHeight)
 
-    if (fetching || StoreMessages.cursor === null) {
+    if (fetching || firstRender) {
       $api.get(url)
-        .then(data => {data.data.messages.length !== 0 ? StoreMessages.get(data.data) : setStop(true)})
+        .then(data => {data.data.messages.length !== 0 ? callback(data) : setStop(true)})
         .then(() => setFetching(false))
     }
 

@@ -3,8 +3,6 @@ import FileComponent from "@/pages/Messages/InsideMessage/widget/modules/compone
 import StoreMessages from "@/pages/Messages/store/Store-Messages";
 import StoreForm from "@/shared/stores/Store-Form"
 import Avatar from "@mui/material/Avatar";
-import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
 import Paper from "@mui/material/Paper";
@@ -22,6 +20,7 @@ interface propsInterface {
 
 function MessageBody({editing, msg, changeClick, deleteClick}: propsInterface) {
   const isAuthor = msg.fromid === StoreForm.form?.id
+  console.log("МЕССАДЖ РЕНДРР")
   // console.log('COMPONENT RENDER', msg.id, editing, files)
   
   return <Paper component={"article"} onClick={changeClick} elevation={editing ? 1 : 0} sx={{width: "100%", cursor: "pointer", bgcolor: editing ? "background.paper" : "transparent"}}>

@@ -20,14 +20,16 @@ class HttpMessageController {
     clientTo?.send(toSOSe(type, msg))
   }
 
-  getMessage = async (req: Request, res: Response<{messages: Message[], form: Form}>) => {
+  getMessage = async (req: Request, res: Response<{messages: Message[]} | {messages: Message[], form: Form}>) => {
     const r = req as ReqGetMessage
     logger.info({toid: r.toid, frid: r.frid, cursor: r.cursor})
 
     const messages = await MessageSQL.getMessage(r.frid, r.toid, r.cursor)
     const form = one(await ORM.getById(r.toid, 'forms'))
 
-    res.json({messages, form})
+    const total = r.cursor ? {messages} : {messages, form}
+
+    res.json(total)
   }
 
   sendMessage = async (req: Request, res: Response) => {
