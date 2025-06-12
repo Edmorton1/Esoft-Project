@@ -31,7 +31,7 @@ const request = async (fields?: string): Promise<Form> => {
 };
 
 describe("[FORM]: Получение формы пользователя во всех вариациях", () => {
-	test.skip("Получение с *", async () => {
+	test("Получение с *", async () => {
 		const {id, tags, ...form} = await request();
 
     await $test.delete(`${serverPaths.users}/${id}`)
@@ -51,7 +51,7 @@ describe("[FORM]: Получение формы пользователя во в
 
 	});
 
-  test.skip("Получение с id, tags, location", async () => {
+  test("Получение с id, tags, location", async () => {
     const {id, tags, ...form} = await request('id, location, tags')
 
     await $test.delete(`${serverPaths.users}/${id}`)

@@ -1,7 +1,7 @@
 import StoreUsers from "@/pages/Users/widgets/store/Store-Users"
 import UsersCardModule from "@/pages/Users/widgets/Card/modules/UsersCardModule"
 import { Form } from "@t/gen/Users"
-import { createContext } from "react"
+import { createContext, useEffect } from "react"
 import useGetById from "@/shared/hooks/useGetBy"
 import useUpdateParams from "@/shared/hooks/useChangeParams"
 import { FormWithDistanse } from "@t/gen/types"
@@ -34,8 +34,13 @@ function UsersCardWidget() {
 
   // http://localhost:5000/users?max_age=46&min_age=40&tags=%D0%BC%D1%83%D0%B7%D0%B8%D0%BA%D0%B0&sex=woman
 
-  useGetById(`/extendedSearch?tags=${tags}&page=${page}&target=${target}&city=${city}&sex=${sex === 'man' ? 'true' : sex === 'woman' ? 'false' : ''}&min_age=${min_age}&max_age=${max_age}&avatar=${avatar}&location=${location}&max_distance=${max_distance}`, {callback: StoreUsers.initial})
+  // useGetById(`/extendedSearch?tags=${tags}&page=${page}&target=${target}&city=${city}&sex=${sex === 'man' ? 'true' : sex === 'woman' ? 'false' : ''}&min_age=${min_age}&max_age=${max_age}&avatar=${avatar}&location=${location}&max_distance=${max_distance}`, {callback: StoreUsers.initial})
+  console.log(`/extendedSearch?tags=${tags}&page=${page}&target=${target}&city=${city}&sex=${sex === 'man' ? 'true' : sex === 'woman' ? 'false' : ''}&min_age=${min_age}&max_age=${max_age}&avatar=${avatar}&location=${location}&max_distance=${max_distance}`)
 
+  // useEffect(() => {
+
+  // }, [])
+  
   return <section className={style.section__users}>
     {StoreUsers.users?.map(anUser => (
         <UsersContext.Provider key={anUser.id} value={anUser}>

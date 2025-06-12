@@ -14,7 +14,7 @@ async function uploadAvatar(): Promise<string> {
 }
 
 describe('[UPLOAD AVATAR]: Тест загрузки аватара', () => {
-  test.skip('Тест загрузки аватара', async () => {
+  test('Тест загрузки аватара', async () => {
     const url = await uploadAvatar()
 
     expect(url.includes(YANDEX_INCLUDE)).toStrictEqual(true)

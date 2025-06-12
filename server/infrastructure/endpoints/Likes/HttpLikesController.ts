@@ -7,7 +7,6 @@ import logger from "@s/logger";
 import { RequestGet, RequestLike } from "@s/infrastructure/endpoints/Likes/middlewares/LikesMiddleware";
 import { RequestOnlyId } from "@s/infrastructure/middlewares/SharedMiddlewares";
 import { getManyByParam } from "@s/infrastructure/endpoints/Likes/sql/SQLLikes";
-import { LIKES_ON_PAGE } from "@shared/CONST";
 
 class HttpLikesController {
   sendLike = async (req: Request, res: Response) => {
@@ -40,7 +39,7 @@ class HttpLikesController {
     const r = req as RequestGet
 
     logger.info({riad: r.id})
-    const ids = (await ORM.getByParams({liked_userid: r.id}, 'likes', 'userid', undefined, r.cursor ? {cursor: r.cursor, limit: LIKES_ON_PAGE} : undefined)).map(e => e.userid)
+    const ids = (await ORM.getByParams({liked_userid: r.id}, 'likes', 'userid')).map(e => e.userid)
     logger.info({ids})
 
     const response = await getManyByParam("id", ids, r.lnglat, r.cursor)

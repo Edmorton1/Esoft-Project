@@ -15,6 +15,7 @@ import LikesMiddleware from "@s/infrastructure/endpoints/Likes/middlewares/Likes
 import MessageMiddleware from "@s/infrastructure/endpoints/Message/middlewares/MessageMiddleware"
 import HttpMessageOutsideController from "@s/infrastructure/endpoints/MessageOutside/HttpMessageOutsideController"
 import SharedMiddlewares from "@s/infrastructure/middlewares/SharedMiddlewares"
+import ExtendedSearchMiddle from "@s/infrastructure/endpoints/ExtendSearch/middlewares/ExtendedSearchMiddle"
 
 const upload = multer({storage: multer.memoryStorage()})
 const router = express.Router()
@@ -57,7 +58,7 @@ router.post(`${serverPaths.postAvatar}/:id`, upload.single('avatar'),  HttpFiles
 router.post(serverPaths.testCompressViedo, upload.single('video'), HttpFilesController.TestConvertVideo)
 router.post(serverPaths.testCompressAudio, upload.single('audio'), HttpFilesController.TestConvertAudio)
 
-router.get(`${serverPaths.extendedSearch}`, HttpExtendedSearchController.getForms)
+router.post(`${serverPaths.extendedSearch}`, ExtendedSearchMiddle, HttpExtendedSearchController.getForms)
 
 router.get(`${serverPaths.outsideMessages}/:id`, SharedMiddlewares.OnlyIdMiddleware, HttpMessageOutsideController.outsideMessages)
 

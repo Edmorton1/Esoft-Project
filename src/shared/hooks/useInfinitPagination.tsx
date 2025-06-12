@@ -6,13 +6,13 @@ import { useEffect, useState } from "react"
 //   url: string
 // }
 
-function useInfinitPagination(ref: React.RefObject<HTMLElement | null>, url: string, firstRender: boolean, callback: (data: any) => void) {
+function useInfinitPagination(ref: React.RefObject<HTMLElement | null>, url: string, firstRender: boolean, callback: (data: any) => void, limit: number) {
   const [stop, setStop] = useState(false)
   const [fetching, setFetching] = useState(false)
 
   const scrollHandle = (e: React.UIEvent<HTMLElement, UIEvent>) => {
     const target = e.currentTarget as HTMLElement
-    if (target.scrollTop < 125 && !stop) {
+    if (target.scrollTop < 150 && !stop) {
       setFetching(true)
     }
     // console.log('scrollHeight', target.scrollHeight)
@@ -24,7 +24,7 @@ function useInfinitPagination(ref: React.RefObject<HTMLElement | null>, url: str
 
     if (fetching || firstRender) {
       $api.get(url)
-        .then(data => {data.data.messages.length !== 0 ? callback(data) : setStop(true)})
+        .then(data => {data.data.messages.length < limit ? setStop(true) : callback(data)})
         .then(() => setFetching(false))
     }
 

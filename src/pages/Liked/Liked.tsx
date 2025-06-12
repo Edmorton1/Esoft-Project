@@ -11,52 +11,17 @@ import Button from "@mui/material/Button"
 import { useEffect, useState } from "react"
 import { toJS } from "mobx"
 import $api from "@/shared/api/api"
+import useInfinitPaginationDoc from "@/shared/hooks/useInfinitPaginationDoc"
+import { LIKES_ON_PAGE } from "@shared/CONST"
 
 function Liked() {
   // useGetBy(`${serverPaths.likesGet}/${StoreUser.user?.id}?lat=${StoreForm.form?.location?.lat}&lng=${StoreForm.form?.location?.lng}?cursor=${StoreLikes.cursor}`, {callback: (data) => StoreLikes.likedUser(data)})
 
-  // const handleWrite = () => {}
-
-  // СТАРЫЙ
-
-  const [stop, setStop] = useState(false)
-  const [fetching, setFetching] = useState(false)
-  
-  const scrollHandle = (e: Event) => {
-    const target = e.target as Document
-
-    // const innerHeight = window.innerHeight
-    // const height = target.documentElement.scrollHeight
-
-    const position = target.documentElement.scrollTop
-    const height = target.documentElement.scrollHeight - window.innerHeight
-
-    console.log(height - position)
-
-    if (height - position < 125) {
-      setFetching(true)
-    }
-  }
-
-  useEffect(() => {
-    if (fetching || StoreLikes.cursor === null) {
-      $api.get(`${serverPaths.likesGet}/${StoreUser.user?.id}?lat=${StoreForm.form?.location?.lat}&lng=${StoreForm.form?.location?.lng}?cursor=${StoreLikes.cursor}`)
-        .then(data => {data.data.length !== 0 ? StoreLikes.likedUser(data.data) : setStop(true)})
-        .then(() => setFetching(false))
-    }
-  }, [fetching])
-
-  useEffect(() => {
-    document.addEventListener('scroll', scrollHandle)
-
-    return () => document.removeEventListener('scroll', scrollHandle)
-  }, [])
-
-  // СТАРЫЙ
+  useInfinitPaginationDoc(`${serverPaths.likesGet}/${StoreUser.user?.id}?lat=${StoreForm.form?.location?.lat}&lng=${StoreForm.form?.location?.lng}&cursor=${StoreLikes.cursor}`, StoreLikes.cursor === null, (data) => StoreLikes.likedUser(data), LIKES_ON_PAGE)
 
   return <section className={style.section}>
     {/* <button onClick={() => console.log(toJS(StoreLikes.liked),toJS(StoreLikes.likes))}>Store</button> */}
-    <button onClick={() => console.log(StoreLikes.cursor)} style={{position: "fixed"}}>Курсон</button>
+    {/* <button onClick={() => console.log(stop)} style={{position: "fixed"}}>Стоп</button> */}
     {StoreLikes.liked?.map(e => <UsersCardInfo form={e} key={e.id}>
         {/* <div> */}
           <Link to={`${paths.messages}/${e.id}`}>

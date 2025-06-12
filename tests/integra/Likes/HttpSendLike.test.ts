@@ -15,7 +15,7 @@ async function sendLike(body: any, fields: string = ''): Promise<Likes> {
 }
 
 describe("[LIKES]: Тест лайков", () => {
-	test.skip("Создание лайка", async () => {
+	test("Создание лайка", async () => {
 		const {id, ...result} = await sendLike(body);
 
     console.log(id, result);
@@ -28,7 +28,7 @@ describe("[LIKES]: Тест лайков", () => {
 		});
 	});
 
-  test.skip('Создание лайка с полями', async () => {
+  test('Создание лайка с полями', async () => {
     const {id, ...result} = await sendLike(body, '?fields=id, liked_userid');
 
     console.log(id, result)

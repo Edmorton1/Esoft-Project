@@ -4,7 +4,7 @@ import { FILE_PATH, registartion } from "@test/helpers/functions";
 import fs from "fs"
 
 describe("Регистрация - интеграционный тест", () => {
-	test.skip("Регистрация - все поля заполнены", async () => {
+	test("Регистрация - все поля заполнены", async () => {
 		const body = {
 			email: "kyiv@gmail.com",
 			password: "123123",

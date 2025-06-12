@@ -39,7 +39,7 @@ const data = {
 };
 
 describe("[MESSAGE]: Изменение сообщения", () => {
-	test.skip("Полное изменение без файла", async () => {
+	test("Полное изменение без файла", async () => {
 		const request = await putMessage(false);
 		console.log(request);
 
@@ -56,7 +56,7 @@ describe("[MESSAGE]: Изменение сообщения", () => {
 		});
 	});
 
-  test.skip('Полное изменение с файлом', async () => {
+  test('Полное изменение с файлом', async () => {
     const request = await putMessage(true);
 		console.log(request);
 
@@ -74,7 +74,7 @@ describe("[MESSAGE]: Изменение сообщения", () => {
 		});
   })
 
-  test.skip('Удаление файлов', async () => {
+  test('Удаление файлов', async () => {
     const request = await putMessage(false, true);
 		console.log(request);
 

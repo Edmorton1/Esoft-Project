@@ -3,7 +3,7 @@ import $test from "@test/helpers/$test";
 import { registartion } from "@test/helpers/functions";
 
 describe("Регистрация - интеграционный тест", () => {
-  test.skip("Регистрация - минимум заполненных полей", async () => {
+  test("Регистрация - минимум заполненных полей", async () => {
     const body = {
       email: "kyiv@gmail.com",
       password: "123123",

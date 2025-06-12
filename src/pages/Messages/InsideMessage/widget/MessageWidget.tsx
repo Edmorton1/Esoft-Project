@@ -5,13 +5,14 @@ import { observer } from "mobx-react-lite"
 import { serverPaths } from "@shared/PATHS"
 import StoreUser from "@/shared/stores/Store-User"
 import useInfinitPagination from "@/shared/hooks/useInfinitPagination"
+import { MESSAGE_ON_PAGE } from "@shared/CONST"
 
 function MessageWidget({toid}: {toid: number}) {
   const [editMessage, setEditMessage] = useState<null | number>(null)
 
   console.log("RERENDER")
   const ref = useRef<HTMLElement>(null)
-  const scrollHandle = useInfinitPagination(ref, `${serverPaths.getMessage}/${StoreUser.user?.id}/${toid}?cursor=${StoreMessages.cursor}`, StoreMessages.cursor === null, (data) => StoreMessages.get(data.data))
+  const scrollHandle = useInfinitPagination(ref, `${serverPaths.getMessage}/${StoreUser.user?.id}/${toid}?cursor=${StoreMessages.cursor}`, StoreMessages.cursor === null, (data) => StoreMessages.get(data.data), MESSAGE_ON_PAGE)
 
   return <section ref={ref} style={{height: "700px", overflowY: "auto", overflowX: "hidden"}} onScroll={scrollHandle}>
   <button onClick={() => ref.current?.scrollTo(0, 10000)}>Скролнуть</button>

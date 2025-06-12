@@ -31,7 +31,7 @@ class StoreLikes {
     // this.liked = data
     // console.log(toJS(data))
     if (this.liked !== null) {
-      this.liked.unshift(...data)
+      this.liked.push(...data)
     } else {
       this.liked = data
     }
@@ -40,7 +40,7 @@ class StoreLikes {
     this.cursor = data[data.length - 1]?.id
         
     // console.log(this.liked, this.liked)
-    console.log(toJS(this.liked))  
+    console.log(toJS(this.liked))
   }
 
   delete = async (liked_userid: number) => {
