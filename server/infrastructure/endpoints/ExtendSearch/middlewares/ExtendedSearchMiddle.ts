@@ -1,40 +1,71 @@
 import logger from "@s/logger";
-import { lnglatType } from "@t/gen/types";
-import { FormSchema } from "@t/gen/Users";
+import { FormSchema, TargetTypeSchema } from "@t/gen/Users";
+import { queryBoolean } from "@t/shared/zodSnippets";
 import {Request, Response, NextFunction} from "express";
 import { z } from "zod";
 
-export interface ExtendedParamsInterface extends Request {
-  body: {
-    tags?: string;
-    params?: any;
-    min_age?: number;
-    max_age?: number;
-    page?: number;
-    avatar?: boolean;
-    location?: lnglatType;
-    max_distance?: number;
-  }
+const zParams = FormSchema
+  .pick({target: true, sex: true, city: true})
+  .extend({
+    target: z.preprocess(val => {
+      const parse = TargetTypeSchema.safeParse(val)
+      return parse.success ? parse.data : ''
+    }, z.string()),
+    sex: queryBoolean,
+    city: z.coerce.string()
+}).partial()
 
+const zodParams = z.object({
+  // tags: z.coerce.string().trim().nonempty().optional(),
+  tags: z.preprocess(val => {
+    if (typeof val === 'string') {
+      const result = val.split(',').map(e => e.trim())
+      if (result.length === 1 && result[0] === '') {
+        return undefined
+      } return result
+    }
+  }, z.array(z.string().trim().nonempty()).optional()),
+
+  min_age: z.coerce.number().optional(),
+  max_age: z.coerce.number().optional(),
+  page: z.coerce.number().transform(val => val !== 0 ? val : 1).optional(),
+  avatar: queryBoolean,
+  max_distance: z.coerce.number().optional(),
+
+  location: z.preprocess(val => {
+    if (typeof val === 'string') {
+      try {
+        return JSON.parse(val)
+      } catch {
+        return undefined
+      }
+    } return undefined
+  }, z.tuple([z.coerce.number(), z.coerce.number()]).optional()),
+
+  params: z.preprocess(val => {
+    if (typeof val === 'object' && val !== null && Object.keys(val).length === 0) {
+      return undefined
+    } return val
+  }, zParams.optional())
+})
+
+export type paramsType = z.infer<typeof zParams>
+
+export type queryType = z.infer<typeof zodParams>
+
+export interface ExtendedParamsInterface extends Request {
+  filters: queryType
 }
 
 function ExtendedSearchMiddle(req: Request, res: Response, next: NextFunction) {
   const r = req as ExtendedParamsInterface
-  const {tags, min_age, max_age, page, avatar, location, max_distance, ...params} = req.body
-  const parsed = {
-    tags: z.string().trim().nonempty().optional().parse(tags),
-    min_age: z.coerce.number().optional().parse(min_age),
-    max_age: z.coerce.number().optional().parse(max_age),
-    page: z.coerce.number().optional().parse(page),
-    avatar: z.coerce.boolean().optional().parse(avatar),
-    location: z.tuple([z.coerce.number(), z.coerce.number()]).optional().parse(location),
-    max_distance: z.coerce.number().optional().parse(max_distance),
-    params: FormSchema.partial().optional().parse(params)
-  }
+  const {tags, min_age, max_age, page, avatar, location, max_distance, ...params} = req.query
 
-  logger.info({ПАРАМЕТРЫ_EXT_SEARCH: {tags, params, min_age, max_age, page, avatar, location, max_distance}})
+  const parsed = zodParams.parse({tags, min_age, max_age, page, avatar, location, max_distance, params})
+
+  logger.debug({ПАРАМЕТРЫ_EXT_SEARCH: parsed})
   
-  r.body = parsed
+  r.filters = parsed
 
   next()
 }

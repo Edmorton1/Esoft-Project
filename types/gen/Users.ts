@@ -1,7 +1,7 @@
 import { nullToUndefined, zid, zstring } from '@t/shared/zodSnippets';
 import { z } from 'zod';
 
-export const TargetTypeSchema = z.enum(['friend', 'relation', 'chat', 'hobby', 'other']);
+export const TargetTypeSchema = z.enum(['friend', 'relation', 'chat', 'hobby']);
 export const UserRoleSchema = z.enum(['user', 'admin'])
 
 export const LocationSchema = z.object({

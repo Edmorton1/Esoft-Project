@@ -58,7 +58,7 @@ router.post(`${serverPaths.postAvatar}/:id`, upload.single('avatar'),  HttpFiles
 router.post(serverPaths.testCompressViedo, upload.single('video'), HttpFilesController.TestConvertVideo)
 router.post(serverPaths.testCompressAudio, upload.single('audio'), HttpFilesController.TestConvertAudio)
 
-router.post(`${serverPaths.extendedSearch}`, ExtendedSearchMiddle, HttpExtendedSearchController.getForms)
+router.get(`${serverPaths.extendedSearch}`, ExtendedSearchMiddle, HttpExtendedSearchController.getForms)
 
 router.get(`${serverPaths.outsideMessages}/:id`, SharedMiddlewares.OnlyIdMiddleware, HttpMessageOutsideController.outsideMessages)
 

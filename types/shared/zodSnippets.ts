@@ -18,6 +18,7 @@ export const expressMulter = z.custom<Express.Multer.File>(val => {
 })
 
 export const checkEmptyString = (val: unknown): val is string => typeof val === 'string' && val.trim() !== ''
+
 export const toCapitalize = (val: string) => val.charAt(0).toUpperCase() + val.slice(1).toLowerCase()
 
 export const nullToUndefined = (val: unknown): unknown => {
@@ -38,3 +39,27 @@ export const nullToUndefined = (val: unknown): unknown => {
 
   return val;
 };
+
+// export const queryToString = z.preprocess(val => {
+//   if (typeof val === 'string') {
+//     if (val.trim() === '') {
+//       return undefined
+//     } return val
+//   } else if (typeof val === 'number') {
+//     return val
+//   } return undefined
+// }, z.string().trim().optional())
+
+// export const queryToNumber = z.preprocess(val => {
+//   const num = Number(val)
+//   if (Number.isNaN(num) || val === '') {
+//     return undefined
+//   } return num
+// }, z.number().optional())
+export const queryBoolean = z.preprocess(val => {
+    if (val === 'true') {
+      return true
+    } else if (val === 'false') {
+      return false
+    } return undefined
+  }, z.boolean().optional())
