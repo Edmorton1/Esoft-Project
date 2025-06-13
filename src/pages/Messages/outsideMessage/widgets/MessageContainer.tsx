@@ -4,13 +4,14 @@ import useGetBy from "@/shared/hooks/useGetBy"
 import StoreUser from "@/shared/stores/Store-User"
 import { serverPaths } from "@shared/PATHS"
 import { observer } from "mobx-react-lite"
+import * as styles from "@/shared/css/pages/Messages.module.scss"
 
 function MessageContainer() {
   useGetBy(`${serverPaths.outsideMessages}/${StoreUser.user?.id}`, {callback: (data) => StoreMessage.initial(data)})
   
   // return <div>asdasdsda</div>
 
-    return <section>
+    return <section className={styles.section}>
     {StoreMessage.lastMessages?.map(e => <MessageBranch id={e.form.id} avatar={e.form.avatar} name={e.form.name} text={e.message.text} created_at={e.message.created_at} key={e.form.id}/>)}
   </section>
 }

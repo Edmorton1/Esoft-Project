@@ -1,4 +1,4 @@
-import MapWrapper from "@/shared/ui/kit/Map/MapWrapper";
+import MapWrapper from "@/shared/hooks/Map/MapWrapper";
 import useGeolocation from "@/shared/hooks/useGeolocation";
 import {useRef} from "react";
 import useMap from "@/shared/hooks/Map/useMap";

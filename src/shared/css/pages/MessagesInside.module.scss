@@ -1,0 +1,36 @@
+@use "@/shared/css/const" as c;
+// style={{height: "700px", overflowY: "auto", overflowX: "hidden"}}
+
+$mw: 500px;
+
+.section {
+  height: c.$h;
+
+  &__widget {
+    height: 90%;
+    overflow-Y: auto;
+
+    img {
+      max-width: $mw;
+    }
+
+    video {
+      max-width: $mw;
+    }
+
+    audio {
+      max-width: $mw;
+    }
+  }
+
+  &__form {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    // background-color: red;
+    margin-top: 10px;
+    border-radius: 32px !important;
+    padding: 8px;
+    align-items: center;
+  }
+}

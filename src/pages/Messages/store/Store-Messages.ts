@@ -50,19 +50,21 @@ class StoreMessages {
     let fd;
 
     const old = this.messages!.find(e => e.id == data.id)!
-    console.log(data, toJS(old), 'messagedto')
+    console.log(data, toJS(old), 'messagedto', data.deleted)
 
-    if (data.files.new == null && data.files.old.length === 0 && data.text == old.text) {
-      return;
+    // if (data.files.new == null && data.files.old.length === 0 && data.text == old.text) {
+    //   return;
       
-    }
-    if (data.files.new == null && data.files.old.length === 0) {
+    // }
+    // if (data.files.new == null && data.files.old.length === 0) {
       fd = new FormData
       fd.append('json', toJSON(data))
       // await $api.put(`${serverPaths.editMessage}/${data.id}`, fd)
-    } 
-    else {
+    // } 
+    // else {
+      // data['deleted'] = old.files?.filter(e => !data.files.old?.includes(e)) ?? []
       data['deleted'] = old.files?.filter(e => !data.files.old?.includes(e)) ?? []
+      console.log(data, toJS(old), 'messagedto')
       const newFiles = data.files.new!
       
       const cleanData = data as Partial<MessagePutDTOClient>
@@ -70,7 +72,7 @@ class StoreMessages {
       
       fd = await toFormData(newFiles)
       fd.append('json', toJSON(cleanData))
-    }
+    // }
     console.log(data)
     const request = await $api.put(`${serverPaths.editMessage}/${data.id}`, fd, {
         headers: {'Content-Type': 'multipart/form-data'}

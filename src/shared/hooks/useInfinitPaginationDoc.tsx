@@ -6,13 +6,15 @@ function useInfinitPaginationDoc(url: string, firstRender: boolean, callback: (d
   const [fetching, setFetching] = useState(false)
 
   useEffect(() => {
+    if (url.includes("undefined")) return;
+
     if (fetching || firstRender) {
       $api.get(url)
         .then(data => {console.log('then data', data.data.length === 0); return data})
         .then(data => {data.data.length < limit? setStop(true) : callback(data.data)  })
         .then(() => setFetching(false))
     }
-  }, [fetching])
+  }, [fetching, url])
 
   useEffect(() => {
       const scrollHandle = (e: Event) => {

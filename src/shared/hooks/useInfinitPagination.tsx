@@ -21,6 +21,7 @@ function useInfinitPagination(ref: React.RefObject<HTMLElement | null>, url: str
 
   useEffect(() => {
     console.log(ref.current?.clientHeight)
+    if (url.includes("undefined")) return;
 
     if (fetching || firstRender) {
       $api.get(url)
@@ -28,16 +29,84 @@ function useInfinitPagination(ref: React.RefObject<HTMLElement | null>, url: str
         .then(() => setFetching(false))
     }
 
-  }, [fetching])
+  }, [fetching, url])
 
+  // РАБОТАЕТ ТОЛЬКО ПРИ ПЕРВОЙ ЗАГРУЗКЕ
   useEffect(() => {
     if (!ref.current) return;
 
     // console.log("LAYOUT EFFECT", ref.current)
-    ref.current?.scrollTo(0, ref.current.scrollHeight)
+    const files = [
+      ...ref.current.querySelectorAll('img'),
+      ...ref.current.querySelectorAll('video'),
+      ...ref.current.querySelectorAll('audio'),
+    ];
+    let loaded = 0
+    const total = files.length
+
+    const onImageLoad = () => {
+      loaded++
+      if (loaded === total) ref.current?.scrollTo(0, ref.current.scrollHeight)
+    }
+
+    files.forEach(file => {
+      const loaded = ((file instanceof HTMLImageElement && file.complete) || ((file instanceof HTMLVideoElement || file instanceof HTMLAudioElement) && file.readyState === 3))
+      if (loaded) {
+        onImageLoad()
+      } else {
+        file.addEventListener('loadeddata', onImageLoad)
+        file.addEventListener('error', onImageLoad)
+      }
+    })
+
+    console.log(loaded, total)
+    return () => {
+      files.forEach(img => {
+        img.removeEventListener('loadeddata', onImageLoad),
+        img.removeEventListener('error', onImageLoad)
+      })
+    }
+
   }, [ref.current])
 
   return scrollHandle
 }
 
 export default useInfinitPagination
+
+  // useEffect(() => {
+  //   if (!ref.current) return;
+
+  //   // console.log("LAYOUT EFFECT", ref.current)
+  //   const files = [
+  //     ...ref.current.querySelectorAll('img'),
+  //     // ...ref.current.querySelectorAll('video'),
+  //     // ...ref.current.querySelectorAll('audio'),
+  //   ];
+  //   let loaded = 0
+  //   const total = files.length
+
+  //   const onImageLoad = () => {
+  //     loaded++
+  //     if (loaded === total) ref.current?.scrollTo(0, ref.current.scrollHeight)
+  //   }
+
+  //   files.forEach(file => {
+  //     const loaded = (file instanceof HTMLImageElement && file.complete)
+  //     if (loaded) {
+  //       onImageLoad()
+  //     } else {
+  //       file.addEventListener('load', onImageLoad)
+  //       file.addEventListener('error', onImageLoad)
+  //     }
+  //   })
+
+  //   console.log(loaded, total)
+  //   return () => {
+  //     files.forEach(img => {
+  //       img.removeEventListener('load', onImageLoad),
+  //       img.removeEventListener('error', onImageLoad)
+  //     })
+  //   }
+
+  // }, [ref.current])

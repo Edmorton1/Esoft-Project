@@ -10,7 +10,7 @@ function SentHead({toid}: {toid: number}) {
   const {register, handleSubmit, setValue, formState: { errors }} = useForm({
     resolver: zodResolver(MessageDTOClientSchema),
     defaultValues: {
-      toid: toid
+      toid: toid,
     }
   })
 

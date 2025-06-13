@@ -5,6 +5,7 @@ import StoreForm from "@/shared/stores/Store-Form"
 import Avatar from "@mui/material/Avatar";
 import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
+import Divider from "@mui/material/Divider";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import { PLACEHOLDER_IMG } from "@shared/PUBLIC_IMG";
@@ -15,15 +16,15 @@ interface propsInterface {
   editing: boolean,
   msg: Message,
   changeClick: () => void,
-  deleteClick: () => void,
 }
 
-function MessageBody({editing, msg, changeClick, deleteClick}: propsInterface) {
+function MessageBody({editing, msg, changeClick}: propsInterface) {
   const isAuthor = msg.fromid === StoreForm.form?.id
   console.log("МЕССАДЖ РЕНДРР")
   // console.log('COMPONENT RENDER', msg.id, editing, files)
   
   return <Paper component={"article"} onClick={changeClick} elevation={editing ? 1 : 0} sx={{width: "100%", cursor: "pointer", bgcolor: editing ? "background.paper" : "transparent"}}>
+    <Divider></Divider>
     <CardHeader
       avatar={<Avatar src={isAuthor ? StoreForm.form?.avatar ?? PLACEHOLDER_IMG : StoreMessages.form?.avatar ?? PLACEHOLDER_IMG} />}
       title={<Typography variant="subtitle1" color="primary">{isAuthor ? StoreForm.form?.name : StoreMessages.form?.name}</Typography>}
@@ -34,7 +35,7 @@ function MessageBody({editing, msg, changeClick, deleteClick}: propsInterface) {
         {editing && <FormEdit />}
       </div>}
       />
-    {msg.files?.length && <CardContent>
+    {msg.files && msg.files?.length > 0 && <CardContent>
       {msg.files.map(link => <FileComponent key={link} fileLink={link} />)}
     </CardContent>}
   </Paper>

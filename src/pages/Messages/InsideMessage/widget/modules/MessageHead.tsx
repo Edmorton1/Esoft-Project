@@ -18,7 +18,8 @@ interface contextInterface {
   clickDeleteFile: (item: string) => any,
   inputNewFile: (e: React.ChangeEvent<HTMLInputElement>) => any,
   textInput: (e: React.ChangeEvent<HTMLInputElement>) => any,
-  submitClick: () => any
+  submitClick: () => any,
+  deleteClick: () => void,
 }
 
 export const MessageContext = createContext<contextInterface | null>(null)
@@ -35,7 +36,7 @@ function MessageHead({msg, editing, setEditMessage}: propsInterface) {
     }
   }, [editing, msg.files, msg.text])
 
-  const changeClick = useCallback(() => setEditMessage(msg.id!), [msg.id, setEditMessage])
+  const changeClick = useCallback(() => setEditMessage(editing ? null : msg.id!), [msg.id, setEditMessage, editing])
   const deleteClick = useCallback(() => StoreMessages.delete(msg.id!), [msg])
 
   // const submitClick = useCallback(() => {StoreMessages.put({...msg, text: value, files: files!}); setEditMessage(null)}, [msg, value, files, setEditMessage])
@@ -53,7 +54,8 @@ function MessageHead({msg, editing, setEditMessage}: propsInterface) {
     inputNewFile,
     textInput,
     submitClick,
-    clickDeleteFile
+    clickDeleteFile,
+    deleteClick
   }
   
   return <MessageContext.Provider value={context}>
@@ -61,7 +63,6 @@ function MessageHead({msg, editing, setEditMessage}: propsInterface) {
       editing={editing}
       msg={msg}
       changeClick={changeClick}
-      deleteClick={deleteClick}
     />
   </MessageContext.Provider>
 }

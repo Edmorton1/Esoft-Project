@@ -16,6 +16,7 @@ function Users() {
         <button onClick={() => StoreGlobal.sendInfo(String(Math.random()))}>Тру</button>
         <button onClick={() => console.log(toJS(StoreGlobal.data))}>Тру</button>
         <button onClick={() => console.log(toJS(StoreLikes.likes))}>Вывести стор</button> */}
+        <UserPagination />
         <UsersCardWidget />
         <UsersFilterWidget />
         <UserPagination />

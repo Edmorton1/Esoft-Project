@@ -6,6 +6,8 @@ import { serverPaths } from "@shared/PATHS"
 import StoreUser from "@/shared/stores/Store-User"
 import useInfinitPagination from "@/shared/hooks/useInfinitPagination"
 import { MESSAGE_ON_PAGE } from "@shared/CONST"
+import * as style from "@/shared/css/pages/MessagesInside.module.scss"
+import Box from "@mui/material/Box"
 
 function MessageWidget({toid}: {toid: number}) {
   const [editMessage, setEditMessage] = useState<null | number>(null)
@@ -14,13 +16,13 @@ function MessageWidget({toid}: {toid: number}) {
   const ref = useRef<HTMLElement>(null)
   const scrollHandle = useInfinitPagination(ref, `${serverPaths.getMessage}/${StoreUser.user?.id}/${toid}?cursor=${StoreMessages.cursor}`, StoreMessages.cursor === null, (data) => StoreMessages.get(data.data), MESSAGE_ON_PAGE)
 
-  return <section ref={ref} style={{height: "700px", overflowY: "auto", overflowX: "hidden"}} onScroll={scrollHandle}>
-  <button onClick={() => ref.current?.scrollTo(0, 10000)}>Скролнуть</button>
+  return <Box ref={ref} className={style.section__widget} component="section" bgcolor={"background.third"} onScroll={scrollHandle}>
+  {/* <button onClick={() => ref.current?.scrollTo(0, 10000)}>Скролнуть</button> */}
   {/* return <section> */}
     {StoreMessages.messages?.map(msg => (
       <MessageHead key={msg.id} msg={msg} editing={editMessage === msg.id} setEditMessage={setEditMessage}/>
     ))}
-  </section>
+  </Box>
 }
 
 export default observer(MessageWidget)
