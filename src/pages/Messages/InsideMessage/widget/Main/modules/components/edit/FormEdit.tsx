@@ -1,9 +1,9 @@
-import { MessageContext } from "@/pages/Messages/InsideMessage/widget/modules/MessageHead";
+import { MessageContext } from "@/pages/Messages/InsideMessage/widget/Main/modules/MessageHead";
 import { useContext } from "react";
 import * as style from "@/shared/css/modules/FormEdit.module.scss"
 import Paper from "@mui/material/Paper";
-import MicroFile from "@/pages/Messages/InsideMessage/widget/modules/components/edit/MicroFile";
-import AddFiles from "@/pages/Messages/InsideMessage/widget/modules/components/kit/AddFiles";
+import MicroFile from "@/pages/Messages/InsideMessage/widget/Main/modules/components/edit/MicroFile";
+import AddFiles from "@/pages/Messages/InsideMessage/widget/Main/modules/components/kit/AddFiles";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import MinButton from "@/shared/ui/kit/MinButton";

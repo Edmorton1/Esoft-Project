@@ -1,7 +1,7 @@
 import { Message } from "@t/gen/Users"
 import { createContext, memo, useCallback, useEffect, useState } from "react"
 import MessageBody from "./MessageBody"
-import StoreMessages from "../../../store/Store-Messages"
+import StoreMessages from "../../../../store/Store-Messages"
 import { MessageFiles } from "@t/client/DTOClient"
 
 // files, value, inputNewFile, textInput, submitClick, clickDeleteFile

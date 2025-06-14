@@ -1,4 +1,4 @@
-import FileComponent from "@/pages/Messages/InsideMessage/widget/modules/components/file/FileComponent"
+import FileComponent from "@/pages/Messages/InsideMessage/widget/Main/modules/components/file/FileComponent"
 import CloseIcon from '@mui/icons-material/Close';
 import * as style from "@/shared/css/modules/FormEdit.module.scss"
 

@@ -13,6 +13,7 @@ import { RegistrationDTOClient, StoreUserRegistrationSchema } from "@/pages/Regi
 import { UseFormSetError } from "react-hook-form"
 import axios from "axios"
 import { LoginErrorTypes } from "@s/infrastructure/endpoints/Token/HttpTokenController"
+import StoreLogin from "@/pages/Login/Store-Login"
 
 export interface responseInterface {
   user: User,
@@ -48,6 +49,7 @@ class StoreUser {
       localStorage.setItem("accessToken", request.accessToken)
 
       await this.initial()
+      StoreLogin.closeModal()
     } catch(error: unknown) {
       console.log(error)
       if (axios.isAxiosError(error)) {

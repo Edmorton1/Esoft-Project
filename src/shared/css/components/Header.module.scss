@@ -1,18 +1,19 @@
 .header {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
 
   &__row {
+    gap: 15px;
     display: flex;
     align-items: center;
     justify-content: space-around;
   }
 }
 
-.header__row:nth-child(2) {
-  // background-color: red !important;
-  gap: 15px;
-}
+// .header__row:nth-child(2) {
+//   // background-color: red !important;
+// }
 .header__row:nth-child(3) {
   // background-color: red !important;
   flex: 1;

@@ -1,7 +1,7 @@
 import { lazy } from "react";
 
 export const LazyMain = lazy(() => import("@/pages/Main/Main"))
-export const LazyLogin = lazy(() => import("@/pages/Login/Login"))
+export const LazyLogin = lazy(() => import("@/pages/Login/LoginModal"))
 export const LazyRegistration = lazy(() => import("@/pages/Registration/Registration"))
 export const LazyUsers = lazy(() => import("@/pages/Users/Users"))
 export const LazyMessages = lazy(() => import('@/pages/Messages/InsideMessage/Messages'))

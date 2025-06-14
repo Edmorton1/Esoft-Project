@@ -1,4 +1,4 @@
-import SentBody from "@/pages/Messages/InsideMessage/widget/modules/components/sent/SentBody"
+import SentBody from "@/pages/Messages/InsideMessage/widget/Main/modules/components/sent/SentBody"
 import StoreMessages from "@/pages/Messages/store/Store-Messages"
 import StoreForm from "@/shared/stores/Store-Form"
 import { zodResolver } from "@hookform/resolvers/zod"

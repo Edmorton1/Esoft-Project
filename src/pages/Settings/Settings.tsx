@@ -1,22 +1,15 @@
+import AccountSettings from "@/pages/Settings/widgets/Account/AccountSettings"
+import ProfileSettings from "@/pages/Settings/widgets/Profile/ProfileSettings"
+import Typography from "@mui/material/Typography"
+import * as style from "@/shared/css/pages/Settings.module.scss"
+
 function Settings() {
-  return (
-    <main style={{display: "flex", flexDirection: "column"}}>
-      <div>Настройки конфиденциальности</div>
-      Тут тогда добавлю настройки отправки сообщений
-      {/* <label htmlFor="surname">Кто видит вашу фамилию?</label>
-      <select name="surname" id="surname">
-        <option value="all">Все</option>
-        <option value="liked">Понравившиеся пользователи</option>
-        <option value="none">Никто</option>
-      </select>
-      <label htmlFor="surname">Кто видит ваш город?</label>
-      <select name="surname" id="surname">
-        <option value="">Все</option>
-        <option value="">Понравившиеся пользователи</option>
-        <option value="">Никто</option>
-      </select> */}
-    </main>
-  )
+  return <section className={style.section}>
+    {/* <Typography variant="h4">Настройки аккаунта</Typography> */}
+    <AccountSettings />
+    {/* <Typography variant="h4">Настройки профиля</Typography> */}
+    <ProfileSettings/>
+  </section>
 }
 
 export default Settings

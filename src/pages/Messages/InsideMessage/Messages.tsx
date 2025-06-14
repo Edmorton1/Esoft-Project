@@ -1,9 +1,10 @@
 import { observer } from "mobx-react-lite"
-import MessageWidget from "@/pages/Messages/InsideMessage/widget/MessageWidget"
+import MessageWidget from "@/pages/Messages/InsideMessage/widget/Main/MessageWidget"
 import { useParams } from "react-router-dom"
-import SentHead from "@/pages/Messages/InsideMessage/widget/modules/components/sent/SentHead"
+import SentHead from "@/pages/Messages/InsideMessage/widget/Main/modules/components/sent/SentHead"
 import { z } from "zod"
 import * as style from "@/shared/css/pages/MessagesInside.module.scss"
+import MainHead from "@/pages/Messages/InsideMessage/widget/Head/MainHead"
 
 function Messages() {
   const toid = z.coerce.number().parse(useParams().toid)
@@ -11,6 +12,7 @@ function Messages() {
     // const [voiceRef] = useMedia(VoiceMessage, undefined, toid)
   
   return <section className={style.section}>
+      <MainHead toid={toid} />
       <MessageWidget toid={toid} />
       <SentHead toid={toid!}/>
       {/* <button onClick={() => console.log(StoreMessages.cursor)}>Курсор</button> */}

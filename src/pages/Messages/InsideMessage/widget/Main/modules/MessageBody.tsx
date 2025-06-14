@@ -1,5 +1,5 @@
-import FormEdit from "@/pages/Messages/InsideMessage/widget/modules/components/edit/FormEdit";
-import FileComponent from "@/pages/Messages/InsideMessage/widget/modules/components/file/FileComponent";
+import FormEdit from "@/pages/Messages/InsideMessage/widget/Main/modules/components/edit/FormEdit";
+import FileComponent from "@/pages/Messages/InsideMessage/widget/Main/modules/components/file/FileComponent";
 import StoreMessages from "@/pages/Messages/store/Store-Messages";
 import StoreForm from "@/shared/stores/Store-Form"
 import Avatar from "@mui/material/Avatar";

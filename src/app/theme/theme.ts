@@ -5,7 +5,7 @@ export const getMuiTheme = (mode: "light" | "dark"): Theme => {
 		palette: {
 			mode,
 			info: {
-				main: "#00DFA2"
+				main: "#FF8E53"
 			},
 			primary: {
 				// Основной цвет
@@ -40,3 +40,4 @@ export default getMuiTheme;
 
 // 	#fff33f - Жёлтый
 // #7F00FF - Лиловый
+// #FF8E53 - Персик

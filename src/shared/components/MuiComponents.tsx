@@ -19,13 +19,14 @@ interface inputInterface {
   children?: ReactNode
   register: UseFormRegister<any>,
   type?: string,
-  disabled?: boolean
+  disabled?: boolean,
+  variant?: "standard" | "outlined" | "filled"
 }
 
-export function InputMui({text, id, error, register, children, disabled, type = 'text'}: inputInterface) {
+export function InputMui({text, id, error, register, children, disabled, type = 'text', variant = 'standard'}: inputInterface) {
   
   return <FormControl error={!!error}>
-    <TextField label={text} {...register(id, {valueAsNumber: type === 'number'})} type={type} id={id} disabled={disabled} variant="standard" error={!!error} slotProps={{inputLabel: disabled !== undefined ? {shrink: disabled !== undefined} : undefined}} />
+    <TextField label={text} {...register(id, {valueAsNumber: type === 'number'})} type={type} id={id} disabled={disabled} variant={variant} error={!!error} slotProps={{inputLabel: disabled !== undefined ? {shrink: disabled !== undefined} : undefined}} />
     <FormError id={id} error={error}></FormError>
     {children}
   </FormControl>

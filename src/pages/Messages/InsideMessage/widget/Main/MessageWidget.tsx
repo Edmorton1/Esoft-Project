@@ -1,5 +1,5 @@
 import { useRef, useState } from "react"
-import StoreMessages from "../../store/Store-Messages"
+import StoreMessages from "../../../store/Store-Messages"
 import MessageHead from "./modules/MessageHead"
 import { observer } from "mobx-react-lite"
 import { serverPaths } from "@shared/PATHS"

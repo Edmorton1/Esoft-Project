@@ -5,9 +5,9 @@ import MicIcon from '@mui/icons-material/Mic';
 import { sxStyle } from "@/shared/ui/kit/CircleButton";
 import SendIcon from '@mui/icons-material/Send';
 import Paper from "@mui/material/Paper";
-import AddFiles from "@/pages/Messages/InsideMessage/widget/modules/components/kit/AddFiles";
+import AddFiles from "@/pages/Messages/InsideMessage/widget/Main/modules/components/kit/AddFiles";
 import MinButton from "@/shared/ui/kit/MinButton";
-import VoiceMessage from "@/pages/Messages/InsideMessage/widget/modules/classes/VoiceMessage";
+import VoiceMessage from "@/pages/Messages/InsideMessage/widget/Main/modules/classes/VoiceMessage";
 import { useState } from "react";
 
 function SentBody({onSubmit, register, toid}: {onSubmit: SubmitHandler<any>, register: UseFormRegister<any>, toid: number}) {

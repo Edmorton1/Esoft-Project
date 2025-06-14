@@ -1,14 +1,6 @@
 import StoreForm from "@/shared/stores/Store-Form"
-import StoreMessages from "@/pages/Messages/store/Store-Messages"
-import StoreTags from "@/shared/stores/Store-Tags"
-import StoreUser from "@/shared/stores/Store-User"
-import StoreUsers from "@/pages/Users/widgets/store/Store-Users"
-import StoreLikes from "@/shared/stores/StoreLikes"
-import { toJS } from "mobx"
 import { Link, NavLink, Outlet } from "react-router-dom"
 import { paths } from "@shared/PATHS"
-import classNames from "classnames"
-import StoreGlobal from "@/shared/api/Store-Global"
 import ThemeButton from "@/shared/components/ThemeButton"
 import AppBar from "@mui/material/AppBar"
 import Toolbar from "@mui/material/Toolbar"
@@ -29,18 +21,18 @@ import MapIcon from '@mui/icons-material/Map';
 import LoginIcon from '@mui/icons-material/Login';
 import DomainIcon from '@mui/icons-material/Domain';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import SettingsIcon from '@mui/icons-material/Settings';
 
 import { useTheme } from "@mui/material/styles"
-import CardHeader from "@mui/material/CardHeader"
 import Avatar from "@mui/material/Avatar"
+import StoreLogin from "@/pages/Login/Store-Login"
+import { observer } from "mobx-react-lite"
 
-const HeadButton = ({isActive, children}: {isActive: boolean, children: ReactNode}) => {
-  const theme = useTheme()
-
-  return <Button color={"salmon"} variant={isActive ? "contained" : "outlined"}>
+const HeadButton = ({isActive, children}: {isActive: boolean, children: ReactNode}) => (
+<Button color={"salmon"} variant={isActive ? "contained" : "outlined"}>
     {children}
   </Button>
-}
+)
 
 const NavButton = ({to, children}: {to: string, children: ReactNode}) => <NavLink to={to}>
   {({ isActive }) => <HeadButton isActive={isActive}>{children}</HeadButton>}
@@ -53,7 +45,7 @@ function Header() {
         <Toolbar component={"nav"} className={style.header}>
 
         <div className={style.header__row}>
-          <Link to={"/"}>
+          <Link to={"/"} style={{display: "flex",alignItems: "center", justifyContent: "center"}}>
             <img src={LOGO_IMG_BIG} style={{height: "61px"}} alt="" />
           </Link>
           <Search />
@@ -70,12 +62,12 @@ function Header() {
         </div>
 
         <div className={style.header__row}>
+          <NavButton to={paths.settings}>Настройки <SettingsIcon/></NavButton>
           {StoreForm.form 
-            ? <CardHeader
-              title={StoreForm.form.name}
-              avatar={<Avatar src={StoreForm.form.avatar} />}
-            />
-            : <NavButton to={paths.login}>Войти <LoginIcon /></NavButton>
+            ? <Link to={`${paths.profile}/${StoreForm.form.id}`}>
+                  <Avatar src={StoreForm.form.avatar} />
+              </Link> 
+            : <Button variant="contained" color="salmon" onClick={StoreLogin.openModal} >Войти <LoginIcon /></Button>
           }
         </div>
 
@@ -100,7 +92,7 @@ function Header() {
     </>
 }
 
-export default Header
+export default observer(Header)
 
   // return <>
   //     <AppBar position="fixed">

@@ -1,7 +1,9 @@
 import LoginBody from "@/pages/Login/LoginBody";
+import StoreLogin from "@/pages/Login/Store-Login";
 import $api from "@/shared/api/api";
 import StoreUser from "@/shared/stores/Store-User";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Modal from "@mui/material/Modal";
 import { UserDTO, UserDTOSchema } from "@t/gen/dtoObjects";
 import { observer } from "mobx-react-lite";
 import { useForm } from "react-hook-form";
@@ -20,7 +22,13 @@ function Login() {
 
   const onSubmit = handleSubmit((data: UserDTO) => handleLogin(data))
 
-  return <LoginBody onSubmit={onSubmit} register={register} handleTest={handleTest} errors={errors} />
+  return <Modal
+    open={StoreLogin.isOpen}
+    onClose={StoreLogin.closeModal}
+
+  >
+    <LoginBody onSubmit={onSubmit} register={register} handleTest={handleTest} errors={errors} />
+  </Modal>
 }
 
 export default observer(Login)
