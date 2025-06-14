@@ -6,7 +6,7 @@ import MicroFile from "@/pages/Messages/InsideMessage/widget/modules/components/
 import AddFiles from "@/pages/Messages/InsideMessage/widget/modules/components/kit/AddFiles";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import ButtonLocal from "@/pages/Messages/InsideMessage/widget/modules/components/kit/ButtonLocal";
+import MinButton from "@/shared/ui/kit/MinButton";
 import DeleteIcon from '@mui/icons-material/Delete';
 import { sxStyle } from "@/shared/ui/kit/CircleButton";
 import { createPortal } from "react-dom";
@@ -35,8 +35,8 @@ function FormEdit() {
 		<div className={style.main__redact}>
 			<AddFiles onChangeAdd={ctx.inputNewFile} />
 			<TextField type="text" onChange={ctx.textInput} defaultValue={ctx.value} sx={{flex: 1}} />
-			<ButtonLocal variant="contained" color="error" onClick={ctx.deleteClick}><DeleteIcon sx={sxStyle} /></ButtonLocal>
-			<ButtonLocal onClick={ctx.submitClick} variant="contained" sx={{height: "100%"}}><CheckIcon sx={sxStyle} /></ButtonLocal>
+			<MinButton variant="contained" color="error" onClick={ctx.deleteClick}><DeleteIcon sx={sxStyle} /></MinButton>
+			<MinButton onClick={ctx.submitClick} variant="contained" sx={{height: "100%"}}><CheckIcon sx={sxStyle} /></MinButton>
 		</div>
 	</Paper>, document.getElementsByClassName(section.section)[0])
 }

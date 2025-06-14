@@ -3,7 +3,7 @@ import Card from "@mui/material/Card"
 import CardHeader from "@mui/material/CardHeader"
 import Typography from "@mui/material/Typography"
 import { paths } from "@shared/PATHS"
-import { PLACEHOLDER_IMG } from "@shared/PUBLIC_IMG"
+import { PLACEHOLDER_IMG } from "@shared/PUBLIC"
 import { Link } from "react-router-dom"
 
 interface propsInterface {

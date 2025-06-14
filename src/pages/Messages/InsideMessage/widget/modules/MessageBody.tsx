@@ -8,7 +8,7 @@ import CardHeader from "@mui/material/CardHeader";
 import Divider from "@mui/material/Divider";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-import { PLACEHOLDER_IMG } from "@shared/PUBLIC_IMG";
+import { PLACEHOLDER_IMG } from "@shared/PUBLIC";
 import { Message } from "@t/gen/Users"
 import { memo } from "react";
 import * as style from "@/shared/css/pages/MessagesInside.module.scss"

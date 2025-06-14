@@ -4,6 +4,9 @@ export const getMuiTheme = (mode: "light" | "dark"): Theme => {
 	let theme = createTheme({
 		palette: {
 			mode,
+			info: {
+				main: "#00DFA2"
+			},
 			primary: {
 				// Основной цвет
 				main: "#7F00FF",
@@ -34,3 +37,6 @@ export const getMuiTheme = (mode: "light" | "dark"): Theme => {
 };
 
 export default getMuiTheme;
+
+// 	#fff33f - Жёлтый
+// #7F00FF - Лиловый
