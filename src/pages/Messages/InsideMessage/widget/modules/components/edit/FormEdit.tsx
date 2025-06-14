@@ -10,6 +10,7 @@ import ButtonLocal from "@/pages/Messages/InsideMessage/widget/modules/component
 import DeleteIcon from '@mui/icons-material/Delete';
 import { sxStyle } from "@/shared/ui/kit/CircleButton";
 import { createPortal } from "react-dom";
+import CheckIcon from '@mui/icons-material/Check';
 
 import * as section from "@/shared/css/pages/MessagesInside.module.scss"
 
@@ -27,7 +28,7 @@ function FormEdit() {
   }
 
 	return createPortal(
-		<Paper component="div" className={style.main} elevation={0} onClick={e => e.stopPropagation()}>
+		<Paper component="div" className={style.main} elevation={1} onClick={e => e.stopPropagation()} sx={{border: "2px solid", borderColor: "primary"}}>
 		<div className={style.main__files}>
 			<DeletingFiles />
 		</div>
@@ -35,7 +36,7 @@ function FormEdit() {
 			<AddFiles onChangeAdd={ctx.inputNewFile} />
 			<TextField type="text" onChange={ctx.textInput} defaultValue={ctx.value} sx={{flex: 1}} />
 			<ButtonLocal variant="contained" color="error" onClick={ctx.deleteClick}><DeleteIcon sx={sxStyle} /></ButtonLocal>
-			<Button onClick={ctx.submitClick} variant="contained" sx={{height: "100%"}}>ОК</Button>
+			<ButtonLocal onClick={ctx.submitClick} variant="contained" sx={{height: "100%"}}><CheckIcon sx={sxStyle} /></ButtonLocal>
 		</div>
 	</Paper>, document.getElementsByClassName(section.section)[0])
 }

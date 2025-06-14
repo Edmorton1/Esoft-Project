@@ -1,4 +1,4 @@
-import { ThemeContext } from "@/app/ChangeTheme"
+import { ThemeContext } from "@/app/theme/ChangeTheme"
 import { useContext } from "react"
 
 function ThemeButton() {

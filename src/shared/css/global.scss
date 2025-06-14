@@ -1,0 +1,37 @@
+// САЙТ С НАСТРОЙКОЙ СКРОЛЛБАА - https://scrollbar.app/
+
+// $sb-track-color: #444444;
+// $sb-thumb-color: #7e7e7e;
+$sb-size: 14px;
+
+body * {
+  --sb-track-color: #cccccc;
+  --sb-thumb-color: #ABABAB;
+  --sb-size: #{$sb-size};
+}
+
+body[theme="dark"] * {
+  --sb-track-color: #444444;
+  --sb-thumb-color: #7e7e7e;
+  --sb-size: #{$sb-size};
+}
+
+body * {
+    &::-webkit-scrollbar {
+    width: $sb-size;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: var(--sb-track-color);
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--sb-thumb-color);
+    border-radius: 3px;
+  }
+
+  @supports not selector(::-webkit-scrollbar) {
+    scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
+  }
+}

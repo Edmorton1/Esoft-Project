@@ -1,36 +1,55 @@
 @use "@/shared/css/const" as c;
 // style={{height: "700px", overflowY: "auto", overflowX: "hidden"}}
 
-$mw: 500px;
+$mw: 250px;
 
 .section {
-  height: c.$h;
+	height: c.$h;
 
-  &__widget {
-    height: 90%;
-    overflow-Y: auto;
+	&__widget {
+		height: 90%;
+		overflow-y: auto;
 
-    img {
-      max-width: $mw;
-    }
+		&--files {
+			display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      // grid-template-columns: 1fr 1fr;
+      // grid-template-rows: 1fr 1fr;
 
-    video {
-      max-width: $mw;
-    }
+			img {
+				max-width: $mw;
+        max-height: $mw;
+        object-fit: cover;
+				user-select: none;
+				-webkit-user-drag: none;
+				cursor: pointer;
+			}
 
-    audio {
-      max-width: $mw;
-    }
-  }
+			video {
+				max-width: $mw;
+        max-height: $mw;
+        object-fit: cover;
+				cursor: pointer;
+			}
 
-  &__form {
-    display: flex;
-    gap: 10px;
-    width: 100%;
-    // background-color: red;
-    margin-top: 10px;
-    border-radius: 32px !important;
-    padding: 8px;
-    align-items: center;
-  }
+			audio {
+				max-width: $mw;
+        max-height: $mw;
+				user-select: none;
+				// cursor: pointer;
+			}
+		}
+	}
+
+	&__form {
+		display: flex;
+		gap: 10px;
+		width: 100%;
+		// background-color: red;
+		margin-top: 10px;
+		border-radius: 32px !important;
+		padding: 8px;
+		align-items: center;
+	}
 }

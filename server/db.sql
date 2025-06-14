@@ -1,3 +1,5 @@
+-- id int primary key generated always as identity 
+
 CREATE TYPE role_type AS ENUM ('user', 'admin');
 
 -- CREATE TYPE private_type AS ENUM ('all', 'liked', 'none');

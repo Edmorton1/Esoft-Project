@@ -6,6 +6,7 @@ import StoreUser from "@/shared/stores/Store-User"
 import { serverPaths } from "@shared/PATHS"
 import { toFormData } from "@/shared/funcs/filefuncs"
 import { MessageDTOClient, MessagePutDTOClient, MessagePutDTOClientSchema } from "@t/client/DTOClient"
+import { FILES_LIMIT, FILES_LIMIT_MESSAGE } from "@shared/CONST"
 
 class StoreMessages {
   messages: Message[] | null = null
@@ -14,6 +15,13 @@ class StoreMessages {
   
   constructor() {
     makeAutoObservable(this)
+  }
+
+  checkFileLength = (count: any): boolean => {
+    if (typeof count === 'number' && count > FILES_LIMIT) {
+      alert(FILES_LIMIT_MESSAGE)
+      return true
+    } return false;
   }
 
   get = async (data: {messages: Message[], form: Form}) => {
@@ -31,6 +39,8 @@ class StoreMessages {
   }
 
   send = async (data: MessageDTOClient) => {
+    if (this.checkFileLength(data.files?.length)) return;
+
     const formdata = data.files ? await toFormData(data.files) : new FormData
     console.log(data)
 
@@ -47,34 +57,31 @@ class StoreMessages {
 
   put = async (raw: MessagePutDTOClient) => {
     const data = MessagePutDTOClientSchema.parse(raw)
-    let fd;
-
     const old = this.messages!.find(e => e.id == data.id)!
-    console.log(data, toJS(old), 'messagedto', data.deleted)
+    const fileLen = (data.files.new ? data.files.new?.length : 0) + data.files.old.length - data.deleted.length
 
-    // if (data.files.new == null && data.files.old.length === 0 && data.text == old.text) {
-    //   return;
+    if (this.checkFileLength(fileLen)) return;
+
+    // let fd;
+
+    console.log(data, toJS(old), `DLINA, ${fileLen}`, data.files)
+
+    // fd = new FormData
+    // fd.append('json', toJSON(data))
+
+    data['deleted'] = old.files?.filter(e => !data.files.old?.includes(e)) ?? []
+    console.log(data, toJS(old), 'messagedto')
+    const newFiles = data.files.new!
       
-    // }
-    // if (data.files.new == null && data.files.old.length === 0) {
-      fd = new FormData
-      fd.append('json', toJSON(data))
-      // await $api.put(`${serverPaths.editMessage}/${data.id}`, fd)
-    // } 
-    // else {
-      // data['deleted'] = old.files?.filter(e => !data.files.old?.includes(e)) ?? []
-      data['deleted'] = old.files?.filter(e => !data.files.old?.includes(e)) ?? []
-      console.log(data, toJS(old), 'messagedto')
-      const newFiles = data.files.new!
+    const cleanData = data as Partial<MessagePutDTOClient>
+    delete cleanData.files
       
-      const cleanData = data as Partial<MessagePutDTOClient>
-      delete cleanData.files
-      
-      fd = await toFormData(newFiles)
-      fd.append('json', toJSON(cleanData))
-    // }
+    const fd = await toFormData(newFiles)
+    fd.append('json', toJSON(cleanData))
+
     console.log(data)
-    const request = await $api.put(`${serverPaths.editMessage}/${data.id}`, fd, {
+    
+    await $api.put(`${serverPaths.editMessage}/${data.id}`, fd, {
         headers: {'Content-Type': 'multipart/form-data'}
     })
   }

@@ -3,7 +3,6 @@ import MessageWidget from "@/pages/Messages/InsideMessage/widget/MessageWidget"
 import { useParams } from "react-router-dom"
 import SentHead from "@/pages/Messages/InsideMessage/widget/modules/components/sent/SentHead"
 import { z } from "zod"
-import StoreMessages from "@/pages/Messages/store/Store-Messages"
 import * as style from "@/shared/css/pages/MessagesInside.module.scss"
 
 function Messages() {

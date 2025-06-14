@@ -16,6 +16,7 @@ import MessageMiddleware from "@s/infrastructure/endpoints/Message/middlewares/M
 import HttpMessageOutsideController from "@s/infrastructure/endpoints/MessageOutside/HttpMessageOutsideController"
 import SharedMiddlewares from "@s/infrastructure/middlewares/SharedMiddlewares"
 import ExtendedSearchMiddle from "@s/infrastructure/endpoints/ExtendSearch/middlewares/ExtendedSearchMiddle"
+import { Request, Response } from "express"
 
 const upload = multer({storage: multer.memoryStorage()})
 const router = express.Router()
@@ -61,6 +62,11 @@ router.post(serverPaths.testCompressAudio, upload.single('audio'), HttpFilesCont
 router.get(`${serverPaths.extendedSearch}`, ExtendedSearchMiddle, HttpExtendedSearchController.getForms)
 
 router.get(`${serverPaths.outsideMessages}/:id`, SharedMiddlewares.OnlyIdMiddleware, HttpMessageOutsideController.outsideMessages)
+
+router.use((err: any, req: Request, res: Response) => {
+  console.error(err.stack)
+  res.status(500).json({ error: err })
+})
 
 // router.get('/dec', (req, res) => {
 //   const body = req.body;

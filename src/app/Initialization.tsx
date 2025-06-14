@@ -8,6 +8,7 @@ import ModalTalking from "@/pages/Room/widgets/ModalTalking/ModalTalkingHead"
 import StoreCall from "@/pages/Room/widgets/ModalCall/store/Store-Call"
 import StoreTalking from "@/pages/Room/widgets/ModalTalking/store/Store-Talking"
 import { observer } from "mobx-react-lite"
+import ModalFile from "@/shared/components/modal/ModalFile"
 
 function Initialization() {
 
@@ -25,6 +26,7 @@ function Initialization() {
     <Alert />
     {StoreCall.mount && <ModalCall />}
     {StoreTalking.mount && <ModalTalking />}
+    <ModalFile />
     <CallLine />
   </>
 }

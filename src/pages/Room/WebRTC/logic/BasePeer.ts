@@ -1,9 +1,7 @@
-import { dataChannelTypes } from "@/pages/Room/WebRTC/config/messageTypes";
 import setupPeerConnection from "@/pages/Room/WebRTC/config/peerConnectionConfig";
 import MediaPermissions from "@/pages/Room/WebRTC/logic/MediaPermissions";
 import StoreRoom from "@/pages/Room/WebRTC/Store-Room";
 import { LOCAL_AUDIO, LOCAL_VIDEO, REMOTE_AUDIO, REMOTE_VIDEO } from "@shared/CONST";
-import { toJSON } from "@shared/MAPPERS";
 
 abstract class BasePeer {
 	peerConnection = new RTCPeerConnection();

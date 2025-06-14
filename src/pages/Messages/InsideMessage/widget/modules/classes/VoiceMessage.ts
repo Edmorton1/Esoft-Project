@@ -32,7 +32,7 @@ class VoiceMessage {
       audio.controls = true
       audio.src = url
     
-      document.body.appendChild(audio)
+      // document.body.appendChild(audio)
       return blob
       // audio.click()
       // URL.revokeObjectURL(url)
@@ -43,8 +43,9 @@ class VoiceMessage {
       audio.id = 'local-audio'
       audio.srcObject = this.stream
       audio.autoplay = true
-      audio.muted = false
-      document.body.appendChild(audio)
+      // audio.muted = false
+      audio.muted = true
+      // document.body.appendChild(audio)
     }
   }
 
@@ -66,7 +67,7 @@ class VoiceMessage {
       audio.controls = true
       audio.src = url
     
-      document.body.appendChild(audio)
+      // document.body.appendChild(audio)
 
       res(blob)
     }
@@ -83,6 +84,8 @@ class VoiceMessage {
     text: 'test voice2',
     files: filelist
   })
+
+  this.stream.getTracks().forEach(track => track.stop())
   }
 
   media() {

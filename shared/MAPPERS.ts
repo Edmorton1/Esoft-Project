@@ -1,10 +1,10 @@
 import logger from "@s/logger"
 import { msg, MsgTypesClient, MsgTypesServer, SocketMessageClientInterface, SocketMessageServerInterface, Tables } from "@t/gen/types"
 
-export function toTS<T extends keyof Tables>(entity: any): Tables[T][] {
-    // return entity.rows.length > 1 ? entity.rows : entity.rows[0]
-    return entity.rows
-}
+// export function toTS<T extends keyof Tables>(entity: any): Tables[T][] {
+//     // return entity.rows.length > 1 ? entity.rows : entity.rows[0]
+//     return entity.rows
+// }
 
 export function toSQL(domainModel: any) {
   if (typeof domainModel == "string" || typeof domainModel == "object") {

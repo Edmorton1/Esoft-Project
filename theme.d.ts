@@ -16,3 +16,9 @@ declare module "@mui/material/Button" {
 		salmon: true;
 	}
 }
+
+declare module "@mui/material/SvgIcon" {
+  interface SvgIconPropsColorOverrides {
+    salmon: true;
+  }
+}

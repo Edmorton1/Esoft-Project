@@ -7,7 +7,7 @@ import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 
 function SentHead({toid}: {toid: number}) {
-  const {register, handleSubmit, setValue, formState: { errors }} = useForm({
+  const {register, handleSubmit, setValue, reset} = useForm({
     resolver: zodResolver(MessageDTOClientSchema),
     defaultValues: {
       toid: toid,
@@ -23,9 +23,10 @@ function SentHead({toid}: {toid: number}) {
   const handleSend = (data: any) => {
     const parsed = MessageDTOClientSchema.parse(data)
     StoreMessages.send(parsed)
+    reset({files: undefined})
   }
 
-  return <SentBody onSubmit={handleSubmit((data) => handleSend({...data, toid: toid, fromid: StoreForm.form!.id!}))} register={register} />
+  return <SentBody onSubmit={handleSubmit((data) => handleSend({...data, toid: toid, fromid: StoreForm.form!.id!}))} register={register} toid={toid} />
 }
 
 export default SentHead

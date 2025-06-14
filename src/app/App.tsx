@@ -5,7 +5,7 @@ import {Suspense, useEffect} from "react";
 import Initialization from "@/app/Initialization";
 import Header from "@/shared/components/Header";
 import { paths } from "@shared/PATHS";
-import ChangeTheme from "@/app/ChangeTheme";
+import ChangeTheme from "@/app/theme/ChangeTheme";
 import "@/shared/css/App.scss"
 import "@/shared/css/modules/LocalRemoteVideo.scss"
 

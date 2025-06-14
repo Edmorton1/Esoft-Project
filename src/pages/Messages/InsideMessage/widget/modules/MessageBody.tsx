@@ -11,6 +11,7 @@ import Typography from "@mui/material/Typography";
 import { PLACEHOLDER_IMG } from "@shared/PUBLIC_IMG";
 import { Message } from "@t/gen/Users"
 import { memo } from "react";
+import * as style from "@/shared/css/pages/MessagesInside.module.scss"
 
 interface propsInterface {
   editing: boolean,
@@ -23,7 +24,7 @@ function MessageBody({editing, msg, changeClick}: propsInterface) {
   console.log("МЕССАДЖ РЕНДРР")
   // console.log('COMPONENT RENDER', msg.id, editing, files)
   
-  return <Paper component={"article"} onClick={changeClick} elevation={editing ? 1 : 0} sx={{width: "100%", cursor: "pointer", bgcolor: editing ? "background.paper" : "transparent"}}>
+  return <Paper component={"article"} onClick={changeClick} elevation={editing ? 1 : 0} sx={{width: "100%", bgcolor: editing ? "background.paper" : "transparent"}}>
     <Divider></Divider>
     <CardHeader
       avatar={<Avatar src={isAuthor ? StoreForm.form?.avatar ?? PLACEHOLDER_IMG : StoreMessages.form?.avatar ?? PLACEHOLDER_IMG} />}
@@ -35,7 +36,7 @@ function MessageBody({editing, msg, changeClick}: propsInterface) {
         {editing && <FormEdit />}
       </div>}
       />
-    {msg.files && msg.files?.length > 0 && <CardContent>
+    {msg.files && msg.files?.length > 0 && <CardContent className={style['section__widget--files']}>
       {msg.files.map(link => <FileComponent key={link} fileLink={link} />)}
     </CardContent>}
   </Paper>

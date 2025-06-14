@@ -2,29 +2,22 @@ import Box from "@mui/material/Box";
 import { ReactNode } from "react";
 import AudioFileIcon from '@mui/icons-material/AudioFile';
 import VideoFileIcon from '@mui/icons-material/VideoFile';
+import { convertToResolution, guesType } from "@/pages/Messages/InsideMessage/func/FileFunctions";
+import StoreModalFile from "@/shared/components/modal/StoreModalFile";
 
-type resolutions = 'ogg' | 'webp' | 'mp4'
-type types = 'img' | 'audio' | 'video'
 const sxStyle = {width: 100, height: 100}
-// export type MouseEventType = React.MouseEvent<HTMLImageElement, MouseEvent>
 
 interface propsInterface {
 	fileLink: string,
 	mode?: "mini" | "full"
 	children?: ReactNode,
-	// onMouseEnter?: (e: MouseEventType) => void,
-	// onMouseLeave?: (e: MouseEventType) => void,
-}
-
-function guesType(type: resolutions): types {
-	if (type === 'ogg') return 'audio'
-	if (type === 'mp4') return 'video'
-	return 'img'
 }
 
 function FileComponent({fileLink, children, mode = "full"}: propsInterface) {
-	const type = fileLink.split(".").splice(-1)[0] as resolutions;
+	const type = convertToResolution(fileLink)
 	const gues = guesType(type)
+
+  const handleOpen = (e: any) => {e.preventDefault(); e.stopPropagation(); StoreModalFile.setFile(fileLink); StoreModalFile.openModal()};
 
 	console.log(type);
 
@@ -38,7 +31,9 @@ function FileComponent({fileLink, children, mode = "full"}: propsInterface) {
 	}
 
 	return <>
-		<Box component={gues} src={fileLink} controls></Box>
+		{gues === "img" && <img onClick={handleOpen} src={fileLink} alt="" />}
+		{gues === "audio" && <audio src={fileLink} controls />}
+		{gues === "video" && <video onClick={handleOpen} src={fileLink} />}
 	</>
   
 	

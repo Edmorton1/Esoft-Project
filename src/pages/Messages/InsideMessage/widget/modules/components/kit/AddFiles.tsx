@@ -3,6 +3,7 @@ import { sxStyle } from "@/shared/ui/kit/CircleButton";
 import Button from "@mui/material/Button";
 import { useRef, useState } from 'react';
 import { UseFormRegisterReturn } from 'react-hook-form';
+import { FILES_LIMIT, FILES_LIMIT_MESSAGE } from '@shared/CONST';
 
 const ICON_SIZE = "64px"
 const sxButton = {width: ICON_SIZE, height: ICON_SIZE, borderRadius: "50%"}
@@ -20,8 +21,8 @@ function AddFiles({register, onChangeAdd}: propsInterface) {
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const target = e.target.files
-    if (target && target?.length > 3) {
-      alert('Нельзя выбрать больше 3 файлов')
+    if (target && target?.length > FILES_LIMIT) {
+      alert(FILES_LIMIT_MESSAGE)
       return;
     }
   

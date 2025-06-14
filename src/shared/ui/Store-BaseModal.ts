@@ -14,19 +14,19 @@ abstract class StoreBaseModal {
   isOpen: boolean = false;
   mount: boolean = false;
 
-  openModal(...args: any[]) {
+  openModal = (...args: any[]) => {
     this.isOpen = true;
   };
 
-  closeModal(...args: any[]) {
+  closeModal = (...args: any[]) => {
     this.isOpen = false;
   };
 
-  openMount(...args: any[]) {
+  openMount = (...args: any[]) => {
     this.mount = true;
   };
 
-  closeMount(...args: any[]) {
+  closeMount = (...args: any[]) => {
     this.mount = false;
   };
 }
