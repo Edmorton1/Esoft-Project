@@ -27,7 +27,7 @@ export function InputMui({text, id, error, register, children, disabled, type = 
   
   return <FormControl error={!!error}>
     <TextField label={text} {...register(id, {valueAsNumber: type === 'number'})} type={type} id={id} disabled={disabled} variant={variant} error={!!error} slotProps={{inputLabel: disabled !== undefined ? {shrink: disabled !== undefined} : undefined}} />
-    <FormError id={id} error={error}></FormError>
+    <FormError id={id} error={error} />
     {children}
   </FormControl>
 }
@@ -55,10 +55,20 @@ interface selectInterface {
   error?: FieldError,
   children?: ReactNode
   control: Control<any>
+  color?: colorTypes
 }
 
-export function SelectMui({text, id, error, control, children}: selectInterface) {
-  return <FormControl fullWidth error={!!error}>
+export function Relations() {
+  return <>
+    <MenuItem value="relation">Отношения</MenuItem>
+    <MenuItem value="friend">Дружба</MenuItem>
+    <MenuItem value="chat">Чатинг</MenuItem>
+    <MenuItem value="hobby">Хобби</MenuItem>
+  </>
+}
+
+export function SelectMui({text, id, error, control, children, color = 'primary'}: selectInterface) {
+  return <FormControl fullWidth error={!!error} color={color}>
       <InputLabel id={id}>{text}</InputLabel>
       <Controller
         name={id}
@@ -74,6 +84,7 @@ export function SelectMui({text, id, error, control, children}: selectInterface)
     </FormControl>
 }
 
+export type colorTypes = "error" | "primary" | "secondary" | "info" | "success" | "warning"
 interface radioInterface {
   text: string,
   id: string,
@@ -81,16 +92,18 @@ interface radioInterface {
   // children: ReactElement<FormControlLabelProps>
   children: ReactNode
   control?: Control<any>
+  onChange?: (...[args]: any) => void
+  color?: colorTypes
 }
 
-export function RadioGroupMui({error, text, id, children, control}: radioInterface) {
-  return <FormControl sx={{display: "flex", justifyContent: "center", alignItems: "center"}} id={id} error={!!error}>
+export function RadioGroupMui({error, text, id, children, control, onChange, color = 'primary'}: radioInterface) {
+  return <FormControl color={color} sx={{display: "flex", justifyContent: "center", alignItems: "center"}} id={id} error={!!error}>
     <FormLabel sx={{display: "flex", alignItems: "center", justifyContent: "center"}}>{text}</FormLabel>
     {control ? <Controller
       name={id}
       control={control}
       render={({field}) => (
-        <RadioGroup row {...field}>
+        <RadioGroup row {...field} onChange={onChange}>
           {children}
         </RadioGroup>
       )}

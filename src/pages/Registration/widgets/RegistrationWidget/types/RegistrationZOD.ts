@@ -4,7 +4,7 @@ import { FormSchema, UserSchema } from "@t/gen/Users";
 import { checkEmptyString, toCapitalize, zstring } from "@t/shared/zodSnippets";
 import { z } from "zod";
 
-export const RegistrationDTOClientSchema = RegistrationDTOServerSchema.extend({
+export const RegistrationDTOClientSchemaWithoutRefline = RegistrationDTOServerSchema.extend({
   email: zstring.email(),
   confirmPassword: z.string(),
   
@@ -43,7 +43,9 @@ export const RegistrationDTOClientSchema = RegistrationDTOServerSchema.extend({
     if (checkEmptyString(val)) return val.trim()
     return undefined
   }, z.string().optional())
-}).refine(data => data.password === data.confirmPassword, {message: "Пароли не совпадают", path: ['confirmPassword']});
+})
+
+export const RegistrationDTOClientSchema = RegistrationDTOClientSchemaWithoutRefline.refine(data => data.password === data.confirmPassword, {message: "Пароли не совпадают", path: ['confirmPassword']});
 
 export type RegistrationDTOClient = z.infer<typeof RegistrationDTOClientSchema>;
 

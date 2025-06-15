@@ -4,10 +4,10 @@ import Typography from "@mui/material/Typography"
 import * as style from "@/shared/css/pages/Settings.module.scss"
 
 function Settings() {
-  return <section className={style.section}>
-    {/* <Typography variant="h4">Настройки аккаунта</Typography> */}
+  return <section className={style.container}>
+    <Typography variant="h4">Настройки аккаунта</Typography>
     <AccountSettings />
-    {/* <Typography variant="h4">Настройки профиля</Typography> */}
+    <Typography variant="h4">Настройки профиля</Typography>
     <ProfileSettings/>
   </section>
 }
