@@ -2,9 +2,15 @@ import { memo } from "react";
 import * as styles from "@/shared/css/modules/Map.module.scss";
 import Box from "@mui/material/Box";
 
-function MapWrapper({ref}: {ref: React.RefObject<HTMLDivElement | null>}) {
+interface propsInterface {
+  ref: React.RefObject<HTMLDivElement | null>
+  height: string,
+  width: string
+}
 
-  return <Box ref={ref} className={styles.map} component={"section"} bgcolor={"background.alt"}></Box>
+function MapWrapper({ref, width, height}: propsInterface) {
+
+  return <Box ref={ref} width={width} height={height} className={styles.map} component={"section"} bgcolor={"background.alt"} />
 }
 
 export default memo(MapWrapper)

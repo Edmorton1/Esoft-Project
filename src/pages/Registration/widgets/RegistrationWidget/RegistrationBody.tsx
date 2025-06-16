@@ -1,7 +1,7 @@
 import { Control, FieldErrors, UseFormRegister, UseFormSetValue, UseFormWatch } from "react-hook-form";
 import FormControl from "@mui/material/FormControl";
 import FormHelperText from "@mui/material/FormHelperText";
-import { RegistrationDTOClient } from "@/pages/Registration/widgets/RegistrationWidget/types/RegistrationZOD";
+import { RegistrationDTOClient } from "@t/client/RegistrationZOD";
 import StoreRegistration from "@/pages/Registration/widgets/stores/Store-Registration";
 import { observer } from "mobx-react-lite";
 import Stack from "@mui/material/Stack";
@@ -17,7 +17,7 @@ import Chip from "@mui/material/Chip";
 import { useState } from "react";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
-import MapWidget from "@/pages/Registration/widgets/MapWidget/MapWidget";
+import MapWidget from "@/shared/widgets/MapWidget/MapWidget";
 import * as style from "@/shared/css/pages/Registration.module.scss"
 
 interface propsInterface {
@@ -110,7 +110,7 @@ function RegistrationBody({register, onSubmit, errors, control, watch, setValue}
           <InputMui id="city" text="Город" register={register} disabled={!!StoreRegistration.coords || !!StoreRegistration.defaultCoords} />
         </Box>
 
-        <MapWidget />
+        <MapWidget height="1000px" width="100%" callback={(data) => StoreRegistration.setCoords(data)} />
         <Button variant="contained" type="submit">Готво</Button>
         
     </Paper>

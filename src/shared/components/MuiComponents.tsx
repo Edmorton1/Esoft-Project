@@ -1,20 +1,17 @@
 import FormError from "@/shared/ui/kit/FormError";
 import FormControl from "@mui/material/FormControl";
-import FormControlLabel, { FormControlLabelProps } from "@mui/material/FormControlLabel";
 import FormLabel from "@mui/material/FormLabel";
-import Input from "@mui/material/Input";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
-import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import Select from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
-import { ReactElement, ReactNode } from "react";
+import { ReactNode } from "react";
 import { Control, Controller, FieldError, UseFormRegister } from "react-hook-form";
 
-interface inputInterface {
+interface inputInterface<T> {
   text: string,
-  id: string,
+  id: T,
   error?: FieldError,
   children?: ReactNode
   register: UseFormRegister<any>,
@@ -23,7 +20,7 @@ interface inputInterface {
   variant?: "standard" | "outlined" | "filled"
 }
 
-export function InputMui({text, id, error, register, children, disabled, type = 'text', variant = 'standard'}: inputInterface) {
+export function InputMui <T extends string>({text, id, error, register, children, disabled, type = 'text', variant = 'standard'}: inputInterface<T>) {
   
   return <FormControl error={!!error}>
     <TextField label={text} {...register(id, {valueAsNumber: type === 'number'})} type={type} id={id} disabled={disabled} variant={variant} error={!!error} slotProps={{inputLabel: disabled !== undefined ? {shrink: disabled !== undefined} : undefined}} />
@@ -103,7 +100,7 @@ export function RadioGroupMui({error, text, id, children, control, onChange, col
       name={id}
       control={control}
       render={({field}) => (
-        <RadioGroup row {...field} onChange={onChange}>
+        <RadioGroup row {...field} onChange={onChange ?? field.onChange}>
           {children}
         </RadioGroup>
       )}

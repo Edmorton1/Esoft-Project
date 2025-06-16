@@ -15,7 +15,7 @@ function MapPage() {
 
 	return (
 		<>
-			<MapWrapper ref={containerRef} />
+			<MapWrapper height="1000px" width="100%" ref={containerRef} />
 		</>
 	);
 }

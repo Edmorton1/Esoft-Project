@@ -1,5 +1,5 @@
-import { RegistrationDTOClientSchemaWithoutRefline } from "@/pages/Registration/widgets/RegistrationWidget/types/RegistrationZOD";
-import { UserSchema } from "@t/gen/Users";
+import { RegistrationDTOClientSchemaWithoutRefline } from "@t/client/RegistrationZOD";
+import { PasswordZOD, UserSchema } from "@t/gen/Users";
 import { z } from "zod";
 
 export const AccountSchema = UserSchema.pick({password: true, email: true}).partial()
@@ -16,3 +16,12 @@ export const ProfileSchema = RegistrationDTOClientSchemaWithoutRefline.omit({
 }).partial()
 
 export type ProfileType = z.infer<typeof ProfileSchema>
+
+export const PasswordSchema = z.object({
+  pass: PasswordZOD,
+
+  new: PasswordZOD,
+  repeat: PasswordZOD
+}).refine(data => data.new === data.repeat, {message: "Пароли не совпадают", path: ['repeat']})
+
+export type PasswordType = z.infer<typeof PasswordSchema>

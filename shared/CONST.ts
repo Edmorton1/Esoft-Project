@@ -14,3 +14,5 @@ export const MESSAGE_ON_PAGE = 10
 export const LIKES_ON_PAGE = 6
 export const FILES_LIMIT = 4
 export const FILES_LIMIT_MESSAGE = `Нельзя выбрать больше ${FILES_LIMIT} файлов`
+
+export const SALT = 3

@@ -25,7 +25,7 @@ function useGeolocation(callback?: (location: LocationDTO) => void): LocationDTO
 
           try {
             const { data } = await axios.get(`https://catalog.api.2gis.com/3.0/items/geocode?lat=${lat}&lon=${lng}&fields=items.point&key=${GISKEY}`);
-            console.log(data?.result?.items[0]?.full_name?.split(','), lng, lat);
+            console.log(data?.result?.items[0]?.full_name?.split(','), lng, lat, 'poison');
             const parsed = {city: data?.result?.items[0]?.full_name?.split(',')[0], lng, lat}
             setCity(parsed);
             callback && callback(parsed)

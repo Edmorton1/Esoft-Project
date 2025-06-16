@@ -9,12 +9,14 @@ export const LocationSchema = z.object({
     lat: z.number(),
   })
 
+export const PasswordZOD = z.string().nonempty()
+
 export const UserSchema = z.object({
   id: zid,
   email: zstring.email(),
   // ВРЕМЕННАЯ МЕРА, В ПРОДЕ УБРАТЬ
   // password: z.string().nonempty().min(6),
-  password: z.string().nonempty(),
+  password: PasswordZOD,
   role: UserRoleSchema,
   created_at: z.coerce.date(),
 });

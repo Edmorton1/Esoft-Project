@@ -17,6 +17,8 @@ import HttpMessageOutsideController from "@s/infrastructure/endpoints/MessageOut
 import SharedMiddlewares from "@s/infrastructure/middlewares/SharedMiddlewares"
 import ExtendedSearchMiddle from "@s/infrastructure/endpoints/ExtendSearch/middlewares/ExtendedSearchMiddle"
 import { Request, Response } from "express"
+import HelpersMiddlewares from "@s/infrastructure/endpoints/Helpers/middlewares/HelpersMiddlewares"
+import HttpHelpers from "@s/infrastructure/endpoints/Helpers/HttpHelpers"
 
 const upload = multer({storage: multer.memoryStorage()})
 const router = express.Router()
@@ -62,6 +64,8 @@ router.post(serverPaths.testCompressAudio, upload.single('audio'), HttpFilesCont
 router.get(`${serverPaths.extendedSearch}`, ExtendedSearchMiddle, HttpExtendedSearchController.getForms)
 
 router.get(`${serverPaths.outsideMessages}/:id`, SharedMiddlewares.OnlyIdMiddleware, HttpMessageOutsideController.outsideMessages)
+
+router.post(`${serverPaths.passwordCompare}/:id`, HelpersMiddlewares.passwordMiddleware, HttpHelpers.passwordCompare)
 
 router.use((err: any, req: Request, res: Response) => {
   console.error(err.stack)

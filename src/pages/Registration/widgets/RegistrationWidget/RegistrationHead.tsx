@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite";
 import { FieldErrors, useForm } from "react-hook-form"
 import { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod"
-import { RegistrationDTOClient, RegistrationDTOClientSchema } from "@/pages/Registration/widgets/RegistrationWidget/types/RegistrationZOD";
+import { RegistrationDTOClient, RegistrationDTOClientSchema } from "@t/client/RegistrationZOD";
 import StoreRegistration from "@/pages/Registration/widgets/stores/Store-Registration";
 import StoreUser from "@/shared/stores/Store-User";
 import { LocationDTO } from "@t/gen/dtoObjects";

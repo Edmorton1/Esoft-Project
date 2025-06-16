@@ -46,7 +46,9 @@ export const serverPaths = {
   messages: "/messages",
   tags: "/tags",
   user_tags: "/user_tags",
-  tokens: "/tokens"  
+  tokens: "/tokens",
+
+  passwordCompare: "/passwordCompare"
 } as const
 
 // export type serverPathsTypes = keyof typeof serverPaths

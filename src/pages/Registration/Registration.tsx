@@ -1,4 +1,4 @@
-import MapWidget from "@/pages/Registration/widgets/MapWidget/MapWidget"
+import MapWidget from "@/shared/widgets/MapWidget/MapWidget"
 import RegistrationHead from "@/pages/Registration/widgets/RegistrationWidget/RegistrationHead"
 import StoreRegistration from "@/pages/Registration/widgets/stores/Store-Registration"
 import useGeolocation from "@/shared/hooks/useGeolocation"

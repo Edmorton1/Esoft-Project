@@ -1,5 +1,6 @@
 import { FormDTO, LikesDTO, MessageDTO, TagsDTO, UserDTO, UserTagsDTO } from "@t/gen/dtoObjects"
 import { Form, Likes, Message, Tags, Token, User, UserTags } from "@t/gen/Users"
+import { UseFormRegister } from "react-hook-form"
 
 export type Tables = {
   users: User,
@@ -70,3 +71,5 @@ export interface FormWithDistanse extends Form {
 }
 
 export type lnglatType = [number, number]
+
+export type RegisterNames<T> = T extends UseFormRegister<infer U> ? keyof U : never

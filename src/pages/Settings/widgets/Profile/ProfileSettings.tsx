@@ -12,10 +12,11 @@ import TargetRow from "@/pages/Settings/widgets/components/TargetRow"
 import useMap from "@/shared/hooks/Map/useMap"
 import { useRef } from "react"
 import MapWrapper from "@/shared/hooks/Map/MapWrapper"
-import MapWidget from "@/pages/Registration/widgets/MapWidget/MapWidget"
+import MapWidget from "@/shared/widgets/MapWidget/MapWidget"
+import TagsRow from "@/pages/Settings/widgets/components/TagsRow"
 
 function ProfileSettings() {
-  const methods = useForm({resolver: zodResolver(ProfileSchema), defaultValues: {sex: StoreForm.form?.sex, target: StoreForm.form?.target}})
+  const methods = useForm({resolver: zodResolver(ProfileSchema), defaultValues: {sex: StoreForm.form?.sex, target: StoreForm.form?.target, tags: StoreForm.form?.tags}})
   // ОТСАЛОСЬ tags location avatar
   const submit = (data: any) => {
     console.log(data)
@@ -31,10 +32,11 @@ function ProfileSettings() {
       <EditRow label="Описание" value={StoreForm.form?.description} name="description" />
       <SexRow />
       <TargetRow />
+      <TagsRow />
       {/* <EditRow label="Тэги" value={StoreForm.form?.tags} name="tags" /> */}
-      <MapWidget />
+      <MapWidget height="700px" width="700px" callback={(data) => console.log(data)} />
 
-      <Button type="submit" variant="contained">Готово</Button>
+      <Button type="submit" variant="contained">Сохранить профиль</Button>
     </Paper>
   </FormProvider>
 

@@ -1,4 +1,4 @@
-import StoreBaseModal from "@/shared/ui/Store-BaseModal";
+import StoreBaseModal from "@/shared/components/BaseModal/Store-BaseModal";
 import { action, makeObservable, observable } from "mobx";
 
 class StoreTalking extends StoreBaseModal {

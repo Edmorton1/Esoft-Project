@@ -1,4 +1,4 @@
-import { StoreUserRegistration } from "@/pages/Registration/widgets/RegistrationWidget/types/RegistrationZOD";
+import { StoreUserRegistration } from "@t/client/RegistrationZOD";
 import { toCl } from "@shared/MAPPERS";
 import { serverPaths } from "@shared/PATHS";
 import $test from "@test/helpers/$test";

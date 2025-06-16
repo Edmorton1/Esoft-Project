@@ -1,10 +1,8 @@
 import { ProfileType } from '@/pages/Settings/widgets/schema/Schemas';
-import { colorTypes, RadioGroupMui } from '@/shared/components/MuiComponents';
+import { RadioGroupMui } from '@/shared/components/MuiComponents';
 import StoreForm from '@/shared/stores/Store-Form';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Radio from '@mui/material/Radio';
-import { observer } from 'mobx-react-lite';
-import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 function SexRow() {
@@ -31,4 +29,4 @@ function SexRow() {
 	);
 }
 
-export default observer(SexRow);
+export default SexRow;

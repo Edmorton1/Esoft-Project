@@ -5,6 +5,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { UserRoleType } from "@t/gen/Users";
 import { Response } from "express";
+import { SALT } from "@shared/CONST";
 
 class TokenHelper {
 	generateTokens(payload: PayloadDTO) {
@@ -46,7 +47,7 @@ class TokenHelper {
 		const tokens = this.generateTokens({id: id, role: role});
 		const [accessToken, refreshToken] = tokens;
 		// await this.ORM.delete(id, 'tokens')
-		const refreshHash = await bcrypt.hash(refreshToken, 3);
+		const refreshHash = await bcrypt.hash(refreshToken, SALT);
 		const tokensInDB = await ORM.getById(id, "tokens");
 		if (tokensInDB) {
 			await ORM.put({token: refreshHash}, id, "tokens");

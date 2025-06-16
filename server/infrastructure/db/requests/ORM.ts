@@ -6,6 +6,7 @@ import { checkFirstType, fieldsToArr } from "@s/infrastructure/db/requests/utils
 import requestToForm from "@s/infrastructure/db/requests/SQLform"
 import logger from "../../../logger"
 import { Form } from "@t/gen/Users"
+import { SALT } from "@shared/CONST"
 
   logger.info('asdsdadas')
 interface SQLParams {
@@ -96,7 +97,7 @@ class ORM {
   post = async <T extends tables>(dto: TablesPost[T], table: T, fields?: string): Promise<Tables[T][]> => {
     logger.info({table, fields, dto})
     if (typeof dto === 'object' && "password" in dto && typeof dto.password === "string") {
-      const hashed = await bcrypt.hash(dto.password, 3)
+      const hashed = await bcrypt.hash(dto.password, SALT)
       // dto.password = hashed as Tables[T][keyof Tables[T]]
       dto.password = hashed
     }
