@@ -3,9 +3,10 @@ import useMap from "@/shared/hooks/Map/useMap";
 import MapWrapper from "@/shared/hooks/Map/MapWrapper"
 import { useRef } from "react"
 import useSetCoords from "@/shared/widgets/MapWidget/hooks/useSetCoords";
+import { LocationCallback } from "@/pages/Settings/widgets/Profile/ProfileSettings";
 
 interface propsInterface {
-  callback: (data: number[]) => void,
+  callback: LocationCallback,
   width: string,
   height: string
 }

@@ -4,8 +4,9 @@ import { createRoots } from "@/shared/hooks/Map/createRoot";
 import { mapDTO } from "@/shared/hooks/Map/types";
 import { useEffect } from "react";
 import { MapPointerEvent } from "@2gis/mapgl/types";
+import { LocationCallback } from "@/pages/Settings/widgets/Profile/ProfileSettings";
 
-function useSetCoords(mapgl: mapDTO[0], map: mapDTO[1], callback: (data: number[]) => void) {
+function useSetCoords(mapgl: mapDTO[0], map: mapDTO[1], callback: LocationCallback) {
   useEffect(() => {
     if (!mapgl || !map) return;
 

@@ -119,11 +119,12 @@ interface textareaInterface {
   error?: FieldError,
   children?: ReactNode
   register: UseFormRegister<any>,
+  color?: colorTypes
 }
 
-export function TextAreaMui({label, error, id, register, children}: textareaInterface) {
+export function TextAreaMui({label, error, id, register, children, color}: textareaInterface) {
   return <FormControl error={!!error}>
-    <TextField {...register(id)} label={label} error={!!error} multiline minRows={3} id={id}/>
+    <TextField {...register(id)} label={label} error={!!error} multiline minRows={3} id={id} color={color} />
     <FormError id={id} error={error}></FormError>
     {children}
   </FormControl>

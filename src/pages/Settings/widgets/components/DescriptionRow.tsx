@@ -1,0 +1,17 @@
+import { ProfileType } from "@/pages/Settings/widgets/schema/Schemas"
+import { TextAreaMui } from "@/shared/components/MuiComponents"
+import StoreForm from "@/shared/stores/Store-Form"
+import { useFormContext } from "react-hook-form"
+
+function DescriptionRow() {
+  const {register, watch, formState: {errors}} = useFormContext<ProfileType>()
+
+  const description = watch("description")
+
+  const color = StoreForm.form?.description === description ? "primary" : "warning"
+  console.log(color)
+
+  return <TextAreaMui label="Описание" register={register} id="description" color={color} />
+}
+
+export default DescriptionRow
