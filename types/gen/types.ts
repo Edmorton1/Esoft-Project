@@ -70,6 +70,8 @@ export interface FormWithDistanse extends Form {
   distance?: number
 }
 
+//@ts-ignore
+//ПЕРЕНЕСТИ ПОТОМ 
 export type lnglatType = [number, number]
 
 export type RegisterNames<T> = T extends UseFormRegister<infer U> ? keyof U : never

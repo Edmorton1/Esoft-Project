@@ -1,4 +1,4 @@
-import {PasswordType} from "@/pages/Settings/widgets/schema/Schemas";
+import {PasswordType, ProfileType} from "@/pages/Settings/widgets/schema/Schemas";
 import $api from "@/shared/api/api";
 import StoreBaseModal from "@/shared/components/BaseModal/Store-BaseModal";
 import StoreUser from "@/shared/stores/Store-User";
@@ -12,6 +12,7 @@ class StorePassword extends StoreBaseModal {
 		super();
 		makeObservable(this, {
 			comparePassword: action,
+			updateForm: action
 		});
 	}
 
@@ -30,6 +31,11 @@ class StorePassword extends StoreBaseModal {
 			}
 		}
 	};
+
+	updateForm = async (id: number, data: ProfileType) => {
+		const request = await $api.put(`${serverPaths.profilePut}/${id}`, data)
+		console.log('ФОРМА ПОМЕНЯНА', request)
+	}
 }
 
 export default new StorePassword();

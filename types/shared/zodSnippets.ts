@@ -19,7 +19,8 @@ export const expressMulter = z.custom<Express.Multer.File>(val => {
 
 export const checkEmptyString = (val: unknown): val is string => typeof val === 'string' && val.trim() !== ''
 
-export const toCapitalize = (val: string) => val.charAt(0).toUpperCase() + val.slice(1).toLowerCase()
+// export const toCapitalize = (val: string) => val.charAt(0).toUpperCase() + val.slice(1).toLowerCase()
+export const toCapitalize = (val: string) => val.split(/[\s-]/g).map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(val.includes('-') ? '-' : ' ');
 
 export const nullToUndefined = (val: unknown): unknown => {
   if (val === null) return undefined;

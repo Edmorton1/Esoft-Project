@@ -13,6 +13,7 @@ import MapWidget from "@/shared/widgets/MapWidget/MapWidget"
 import TagsRow from "@/pages/Settings/widgets/components/TagsRow"
 import Box from "@mui/material/Box"
 import DescriptionRow from "@/pages/Settings/widgets/components/DescriptionRow"
+import StorePassword from "@/pages/Settings/widgets/store/Store-Password"
 
 export type LocationCallback = (data: number[]) => void
 
@@ -28,8 +29,10 @@ function ProfileSettings() {
     name: StoreForm.form?.name
   }})
   // ОТСАЛОСЬ tags avatar
+  // ЗАВТРА УЛУЧШИТЬ ОТОБРАЖЕНИЕ КАРТЫ, ЗАБЛОКИРОВАТЬ СМЕНУ ГОРОДА, ДОДЕЛАТЬ ИТОГ ФОРМЫ, ДОБАВИТЬ СМЕНУ АВАТАРА
   const submit = (data: any) => {
     console.log(data)
+    StorePassword.updateForm(StoreUser.user!.id, data)
   }
 
   const handleLocation = (data: Parameters<LocationCallback>[0]) => {

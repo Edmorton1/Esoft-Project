@@ -16,14 +16,18 @@ function TagsRow() {
 
   const tags = watch('tags') || []
   console.log(tagsParse(StoreForm.form?.tags), tagsParse(tags))
-  const color = tagsParse(StoreForm.form?.tags) === tagsParse(tags) ? 'default' : 'warning'
-  const color2 = tagsParse(StoreForm.form?.tags) === tagsParse(tags) ? 'primary' : 'warning'
+
+  const uslovie = tagsParse(StoreForm.form?.tags ?? []) === tagsParse(tags)
+
+  const color = uslovie ? 'default' : 'warning'
+  console.log(tagsParse(StoreForm.form?.tags), tagsParse(tags))
+  const colorPrimary = uslovie ? 'primary' : 'warning'
   
   return <FormControl fullWidth>
     <FormLabel>Тэги</FormLabel>
       <Box sx={{display: "flex", gap: 1}}>
-        <TextField color={color2} label="Напишите тег" variant="outlined" value={input} onChange={e => setInput(e.target.value)} sx={{ flex: 1 }} />
-        <Button color={color2} variant="contained" onClick={() => {
+        <TextField color={colorPrimary} label="Напишите тег" variant="outlined" value={input} onChange={e => setInput(e.target.value)} sx={{ flex: 1 }} />
+        <Button color={colorPrimary} variant="contained" onClick={() => {
         if (input.trim() !== '' && !tags.map(e => e.tag).includes(input)) {
           setValue('tags', [...tags, {tag: input.trim()}]);
           setInput('')

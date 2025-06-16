@@ -48,7 +48,8 @@ export const serverPaths = {
   user_tags: "/user_tags",
   tokens: "/tokens",
 
-  passwordCompare: "/passwordCompare"
+  passwordCompare: "/passwordCompare",
+  profilePut: "/profilePut"
 } as const
 
 // export type serverPathsTypes = keyof typeof serverPaths

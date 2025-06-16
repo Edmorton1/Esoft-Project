@@ -87,6 +87,7 @@ export type Tags = z.infer<typeof TagsSchema>;
 export type TargetType = z.infer<typeof TargetTypeSchema>;
 export type UserRoleType = z.infer<typeof UserRoleSchema>;
 
+export type LocationType = z.infer<typeof LocationSchema>
 // export class User {
 //   constructor(
 //     readonly id: number,

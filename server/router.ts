@@ -19,6 +19,7 @@ import ExtendedSearchMiddle from "@s/infrastructure/endpoints/ExtendSearch/middl
 import { Request, Response } from "express"
 import HelpersMiddlewares from "@s/infrastructure/endpoints/Helpers/middlewares/HelpersMiddlewares"
 import HttpHelpers from "@s/infrastructure/endpoints/Helpers/HttpHelpers"
+import { NextFunction } from "webpack-dev-server"
 
 const upload = multer({storage: multer.memoryStorage()})
 const router = express.Router()
@@ -66,8 +67,9 @@ router.get(`${serverPaths.extendedSearch}`, ExtendedSearchMiddle, HttpExtendedSe
 router.get(`${serverPaths.outsideMessages}/:id`, SharedMiddlewares.OnlyIdMiddleware, HttpMessageOutsideController.outsideMessages)
 
 router.post(`${serverPaths.passwordCompare}/:id`, HelpersMiddlewares.passwordMiddleware, HttpHelpers.passwordCompare)
+router.put(`${serverPaths.profilePut}/:id`, HelpersMiddlewares.profileMiddleware, HttpHelpers.profilePut)
 
-router.use((err: any, req: Request, res: Response) => {
+router.use((err: any, req: Request, res: Response, next: NextFunction) => {
   console.error(err.stack)
   res.status(500).json({ error: err })
 })

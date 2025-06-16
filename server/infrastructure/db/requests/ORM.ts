@@ -105,6 +105,7 @@ class ORM {
       const {lng, lat} = dto.location
       const pointWKT = `POINT(${lng} ${lat})`;
       const parsedKnex = db.raw(`ST_GeomFromText(?, 4326)`, [pointWKT])
+      // СЮДА ПОТОМ ДОБАВИТЬ LOCATION PARSER
       //@ts-ignore
       dto.location = parsedKnex
     }
@@ -121,7 +122,11 @@ class ORM {
   }
 
   // ПОКА БУДЕТ ТОЛЬКО НА ТЭГАХ
-  postArr = async <T extends tables>(dto: TablesPost[T][], table: T, onConflictDoNothing: boolean = false, fields?: string): Promise<Tables[T][]> => {
+  postArr = async <T extends tables>(dto: TablesPost[T][], table: T, removeOld: number = 0): Promise<Tables[T][]> => {
+
+    if (removeOld > 0) {
+      await db.delete().from('user_tags').where('id', '=', removeOld)
+    }
 
     const request = await db(table).insert(dto).onConflict(Object.keys(dto[0])).merge().returning("*")
     // ПОТОМ ПРОВЕРИТЬ КЭШИ

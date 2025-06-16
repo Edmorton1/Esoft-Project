@@ -1,9 +1,11 @@
-import { ReqPass } from "@s/infrastructure/endpoints/Helpers/middlewares/HelpersMiddlewares"
+import { ReqPass, ReqProf } from "@s/infrastructure/endpoints/Helpers/middlewares/HelpersMiddlewares"
 import { Request, Response } from "express"
 import bcrypt from "bcrypt"
 import ORM from "@s/infrastructure/db/requests/ORM";
 import logger from "@s/logger";
 import { SALT } from "@shared/CONST";
+import SharedService from "@s/infrastructure/services/SharedService";
+import { one } from "@shared/MAPPERS";
 
 class HttpHelpers {
   passwordCompare = async (req: Request, res: Response) => {
@@ -19,6 +21,19 @@ class HttpHelpers {
       return res.sendStatus(200)
     }
     res.sendStatus(400)
+  }
+
+  profilePut = async (req: Request, res: Response) => {
+    const r = req as ReqProf
+    const {tags, location, ...data} = r.profile
+
+    logger.info({prof: r.profile})
+    const newLocation = location && SharedService.parseLocation(location)
+
+    //@ts-ignore
+    const newProfile = one(await ORM.put(newLocation ? {...data, location: newLocation} : data, r.id, 'forms'))
+    const newTags = await SharedService.uploadTags(r.id, tags, true)
+    res.json({...newProfile, tags: newTags})
   }
 }
 

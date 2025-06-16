@@ -19,10 +19,12 @@ class TokenService {
 
 		let tagsTotal: Tags[] = [];
 
+		//@ts-ignore
+		// ПОТОМ ПОМЕНЯТЬ НА SERVICE
 		if (tags.length > 0) {
 			const tagsDB = await ORM.postArr(tags, "tags");
 			const tagDBParseToUser = tagsDB.map(e => ({id: form.id, tagid: e.id}));
-			tagsTotal = (await ORM.postArr(tagDBParseToUser, "user_tags", true)).map(e => ({id: e.id, tag: tagsDB.find(tag => tag.id === e.tagid)!.tag}));
+			tagsTotal = (await ORM.postArr(tagDBParseToUser, "user_tags")).map(e => ({id: e.id, tag: tagsDB.find(tag => tag.id === e.tagid)!.tag}));
 		}
 
 		// const location = parseWKB
