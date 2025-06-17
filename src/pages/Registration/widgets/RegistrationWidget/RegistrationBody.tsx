@@ -1,40 +1,31 @@
-import { Control, FieldErrors, UseFormRegister, UseFormSetValue, UseFormWatch } from "react-hook-form";
-import FormControl from "@mui/material/FormControl";
+import { useFormContext, useWatch } from "react-hook-form";
 import FormHelperText from "@mui/material/FormHelperText";
-import { RegistrationDTOClient } from "@t/client/RegistrationZOD";
 import StoreRegistration from "@/pages/Registration/widgets/stores/Store-Registration";
 import { observer } from "mobx-react-lite";
-import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import { InputMui, InputNumberMui, RadioGroupMui, SelectMui, TextAreaMui } from "@/shared/components/MuiComponents";
+import { InputMui, InputNumberMui, RadioGroupMui, SelectMui, TagsChips, TextAreaMui } from "@/shared/components/MuiComponents";
 import MenuItem from "@mui/material/MenuItem";
-import FormLabel from "@mui/material/FormLabel";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Radio from "@mui/material/Radio";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import Chip from "@mui/material/Chip";
 import { useState } from "react";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import MapWidget from "@/shared/widgets/MapWidget/MapWidget";
 import * as style from "@/shared/css/pages/Registration.module.scss"
+import { TagsDTO } from "@t/gen/dtoObjects";
 
 interface propsInterface {
-  register: UseFormRegister<RegistrationDTOClient>,
   onSubmit: (...args: any[]) => any,
-  errors: FieldErrors<RegistrationDTOClient>
-  control: Control<RegistrationDTOClient>
-  watch: UseFormWatch<RegistrationDTOClient>
-  setValue: UseFormSetValue<RegistrationDTOClient>
 }
 
-function RegistrationBody({register, onSubmit, errors, control, watch, setValue}: propsInterface) {
+function RegistrationBody({onSubmit}: propsInterface) {
+  const { register, setValue, formState: {errors}, control } = useFormContext()
   const [input, setInput] = useState('')
-  // const {setValue} = useFormContext<RegistrationDTOClient>()
 
   const Title = ({children}: {children: string}) => <Typography variant="h3" component={"h3"} align="center">{children}</Typography>
-  const tags = watch('tags')
+  const tags: TagsDTO[] = useWatch({name: 'tags'})
 
   return <form onSubmit={onSubmit} className={style.form}>
   {/* <button onClick={() => console.log(errors)}>errors</button> */}
@@ -80,28 +71,8 @@ function RegistrationBody({register, onSubmit, errors, control, watch, setValue}
             <MenuItem value="chat">Чатинг</MenuItem>
             <MenuItem value="hobby">Хобби</MenuItem>
           </SelectMui>
-
-          {/* {target && <input {...register('targetCustom')} type="text" placeholder="Напишите свою цель..." />} */}
           
-          <FormControl>
-            <FormLabel>Тэги</FormLabel>
-            <Box sx={{display: "flex", gap: 1}}>
-              <TextField label="Напишите тег" variant="outlined" value={input} onChange={e => setInput(e.target.value)} sx={{ flex: 1 }} />
-              <Button variant="contained" onClick={() => {
-                if (input.trim() !== '' && !tags.map(e => e.tag).includes(input)) {
-                  setValue('tags', [...tags, {tag: input.trim()}]);
-                  setInput('')
-                }
-              }}>Добавить</Button>
-            </Box>
-            {tags.length > 0 && <Box sx={{padding: "3px", gap: "4px", display: "flex", flexWrap: "wrap", backgroundColor:"background.alt"}}>
-              {tags.map(e => <Chip 
-                key={e.tag} 
-                label={e.tag} 
-                variant="outlined" 
-                onDelete={() => setValue('tags', tags.filter(tag => tag.tag !== e.tag))} />)}
-            </Box>}
-          </FormControl>
+          <TagsChips input={input} setInput={setInput} setValue={setValue} tags={tags} />
 
           <TextAreaMui id="description" label="Описание" register={register} error={errors.description} />
 

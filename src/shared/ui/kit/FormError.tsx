@@ -1,14 +1,25 @@
+import { errorsType } from "@/shared/components/MuiComponents";
 import FormHelperText from "@mui/material/FormHelperText";
-import { FieldError } from "react-hook-form";
+import {FieldError} from "react-hook-form";
 
 interface props {
-  id: string,
-  error: FieldError | undefined,
-  children?: string
+	id: string;
+	error?: errorsType;
+	children?: string;
+}
+
+function isFieldError(error: any): error is FieldError {
+  return error && typeof error === "object" && "type" in error;
 }
 
 function FormError({id, error, children}: props) {
-  return <FormHelperText id={id} error={error ? true : false}>{error?.message || children}</FormHelperText>
+  const message = isFieldError(error) ? error.message : undefined;
+
+	return (
+		<FormHelperText id={id} error={error ? true : false}>
+			{message || children}
+		</FormHelperText>
+	);
 }
 
-export default FormError
+export default FormError;

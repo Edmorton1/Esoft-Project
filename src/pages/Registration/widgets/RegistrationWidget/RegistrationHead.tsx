@@ -1,6 +1,6 @@
 import RegistrationBody from "@/pages/Registration/widgets/RegistrationWidget/RegistrationBody";
 import { observer } from "mobx-react-lite";
-import { FieldErrors, useForm } from "react-hook-form"
+import { FieldErrors, FormProvider, useForm } from "react-hook-form"
 import { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { RegistrationDTOClient, RegistrationDTOClientSchema } from "@t/client/RegistrationZOD";
@@ -8,20 +8,21 @@ import StoreRegistration from "@/pages/Registration/widgets/stores/Store-Registr
 import StoreUser from "@/shared/stores/Store-User";
 import { LocationDTO } from "@t/gen/dtoObjects";
 
-type ExtractFieldErrorType<E> = E extends FieldErrors<infer T> ? T : never
+// type ExtractFieldErrorType<E> = E extends FieldErrors<infer T> ? T : never
 
 function Registration() {
-  const { register, handleSubmit, setValue, setError, watch, formState: {errors}, control } = useForm({resolver: zodResolver(RegistrationDTOClientSchema), defaultValues: {tags: []}});
+  // const { register, handleSubmit, setValue, setError, watch, formState: {errors}, control } = useForm({resolver: zodResolver(RegistrationDTOClientSchema), defaultValues: {tags: []}});
+  const methods = useForm({resolver: zodResolver(RegistrationDTOClientSchema), defaultValues: {tags: []}});
 
   useEffect(() => {
     if (StoreRegistration.defaultCoords?.city) {
-      setValue("city", StoreRegistration.defaultCoords.city)
+      methods.setValue("city", StoreRegistration.defaultCoords.city)
     }
   }, [StoreRegistration.defaultCoords])
 
   useEffect(() => {
     if (StoreRegistration.coords?.city) {
-      setValue("city", StoreRegistration.coords.city)
+      methods.setValue("city", StoreRegistration.coords.city)
     }
   }, [StoreRegistration.coords])
 
@@ -29,7 +30,7 @@ function Registration() {
     const isFree = await StoreRegistration.emailIsFree(data.email)
     
     if (!isFree) {
-      setError("email", {
+      methods.setError("email", {
         message: "Пользователь с таким email уже существует",
         type: "manual"
       })
@@ -45,8 +46,9 @@ function Registration() {
     await StoreUser.registration(form)
   }
 
-  //@ts-ignore
-  return <RegistrationBody register={register} onSubmit={handleSubmit(data => registrationHandle(data))} errors={errors} control={control} watch={watch} setValue={setValue} />
+  return <FormProvider {...methods}>
+    <RegistrationBody onSubmit={methods.handleSubmit(data => registrationHandle(data))} />
+  </FormProvider>
 }
 
 export default observer(Registration)

@@ -1,32 +1,38 @@
 import Typography from '@mui/material/Typography';
 import * as style from "@/shared/css/pages/Settings.module.scss"
-import { useFormContext } from 'react-hook-form';
+import { useFormContext, useWatch } from 'react-hook-form';
 import { ProfileType } from '@/pages/Settings/widgets/schema/Schemas';
 import { InputMui, InputNumberMui } from '@/shared/components/MuiComponents';
 import StoreForm from '@/shared/stores/Store-Form';
+import { memo } from 'react';
 
 interface propsInterface {
   name: keyof ProfileType
   label: string
+  disabled?: boolean
 }
 
-function EditRow({name, label}: propsInterface) {
-  const {register, watch, formState: {errors}} = useFormContext<ProfileType>()
-  const actual = watch(name)
+function EditRow({name, label, disabled}: propsInterface) {
+  const {register, formState: {errors}} = useFormContext<ProfileType>()
+
+  const actual = useWatch({name})
+  
   const color = errors[name] ? "error" : actual !== StoreForm.form?.[name] ? "warning" : undefined
+
+  console.log("EDIT ROW RERENDER")
 
   return <div className={style.row}>
     <Typography color={color}>{label}: </Typography>
     {
       name === 'age'
       ? <InputNumberMui id={name} register={register} color={color} />
-      : <InputMui id={name} register={register} color={color} disabled={name === "city" && typeof StoreForm.form?.location !== "undefined"} />
+      : <InputMui id={name} register={register} color={color} disabled={disabled} />
     }
 
   </div>
 }
 
-export default EditRow
+export default memo(EditRow)
 
 // interface propsInterface {
 //   name: keyof ProfileType

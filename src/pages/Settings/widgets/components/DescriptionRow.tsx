@@ -1,12 +1,12 @@
 import { ProfileType } from "@/pages/Settings/widgets/schema/Schemas"
 import { TextAreaMui } from "@/shared/components/MuiComponents"
 import StoreForm from "@/shared/stores/Store-Form"
-import { useFormContext } from "react-hook-form"
+import { useFormContext, useWatch } from "react-hook-form"
 
 function DescriptionRow() {
-  const {register, watch, formState: {errors}} = useFormContext<ProfileType>()
+  const {register} = useFormContext<ProfileType>()
 
-  const description = watch("description")
+  const description = useWatch({name: "description"})
 
   const color = StoreForm.form?.description === description ? "primary" : "warning"
   console.log(color)

@@ -1,4 +1,7 @@
 import FormError from "@/shared/ui/kit/FormError";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Chip from "@mui/material/Chip";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import InputLabel from "@mui/material/InputLabel";
@@ -6,14 +9,18 @@ import MenuItem from "@mui/material/MenuItem";
 import RadioGroup from "@mui/material/RadioGroup";
 import Select from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
+import { TagsDTO } from "@t/gen/dtoObjects";
 import { ReactNode } from "react";
-import { Control, Controller, FieldError, UseFormRegister } from "react-hook-form";
+import { Control, Controller, FieldError, FieldErrorsImpl, Merge, UseFormRegister, UseFormSetValue } from "react-hook-form";
 
 export type colorTypes = "error" | "primary" | "secondary" | "info" | "success" | "warning"
+
+export type errorsType = FieldError | Merge<FieldError, FieldErrorsImpl<any>>
+
 interface inputInterface<T> {
   text?: string,
   id: T,
-  error?: FieldError,
+  error?: errorsType,
   children?: ReactNode
   register: UseFormRegister<any>,
   type?: string,
@@ -34,7 +41,7 @@ export function InputMui <T extends string>({text, id, error, register, children
 interface inputNumberInterface {
   text?: string,
   id: string,
-  error?: FieldError,
+  error?: errorsType,
   children?: ReactNode
   register: UseFormRegister<any>,
   color?: colorTypes
@@ -52,7 +59,7 @@ export function InputNumberMui({text, id, error, register, children, color}: inp
 interface selectInterface {
   text: string,
   id: string,
-  error?: FieldError,
+  error?: errorsType,
   children?: ReactNode
   control: Control<any>
   color?: colorTypes
@@ -87,7 +94,7 @@ export function SelectMui({text, id, error, control, children, color = 'primary'
 interface radioInterface {
   text: string,
   id: string,
-  error?: FieldError,
+  error?: errorsType,
   // children: ReactElement<FormControlLabelProps>
   children: ReactNode
   control?: Control<any>
@@ -118,7 +125,7 @@ export function RadioGroupMui({error, text, id, children, control, onChange, col
 interface textareaInterface {
   label: string,
   id: string,
-  error?: FieldError,
+  error?: errorsType,
   children?: ReactNode
   register: UseFormRegister<any>,
   color?: colorTypes
@@ -129,5 +136,36 @@ export function TextAreaMui({label, error, id, register, children, color}: texta
     <TextField {...register(id)} label={label} error={!!error} multiline minRows={3} id={id} color={color} />
     <FormError id={id} error={error}></FormError>
     {children}
+  </FormControl>
+}
+
+interface tagsChipsInterface {
+  tags: TagsDTO[],
+  color?: colorTypes,
+  input: string,
+  setInput: React.Dispatch<React.SetStateAction<string>>,
+  setValue: UseFormSetValue<any>,
+}
+
+export function TagsChips({tags, color, input, setInput, setValue}: tagsChipsInterface) {
+  return <FormControl fullWidth>
+  <FormLabel>Тэги</FormLabel>
+  <Box sx={{display: "flex", gap: 1}}>
+    <TextField color={color} label="Напишите тег" variant="outlined" value={input} onChange={e => setInput(e.target.value)} sx={{ flex: 1 }} />
+    <Button color={color} variant="contained" onClick={() => {
+    if (input.trim() !== '' && !tags.map(e => e.tag).includes(input)) {
+      setValue('tags', [...tags, {tag: input.trim()}]);
+      setInput('')
+    }
+  }}>Добавить</Button>
+  </Box>
+  {tags.length > 0 && <Box sx={{padding: "3px", gap: "4px", display: "flex", flexWrap: "wrap", backgroundColor:"background.paper"}}>
+    {tags.map(e => <Chip
+      key={e.tag} 
+      label={e.tag} 
+      variant="outlined" 
+      color={color}
+      onDelete={() => setValue('tags', tags.filter(tag => tag.tag !== e.tag))} />)}
+  </Box>}
   </FormControl>
 }

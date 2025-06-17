@@ -23,7 +23,7 @@ function ProfileSettings() {
   const methods = useForm({resolver: zodResolver(ProfileSchema), defaultValues: {
     sex: StoreForm.form?.sex, 
     target: StoreForm.form?.target, 
-    tags: StoreForm.form?.tags, 
+    tags: StoreForm.form?.tags ?? [], 
     location: StoreForm.form?.location,
     age: StoreForm.form?.age,
     city: StoreForm.form?.city,
@@ -60,7 +60,7 @@ function ProfileSettings() {
         <Paper sx={{p: p}}>
           <EditRow label="Имя" name="name" />
           <EditRow label="Возраст" name="age" />
-          <EditRow label="Город" name="city" />
+          <EditRow label="Город" name="city" disabled={typeof StoreForm.form?.location !== "undefined"} />
           {/* <EditRow label="Описание" value={StoreForm.form?.description} name="description" /> */}
           <DescriptionRow />
         </Paper>
