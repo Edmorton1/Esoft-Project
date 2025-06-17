@@ -1,3 +1,5 @@
+@use "@/shared/css/const" as c;
+
 .container {
 	display: flex;
 	flex-direction: column;
@@ -7,7 +9,7 @@
 	&__form {
 		display: flex;
 		flex-direction: column;
-		padding: 15px;
+		padding: c.$ig;
 		width: 100%;
 		gap: 10px;
 
@@ -26,7 +28,8 @@
 			display: grid;
 			grid-template-columns: 1fr 1fr;
 			align-items: center;
-      gap: 10px;;
+      gap: c.$ig;
+			padding: c.$ig;
 
       > :nth-child(1) {
         height: 100%;
@@ -39,11 +42,14 @@
 }
 
 .row {
-	display: flex;
-	flex-direction: row;
+	// display: flex;
+	// flex-direction: row;
+	display: grid;
+	grid-template-columns: 15% 1fr;
 	// justify-content: center;
 	align-items: center;
 	justify-content: space-between;
+	flex: 1;
 	width: 100%;
 	gap: 10px;
 }

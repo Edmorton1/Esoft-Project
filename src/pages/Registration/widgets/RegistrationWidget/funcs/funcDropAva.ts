@@ -1,14 +1,12 @@
 import StoreUser from "@/shared/stores/Store-User";
 import StoreFiles from "@/shared/stores/StoreFiles";
 
-export async function AvatarHandle(file: File): Promise<string> {
-  const formData = new FormData();
-  formData.append('avatar', file)
-  console.log(formData.get(file.name))
 
-  return await StoreFiles.postAvatar(formData, StoreUser.user!.id)
-}
 
-export function AvatarOnChange(event: React.ChangeEvent<HTMLInputElement>) {
-  AvatarHandle(event.target.files![0]);
-}
+// export function AvatarOnChange(event: React.ChangeEvent<HTMLInputElement>) {
+//   AvatarHandle(event.target.files![0]);
+// }
+
+// export function AvatarOnChange(file: File) {
+//   AvatarHandle(file);
+// }

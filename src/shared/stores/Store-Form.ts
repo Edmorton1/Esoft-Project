@@ -38,6 +38,10 @@ class FormStore {
   async getAll(): Promise<Form[]> {
     return toCl<Form[]>(await $api.get(serverPaths.forms))
   }
+
+  setAvatar = (avatar: string) => {
+    this.form!.avatar = avatar
+  }
 }
 
 export default new FormStore

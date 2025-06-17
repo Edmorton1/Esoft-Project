@@ -9,38 +9,41 @@ import TextField from "@mui/material/TextField";
 import { ReactNode } from "react";
 import { Control, Controller, FieldError, UseFormRegister } from "react-hook-form";
 
+export type colorTypes = "error" | "primary" | "secondary" | "info" | "success" | "warning"
 interface inputInterface<T> {
-  text: string,
+  text?: string,
   id: T,
   error?: FieldError,
   children?: ReactNode
   register: UseFormRegister<any>,
   type?: string,
   disabled?: boolean,
-  variant?: "standard" | "outlined" | "filled"
+  variant?: "standard" | "outlined" | "filled",
+  color?: colorTypes
 }
 
-export function InputMui <T extends string>({text, id, error, register, children, disabled, type = 'text', variant = 'standard'}: inputInterface<T>) {
+export function InputMui <T extends string>({text, id, error, register, children, disabled, type = 'text', variant = 'standard', color = 'primary'}: inputInterface<T>) {
   
-  return <FormControl error={!!error}>
-    <TextField label={text} {...register(id, {valueAsNumber: type === 'number'})} type={type} id={id} disabled={disabled} variant={variant} error={!!error} slotProps={{inputLabel: disabled !== undefined ? {shrink: disabled !== undefined} : undefined}} />
+  return <FormControl error={!!error} color={color} >
+    <TextField color={color} label={text} {...register(id, {valueAsNumber: type === 'number'})} type={type} id={id} disabled={disabled} variant={variant} error={!!error} slotProps={{inputLabel: disabled !== undefined ? {shrink: disabled !== undefined} : undefined}} />
     <FormError id={id} error={error} />
     {children}
   </FormControl>
 }
 
 interface inputNumberInterface {
-  text: string,
+  text?: string,
   id: string,
   error?: FieldError,
   children?: ReactNode
   register: UseFormRegister<any>,
+  color?: colorTypes
 }
 
-export function InputNumberMui({text, id, error, register, children}: inputNumberInterface) {
+export function InputNumberMui({text, id, error, register, children, color}: inputNumberInterface) {
   
-  return <FormControl error={!!error}>
-    <TextField label={text} {...register(id, {valueAsNumber: true, min: 18, max: 122})} type={"number"} id={id} variant="standard" error={!!error} />
+  return <FormControl error={!!error} color={color}>
+    <TextField color={color} label={text} {...register(id, {valueAsNumber: true, min: 18, max: 122})} type={"number"} id={id} variant="standard" error={!!error} />
     <FormError id={id} error={error}></FormError>
     {children}
   </FormControl>
@@ -81,7 +84,6 @@ export function SelectMui({text, id, error, control, children, color = 'primary'
     </FormControl>
 }
 
-export type colorTypes = "error" | "primary" | "secondary" | "info" | "success" | "warning"
 interface radioInterface {
   text: string,
   id: string,

@@ -1,5 +1,7 @@
+@use "@/shared/css/const" as c;
+
 .map {
-  padding: 15px;
+  padding: c.$ig;
   // background-color: red;
 
   &__marker {

@@ -1,65 +1,80 @@
-import EditSquareIcon from '@mui/icons-material/EditSquare';
 import Typography from '@mui/material/Typography';
 import * as style from "@/shared/css/pages/Settings.module.scss"
-import IconButton from '@mui/material/IconButton';
-import { useState } from 'react';
-import TextField from '@mui/material/TextField';
-import { FieldError, useFormContext } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import { ProfileType } from '@/pages/Settings/widgets/schema/Schemas';
-import LibraryAddCheckIcon from '@mui/icons-material/LibraryAddCheck';
-import FormControl from '@mui/material/FormControl';
-import FormHelperText from '@mui/material/FormHelperText';
+import { InputMui, InputNumberMui } from '@/shared/components/MuiComponents';
+import StoreForm from '@/shared/stores/Store-Form';
 
 interface propsInterface {
   name: keyof ProfileType
   label: string
-  value?: any,
 }
 
-function EditRow({name, label, value}: propsInterface) {
-  const [edit, setEdit] = useState(false)
-  // const [localValue, setLocalValue] = useState(value ?? '')
-
+function EditRow({name, label}: propsInterface) {
   const {register, watch, formState: {errors}} = useFormContext<ProfileType>()
-
   const actual = watch(name)
-
-  const toggleClick = () => {
-    if (edit) {
-      // handleConfim()
-      setEdit(!edit)
-    }
-    setEdit(!edit)
-  }
-  
-  // const handleConfim = () => {
-  //   const parse = name === 'age' ? Number(localValue) : localValue
-
-  //   {setValue(name, parse, {shouldValidate: true})}
-  // }
-
-  const color = errors[name] ? "error" : actual !== value ? "warning" : "inherit"
+  const color = errors[name] ? "error" : actual !== StoreForm.form?.[name] ? "warning" : undefined
 
   return <div className={style.row}>
     <Typography color={color}>{label}: </Typography>
-    {edit
-      ? <FormControl id={name}>
-        {name === 'age'
-          ? <TextField color={errors[name] ? 'error' : 'primary'} {...register(name, {valueAsNumber: true, min: 18, max: 122})}  variant='standard' type='number'/>
-          : <TextField color={errors[name] ? 'error' : 'primary'} {...register(name)} variant='standard' />
-        }
-        <FormHelperText error={!!errors[name]} id={name}>{(errors[name] as FieldError)?.message}</FormHelperText>
-      </FormControl>
-      : <Typography color={color} >{actual}</Typography>
+    {
+      name === 'age'
+      ? <InputNumberMui id={name} register={register} color={color} />
+      : <InputMui id={name} register={register} color={color} disabled={name === "city" && typeof StoreForm.form?.location !== "undefined"} />
     }
-    <IconButton onClick={toggleClick}>{edit ? <LibraryAddCheckIcon color={color}/> : <EditSquareIcon color={color}/>}</IconButton>
-    {/* <button onClick={() => console.log(!!errors[name], errors[name], errors)}>errors</button> */}
+
   </div>
 }
 
 export default EditRow
 
-      // ? <FormControl id={name}>
-      //   <TextField color={errors[name] ? 'error' : 'primary'} onChange={e => setLocalValue(e.target.value)} value={localValue} variant='standard' type={type} />
-      //   <FormHelperText error={!!errors[name]} id={name}>{(errors[name] as FieldError)?.message}</FormHelperText>
-      // </FormControl>
+// interface propsInterface {
+//   name: keyof ProfileType
+//   label: string
+//   value?: any,
+// }
+
+// function EditRow({name, label, value}: propsInterface) {
+//   const [edit, setEdit] = useState(false)
+//   // const [localValue, setLocalValue] = useState(value ?? '')
+
+  // const {register, watch, formState: {errors}} = useFormContext<ProfileType>()
+
+//   const actual = watch(name)
+
+//   const toggleClick = () => {
+//     if (edit) {
+//       // handleConfim()
+//       setEdit(!edit)
+//     }
+//     setEdit(!edit)
+//   }
+  
+//   // const handleConfim = () => {
+//   //   const parse = name === 'age' ? Number(localValue) : localValue
+
+//   //   {setValue(name, parse, {shouldValidate: true})}
+//   // }
+//   name === "city" && console.log('location', StoreForm.form?.location)
+
+  // const color = errors[name] ? "error" : actual !== value ? "warning" : undefined
+
+//   return <div className={style.row}>
+    // <Typography color={color}>{label}: </Typography>
+//     {edit
+//       ? name === 'age'
+        // ? <InputNumberMui id={name} register={register} color={color} />
+        // : <InputMui id={name} register={register} color={color} disabled={name === "city" && typeof StoreForm.form?.location !== "undefined"} />
+      // : <Typography color={color} >{actual}</Typography>
+//     }
+//     <IconButton onClick={toggleClick}>{edit ? <LibraryAddCheckIcon color={color}/> : <EditSquareIcon color={color}/>}</IconButton>
+//     {/* <button onClick={() => console.log(!!errors[name], errors[name], errors)}>errors</button> */}
+//   </div>
+// }
+
+// export default EditRow
+
+//       // ? <FormControl id={name}>
+//       //   <TextField color={errors[name] ? 'error' : 'primary'} onChange={e => setLocalValue(e.target.value)} value={localValue} variant='standard' type={type} />
+//       //   <FormHelperText error={!!errors[name]} id={name}>{(errors[name] as FieldError)?.message}</FormHelperText>
+//       // </FormControl>

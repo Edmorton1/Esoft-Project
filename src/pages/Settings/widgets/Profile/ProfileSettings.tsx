@@ -14,6 +14,8 @@ import TagsRow from "@/pages/Settings/widgets/components/TagsRow"
 import Box from "@mui/material/Box"
 import DescriptionRow from "@/pages/Settings/widgets/components/DescriptionRow"
 import StorePassword from "@/pages/Settings/widgets/store/Store-Password"
+import SharedRequests from "@shared/Shared-Requests"
+import AvatarRow from "@/pages/Settings/widgets/components/AvatarRow"
 
 export type LocationCallback = (data: number[]) => void
 
@@ -29,31 +31,36 @@ function ProfileSettings() {
     name: StoreForm.form?.name
   }})
   // ОТСАЛОСЬ tags avatar
-  // ЗАВТРА УЛУЧШИТЬ ОТОБРАЖЕНИЕ КАРТЫ, ЗАБЛОКИРОВАТЬ СМЕНУ ГОРОДА, ДОДЕЛАТЬ ИТОГ ФОРМЫ, ДОБАВИТЬ СМЕНУ АВАТАРА
+  // ЗАВТРА УЛУЧШИТЬ ОТОБРАЖЕНИЕ КАРТЫ, ЗАБЛОКИРОВАТЬ СМЕНУ ГОРОДА, ДОДЕЛАТЬ ИТОГ ФОРМЫ, ДОБАВИТЬ СМЕНУ АВАТАРА, УЛУЧШИТЬ ОПТИМИЗАЦИЮ
+  // ЗАВТРА УЛУЧШИТЬ ОПТИМИЗАЦИЮ
+
   const submit = (data: any) => {
     console.log(data)
     StorePassword.updateForm(StoreUser.user!.id, data)
   }
 
-  const handleLocation = (data: Parameters<LocationCallback>[0]) => {
+  const handleLocation = async (data: Parameters<LocationCallback>[0]) => {
     console.log(data)
+    const location = await SharedRequests.cityByCoords(data)
+    
+    console.log("LOCA", location)
+
     methods.setValue('location', {lng: data[0], lat: data[1]})
+    methods.setValue('city', location.city)
   }
+
   const p = 1.5
   const sx = {bgcolor: "background.alt", p: 2}
 
   return <FormProvider {...methods}>
     <Paper component={"form"} className={style.container__form} onSubmit={methods.handleSubmit(data => submit(data))}>
       {/* <button onClick={() => console.log(methods.formState.errors)}>Errors</button> */}
-      <Box sx={sx} component={"div"} className={style['container__form--avatar']}>
-        <img src={StoreForm.form?.avatar} alt="" />
-        <Button variant="contained">Загрузить аватар</Button>
-      </Box>
-      <Box sx={sx} component={"div"} className={style['container__form--options']}>
+      <AvatarRow sx={sx} />
+      <Box bgcolor={"background.alt"} component={"div"} className={style['container__form--options']}>
         <Paper sx={{p: p}}>
-          <EditRow label="Имя" value={StoreForm.form?.name} name="name" />
-          <EditRow label="Возраст" value={StoreForm.form?.age} name="age" />
-          <EditRow label="Город" value={StoreForm.form?.city} name="city" />
+          <EditRow label="Имя" name="name" />
+          <EditRow label="Возраст" name="age" />
+          <EditRow label="Город" name="city" />
           {/* <EditRow label="Описание" value={StoreForm.form?.description} name="description" /> */}
           <DescriptionRow />
         </Paper>
@@ -63,7 +70,6 @@ function ProfileSettings() {
           <TagsRow />
         </Paper>
       </Box>
-
 
       <MapWidget height="500px" width="100%" callback={handleLocation} />
 

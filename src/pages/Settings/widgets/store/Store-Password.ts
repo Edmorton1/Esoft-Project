@@ -2,17 +2,23 @@ import {PasswordType, ProfileType} from "@/pages/Settings/widgets/schema/Schemas
 import $api from "@/shared/api/api";
 import StoreBaseModal from "@/shared/components/BaseModal/Store-BaseModal";
 import StoreUser from "@/shared/stores/Store-User";
+import StoreFiles from "@/shared/stores/StoreFiles";
 import {serverPaths} from "@shared/PATHS";
 import { URL_CLIENT } from "@shared/URLS";
 import {action, makeObservable} from "mobx";
 import {UseFormSetError} from "react-hook-form";
+
+// export async function AvatarHandle(): Promise<string> {
+
+// }
 
 class StorePassword extends StoreBaseModal {
 	constructor() {
 		super();
 		makeObservable(this, {
 			comparePassword: action,
-			updateForm: action
+			updateForm: action,
+			uploadAvatar: action
 		});
 	}
 
@@ -34,7 +40,16 @@ class StorePassword extends StoreBaseModal {
 
 	updateForm = async (id: number, data: ProfileType) => {
 		const request = await $api.put(`${serverPaths.profilePut}/${id}`, data)
+		window.location.replace(URL_CLIENT)
 		console.log('ФОРМА ПОМЕНЯНА', request)
+	}
+
+	uploadAvatar = async (file: File) => {
+		const formData = new FormData();
+		formData.append('avatar', file)
+		console.log(formData.get(file.name))
+
+		await StoreFiles.postAvatar(formData, StoreUser.user!.id)
 	}
 }
 

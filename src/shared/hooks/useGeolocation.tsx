@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { LocationDTO } from '@t/gen/dtoObjects';
 import { GISKEY } from '@/envClient';
+import StoreForm from '@/shared/stores/Store-Form';
+import SharedRequests from '@shared/Shared-Requests';
 
 
 
@@ -9,8 +11,14 @@ function useGeolocation(callback?: (location: LocationDTO) => void): LocationDTO
   const [city, setCity] = useState<LocationDTO | null>(null);
   
   const SET_DEFAULT = () => {
-    const standart = {lng: 37.6175, lat: 55.7520, city: "Москва"}
-    setCity({lng: 37.6175, lat: 55.7520, city: "Москва"})
+    let standart;
+    console.log("USE LOCATION", StoreForm.form?.location, StoreForm.form?.city)
+    if (StoreForm.form?.location && StoreForm.form?.city) {
+      standart = {...StoreForm.form.location, city: StoreForm.form.city}
+    } else {
+      standart = {lng: 37.6175, lat: 55.7520, city: "Москва"}
+    }
+    setCity(standart)
     console.log({lng: 37.6175, lat: 55.7520, city: "Москва"})
     // callback && callback(standart)
   }
@@ -24,9 +32,7 @@ function useGeolocation(callback?: (location: LocationDTO) => void): LocationDTO
           // console.log("Геолокация получена:", lat, lng);
 
           try {
-            const { data } = await axios.get(`https://catalog.api.2gis.com/3.0/items/geocode?lat=${lat}&lon=${lng}&fields=items.point&key=${GISKEY}`);
-            console.log(data?.result?.items[0]?.full_name?.split(','), lng, lat, 'poison');
-            const parsed = {city: data?.result?.items[0]?.full_name?.split(',')[0], lng, lat}
+            const parsed = await SharedRequests.cityByCoords([lng, lat])
             setCity(parsed);
             callback && callback(parsed)
             

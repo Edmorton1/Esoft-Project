@@ -6,6 +6,7 @@ import { useFormContext } from "react-hook-form"
 
 function TargetRow() {
   const {control, watch} = useFormContext<ProfileType>()
+  console.log("TARGET ROW RERENDER")
 
   const target = watch('target')
   const color = StoreForm.form?.target !== target ? "warning" : "primary"

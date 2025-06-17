@@ -4,7 +4,6 @@ import { observer } from "mobx-react-lite"
 import { Link, useParams } from "react-router-dom"
 import FourHundredFour from "../../shared/Errors/404"
 import StoreForm from "@/shared/stores/Store-Form"
-import { AvatarOnChange } from "@/pages/Registration/widgets/RegistrationWidget/funcs/funcDropAva"
 import Loading from "../../shared/ui/Loading"
 
 function Profile() {
@@ -24,7 +23,7 @@ function Profile() {
     <div>{StoreProfile.profile.id === StoreForm.form?.id ? 'Ващ аккаунт' : "Не ваш"}</div>
     <Link to={"/settings"}>Настройки</Link>
     {StoreProfile.profile?.id}
-    <input type="file" onChange={AvatarOnChange} />;
+    {/* <input type="file" onChange={AvatarOnChange} />; */}
     <img src={StoreProfile.profile.avatar!} alt="" />
     {/* <button onClick={() => console.log(toJS(StoreProfile.profile))}>asd</button> */}
   </div>

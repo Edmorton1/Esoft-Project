@@ -16,7 +16,8 @@ function MapWidget({callback, width, height}: propsInterface) {
 	const coords = useGeolocation();
 
   const [mapgl, map] = useMap(containerRef, coords)
-  useSetCoords(mapgl, map, (data) => callback(data))
+  useSetCoords(mapgl, map, (data) => callback(data), coords)
+
 
   return <MapWrapper width={width} height={height} ref={containerRef} />
 }
