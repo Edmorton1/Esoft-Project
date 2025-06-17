@@ -4,6 +4,8 @@ import { z } from 'zod';
 export const TargetTypeSchema = z.enum(['friend', 'relation', 'chat', 'hobby']);
 export const UserRoleSchema = z.enum(['user', 'admin'])
 
+const zISOString = z.coerce.date().transform(d => d.toISOString())
+
 export const LocationSchema = z.object({
     lng: z.number(),
     lat: z.number(),
@@ -18,7 +20,7 @@ export const UserSchema = z.object({
   // password: z.string().nonempty().min(6),
   password: PasswordZOD,
   role: UserRoleSchema,
-  created_at: z.coerce.date(),
+  created_at: zISOString,
 });
 
 export const TagsSchema = z.object({
@@ -32,7 +34,7 @@ export const MessageSchema = z.object({
   toid: zid,
   text: zstring,
   files: z.preprocess(nullToUndefined, z.array(z.string().nonempty()).optional()),
-  created_at: z.coerce.date(),
+  created_at: zISOString,
 });
 
 export const LikesSchema = z.object({
@@ -72,6 +74,8 @@ export const FormSchema = z.object({
   // location: z.preprocess(nullToUndefiend, z.union([LocationSchema, z.string()]).optional()),
   location: z.preprocess(nullToUndefined, LocationSchema.optional()),
   tags: z.preprocess(nullToUndefined, z.array(TagsSchema).optional()),
+  // last_active: z.preprocess(date => JSON.stringify(date), z.string())
+  last_active: zISOString,
   // likes: z.array(z.number()).optional(),
   // message: z.array(MessageSchema).optional(),
 });

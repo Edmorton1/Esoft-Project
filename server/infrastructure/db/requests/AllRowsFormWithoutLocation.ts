@@ -1,2 +1,2 @@
-export const AllRowsForm = [`forms.id`, `forms.name`, `forms.sex`, `forms.age`, `forms.avatar`, `forms.description`, `forms.target`, `forms.city`]
-export const AllRowsFormShort = [`id`, `name`, `sex`, `age`, `avatar`, `description`, `target`, `city`]
+export const AllRowsForm = [`forms.id`, `forms.name`, `forms.sex`, `forms.age`, `forms.avatar`, `forms.description`, `forms.target`, `forms.city`, `forms.last_active`]
+export const AllRowsFormShort = [`id`, `name`, `sex`, `age`, `avatar`, `description`, `target`, `city`, `last_active`]

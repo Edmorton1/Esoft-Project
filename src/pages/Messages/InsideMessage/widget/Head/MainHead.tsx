@@ -11,25 +11,39 @@ import CallIcon from '@mui/icons-material/Call';
 import MinButton from "@/shared/ui/kit/MinButton"
 import { sxStyle } from "@/shared/ui/kit/CircleButton"
 import Search from "@/shared/ui/kit/search/Search"
+import useLastActive from "@/pages/test/useLastActive"
 
 function MainHead({toid}: {toid: number}) {
   const br = 30
   const wh = 50
-  const p = 1
   const handlerCallClick = () => StoreRoom.makeCall(StoreUser.user!.id, toid)
+
+  const last_active = useLastActive(StoreMessages.form?.last_active)
+  console.log(StoreMessages.form?.last_active)
 
   return <>
     <CardHeader
       sx={{p: 0, pt: 0.5, pl: 0.75, bgcolor: "background.third", borderTopLeftRadius: br, borderTopRightRadius: br}}
       avatar={<Avatar sx={{width: wh, height: wh}} src={StoreMessages.form?.avatar} />}
       title={<Box display={"flex"} alignItems={"center"} justifyContent={"space-between"}>
-        <Typography>{StoreMessages.form?.name}</Typography>
+        <Box>
+          <Typography>{StoreMessages.form?.name}</Typography>
+          <Typography variant="body2" color="text.secondary">{last_active}</Typography>
+        </Box>
+
         <Search />
         <MinButton color="salmon" onClick={handlerCallClick}><CallIcon sx={sxStyle} /></MinButton>
-      </Box>}
+      </Box>
+      }
     />
     <Divider />
   </>
 }
 
 export default observer(MainHead)
+
+      // title={<Box display={"flex"} alignItems={"center"} justifyContent={"space-between"}>
+      //   <Typography>{StoreMessages.form?.name}</Typography>
+      //   <Search />
+      //   <MinButton color="salmon" onClick={handlerCallClick}><CallIcon sx={sxStyle} /></MinButton>
+      // </Box>}

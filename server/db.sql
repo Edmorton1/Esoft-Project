@@ -24,7 +24,8 @@ CREATE TABLE forms (
 	target target_type NOT NULL,
 	-- target_custom VARCHAR(32),
 	city VARCHAR(64),
-	location GEOGRAPHY(Point, 4326) 
+	last_active TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+	location GEOGRAPHY(Point, 4326)
   -- ПОТОМ ЕЩЁ ДОБАВИТЬ КООРДИНАТЫ
 );
 
