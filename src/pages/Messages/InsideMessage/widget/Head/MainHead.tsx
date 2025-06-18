@@ -11,7 +11,7 @@ import CallIcon from '@mui/icons-material/Call';
 import MinButton from "@/shared/ui/kit/MinButton"
 import { sxStyle } from "@/shared/ui/kit/CircleButton"
 import Search from "@/shared/ui/kit/search/Search"
-import useLastActive from "@/pages/test/useLastActive"
+import useLastActive from "@/shared/hooks/useLastActive"
 
 function MainHead({toid}: {toid: number}) {
   const br = 30

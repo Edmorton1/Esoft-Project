@@ -5,10 +5,10 @@ import VideoControl from "@/pages/Room/WebRTC/controllers/VideoControl"
 import StoreSocket from "@/shared/api/Store-Socket"
 import { LOCAL_VIDEO, REMOTE_VIDEO } from "@shared/CONST"
 import { toJSON } from "@shared/MAPPERS"
-import { SocketMessageServerInterface } from "@t/gen/types"
 import { makeAutoObservable } from "mobx"
 import StoreTalking from "@/pages/Room/widgets/ModalTalking/store/Store-Talking"
 import StoreCall from "@/pages/Room/widgets/ModalCall/store/Store-Call"
+import { SocketMessageServerInterface } from "@t/gen/socketTypes"
 
 class StoreRoom {
   Peer: null | PeerCaller | PeerResponder = null

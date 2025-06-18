@@ -23,7 +23,6 @@ import DomainIcon from '@mui/icons-material/Domain';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import SettingsIcon from '@mui/icons-material/Settings';
 
-import { useTheme } from "@mui/material/styles"
 import Avatar from "@mui/material/Avatar"
 import StoreLogin from "@/pages/Login/Store-Login"
 import { observer } from "mobx-react-lite"

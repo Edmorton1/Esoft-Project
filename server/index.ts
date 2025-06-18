@@ -4,7 +4,7 @@ import router from "@s/router"
 import cors from "cors"
 // import http from "http"
 import cookieParser from "cookie-parser"
-import { createWebSocketServer } from "@s/socket"
+import { createWebSocketServer } from "@s/WebSocket/socket"
 import "@s/infrastructure/cache/redis"
 dotenv.config()
 import https from "https"

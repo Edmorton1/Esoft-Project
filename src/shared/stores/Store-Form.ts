@@ -42,6 +42,10 @@ class FormStore {
   setAvatar = (avatar: string) => {
     this.form!.avatar = avatar
   }
+
+  setLastActive = (last_active: string) => {
+    this.form!.last_active = last_active
+  }
 }
 
 export default new FormStore

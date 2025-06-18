@@ -1,10 +1,7 @@
 import BasePeer from "@/pages/Room/WebRTC/logic/BasePeer";
 import StoreCall from "@/pages/Room/widgets/ModalCall/store/Store-Call";
 import StoreSocket from "@/shared/api/Store-Socket";
-import { toSOSe } from "@shared/MAPPERS";
-import MediaPermissions from "@/pages/Room/WebRTC/logic/MediaPermissions";
-import StoreRoom from "@/pages/Room/WebRTC/Store-Room";
-import VideoControl from "@/pages/Room/WebRTC/controllers/VideoControl";
+import { toSOSe } from "@s/WebSocket/JSONParsers";
 import StoreForm from "@/shared/stores/Store-Form";
 import StoreTalking from "@/pages/Room/widgets/ModalTalking/store/Store-Talking";
 

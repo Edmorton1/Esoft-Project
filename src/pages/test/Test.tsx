@@ -1,4 +1,4 @@
-import useLastActive from "@/pages/test/useLastActive";
+import useLastActive from "@/shared/hooks/useLastActive";
 import StoreForm from "@/shared/stores/Store-Form";
 import {useEffect, useState} from "react";
 

@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+const text = 'Был(а) в сети '
+
 function useLastActive(last_active?: string) {
   const [time, setTime] = useState(new Date());
   const [after, setAfter] = useState(1000);
@@ -21,18 +23,21 @@ function useLastActive(last_active?: string) {
       let labelText = "";
 
       if (minutes < 1) {
-        labelText = "недавно";
+        labelText = "Сейчас в сети";
+        nextAfter = 60 * 1000 - diff;
+      } else if (minutes < 2) {
+        labelText = text + "недавно"
         nextAfter = 60 * 1000 - diff;
       } else if (minutes < 60) {
-        labelText = `${minutes} минут назад`;
+        labelText = text + `${minutes} минут назад`;
         nextAfter = 60 * 1000 - (diff % (60 * 1000));
       } else if (minutes <= 1440) {
         const hours = Math.floor(minutes / 60);
-        labelText = `${hours} часов назад`;
+        labelText = text + `${hours} часов назад`;
         nextAfter = 60 * 60 * 1000 - (diff % (60 * 60 * 1000));
       } else {
         const days = Math.floor(minutes / 1440);
-        labelText = `${days} дней назад`;
+        labelText = text + `${days} дней назад`;
         nextAfter = 24 * 60 * 60 * 1000 - (diff % (24 * 60 * 60 * 1000));
       }
 
@@ -43,7 +48,7 @@ function useLastActive(last_active?: string) {
     return () => clearTimeout(timer);
   }, [time, after, last_active]);
 
-  return 'Был(а) в сети ' + label
+  return label
 }
 
 export default useLastActive;

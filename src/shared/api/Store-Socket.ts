@@ -1,13 +1,14 @@
 import StoreMessages from "@/pages/Messages/store/Store-Messages";
 import StoreLikes from "@/shared/stores/StoreLikes";
 import { URL_SERVER_WS } from "@shared/URLS";
-import { frSOCl } from "@shared/MAPPERS";
+import { frSOCl } from "@s/WebSocket/JSONParsers";
 import { makeAutoObservable, runInAction } from "mobx";
 import StoreRoom from "@/pages/Room/WebRTC/Store-Room";
 import { assertPeerCaller } from "@t/gen/TypeGuards";
 import { FormSchema } from "@t/gen/Users";
 import StoreCall from "@/pages/Room/widgets/ModalCall/store/Store-Call";
 import StoreTalking from "@/pages/Room/widgets/ModalTalking/store/Store-Talking";
+import StoreForm from "@/shared/stores/Store-Form";
 
 class SocketStore {
   socket: WebSocket | null = null
@@ -95,6 +96,10 @@ class SocketStore {
           console.log("CANCEL CANCEL")
           StoreRoom.cleaning()
           // StoreRoom.SocketGetCandidate(data)
+          break
+        case "last_active":
+          console.log("ПОЛУЧЕН НОВЫЙ last_active", data)
+          StoreForm.setLastActive(data)
       }
 
       // setTimeout(() => {this.socket?.send('ПРИВЕТ С КЛИЕНТА'), console.log('СООБЩЕНИЕ ОТПРАВЛЕНО')}, 3000)

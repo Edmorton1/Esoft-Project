@@ -6,7 +6,7 @@ import StoreTags from "@/shared/stores/Store-Tags"
 import StoreLikes from "@/shared/stores/StoreLikes"
 import { User } from "@t/gen/Users"
 import { UserDTO } from "@t/gen/dtoObjects"
-import { toSOSe, toCl, toJSON } from "@shared/MAPPERS"
+import { toCl, toJSON } from "@shared/MAPPERS"
 import { serverPaths } from "@shared/PATHS"
 import { makeAutoObservable, runInAction } from "mobx"
 import { RegistrationDTOClient, StoreUserRegistrationSchema } from "@t/client/RegistrationZOD"
@@ -14,6 +14,7 @@ import { UseFormSetError } from "react-hook-form"
 import axios from "axios"
 import { LoginErrorTypes } from "@s/infrastructure/endpoints/Token/HttpTokenController"
 import StoreLogin from "@/pages/Login/Store-Login"
+import { toSOSe } from "@s/WebSocket/JSONParsers"
 
 export interface responseInterface {
   user: User,

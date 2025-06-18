@@ -1,12 +1,13 @@
 import { Likes } from "@t/gen/Users";
-import { one, toSOSe } from "@shared/MAPPERS";
+import { one } from "@shared/MAPPERS";
 import ORM from "@s/infrastructure/db/requests/ORM";
-import { clients } from "@s/socket";
+import { clients } from "@s/WebSocket/socket";
 import { Request, Response } from "express";
 import logger from "@s/logger";
 import { RequestGet, RequestLike } from "@s/infrastructure/endpoints/Likes/middlewares/LikesMiddleware";
 import { RequestOnlyId } from "@s/infrastructure/middlewares/SharedMiddlewares";
 import { getManyByParam } from "@s/infrastructure/endpoints/Likes/sql/SQLLikes";
+import { toSOSe } from "@s/WebSocket/JSONParsers";
 
 class HttpLikesController {
   sendLike = async (req: Request, res: Response) => {

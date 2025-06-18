@@ -16,3 +16,4 @@ export const FILES_LIMIT = 4
 export const FILES_LIMIT_MESSAGE = `Нельзя выбрать больше ${FILES_LIMIT} файлов`
 
 export const SALT = 3
+export const TIMEZONE = 5

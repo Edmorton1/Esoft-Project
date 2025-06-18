@@ -1,8 +1,9 @@
 import logger from "@s/logger";
-import { frSOSe, toSOCl } from "@shared/MAPPERS";
+import { StopTimePoint, TimePoint } from "@s/WebSocket/LastActiveFunc";
+import { frSOSe, toSOCl } from "@s/WebSocket/JSONParsers";
 import WebSocket from "ws";
 
-interface WebSocketWidh extends WebSocket {
+export interface WebSocketWidh extends WebSocket {
   id: number
 }
 
@@ -23,6 +24,8 @@ function createWebSocketServer(server: any) {
         case "userid":
           wsClient.id = data
           clients.set(data, wsClient)
+          logger.info({ZASHOL: data})
+          TimePoint(wsClient, data)
           break
         
         case "offer":
@@ -42,6 +45,7 @@ function createWebSocketServer(server: any) {
         
     })
     wsClient.on('close', () => {
+      StopTimePoint(wsClient.id)
       clients.delete(wsClient.id)
       logger.info('КЛИЕНТ ЗАКРЫЛСЯ')
     })
