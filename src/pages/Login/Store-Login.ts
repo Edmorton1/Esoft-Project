@@ -1,4 +1,4 @@
-import StoreBaseModal from "@/shared/components/BaseModal/Store-BaseModal";
+import StoreBaseModal from "@/shared/ui/components/BaseModal/Store-BaseModal";
 
 class StoreLogin extends StoreBaseModal {}
 

@@ -15,7 +15,7 @@ export const TokenReturnDTOSchema = z.object({
   accessToken: z.string(),
 });
 
-export const FormDTOShema = FormSchema.omit({tags: true})
+export const FormDTOShema = FormSchema.omit({tags: true, last_active: true})
 
 export const LikesDTOSchema = z.object({
   userid: zid,

@@ -32,13 +32,14 @@ const request = async (fields?: string): Promise<Form> => {
 
 describe("[FORM]: Получение формы пользователя во всех вариациях", () => {
 	test("Получение с *", async () => {
-		const {id, tags, ...form} = await request();
+		const {id, tags, last_active, ...form} = await request();
 
     await $test.delete(`${serverPaths.users}/${id}`)
     
 		expect(typeof id).toStrictEqual("number")
 		expect(typeof tags![0].id).toStrictEqual("number")
 		expect(typeof tags![0].tag).toStrictEqual("string")
+    expect(typeof last_active).toStrictEqual("string")
 
 		expect(form).toStrictEqual({
 			name: 'Алексей',

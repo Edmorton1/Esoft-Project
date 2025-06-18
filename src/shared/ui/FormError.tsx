@@ -1,4 +1,4 @@
-import { errorsType } from "@/shared/components/MuiComponents";
+import { errorsType } from "@/shared/ui/components/MuiComponents";
 import FormHelperText from "@mui/material/FormHelperText";
 import {FieldError} from "react-hook-form";
 

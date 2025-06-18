@@ -1,6 +1,5 @@
 import StoreUsers from "@/pages/Users/widgets/store/Store-Users"
 import UsersCardModule from "@/pages/Users/widgets/Card/modules/UsersCardModule"
-import { Form } from "@t/gen/Users"
 import { createContext, useEffect } from "react"
 import useGetById from "@/shared/hooks/useGetBy"
 import useUpdateParams from "@/shared/hooks/useChangeParams"
@@ -30,7 +29,6 @@ function UsersCardWidget() {
   const max_distance = params.max_distance || ''
 
   console.log(params)
-  // useGetById('forms', `sqlparams=limit 3 offset ${(page - 1) * 3}`, 'array', StoreUsers.initial)
 
   // http://localhost:5000/users?max_age=46&min_age=40&tags=%D0%BC%D1%83%D0%B7%D0%B8%D0%BA%D0%B0&sex=woman
 

@@ -1,4 +1,4 @@
-import StoreBaseModal from "@/shared/components/BaseModal/Store-BaseModal"
+import StoreBaseModal from "@/shared/ui/components/BaseModal/Store-BaseModal"
 import { Form } from "@t/gen/Users";
 import { action, makeObservable, observable } from "mobx";
 

@@ -1,5 +1,5 @@
 import AttachFileIcon from '@mui/icons-material/AttachFile';
-import { sxStyle } from "@/shared/ui/kit/CircleButton";
+import { sxStyle } from "@/shared/ui/CircleButton";
 import Button from "@mui/material/Button";
 import { useRef, useState } from 'react';
 import { UseFormRegisterReturn } from 'react-hook-form';

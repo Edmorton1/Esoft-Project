@@ -6,9 +6,9 @@ import MicroFile from "@/pages/Messages/InsideMessage/widget/Main/modules/compon
 import AddFiles from "@/pages/Messages/InsideMessage/widget/Main/modules/components/kit/AddFiles";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import MinButton from "@/shared/ui/kit/MinButton";
+import MinButton from "@/shared/ui/MinButton";
 import DeleteIcon from '@mui/icons-material/Delete';
-import { sxStyle } from "@/shared/ui/kit/CircleButton";
+import { sxStyle } from "@/shared/ui/CircleButton";
 import { createPortal } from "react-dom";
 import CheckIcon from '@mui/icons-material/Check';
 

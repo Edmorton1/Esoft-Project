@@ -8,22 +8,20 @@ class CRUDController {
     readonly table: tables
   ) {}
   
-  get = async (req: Request<object, object, object, {fields?: string, sqlparams?: string, lnglat: string}>, res: Response) => {
-    const { fields, sqlparams, lnglat, ...params } = req.query;
+  get = async (req: Request<object, object, object, {fields?: string, lnglat: string}>, res: Response) => {
+    const { fields, lnglat, ...params } = req.query;
     delete req.query.fields
-    delete req.query.sqlparams
 
     if (Object.keys(req.query).length > 0) {
       logger.info({REQ_QUERY: req.query})
-      logger.info({SQL_PARAMS: sqlparams})
-      return res.json(await ORM.getByParams(params, this.table, fields, sqlparams))
+      return res.json(await ORM.getByParams(params, this.table, fields))
     }
-    res.json(await ORM.get(this.table, fields, sqlparams))
+    res.json(await ORM.get(this.table, fields))
   }
-  getById = async (req: Request<{id: string}, object, object, {fields?: string, sqlparams?: string}>, res: Response) => {
-    const {fields, sqlparams} = req.query
+  getById = async (req: Request<{id: string}, object, object, {fields?: string}>, res: Response) => {
+    const {fields} = req.query
     const {id} = req.params
-    const request = await ORM.getById(id, this.table, fields, sqlparams)
+    const request = await ORM.getById(id, this.table, fields)
     res.json(request)
   }
   post = async (req: Request, res: Response) => {

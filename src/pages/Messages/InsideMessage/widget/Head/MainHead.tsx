@@ -8,9 +8,9 @@ import Divider from "@mui/material/Divider"
 import Typography from "@mui/material/Typography"
 import { observer } from "mobx-react-lite"
 import CallIcon from '@mui/icons-material/Call';
-import MinButton from "@/shared/ui/kit/MinButton"
-import { sxStyle } from "@/shared/ui/kit/CircleButton"
-import Search from "@/shared/ui/kit/search/Search"
+import MinButton from "@/shared/ui/MinButton"
+import { sxStyle } from "@/shared/ui/CircleButton"
+import SearchBase from "@/shared/ui/components/search/SearchBase"
 import useLastActive from "@/shared/hooks/useLastActive"
 
 function MainHead({toid}: {toid: number}) {
@@ -31,7 +31,7 @@ function MainHead({toid}: {toid: number}) {
           <Typography variant="body2" color="text.secondary">{last_active}</Typography>
         </Box>
 
-        <Search />
+        {/* <Search /> */}
         <MinButton color="salmon" onClick={handlerCallClick}><CallIcon sx={sxStyle} /></MinButton>
       </Box>
       }

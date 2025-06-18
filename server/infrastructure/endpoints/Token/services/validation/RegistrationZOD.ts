@@ -4,7 +4,7 @@ import { expressMulter } from "@t/shared/zodSnippets"
 import { z } from "zod"
 
 export const RegistrationDTOServerSchema = FormSchema
-  .omit({id: true})
+  .omit({id: true, last_active: true})
   .extend({
   // id: zid.optional(),
   // targetCustom: z.string().optional(), // если раскомментируешь

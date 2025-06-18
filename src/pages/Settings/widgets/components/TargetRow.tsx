@@ -1,5 +1,5 @@
 import { ProfileType } from "@/pages/Settings/widgets/schema/Schemas"
-import { SelectMui } from "@/shared/components/MuiComponents"
+import { SelectMui } from "@/shared/ui/components/MuiComponents"
 import StoreForm from "@/shared/stores/Store-Form"
 import MenuItem from "@mui/material/MenuItem"
 import { useFormContext, useWatch } from "react-hook-form"

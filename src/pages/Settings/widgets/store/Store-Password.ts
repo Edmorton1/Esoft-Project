@@ -1,6 +1,6 @@
 import {PasswordType, ProfileType} from "@/pages/Settings/widgets/schema/Schemas";
 import $api from "@/shared/api/api";
-import StoreBaseModal from "@/shared/components/BaseModal/Store-BaseModal";
+import StoreBaseModal from "@/shared/ui/components/BaseModal/Store-BaseModal";
 import StoreUser from "@/shared/stores/Store-User";
 import StoreFiles from "@/shared/stores/StoreFiles";
 import {serverPaths} from "@shared/PATHS";

@@ -1,4 +1,4 @@
-import FormError from "@/shared/ui/kit/FormError";
+import FormError from "@/shared/ui/FormError";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Chip from "@mui/material/Chip";

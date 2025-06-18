@@ -3,7 +3,7 @@ import FormHelperText from "@mui/material/FormHelperText";
 import StoreRegistration from "@/pages/Registration/widgets/stores/Store-Registration";
 import { observer } from "mobx-react-lite";
 import Typography from "@mui/material/Typography";
-import { InputMui, InputNumberMui, RadioGroupMui, SelectMui, TagsChips, TextAreaMui } from "@/shared/components/MuiComponents";
+import { InputMui, InputNumberMui, RadioGroupMui, SelectMui, TagsChips, TextAreaMui } from "@/shared/ui/components/MuiComponents";
 import MenuItem from "@mui/material/MenuItem";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Radio from "@mui/material/Radio";
@@ -28,7 +28,7 @@ function RegistrationBody({onSubmit}: propsInterface) {
   const tags: TagsDTO[] = useWatch({name: 'tags'})
 
   return <form onSubmit={onSubmit} className={style.form}>
-  {/* <button onClick={() => console.log(errors)}>errors</button> */}
+  <button onClick={() => console.log(errors)}>errors</button>
   {/* <div>Добро пожаловать: {StoreUser.user?.email}</div>
   <button onClick={() => console.log(errors)}>errors</button>
   <button onClick={() => console.log(toJS(StoreRegistration.defaultCoords), toJS(StoreRegistration.coords))}>LOG</button> */}

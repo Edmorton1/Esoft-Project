@@ -1,4 +1,4 @@
-import UsersCardInfo from "@/shared/components/UsersCardInfo"
+import UsersCardInfo from "@/shared/ui/components/UsersCardInfo"
 import useGetBy from "@/shared/hooks/useGetBy"
 import StoreForm from "@/shared/stores/Store-Form"
 import StoreLikes from "@/shared/stores/StoreLikes"

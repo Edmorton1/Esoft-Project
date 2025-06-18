@@ -24,9 +24,10 @@ describe("Регистрация - интеграционный тест", () =>
     await $test.delete(`${serverPaths.forms}/${response.form.id}`)
     await $test.delete(`${serverPaths.users}/${response.user.id}`)
 
-    const {id, ...form} = response.form
+    const {id, last_active, ...form} = response.form
 
     expect(typeof id).toStrictEqual("number")
+    expect(typeof last_active).toStrictEqual("string")
 
     expect(form).toStrictEqual({
       name: 'Алексей',

@@ -1,5 +1,5 @@
 import { convertToResolution, guesType } from "@/pages/Messages/InsideMessage/func/FileFunctions";
-import StoreModalFile from "@/shared/components/modal/StoreModalFile";
+import StoreModalFile from "@/shared/ui/components/modal/StoreModalFile";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import { observer } from "mobx-react-lite";

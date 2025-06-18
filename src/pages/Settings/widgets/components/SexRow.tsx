@@ -1,5 +1,5 @@
 import { ProfileType } from '@/pages/Settings/widgets/schema/Schemas';
-import { RadioGroupMui } from '@/shared/components/MuiComponents';
+import { RadioGroupMui } from '@/shared/ui/components/MuiComponents';
 import StoreForm from '@/shared/stores/Store-Form';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Radio from '@mui/material/Radio';

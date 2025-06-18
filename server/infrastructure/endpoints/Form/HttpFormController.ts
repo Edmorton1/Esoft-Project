@@ -1,34 +1,18 @@
-// import { Form } from "@t/gen/Users";
-// import { one } from "@shared/MAPPERS";
-// import ORM from "@s/infrastructure/db/requests/ORM";
-// import FormService from "@s/infrastructure/endpoints/Form/services/FormService";
-// import { Request, Response } from "express";
-// import { RegistrationDTOServerSchema } from "@t/server/DTOServer";
+import { pickFieldsForm } from "@/shared/ui/components/Header/Store-searchForm";
+import { requestToLike } from "@s/infrastructure/db/requests/SQLform";
+import { ReqForm } from "@s/infrastructure/endpoints/Form/middlewares/FormMiddlewares";
+import { Request, Response } from "express";
 
-// // SELECT 
-// //   forms.*, 
-// //   COALESCE(json_agg(user_tags.tagid) FILTER (WHERE user_tags.tagid IS NOT NULL), '[]') AS tags
-// // FROM forms
-// // LEFT JOIN user_tags ON forms.id = user_tags.id
-// // WHERE forms.id = 33
-// // GROUP BY forms.id;
-// // ЗАПРОС НА ПОЛУЧЕНИЕ ФОРМЫ И ТЕГОВ
+class HttpFormController {
+  searchForm = async (req: Request, res: Response) => {
+    const r = req as ReqForm
 
+    // const rawSearch = requestToForm(undefined, {name: })
+    let query = requestToLike({name: "name", param: r.search}, Object.keys(pickFieldsForm).join(', '))
+    query = query.limit(4)
 
-// class HttpFormController {
-//   postForm = async (req: Request, res: Response) => {
-//     const data = req.body
-//     logger.info(data)
-//     RegistrationDTOServerSchema.parse(data)
-//     logger.info('ZODD пропустил')
-//     const rawTags: string[] = data.tags
-//     delete data.tags
-//     const form = one(await ORM.post(data, 'forms'))
-//     const tags = rawTags?.map(async tag => {
-//       FormService.pushTag(data.id, tag)
-//     })
-//     res.json(form)
-//   }
-// }
+    res.json(await query)
+  }
+}
 
-// // export default new HttpFormController
+export default new HttpFormController

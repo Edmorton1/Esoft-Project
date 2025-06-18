@@ -8,7 +8,7 @@ import VideocamIcon from '@mui/icons-material/Videocam';
 import CallEndIcon from '@mui/icons-material/CallEnd';
 import MicOff from "@mui/icons-material/MicOff"
 import VideocamOffIcon from '@mui/icons-material/VideocamOff';
-import CircleButton, { sxStyle } from "@/shared/ui/kit/CircleButton";
+import CircleButton, { sxStyle } from "@/shared/ui/CircleButton";
 
 const ThreeButtons = observer(() => {
   const handleAudioClick = () => {

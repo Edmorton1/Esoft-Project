@@ -3,32 +3,25 @@ import { cacheEdit, cacheGet } from "@s/infrastructure/cache/redis"
 import db from "@s/infrastructure/db/db"
 import bcrypt from "bcrypt"
 import { checkFirstType, fieldsToArr } from "@s/infrastructure/db/requests/utils"
-import requestToForm from "@s/infrastructure/db/requests/SQLform"
 import logger from "../../../logger"
 import { Form } from "@t/gen/Users"
 import { SALT } from "@shared/CONST"
+import { requestToFormManyParams, requestToFormParams, standartToForm } from "@s/infrastructure/db/requests/SQLform"
 
-  logger.info('asdsdadas')
-interface SQLParams {
-  offset: number,
-  limit: number
-}
-// SQLParams - это limit offset
-const fieldsKey = (fields?: string, sqlparams?: string) => `${fields ? '--fields: ' + fields : ''}${sqlparams ? '--sqlparams: ' + sqlparams : ''}`
+logger.info('asdsdadas')
+const fieldsKey = (fields?: string) => `${fields ? '--fields: ' + fields : ''}`
 
 class ORM {
-  get = async <T extends tables>(table: T, fields?: string, sqlparams?: string): Promise<Tables[T][]> => {
+  get = async <T extends tables>(table: T, fields?: string): Promise<Tables[T][]> => {
     logger.info("GET", 'fields', fields)
-    logger.info("get", table, fields, sqlparams)
+    logger.info("get", table, fields)
 
-    // const sql = toArr(sqlparams) || ''
-
-    const key = `${table}${fieldsKey(fields, sqlparams)}`
+    const key = `${table}${fieldsKey(fields)}`
     
     let callback = undefined;
 
     if (table === 'forms') {
-      callback = async () => await requestToForm(fields)
+      callback = async () => await standartToForm(fields)
     } else {
       callback = async () => await db(table).select(fieldsToArr(fields, table))
     }
@@ -37,11 +30,10 @@ class ORM {
     const total = await cacheGet(key, callback)
     return checkFirstType(total, table, fields)
   }
-  getById = async <T extends tables>(id: number | string, table: T, fields?: string, sqlparams?: string): Promise<Tables[T][]> => {
+  getById = async <T extends tables>(id: number | string, table: T, fields?: string): Promise<Tables[T][]> => {
     logger.info('GET BY ID')
-    logger.info({table, fields, sqlparams}, "getById")
+    logger.info({table, fields}, "getById")
 
-    // const sql = toArr(sqlparams) || ''
     const key = `${table}-id-${id}${fieldsKey(fields)}`
 
     let callback = undefined;
@@ -51,8 +43,8 @@ class ORM {
       logger.info("[FORMS]: ЗАПРОС К ФОРМЕ")
       const params = {id: Number(id)}
 
-      logger.info("TO NATIVE", requestToForm(fields, params).toSQL().toNative())
-      callback = async () => await requestToForm(fields, params)
+      logger.info("TO NATIVE", requestToFormParams(params, fields).toSQL().toNative())
+      callback = async () => await requestToFormParams(params, fields)
     } else {
       callback = async () => await db(table).select(fieldsToArr(fields, table)).where('id', '=', id)
     }
@@ -63,11 +55,9 @@ class ORM {
     return checkFirstType(total, table, fields)
   }
   
-  getByParams = async <T extends tables>(params: Partial<Tables[T]>, table: T, fields?: string, sqlparams?: string): Promise<Tables[T][]> => {
+  getByParams = async <T extends tables>(params: Partial<Tables[T]>, table: T, fields?: string): Promise<Tables[T][]> => {
     logger.info("GET BY PARAMS")
-    logger.info("getByParams", params, table, fields, sqlparams)
-
-    // const sql = toArr(sqlparams) || ''
+    logger.info("getByParams", params, table, fields)
 
     const key = `${table}-${Object.entries(params).flat().join("-")}${fieldsKey(fields)}`
     logger.info(params, 'params')
@@ -75,7 +65,7 @@ class ORM {
     let callback = undefined;
 
     if (table === 'forms') {
-      callback = async () => requestToForm(fields, params)
+      callback = async () => requestToFormParams(params, fields)
     } else {
       callback = async () => await db(table).select(fieldsToArr(fields, table)).where(params)
     }
@@ -89,7 +79,7 @@ class ORM {
   // ПОКА БУДЕТ ТОЛЬКО К ФОРМЕ
   getManyParams = async (params: any[], fields?: string): Promise<Form[]> => {
     // const parsedFields = fieldsToArr(fields, 'forms')
-    const request = await requestToForm(fields, undefined, {name: "id", params})
+    const request = await requestToFormManyParams({name: "id", params}, fields)
     
     return request
   }

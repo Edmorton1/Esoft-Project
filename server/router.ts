@@ -16,10 +16,10 @@ import MessageMiddleware from "@s/infrastructure/endpoints/Message/middlewares/M
 import HttpMessageOutsideController from "@s/infrastructure/endpoints/MessageOutside/HttpMessageOutsideController"
 import SharedMiddlewares from "@s/infrastructure/middlewares/SharedMiddlewares"
 import ExtendedSearchMiddle from "@s/infrastructure/endpoints/ExtendSearch/middlewares/ExtendedSearchMiddle"
-import { Request, Response } from "express"
 import HelpersMiddlewares from "@s/infrastructure/endpoints/Helpers/middlewares/HelpersMiddlewares"
 import HttpHelpers from "@s/infrastructure/endpoints/Helpers/HttpHelpers"
-import { NextFunction } from "webpack-dev-server"
+import FormMiddlewares from "@s/infrastructure/endpoints/Form/middlewares/FormMiddlewares"
+import HttpFormController from "@s/infrastructure/endpoints/Form/HttpFormController"
 
 const upload = multer({storage: multer.memoryStorage()})
 const router = express.Router()
@@ -69,10 +69,7 @@ router.get(`${serverPaths.outsideMessages}/:id`, SharedMiddlewares.OnlyIdMiddlew
 router.post(`${serverPaths.passwordCompare}/:id`, HelpersMiddlewares.passwordMiddleware, HttpHelpers.passwordCompare)
 router.put(`${serverPaths.profilePut}/:id`, HelpersMiddlewares.profileMiddleware, HttpHelpers.profilePut)
 
-router.use((err: any, req: Request, res: Response, next: NextFunction) => {
-  console.error(err.stack)
-  res.status(500).json({ error: err })
-})
+router.get(`${serverPaths.searchForm}/:search`, FormMiddlewares.searchForm, HttpFormController.searchForm)
 
 // router.get('/dec', (req, res) => {
 //   const body = req.body;

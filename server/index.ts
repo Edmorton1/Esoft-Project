@@ -1,5 +1,5 @@
 import dotenv from "dotenv"
-import express from "express"
+import express, { NextFunction, Request, Response } from "express"
 import router from "@s/router"
 import cors from "cors"
 // import http from "http"
@@ -34,6 +34,11 @@ app.use(cookieParser())
 app.use(express.json())
 
 app.use('/', router)
+
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+  console.error(err.stack)
+  res.status(500).json({ error: err })
+})
 
 // app.get('/', (req, res) => {
 //   // Получаем IP из заголовков

@@ -1,7 +1,7 @@
 import { GISKEY } from "@/envClient"
 import { LocationDTO } from "@t/gen/dtoObjects";
 import axios from "axios"
-import { array, z } from 'zod';
+import { z } from 'zod';
 
 const itemSchema = z.object({
   full_name: z.string(),

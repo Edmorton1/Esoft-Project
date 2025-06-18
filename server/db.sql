@@ -23,10 +23,9 @@ CREATE TABLE forms (
 	description TEXT, 
 	target target_type NOT NULL,
 	-- target_custom VARCHAR(32),
-	city VARCHAR(64),
+	city VARCHAR(64) NOT NULL,
 	last_active TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
 	location GEOGRAPHY(Point, 4326)
-  -- ПОТОМ ЕЩЁ ДОБАВИТЬ КООРДИНАТЫ
 );
 
 CREATE TABLE likes (

@@ -1,8 +1,8 @@
 import { ThemeContext } from "@/app/theme/ChangeTheme"
-import MinButton, { sxMinButton } from "@/shared/ui/kit/MinButton"
+import MinButton, { sxMinButton } from "@/shared/ui/MinButton"
 import { useContext } from "react"
 import ContrastIcon from '@mui/icons-material/Contrast';
-import { sxStyle } from "@/shared/ui/kit/CircleButton";
+import { sxStyle } from "@/shared/ui/CircleButton";
 import Button from "@mui/material/Button";
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 

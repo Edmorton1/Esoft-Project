@@ -1,5 +1,5 @@
 import db from "@s/infrastructure/db/db";
-import requestToForm from "@s/infrastructure/db/requests/SQLform";
+import { requestToFormManyParams } from "@s/infrastructure/db/requests/SQLform";
 import { fieldsToArr } from "@s/infrastructure/db/requests/utils";
 import logger from "@s/logger";
 import { LIKES_ON_PAGE } from "@shared/CONST";
@@ -22,7 +22,7 @@ export const getManyByParam = async (name: string, need: any[], distance?: lngla
   // const fields = 'id, name sex, avatar, age, description, target, city, tags, location'
 
   const totalFields = fieldsToArr(undefined, 'forms', true)
-  const query = requestToForm(undefined, undefined, {name: name as string, params: need})
+  const query = requestToFormManyParams({name: name as string, params: need})
   knexDistance && totalFields.push(knexDistance)
 
   logger.info({ZAPROS: query.toSQL().toNative()})

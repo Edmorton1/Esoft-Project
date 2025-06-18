@@ -49,7 +49,9 @@ export const serverPaths = {
   tokens: "/tokens",
 
   passwordCompare: "/passwordCompare",
-  profilePut: "/profilePut"
+  profilePut: "/profilePut",
+
+  searchForm: "/searchForm"
 } as const
 
 // export type serverPathsTypes = keyof typeof serverPaths

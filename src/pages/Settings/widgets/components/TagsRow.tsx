@@ -3,7 +3,7 @@ import { ProfileType, tagsParse } from "@/pages/Settings/widgets/schema/Schemas"
 import { useState } from "react";
 import StoreForm from "@/shared/stores/Store-Form";
 import { TagsDTO } from "@t/gen/dtoObjects";
-import { TagsChips } from "@/shared/components/MuiComponents";
+import { TagsChips } from "@/shared/ui/components/MuiComponents";
 
 function TagsRow() {
   const [input, setInput] = useState('')

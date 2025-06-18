@@ -1,0 +1,15 @@
+@use "@/shared/css/const" as c;
+
+.container {
+  position: relative;
+
+  &__wrapperRow {
+    position: absolute;
+    // left: 0px;
+
+    display: flex;
+    flex-direction: column;
+    width: c.$searchW;
+    background-color: red;
+  }
+}

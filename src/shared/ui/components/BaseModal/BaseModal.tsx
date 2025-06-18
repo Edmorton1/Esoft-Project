@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
-import StoreBaseModal from "@/shared/components/BaseModal/Store-BaseModal";
+import StoreBaseModal from "@/shared/ui/components/BaseModal/Store-BaseModal";
 import {ReactNode} from "react";
 import {observer} from "mobx-react-lite";
 import Fade from "@mui/material/Fade";

@@ -1,4 +1,4 @@
-import UsersCardInfo from "@/shared/components/UsersCardInfo"
+import UsersCardInfo from "@/shared/ui/components/UsersCardInfo"
 import { UsersContext } from "@/pages/Users/widgets/Card/UsersCardWidget"
 import StoreForm from "@/shared/stores/Store-Form"
 import StoreLikes from "@/shared/stores/StoreLikes"

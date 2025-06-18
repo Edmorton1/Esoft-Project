@@ -11,7 +11,7 @@ import * as style from "@/shared/css/components/UserCard.module.scss"
 import { PLACEHOLDER_IMG } from "@shared/PUBLIC"
 import Divider from "@mui/material/Divider"
 import { ReactNode, useState } from "react"
-import ReadMore from "@/shared/components/ReadMore"
+import ReadMore from "@/shared/ui/components/ReadMore"
 import { Tags } from "@t/gen/Users"
 
 function UsersCardInfo({form, children}: {form: FormWithDistanse, children?: ReactNode}) {

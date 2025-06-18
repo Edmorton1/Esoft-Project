@@ -1,4 +1,4 @@
-import { InputMui } from "@/shared/components/MuiComponents";
+import { InputMui } from "@/shared/ui/components/MuiComponents";
 import Typography from "@mui/material/Typography";
 import { UserDTO } from "@t/gen/dtoObjects";
 import { observer } from "mobx-react-lite";

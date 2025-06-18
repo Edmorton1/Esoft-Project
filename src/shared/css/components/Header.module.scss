@@ -1,6 +1,6 @@
 .header {
   display: flex;
-  flex-wrap: wrap;
+  // flex-wrap: wrap;
   justify-content: space-between;
 
   &__row {
@@ -16,6 +16,6 @@
 // }
 .header__row:nth-child(3) {
   // background-color: red !important;
-  flex: 1;
-  justify-content: end;
+  // flex: 1;
+  // justify-content: end;
 }
