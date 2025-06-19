@@ -3,6 +3,7 @@ import { Form, FormSchema, Tags } from "@t/gen/Users";
 import { one, toCl } from "@shared/MAPPERS";
 import { serverPaths } from "@shared/PATHS";
 import { makeAutoObservable, runInAction } from "mobx";
+import StoreUser from "@/shared/stores/Store-User";
 
 class FormStore {
   form: Form | null | undefined = undefined
@@ -11,10 +12,11 @@ class FormStore {
     makeAutoObservable(this)
   }
 
-  initial = async (id: number) => {
+  initial = async () => {
+    console.log("FORM INITAL", StoreUser.user?.id)
     console.log("forms", this.form)
     if (!this.form) {
-      const data = one(toCl<Form[]>(await $api.get(`${serverPaths.forms}/${id}`)))
+      const data = one(toCl<Form[]>(await $api.get(`${serverPaths.forms}/${StoreUser.user!.id}`)))
       const parsed = FormSchema.parse(data)
       runInAction(() => this.form = parsed)
     }
@@ -44,7 +46,8 @@ class FormStore {
   }
 
   setLastActive = (last_active: string) => {
-    this.form!.last_active = last_active
+    if (!this.form?.last_active) return;
+    this.form.last_active = last_active
   }
 }
 

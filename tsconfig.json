@@ -1,42 +1,41 @@
 {
-    "compilerOptions": {
-      "allowSyntheticDefaultImports": true,
-      "esModuleInterop": true,
-      "outDir": "./dist/",
-      "noImplicitAny": true,
-      "module": "ESNext",
-      "target": "ESNext",
-      "jsx": "react-jsx",
-      "allowJs": true,
-      "moduleResolution": "node",
-      "forceConsistentCasingInFileNames": true,
+	"compilerOptions": {
+		"allowSyntheticDefaultImports": true,
+		"esModuleInterop": true,
+		"outDir": "./dist/",
+		"noImplicitAny": true,
+		"module": "ESNext",
+		"target": "ESNext",
+		"jsx": "react-jsx",
+		"allowJs": true,
+		"moduleResolution": "node",
+		"forceConsistentCasingInFileNames": true,
 
-      "strict": true,
-      "noImplicitThis": true,
-      "alwaysStrict": true,
-      "strictNullChecks": true,
-      "strictFunctionTypes": true,
-      "strictBindCallApply": true,
-      "noFallthroughCasesInSwitch": true,
+		"strict": true,
+		"noImplicitThis": true,
+		"alwaysStrict": true,
+		"strictNullChecks": true,
+		"strictFunctionTypes": true,
+		"strictBindCallApply": true,
+		"noFallthroughCasesInSwitch": true,
 
-      "experimentalDecorators": true,
-      "emitDecoratorMetadata": true,
-      // "noUncheckedIndexedAccess": true,
-      // "resolveJsonModule": true,
-      // "types": ["NodeJS"],
-      // "typeRoots": ["./server"],
-      "baseUrl": ".",
-      "paths": {
-        "@/*": ["./src/*"],
-        "@s/*": ["./server/*"],
-        "@shared/*": ["./shared/*"],
-        "@t/*": ["./types/*"],
-        "@test/*": ["./tests/*"]
-      }
-    },
-    "ts-node": {
-      "compilerOptions": {
-        "module": "CommonJS"
-      }
-    }
-  }
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true,
+		// "noUncheckedIndexedAccess": true,
+		// "resolveJsonModule": true,
+		// "types": ["NodeJS"],
+		"baseUrl": ".",
+		"paths": {
+			"@/*": ["./src/*"],
+			"@s/*": ["./server/*"],
+			"@shared/*": ["./shared/*"],
+			"@t/*": ["./types/*"],
+			"@test/*": ["./tests/*"]
+		}
+	},
+	"ts-node": {
+		"compilerOptions": {
+			"module": "CommonJS"
+		}
+	}
+}

@@ -1,4 +1,4 @@
-import { RegistrationDTOServerSchema } from "@s/infrastructure/endpoints/Token/services/validation/RegistrationZOD";
+import { RegistrationDTOServerSchema } from "@s/infrastructure/endpoints/Auth/services/validation/RegistrationZOD";
 import { FormSchema, UserSchema } from "@t/gen/Users";
 import { checkEmptyString, toCapitalize, zstring } from "@t/shared/zodSnippets";
 import { z } from "zod";

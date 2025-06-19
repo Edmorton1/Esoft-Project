@@ -22,6 +22,12 @@ import Avatar from "@mui/material/Avatar"
 import StoreLogin from "@/pages/Login/Store-Login"
 import { observer } from "mobx-react-lite"
 import SearchHeader from "@/shared/ui/components/Header/SearchHeader"
+import { toJS } from "mobx"
+import StoreUser from "@/shared/stores/Store-User"
+import StoreMessages from "@/pages/Messages/store/Store-Messages"
+import StoreLikes from "@/shared/stores/StoreLikes"
+import StoreTags from "@/shared/stores/Store-Tags"
+import StoreUsers from "@/pages/Users/widgets/store/Store-Users"
 
 const HeadButton = ({isActive, children}: {isActive: boolean, children: ReactNode}) => (
 <Button color={"salmon"} variant={isActive ? "contained" : "outlined"}>
@@ -45,6 +51,16 @@ function Header() {
           </Link>
           <SearchHeader />
         </div>
+        
+        <button onClick={() => console.log(
+          'User: ', toJS(StoreUser.user),
+          'Form:', toJS(StoreForm.form),
+          'Messages:', toJS(StoreMessages.messages),
+          'Likes:', toJS(StoreLikes.likes),
+          "Tags:", toJS(StoreTags.tags),
+          toJS(StoreUsers.users)
+          )}>Вывести сторы
+        </button>
 
         <div className={style.header__row}>
           <NavButton to={"/"}>Главная <DomainIcon /></NavButton>
@@ -65,7 +81,7 @@ function Header() {
             : <Button variant="contained" color="salmon" onClick={StoreLogin.openModal} >Войти <LoginIcon /></Button>
           }
         </div>
-
+        
         {/* <NavButton to={`${paths.profile}/2`}>profile 2</NavButton>
         <NavButton to={paths.room}>ROOM</NavButton>
         <button onClick={() => console.log(

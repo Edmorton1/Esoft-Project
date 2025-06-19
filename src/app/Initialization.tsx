@@ -1,4 +1,4 @@
-import { noAuthorizeErrorAxios } from "@/shared/api/api"
+// import { noAuthorizeErrorAxios } from "@/shared/api/api"
 import StoreUser from "@/shared/stores/Store-User"
 import { useEffect } from "react"
 import Alert from "@/shared/ui/Alert"
@@ -15,7 +15,7 @@ import PasswordModal from "@/pages/Settings/widgets/Account/Modals/PasswordModal
 function Initialization() {
 
   useEffect(() => {
-    noAuthorizeErrorAxios()
+    // noAuthorizeErrorAxios()
 
     const fetchData = async () => {
       await StoreUser.initial()

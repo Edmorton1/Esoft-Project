@@ -1,14 +1,7 @@
-import { tables } from "@t/gen/types"
-import { frJSON, toJSON } from "@shared/MAPPERS"
-import Redis from "ioredis"
+import { redis } from "@s/infrastructure/redis/redis"
 import logger from "@s/logger"
-
-export const redis = new Redis({
-  host: "127.0.0.1",
-  port: 6379
-})
-
-redis.on('connect', () => logger.info('REDIS CONNECT...'))
+import { frJSON, toJSON } from "@shared/MAPPERS"
+import { tables } from "@t/gen/types"
 
 export const setCache = async <T>(key: string, data: T): Promise<T> => {
   await redis.set(key, toJSON(data))
@@ -23,7 +16,6 @@ export const getCahce = async <T>(key: string): Promise<T | undefined> => {
     return frJSON<T>(raw)
   } return undefined
 }
-
 
 export const cacheGet = async <T>(key: string, callback: () => Promise<T>): Promise<T> => {
   // logger.info ('SCANING REDIS', (await redis.scan(0, 'MATCH', `*149*`, 'COUNT', 1000))[1].filter(e => e.includes('forms') || e.includes('user_tags')))

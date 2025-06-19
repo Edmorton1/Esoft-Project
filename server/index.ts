@@ -5,12 +5,13 @@ import cors from "cors"
 // import http from "http"
 import cookieParser from "cookie-parser"
 import { createWebSocketServer } from "@s/WebSocket/socket"
-import "@s/infrastructure/cache/redis"
+import "@s/infrastructure/redis/redis"
 dotenv.config()
 import https from "https"
 import fs from 'fs'
 import path from 'path'
 import logger from "@s/logger"
+import "@t/declarations/server/index"
 
 const app = express()
 

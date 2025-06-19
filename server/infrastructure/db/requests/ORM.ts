@@ -1,5 +1,5 @@
 import { tables, Tables, TablesPost } from "@t/gen/types"
-import { cacheEdit, cacheGet } from "@s/infrastructure/cache/redis"
+import { cacheEdit, cacheGet } from "@s/infrastructure/redis/cache"
 import db from "@s/infrastructure/db/db"
 import bcrypt from "bcrypt"
 import { checkFirstType, fieldsToArr } from "@s/infrastructure/db/requests/utils"

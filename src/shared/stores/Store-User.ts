@@ -4,7 +4,7 @@ import StoreMessages from "@/pages/Messages/store/Store-Messages"
 import storeSocket from "@/shared/api/Store-Socket"
 import StoreTags from "@/shared/stores/Store-Tags"
 import StoreLikes from "@/shared/stores/StoreLikes"
-import { User } from "@t/gen/Users"
+import { User, UserSchema } from "@t/gen/Users"
 import { UserDTO } from "@t/gen/dtoObjects"
 import { toCl, toJSON } from "@shared/MAPPERS"
 import { serverPaths } from "@shared/PATHS"
@@ -12,7 +12,7 @@ import { makeAutoObservable, runInAction } from "mobx"
 import { RegistrationDTOClient, StoreUserRegistrationSchema } from "@t/client/RegistrationZOD"
 import { UseFormSetError } from "react-hook-form"
 import axios from "axios"
-import { LoginErrorTypes } from "@s/infrastructure/endpoints/Token/HttpTokenController"
+import { LoginErrorTypes } from "@s/infrastructure/endpoints/Auth/HttpAuthController"
 import StoreLogin from "@/pages/Login/Store-Login"
 import { toSOSe } from "@s/WebSocket/JSONParsers"
 
@@ -30,9 +30,14 @@ class StoreUser {
 
   loadModules = async (logout: boolean = false) => {
     if (!logout) {
-      await StoreLikes.initial()
+      console.log("LOAD MODULES")
+      StoreForm.initial()
+      StoreLikes.initial()
       // await StoreMessages.initial()
-      await StoreTags.initial()
+      // await StoreTags.initial()
+      console.log("LOADLOADLOADLOADLOADLOADLOADLOADLOADLOADLOADLOADLOADLOADLOADLOADLOADLOADLOAD 2")
+      await storeSocket.waitSocket(storeSocket.socket!)
+      await storeSocket.socket!.send(toSOSe('userid', this.user!.id))
     } else {
       runInAction(() => {
         this.user = null;
@@ -44,58 +49,81 @@ class StoreUser {
     }
   }
   
-  login = async (data: UserDTO, setError: UseFormSetError<UserDTO>) => {
-    try {
-      const request = toCl<responseInterface>(await $api.post(`${serverPaths.login}`, data))
-      localStorage.setItem("accessToken", request.accessToken)
+  login = (data: UserDTO, setError: UseFormSetError<UserDTO>) => {
+    // try {
+      $api.post(`${serverPaths.login}`, data)
+        .then(data => UserSchema.parse(data.data))
+        .then(user => this.user = user)
+        .then(() => this.initial())
 
-      await this.initial()
-      StoreLogin.closeModal()
-    } catch(error: unknown) {
-      console.log(error)
-      if (axios.isAxiosError(error)) {
-        const status = error.status
-        const response = error.response?.data as LoginErrorTypes
-        if (status === 400 && response.type === "email") {
-          setError("email", {
-            message: response.message,
-            type: "manual"
-          })
-        } else if (status === 400 && response.type === "password") {
-          setError("password", {
-            message: response.message,
-            type: "manual"
-          })
-        }
-      }
-    }
+        .catch(err => {
+          if (axios.isAxiosError(err)) {
+            const status = err.status
+            const response = err.response?.data as LoginErrorTypes
+            if (status === 400 && response.type === "email") {
+              setError("email", {
+                message: response.message,
+                type: "manual"
+              })
+            } else if (status === 400 && response.type === "password") {
+              setError("password", {
+                message: response.message,
+                type: "manual"
+              })
+            }
+          }
+        })
+      // localStorage.setItem("accessToken", request.accessToken)
 
+      // await this.initial()
+    //   StoreLogin.closeModal()
+    // } catch(error: unknown) {
+    //   console.log(error)
+      // if (axios.isAxiosError(error)) {
+      //   const status = error.status
+      //   const response = error.response?.data as LoginErrorTypes
+      //   if (status === 400 && response.type === "email") {
+      //     setError("email", {
+      //       message: response.message,
+      //       type: "manual"
+      //     })
+      //   } else if (status === 400 && response.type === "password") {
+      //     setError("password", {
+      //       message: response.message,
+      //       type: "manual"
+      //     })
+      //   }
+      // }
+    // }
   }
 
   logout = async () => {
-    const request = toCl(await $api.get(`${serverPaths.logout}/${this.user!.id}`))
-    localStorage.removeItem("accessToken")
+    const request = toCl(await $api.post(serverPaths.logout))
+    // localStorage.removeItem("accessToken")
     runInAction(() => this.user = null)
     runInAction(() => StoreForm.form = null)
 
     this.loadModules(true)
   }
 
-  initial = async () => {
-    const request = toCl<responseInterface>(await $api.get(serverPaths.refresh))
-    console.log(request, 'request')
-    if (request?.accessToken) {
-      runInAction(() => this.user = request.user)
-      await StoreForm.initial(request.user.id)
-      localStorage.setItem("accessToken", request.accessToken)
-      await storeSocket.waitSocket(storeSocket.socket!)
-      storeSocket.socket!.send(toSOSe('userid', this.user!.id))
-
-      await this.loadModules()
+  initial = () => {
+    $api.get(serverPaths.initial)
+      .then(data => this.user = data.data)
+      .then(() => this.loadModules())
+      .catch(err => console.log(err))
       
-    } else {
-      this.loadModules(true)
-    }
+    // if (request?.accessToken) {
+    //   runInAction(() => this.user = request.user)
+    //   await StoreForm.initial(request.user.id)
+    //   // localStorage.setItem("accessToken", request.accessToken)
+    //   await storeSocket.waitSocket(storeSocket.socket!)
+    //   storeSocket.socket!.send(toSOSe('userid', this.user!.id))
+
+    //   await this.loadModules()
+      
+    // } else {
+    //   this.loadModules(true)
+    // }
   }
 
   registration = async (user: RegistrationDTOClient) => {
@@ -114,7 +142,7 @@ class StoreUser {
     const response = StoreUserRegistrationSchema.parse(request)
 
     console.log(request)
-    localStorage.setItem("accessToken", request.accessToken)
+    // localStorage.setItem("accessToken", request.accessToken)
 
     runInAction(() => this.user = request.user)
     runInAction(() => StoreForm.form = response.form)

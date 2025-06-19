@@ -18,7 +18,8 @@ export const serverPaths = {
   login: '/login',
   registration: '/registration',
   logout: "/logout",
-  refresh: "/refresh",
+  // refresh: "/refresh",
+  initial: "/initial",
 
   createForm: "/createForm",
 

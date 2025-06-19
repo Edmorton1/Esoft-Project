@@ -5,6 +5,7 @@ import { tables } from "@t/gen/types"
 import { getSchemaByTable } from "@t/shared/sharedTypes"
 import type { Knex } from "knex";
 import { z } from "zod";
+import crypto from "crypto"
 
 type RawString = (string | Knex.Raw<any>)[]
 
@@ -50,4 +51,8 @@ export const checkFirstType = <T extends Array<any>>(data: T, table: tables, fie
   } else {
     return data
   }
+}
+
+export function randomCryptoString() {
+  return crypto.randomBytes(32).toString("hex")
 }

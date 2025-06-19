@@ -6,10 +6,10 @@ dotenv.config()
 
 export const s3 = new EasyYandexS3({
   auth: {
-    accessKeyId: process.env.YANDEX_ID!,
-    secretAccessKey: process.env.YANDEX_SECRET!,
+    accessKeyId: process.env.YANDEX_ID,
+    secretAccessKey: process.env.YANDEX_SECRET,
   },
-  Bucket: process.env.BUCKET_NAME!,
+  Bucket: process.env.BUCKET_NAME,
   debug: false,
 });
 

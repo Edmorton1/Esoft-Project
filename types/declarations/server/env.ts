@@ -15,6 +15,8 @@ declare namespace NodeJS {
     YANDEX_SECRET: string,
     BUCKET_NAME: string,
 
-    BUCKET_URL: string
+    BUCKET_URL: string,
+
+    SESSION_SECRET: string
   }
 }
