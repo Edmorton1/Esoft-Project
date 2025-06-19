@@ -1,6 +1,6 @@
-import { pickFieldsForm } from "@/shared/ui/components/Header/Store-searchForm";
 import { requestToLike } from "@s/infrastructure/db/requests/SQLform";
 import { ReqForm } from "@s/infrastructure/endpoints/Form/middlewares/FormMiddlewares";
+import { FORM_SEARCH_LIMIT, pickFieldsForm } from "@shared/CONST";
 import { Request, Response } from "express";
 
 class HttpFormController {
@@ -9,7 +9,7 @@ class HttpFormController {
 
     // const rawSearch = requestToForm(undefined, {name: })
     let query = requestToLike({name: "name", param: r.search}, Object.keys(pickFieldsForm).join(', '))
-    query = query.limit(4)
+    query = query.limit(FORM_SEARCH_LIMIT)
 
     res.json(await query)
   }

@@ -10,6 +10,8 @@
     display: flex;
     flex-direction: column;
     width: c.$searchW;
-    background-color: red;
+    gap: c.$lp;
+
+    padding: c.$lp;
   }
 }

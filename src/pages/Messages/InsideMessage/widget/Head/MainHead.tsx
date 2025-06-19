@@ -10,15 +10,13 @@ import { observer } from "mobx-react-lite"
 import CallIcon from '@mui/icons-material/Call';
 import MinButton from "@/shared/ui/MinButton"
 import { sxStyle } from "@/shared/ui/CircleButton"
-import SearchBase from "@/shared/ui/components/search/SearchBase"
-import useLastActive from "@/shared/hooks/useLastActive"
+import LastActive from "@/shared/ui/components/LastActive"
 
 function MainHead({toid}: {toid: number}) {
   const br = 30
   const wh = 50
   const handlerCallClick = () => StoreRoom.makeCall(StoreUser.user!.id, toid)
 
-  const last_active = useLastActive(StoreMessages.form?.last_active)
   console.log(StoreMessages.form?.last_active)
 
   return <>
@@ -28,7 +26,7 @@ function MainHead({toid}: {toid: number}) {
       title={<Box display={"flex"} alignItems={"center"} justifyContent={"space-between"}>
         <Box>
           <Typography>{StoreMessages.form?.name}</Typography>
-          <Typography variant="body2" color="text.secondary">{last_active}</Typography>
+          <LastActive last_active={StoreMessages.form?.last_active} />
         </Box>
 
         {/* <Search /> */}

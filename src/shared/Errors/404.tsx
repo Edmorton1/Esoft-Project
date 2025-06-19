@@ -1,6 +1,6 @@
 function FourHundredFour() {
   return (
-    <div>Такой страницы нет</div>
+    <main>Такой страницы нет</main>
   )
 }
 

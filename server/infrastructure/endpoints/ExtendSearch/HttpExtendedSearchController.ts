@@ -8,11 +8,11 @@ class HttpExtendedSearchController {
 
   getForms = async (req: Request, res: Response) => {
     const r = req as ExtendedParamsInterface
-    const {tags, page, min_age, max_age, avatar, location, max_distance, params} = r.filters
+    const {tags, page, min_age, max_age, avatar, location, max_distance, name, params} = r.filters
 
     const tagsArr = tags ? await SQLHard.getUserTags(tags) : []
 
-    const zapisi = await SQLHard.getByTags({tags: tagsArr, params, page, min_age, max_age, avatar, location, max_distance})
+    const zapisi = await SQLHard.getByTags({tags: tagsArr, params, page, min_age, max_age, avatar, location, name, max_distance})
     
     logger.info(tagsArr)
     logger.info(zapisi.forms.length)

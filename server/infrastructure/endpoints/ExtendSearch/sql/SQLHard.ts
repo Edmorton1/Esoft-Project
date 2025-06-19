@@ -1,10 +1,12 @@
 import db from "@s/infrastructure/db/db"
-import { queryType } from "@s/infrastructure/endpoints/ExtendSearch/middlewares/ExtendedSearchMiddle"
+import { queryType } from "@s/infrastructure/endpoints/ExtendSearch/middlewares/Schemas"
 import logger from "@s/logger"
 import { CARDS_ON_PAGE } from "@shared/CONST"
 import { Knex } from "knex"
 
 type tagsTypes = {groups: string, id: number[]}[]
+
+type propsType = Omit<queryType, 'tags'> & {tags: tagsTypes}
 
 class SQLHard {
   getUserTags = async (tags: string[]): Promise<tagsTypes> => {
@@ -38,20 +40,33 @@ class SQLHard {
     return (await request).rows
   }
 
-    getByTags = async (props: Omit<queryType, 'tags'> & {tags: tagsTypes}) => {
-    const {tags, page, min_age, max_age, avatar, location, max_distance, params} = props
+  private standartQuery = async (havingClause: string) => {
+    const query = db('forms')
+      // .select(...baseSelect)
+      .leftJoin('user_tags', 'user_tags.id', 'forms.id')
+      .leftJoin('tags', 'user_tags.tagid', 'tags.id')
+      .groupBy('forms.id')
+      .havingRaw(havingClause)
 
-    logger.info("GET BY TAGS")
-
-    const and = params ? toSQLWhere(params, false) : ''
+      // .offset(offset === -1 ? 0 : offset)
+      // .limit(CARDS_ON_PAGE)
+  }
+  
+  buildConditions = ({tags, page, min_age, max_age, avatar, location, max_distance, name, params}: propsType) => {
     const conditions: (string | Knex.Raw<any>)[] = []
 
-    logger.info({TAGS_TAGS: tags})
+    // FORM PARAMS
+    // const and = params ? toSQLWhere(params, false) : ''
+    // if (and.length > 0) conditions.push(and)
+    params 
 
+    // AGE
     const ageMin = min_age && `forms.age >= ${min_age}`
     const ageMax = max_age && `forms.age <= ${max_age}`
     const ageFilter = [ageMin, ageMax].filter(Boolean).join(' AND ')
+    if (ageFilter) conditions.push(ageFilter)
 
+    // LOCATION
     let distanceRaw;
     if (location) {
       distanceRaw = db.raw(`
@@ -61,12 +76,12 @@ class SQLHard {
         ) / 1000
       `, location);
     }
-
     let selectDistance;
     if (distanceRaw) {
       selectDistance = db.raw(`ROUND((${distanceRaw.toQuery()})::numeric, 2) AS distance`);
     }
 
+    // MAX DISTANCE
     let havingMaxDistance;
     if (distanceRaw && max_distance) {
       havingMaxDistance = db.raw(`(${distanceRaw.toQuery()}) <= ?`, [max_distance]);
@@ -74,9 +89,18 @@ class SQLHard {
     }
 
     if (tags.length > 0) conditions.push(toSQLgetByTags(tags))
-    if (and.length > 0) conditions.push(and)
-    if (ageFilter) conditions.push(ageFilter)
+
+    // AVATAR TOGGLE
     if (avatar === true) conditions.push('NOT forms.avatar IS NULL')
+    
+    return conditions
+  }
+
+  getByTags = async ({tags, page, min_age, max_age, avatar, location, max_distance, name, params}: propsType) => {
+    const props = {tags, page, min_age, max_age, avatar, location, max_distance, name, params}
+    logger.info("GET BY TAGS")
+
+    const conditions = this.buildConditions(props)
 
     const havingClause = conditions.length ? `${conditions.join(' AND ')}` : ''
     
@@ -84,24 +108,27 @@ class SQLHard {
 
     logger.info({offset: offset === -1 ? 0 : offset, CARDS_ON_PAGE})
 
+    // ФОРМИРОВАНИЕ SELECT
     const baseSelect = [
       'forms.*',
       db.raw(`json_agg(json_build_object('id', tags.id, 'tag', tags.tag)) AS tags`)
     ]
-
     if (selectDistance) {
       baseSelect.push(selectDistance)
     };
 
-    const request = db('forms')
-      .select(...baseSelect)
-      .leftJoin('user_tags', 'user_tags.id', 'forms.id')
-      .leftJoin('tags', 'user_tags.tagid', 'tags.id')
-      .groupBy('forms.id')
-      .havingRaw(havingClause)
+    logger.info({TAGS_TAGS: tags})
+    // logger.info({LIVING_COLOR: name})
 
-      .offset(offset === -1 ? 0 : offset)
-      .limit(CARDS_ON_PAGE)
+    // const request = db('forms')
+    //   .select(...baseSelect)
+    //   .leftJoin('user_tags', 'user_tags.id', 'forms.id')
+    //   .leftJoin('tags', 'user_tags.tagid', 'tags.id')
+    //   .groupBy('forms.id')
+    //   .havingRaw(havingClause)
+
+    //   .offset(offset === -1 ? 0 : offset)
+    //   .limit(CARDS_ON_PAGE)
       
       const subquery = db('forms')
         .select('forms.id')
