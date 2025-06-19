@@ -1,71 +1,14 @@
 import db from "@s/infrastructure/db/db"
-import { queryType } from "@s/infrastructure/endpoints/ExtendSearch/middlewares/Schemas"
+import { queryType, tagsTypes } from "@s/infrastructure/endpoints/ExtendSearch/middlewares/Schemas"
+import SQLHelper from "@s/infrastructure/endpoints/ExtendSearch/SQL/SQLHelper"
 import logger from "@s/logger"
 import { CARDS_ON_PAGE } from "@shared/CONST"
 import { Knex } from "knex"
 
-type tagsTypes = {groups: string, id: number[]}[]
-
 type propsType = Omit<queryType, 'tags'> & {tags: tagsTypes}
 
 class SQLHard {
-  getUserTags = async (tags: string[]): Promise<tagsTypes> => {
-    logger.info("GET USER TAGS")
-    const [keys, values] = toSQLgetUserTags(tags)
-    const sql = `
-    WITH input_words AS (
-      SELECT unnest(ARRAY[${keys.join(',')}]) AS word
-    ),
-    matched_tags AS (
-      SELECT 
-        iw.word AS groups,
-        t.id,
-        t.tag,
-        similarity(t.tag, iw.word) AS sim
-      FROM input_words iw
-      JOIN tags t ON t.tag % iw.word
-    )
-
-    SELECT 
-      groups,
-      json_agg(id ORDER BY sim DESC) AS id
-    FROM matched_tags
-    GROUP BY groups;
-    `
-
-    const request = db.raw(sql, [...values])
-
-    logger.info({toNativeUserTags: request.toSQL().toNative()})
-    
-    return (await request).rows
-  }
-
-  private standartQuery = async (havingClause: string) => {
-    const query = db('forms')
-      // .select(...baseSelect)
-      .leftJoin('user_tags', 'user_tags.id', 'forms.id')
-      .leftJoin('tags', 'user_tags.tagid', 'tags.id')
-      .groupBy('forms.id')
-      .havingRaw(havingClause)
-
-      // .offset(offset === -1 ? 0 : offset)
-      // .limit(CARDS_ON_PAGE)
-  }
-  
-  buildConditions = ({tags, page, min_age, max_age, avatar, location, max_distance, name, params}: propsType) => {
-    const conditions: (string | Knex.Raw<any>)[] = []
-
-    // FORM PARAMS
-    // const and = params ? toSQLWhere(params, false) : ''
-    // if (and.length > 0) conditions.push(and)
-    params 
-
-    // AGE
-    const ageMin = min_age && `forms.age >= ${min_age}`
-    const ageMax = max_age && `forms.age <= ${max_age}`
-    const ageFilter = [ageMin, ageMax].filter(Boolean).join(' AND ')
-    if (ageFilter) conditions.push(ageFilter)
-
+  private buildLocation = (location: propsType['location']) => {
     // LOCATION
     let distanceRaw;
     if (location) {
@@ -80,6 +23,34 @@ class SQLHard {
     if (distanceRaw) {
       selectDistance = db.raw(`ROUND((${distanceRaw.toQuery()})::numeric, 2) AS distance`);
     }
+    
+    return [distanceRaw, selectDistance]
+  }
+  
+  private buildConditions = ({tags, min_age, max_age, avatar, max_distance, name, params, distanceRaw}: propsType & {distanceRaw: Knex.Raw<any> | undefined}): (string | Knex.Raw<any>)[] => {
+    const conditions: (string | Knex.Raw<any>)[] = []
+
+    // FORM PARAMS
+    const whereClause = SQLHelper.toSQLWhere(params)
+    if (whereClause) conditions.push(whereClause)
+    
+
+    // if (params) conditions.push(toSQLWhere(params, false)) 
+
+    //INAME
+    if (name) conditions.push(db.raw(`name ILIKE '%${name}%'`))
+
+    // AGE
+    const ageMin = min_age && `forms.age >= ${min_age}`
+    const ageMax = max_age && `forms.age <= ${max_age}`
+    const ageFilter = [ageMin, ageMax].filter(Boolean).join(' AND ')
+    if (ageFilter) conditions.push(ageFilter)
+
+    // TAGS
+    if (tags.length > 0) conditions.push(SQLHelper.toSQLgetByTags(tags))
+
+    // AVATAR TOGGLE
+    if (avatar === true) conditions.push('NOT forms.avatar IS NULL')
 
     // MAX DISTANCE
     let havingMaxDistance;
@@ -87,22 +58,30 @@ class SQLHard {
       havingMaxDistance = db.raw(`(${distanceRaw.toQuery()}) <= ?`, [max_distance]);
       conditions.push(havingMaxDistance);
     }
-
-    if (tags.length > 0) conditions.push(toSQLgetByTags(tags))
-
-    // AVATAR TOGGLE
-    if (avatar === true) conditions.push('NOT forms.avatar IS NULL')
     
     return conditions
+  }
+
+  private buildQuery = (havingClause: string) => {
+    const query = db('forms')
+      .leftJoin('user_tags', 'user_tags.id', 'forms.id')
+      .leftJoin('tags', 'user_tags.tagid', 'tags.id')
+      .groupBy('forms.id')
+      .havingRaw(havingClause)
+
+      return query
   }
 
   getByTags = async ({tags, page, min_age, max_age, avatar, location, max_distance, name, params}: propsType) => {
     const props = {tags, page, min_age, max_age, avatar, location, max_distance, name, params}
     logger.info("GET BY TAGS")
 
-    const conditions = this.buildConditions(props)
+    const [distanceRaw, selectDistance] = this.buildLocation(location)
 
-    const havingClause = conditions.length ? `${conditions.join(' AND ')}` : ''
+    const conditions = this.buildConditions({...props, distanceRaw})
+    logger.info({CONDITOS: conditions})
+
+    const havingClause = conditions.length > 0 ? `${conditions.join(' AND ')}` : ''
     
     const offset = (Number(page) - 1) * CARDS_ON_PAGE
 
@@ -117,29 +96,21 @@ class SQLHard {
       baseSelect.push(selectDistance)
     };
 
+    // const query = this.buildQuery(havingClause)
+
+    const request = this.buildQuery(havingClause)
+      .select(...baseSelect)
+      .offset(offset === -1 ? 0 : offset)
+      .limit(CARDS_ON_PAGE)
+
     logger.info({TAGS_TAGS: tags})
-    // logger.info({LIVING_COLOR: name})
-
-    // const request = db('forms')
-    //   .select(...baseSelect)
-    //   .leftJoin('user_tags', 'user_tags.id', 'forms.id')
-    //   .leftJoin('tags', 'user_tags.tagid', 'tags.id')
-    //   .groupBy('forms.id')
-    //   .havingRaw(havingClause)
-
-    //   .offset(offset === -1 ? 0 : offset)
-    //   .limit(CARDS_ON_PAGE)
-      
-      const subquery = db('forms')
-        .select('forms.id')
-        .leftJoin('user_tags', 'user_tags.id', 'forms.id')
-        .leftJoin('tags', 'user_tags.tagid', 'tags.id')
-        .groupBy('forms.id')
-        .havingRaw(havingClause);
-
-      const pagesCount = db
-        .count('* as count')
-        .from(subquery.as('filtered_forms'));
+        
+    const subquery = this.buildQuery(havingClause)
+      .select("forms.id")
+        
+    const pagesCount = db
+      .count('* as count')
+      .from(subquery.as('filtered_forms'));
 
     logger.info({PAGES_COUNT_SQL: pagesCount.toSQL().toNative()})
     logger.info({DATA_RES: await request})
@@ -147,23 +118,6 @@ class SQLHard {
 
     return {forms: await request, count: Math.ceil(Number((await pagesCount)[0].count) / CARDS_ON_PAGE)}
   }
-}
-
-const toSQLgetByTags = (tags: tagsTypes): string => {
-  return (tags.map((e, i) => `COUNT(DISTINCT CASE WHEN user_tags.tagid IN (${e.id.join(',')}) THEN user_tags.tagid END) > 0${tags.length === i + 1 ? '' : ' AND '}`)).join(' ')
-}
-
-const toSQLgetUserTags = (tags: string[]): [string[], string[]] => {
-  const keys = tags.map(() => '?')
-  return [keys, tags]
-}
-
-const toSQLWhere = (props: Record<any, any>, isform?: boolean): string => {
-  const keys = Object.keys(props).filter(e => props[e] !== '' && props[e] !== undefined)
-  const and = keys
-    .map(e => `${isform ? `forms.` : ``}${e} = '${props[e]}'`)
-    .join(' AND ')
-  return and
 }
 
 export default new SQLHard

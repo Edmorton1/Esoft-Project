@@ -1,5 +1,6 @@
 import { ExtendedParamsInterface } from "@s/infrastructure/endpoints/ExtendSearch/middlewares/ExtendedSearchMiddle"
 import SQLHard from "@s/infrastructure/endpoints/ExtendSearch/SQL/SQLHard"
+import SQLHelper from "@s/infrastructure/endpoints/ExtendSearch/SQL/SQLHelper"
 import logger from "@s/logger"
 import { toJSON } from "@shared/MAPPERS"
 import { Request, Response } from "express"
@@ -10,7 +11,7 @@ class HttpExtendedSearchController {
     const r = req as ExtendedParamsInterface
     const {tags, page, min_age, max_age, avatar, location, max_distance, name, params} = r.filters
 
-    const tagsArr = tags ? await SQLHard.getUserTags(tags) : []
+    const tagsArr = tags ? await SQLHelper.getUserTags(tags) : []
 
     const zapisi = await SQLHard.getByTags({tags: tagsArr, params, page, min_age, max_age, avatar, location, name, max_distance})
     

@@ -51,3 +51,5 @@ export const zodParams = z.object({
 export type paramsType = z.infer<typeof zParams>
 
 export type queryType = z.infer<typeof zodParams>
+
+export type tagsTypes = {groups: string, id: number[]}[]

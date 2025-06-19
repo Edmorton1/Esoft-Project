@@ -13,8 +13,10 @@ import Divider from "@mui/material/Divider"
 import { ReactNode, useState } from "react"
 import ReadMore from "@/shared/ui/components/ReadMore"
 import { Tags } from "@t/gen/Users"
+import { toJS } from "mobx"
 
 function UsersCardInfo({form, children}: {form: FormWithDistanse, children?: ReactNode}) {
+  console.log("TAGS", toJS(form.tags))
   return <Card component={"article"} className={style.container}>
     {/* <Avatar src={form.avatar!} className={style.container__avatar} /> */}
     <div className={style.container__avatar}>
@@ -30,13 +32,16 @@ function UsersCardInfo({form, children}: {form: FormWithDistanse, children?: Rea
       <Divider />
       <Typography><strong>Цель: </strong>{form.target}</Typography>
       <Divider />
-        <Typography>
+        {form.description && <Typography>
           <strong>Описание: </strong>
           <ReadMore component={form.description} len={110} />
-        </Typography>
+        </Typography>}
       <Divider />
       <Typography><strong>Город: </strong>{form.city}</Typography>
       <Divider />
+      {/* ПОКА КОСТЫЛЬ, ПОТОМ ПОПРАВЛЮ  
+      МОЖЕТ ВЫДАТЬ {id: null, tag: null}
+      //@ts-ignore */}
       <Typography><strong>Тэги: </strong></Typography>
       
       <ReadMore
