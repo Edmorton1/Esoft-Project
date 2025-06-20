@@ -1,5 +1,5 @@
 import { FormDTO, LikesDTO, MessageDTO, TagsDTO, UserDTO, UserTagsDTO } from "@t/gen/dtoObjects"
-import { Form, Likes, Message, Tags, Token, User, UserTags } from "@t/gen/Users"
+import { Form, Likes, Message, Tags, User, UserTags } from "@t/gen/Users"
 import { UseFormRegister } from "react-hook-form"
 
 export type Tables = {
@@ -10,7 +10,7 @@ export type Tables = {
   // data_res: DataRes,
   tags: Tags,
   user_tags: UserTags,
-  tokens: Token
+  // tokens: Token
 }
 
 export type TablesPost = {
@@ -20,7 +20,7 @@ export type TablesPost = {
   messages: MessageDTO,
   tags: TagsDTO,
   user_tags: UserTagsDTO,
-  tokens: Token
+  // tokens: Token
 }
 
 export type tables = keyof Tables

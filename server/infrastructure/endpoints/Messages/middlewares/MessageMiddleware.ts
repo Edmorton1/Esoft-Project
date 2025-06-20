@@ -22,27 +22,13 @@ export interface ReqEditMessage extends Request {
 }
 
 class MessageMiddleware {
-  getMessage = (req: Request, res: Response, next: NextFunction) => {
-    const r = req as ReqGetMessage
-
-    const frid = zstrnum.parse(req.params.frid)
-    const toid = zstrnum.parse(req.params.toid)
-    const parsed = zstrnum.safeParse(req.query.cursor)
-
-    const cursor = parsed.success ? parsed.data : undefined
-
-    r.frid = frid
-    r.toid = toid
-    r.cursor = cursor
-
-    next()
-  };
-
   sendMessage = (req: Request, res: Response, next: NextFunction) => {
     const r = req as ReqSendMessage
 
     const data = MessageDTOServerSchema.parse({...frJSON(req.body.json)!, files: req.files})
     const { files, ...message } = data
+
+    if (message.fromid !== req.session.userid) return res.sendStatus(401)
 
     r.files = files
     r.message = message
@@ -60,6 +46,22 @@ class MessageMiddleware {
     r.data = data
     next()
   }
+
+  getMessage = (req: Request, res: Response, next: NextFunction) => {
+    const r = req as ReqGetMessage
+
+    const frid = zstrnum.parse(req.params.frid)
+    const toid = zstrnum.parse(req.params.toid)
+    const parsed = zstrnum.safeParse(req.query.cursor)
+
+    const cursor = parsed.success ? parsed.data : undefined
+
+    r.frid = frid
+    r.toid = toid
+    r.cursor = cursor
+
+    next()
+  };
 }
 
 export default new MessageMiddleware

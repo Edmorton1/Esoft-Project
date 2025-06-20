@@ -11,6 +11,11 @@ export interface buildPaths {
   test: string
 }
 
+export interface buildUrls {
+  server: string,
+  prefix: string
+}
+
 export type buildMode = "production" | "development";
 
 export type buildPlatform = "monile" | "desktop";
@@ -20,5 +25,6 @@ export interface BuildOptions {
   paths: buildPaths;
   mode: buildMode;
   platform: buildPlatform;
+  url: buildUrls
   analyzer?: boolean;
 }

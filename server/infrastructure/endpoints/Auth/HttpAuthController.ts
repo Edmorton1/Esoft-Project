@@ -5,7 +5,8 @@ import { Form, User } from "@t/gen/Users";
 import TokenService from "@s/infrastructure/endpoints/Auth/services/TokenService";
 import logger from "@s/helpers/logger";
 import { ReqLogin, RequestReg } from "@s/infrastructure/endpoints/Auth/middlewares/AuthoMid";
-import SessionRedis from "@s/infrastructure/redis/SessionRedis";
+import { COOKIE_NAME } from "@shared/CONST";
+// import SessionRedis from "@s/infrastructure/redis/SessionRedis";
 
 export interface LoginErrorTypes {
   type: "email" | "password",
@@ -18,7 +19,9 @@ class HttpAuthController {
     const r = req as RequestReg
     const total = await TokenService.registration(r.form, r.user, r.tags)
 
-    req.session.sessionid = await SessionRedis.set({id: total.user.id, role: total.user.role})
+    // req.session.sessionid = await SessionRedis.set({id: total.user.id, role: total.user.role})
+    req.session.userid = total.user.id
+    req.session.role = total.user.role
 
     return res.json(total)
   }
@@ -49,8 +52,10 @@ class HttpAuthController {
     // const accessToken = await TokenHelper.createTokens(user.id, user.role, res)
     // TokenHelper.returnDTO({user, accessToken}, res)
 
-    req.session.sessionid = await SessionRedis.set({id: user.id, role: user.role})
-    
+    // req.session.sessionid = await SessionRedis.set({id: user.id, role: user.role})
+    req.session.userid = user.id
+    req.session.role = user.role
+    logger.info({SESSION: req.session})
     res.json(user)
   }
   
@@ -60,12 +65,29 @@ class HttpAuthController {
     // res.clearCookie('refreshToken')
     // await ORM.delete(id, 'tokens')
     
-    const sessionid = req.session.sessionid
-    if (!sessionid) return res.sendStatus(401)
-    SessionRedis.del(sessionid)
+    // const sessionid = req.session.sessionid
+    // if (!sessionid) return res.sendStatus(401)
+    // SessionRedis.del(sessionid)
     req.session.destroy((error) => logger.info(error))
+    res.clearCookie(COOKIE_NAME)
     res.sendStatus(200)
   }
+
+  initial = async (req: Request, res: Response<User>) => {
+    // const sessionid = req.session.sessionid
+    // if (!sessionid) return res.sendStatus(401)
+    // const dto = await SessionRedis.get(sessionid)
+    // if(!dto) return res.sendStatus(401)
+    const userid = req.session.userid
+    if (!userid) return res.sendStatus(401)
+
+    const [user] = await ORM.getById(userid, "users")
+    res.json(user)
+  }
+}
+
+// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwicm9sZSI6InVzZXIiLCJpYXQiOjE3NDQ2MTEyMTgsImV4cCI6MTc0NTQ3NTIxOH0.pDfrXzd7atVa2BtLwBM7a8HES_D76idPCYKntKFYe_Y -- ВАЛДИНЫЙ РЕФРЕШ
+export default new HttpAuthController
 
   // refresh = async (req: Request, res: Response) => {
   //   // ТУТ ПОСМОТРЕТЬ ПОТОМ ГДЕ !
@@ -95,15 +117,3 @@ class HttpAuthController {
   //   res.clearCookie('refreshToken')
   //   res.sendStatus(401)
   // }
-  initial = async (req: Request, res: Response<User>) => {
-    const sessionid = req.session.sessionid
-    if (!sessionid) return res.sendStatus(401)
-    const dto = await SessionRedis.get(sessionid)
-    if(!dto) return res.sendStatus(401)
-    const [user] = await ORM.getById(dto.id, "users")
-    res.json(user)
-  }
-}
-
-// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwicm9sZSI6InVzZXIiLCJpYXQiOjE3NDQ2MTEyMTgsImV4cCI6MTc0NTQ3NTIxOH0.pDfrXzd7atVa2BtLwBM7a8HES_D76idPCYKntKFYe_Y -- ВАЛДИНЫЙ РЕФРЕШ
-export default new HttpAuthController

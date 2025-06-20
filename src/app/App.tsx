@@ -34,13 +34,15 @@ function App() {
 							<Route path={paths.settings} element={<LazySettings/>}/>
 							<Route path={paths.map} element={<LazyMap />} />
 							<Route path={paths.liked} element={<LazyLiked />} />
-							<Route path={paths.admin} element={<LazyAdmin />} />
 							
 							<Route path={paths.room} element={<LazyRoom />} />
-							<Route path="*" element={<LazyFourHundredFour />} />
+							{/* <Route path="*" element={<LazyFourHundredFour />} /> */}
 
 							<Route path={paths.test} element={<LazyTest />} />
 						</Route>
+						
+						<Route path={`${paths.admin}/*`} element={<LazyAdmin />} />
+
 					</Routes>
 				</Suspense>
 			</ChangeTheme>

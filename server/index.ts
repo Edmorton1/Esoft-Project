@@ -12,6 +12,7 @@ import fs from 'fs'
 import path from 'path'
 import logger from "@s/helpers/logger"
 import "@t/declarations/server/index"
+import { PREFIX } from "@shared/CONST"
 
 const app = express()
 
@@ -34,10 +35,10 @@ app.use(cookieParser())
 
 app.use(express.json())
 
-app.use('/', router)
+app.use(PREFIX, router)
 
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
-  console.error(err.stack)
+  logger.info({ОШИБКА_500: err})
   res.status(500).json({ error: err })
 })
 

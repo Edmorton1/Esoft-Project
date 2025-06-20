@@ -22,28 +22,32 @@ import FormMiddlewares from "@s/infrastructure/endpoints/Form/middlewares/FormMi
 import HttpFormController from "@s/infrastructure/endpoints/Form/HttpFormController"
 import session from "express-session"
 import dotenv from "dotenv"
-import SessionRedis from "@s/infrastructure/redis/SessionRedis"
+import AuthMiddleware from "@s/infrastructure/middlewares/AuthMiddleware"
+import { redisStore } from "@s/infrastructure/redis/redis"
+import { COOKIE_NAME } from "@shared/CONST"
 dotenv.config()
 
 const upload = multer({storage: multer.memoryStorage()})
 const router = express.Router()
 
-const tablesArr: tables[] = ['users', 'forms', 'likes', 'messages', 'tags', 'user_tags', 'tokens']
+const tablesArr: tables[] = ['users', 'forms', 'likes', 'messages', 'tags', 'user_tags']
 
 router.use(httpLogger)
 
 router.use(session({
+  store: redisStore,
   secret: process.env.SESSION_SECRET,
-  name: "sessionid",
+  name: COOKIE_NAME,
   resave: false,
   saveUninitialized: false,
   cookie: {
     secure: false,
-    maxAge: 1000 * 60 * 60
+    maxAge: 1000 * 60 * 60 * 600000000
   },
   // rolling: true
 }))
 
+// CRUD ЗАПРОСЫ
 tablesArr.forEach(table => {
   router.get(`/${table}`, universalController('get', table))
   router.get(`/${table}/:id`, universalController('getById', table))
@@ -52,48 +56,71 @@ tablesArr.forEach(table => {
   router.put(`/${table}/:id`, universalController('put', table))
   router.delete(`/${table}/:id`, universalController('delete', table))
 })
-
-// router.get('/byParams', universalController('getByParams', 'users'))
-
-router.get('/', (req, res) => {res.json('Работает'); logger.info('Работает')})
-
+// СТАНДАРТНЫЙ ЗАПРОС
+router.get('/', (req, res) => {logger.info('Работает'); res.sendStatus(200)})
+// АВТОРИЗАЦИЯ
 router.post(serverPaths.registration, upload.single('avatar'), AuthoMid.registration, HttpAuthController.registartion)
 router.post(serverPaths.login, AuthoMid.login, HttpAuthController.login)
-router.post(serverPaths.logout, HttpAuthController.logout)
-// router.get(serverPaths.refresh, HttpTokenController.refresh)
 router.get(serverPaths.initial, HttpAuthController.initial)
 
-// router.post(serverPaths.createForm, HttpFormController.postForm)
+// РАСШИРЕННЫЙ ПОИСК
+router.get(`${serverPaths.extendedSearch}`, ExtendedSearchMiddle, HttpExtendedSearchController.getForms)
+// ПОИСК ПОЛЬЗОВАТЕЛЕЙ
+router.get(`${serverPaths.searchForm}/:search`, FormMiddlewares.searchForm, HttpFormController.searchForm)
+// ТЕСТ КОМПРЕССИИ
+router.post(serverPaths.testCompressViedo, upload.single('video'), HttpFilesController.TestConvertVideo)
+router.post(serverPaths.testCompressAudio, upload.single('audio'), HttpFilesController.TestConvertAudio)
 
+// ------------------------------------------ ДАЛЬШЕ ВСЕ ЗАПРОСЫ С ПРОВЕРКОЙ АВТОРИЗАЦИИ -------------------------------------------
+router.use(AuthMiddleware.OnlyAuth)
+//ЛОГАУТ
+router.post(serverPaths.logout, HttpAuthController.logout)
+// СООБЩЕНИЯ
 router.post(serverPaths.sendMessage, upload.array('files'), MessageMiddleware.sendMessage , HttpMessageController.sendMessage)
 router.put(`${serverPaths.editMessage}/:id`, upload.array('files'), MessageMiddleware.editMessage, HttpMessageController.editMessage)
 router.delete(`${serverPaths.deleteMessage}/:id`, SharedMiddlewares.OnlyIdMiddleware, HttpMessageController.deleteMessage)
 router.get(`${serverPaths.getMessage}/:frid/:toid`, MessageMiddleware.getMessage, HttpMessageController.getMessage)
-
+// ЗАПРОС ПЕРЕПИСОК
+router.get(`${serverPaths.outsideMessages}/:id`, SharedMiddlewares.OnlyIdMiddleware, HttpMessageOutsideController.outsideMessages)
+// ЛАЙКИ
 router.post(serverPaths.likesSend, LikesMiddleware.sendLike, HttpLikesController.sendLike)
 router.delete(`${serverPaths.likesDelete}/:id`, SharedMiddlewares.OnlyIdMiddleware, HttpLikesController.sendDelete)
 router.get(`${serverPaths.likesGet}/:id`, LikesMiddleware.likesGet, HttpLikesController.likesGet)
-
+// СМЕНА АВАТАРА
 router.post(`${serverPaths.postAvatar}/:id`, upload.single('avatar'),  HttpFilesController.postAvatar)
-
-router.post(serverPaths.testCompressViedo, upload.single('video'), HttpFilesController.TestConvertVideo)
-router.post(serverPaths.testCompressAudio, upload.single('audio'), HttpFilesController.TestConvertAudio)
-
-router.get(`${serverPaths.extendedSearch}`, ExtendedSearchMiddle, HttpExtendedSearchController.getForms)
-
-router.get(`${serverPaths.outsideMessages}/:id`, SharedMiddlewares.OnlyIdMiddleware, HttpMessageOutsideController.outsideMessages)
-
+// ИЗМЕНЕНИЕ ПРОФИЛЯ
 router.post(`${serverPaths.passwordCompare}/:id`, HelpersMiddlewares.passwordMiddleware, HttpHelpers.passwordCompare)
 router.put(`${serverPaths.profilePut}/:id`, HelpersMiddlewares.profileMiddleware, HttpHelpers.profilePut)
+// ------------------------------------------ ДОСТУПНЫ ТОЛЬКО АДМИНИСТРАТОРУ -------------------------------------------
+router.use(AuthMiddleware.OnlyAdmin)
 
-router.get(`${serverPaths.searchForm}/:search`, FormMiddlewares.searchForm, HttpFormController.searchForm)
+export default router
 
-router.get("/test", async (req, res) => {
-  if (!req.session.sessionid) return;
-  const session = await SessionRedis.get(req.session.sessionid)
-  if (!session) res.sendStatus(401)
-  res.json(session)
-})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// router.post(serverPaths.createForm, HttpFormController.postForm)
+
+// router.get(serverPaths.refresh, HttpTokenController.refresh)
+
+// router.get('/byParams', universalController('getByParams', 'users'))
+
+// router.get("/test", AuthMiddleware.OnlyAuth, async (req, res) => {
+//   // console.log(req.id)
+//   res.json(req.userid)
+// })
 
 // router.get('/dec', (req, res) => {
 //   const body = req.body;
@@ -101,5 +128,7 @@ router.get("/test", async (req, res) => {
 //   res.header('lang', 'ru-RU')
 //   res.sendStatus(500)
 // })
-
-export default router
+// router.post(serverPaths.sendMessage, upload.array('files'), MessageMiddleware.sendMessage , HttpMessageController.sendMessage)
+// router.put(`${serverPaths.editMessage}/:id`, upload.array('files'), MessageMiddleware.editMessage, HttpMessageController.editMessage)
+// router.delete(`${serverPaths.deleteMessage}/:id`, SharedMiddlewares.OnlyIdMiddleware, HttpMessageController.deleteMessage)
+// router.get(`${serverPaths.getMessage}/:frid/:toid`, MessageMiddleware.getMessage, HttpMessageController.getMessage)

@@ -1,6 +1,6 @@
 import { fieldsToArr } from "@s/infrastructure/db/SQL/utils"
 import logger from "@s/helpers/logger"
-import { FormSchema, LikesSchema, MessageSchema, TagsSchema, TokenSchema, UserSchema, UserTagsSchema } from "@t/gen/Users"
+import { FormSchema, LikesSchema, MessageSchema, TagsSchema, UserSchema, UserTagsSchema } from "@t/gen/Users"
 import { Tables } from "@t/gen/types"
 
 // export const MulterFileSchema = z.object({
@@ -22,7 +22,7 @@ const schemas = {
   messages: MessageSchema,
   tags: TagsSchema,
   user_tags: UserTagsSchema,
-  tokens: TokenSchema
+  // tokens: TokenSchema
 } as const
 
 type shemaFields<T extends keyof Tables> = Partial<{[K in keyof Tables[T]]: true}>

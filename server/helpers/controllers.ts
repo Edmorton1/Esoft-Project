@@ -6,11 +6,6 @@ export const universalController = (method: keyof CRUDController, table: tables)
   return (controller[method] as () => any).bind(controller)
 }
 
-// export const tokenController = (method: keyof HttpTokenController) => {
-//   const controller = new HttpTokenController()
-//   return (controller[method] as () => any).bind(controller)
-// }
-
 // export const formController = (method: keyof HttpFormController) => {
 //   const controller = new HttpFormController()
 //   return (controller[method] as () => any).bind(controller)

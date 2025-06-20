@@ -1,9 +1,20 @@
-import Redis from "ioredis"
 import logger from "@s/helpers/logger"
+import {RedisStore} from "connect-redis"
+import { createClient } from "redis"
 
-export const redis = new Redis({
-  host: "127.0.0.1",
-  port: 6379
+export const redisClient = createClient({
+  socket: {
+    host: "127.0.0.1",
+    port: 6379
+  }
 })
 
-redis.on('connect', () => logger.info('REDIS CONNECT...'))
+// redisClient.on('connect', () => logger.info('REDIS CONNECT...'))
+redisClient.connect()
+  .then(() => console.log("REDIS CONNECT..."))
+  .catch(console.error)
+
+export const redisStore = new RedisStore({
+  client: redisClient,
+  prefix: "session-"
+})

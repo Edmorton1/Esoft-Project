@@ -5,9 +5,10 @@ import { toCl } from "@shared/MAPPERS";
 import axios from "axios";
 import { runInAction } from "mobx";
 import { serverPaths } from "@shared/PATHS";
+import { PREFIX } from "@shared/CONST";
 
 const $api = axios.create({
-  baseURL: URL_SERVER,
+  baseURL: URL_SERVER + PREFIX,
   withCredentials: true
 })
 

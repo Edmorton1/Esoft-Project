@@ -49,10 +49,10 @@ export const LikesSchema = z.object({
 //   res_userid: z.number(),
 // });
 
-export const TokenSchema = z.object({
-  id: zid,
-  token: z.string().nonempty(),
-});
+// export const TokenSchema = z.object({
+//   id: zid,
+//   token: z.string().nonempty(),
+// });
 
 
 export const UserTagsSchema = z.object({
@@ -83,7 +83,7 @@ export const FormSchema = z.object({
 export type User = z.infer<typeof UserSchema>;
 export type Form = z.infer<typeof FormSchema>;
 export type UserTags = z.infer<typeof UserTagsSchema>;
-export type Token = z.infer<typeof TokenSchema>;
+// export type Token = z.infer<typeof TokenSchema>;
 // export type DataRes = z.infer<typeof DataResSchema>;
 export type Likes = z.infer<typeof LikesSchema>;
 export type Message = z.infer<typeof MessageSchema>;

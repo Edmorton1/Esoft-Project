@@ -25,7 +25,15 @@ function buildDevServer(options: BuildOptions): Configuration["devServer"] {
      	  key: fs.readFileSync(path.resolve(__dirname, '..', 'server', 'certs', '192.168.1.125-key.pem')),
       	cert: fs.readFileSync(path.resolve(__dirname, '..', 'server', 'certs', '192.168.1.125.pem')),
 			}
-		}
+		},
+		proxy: [
+			{
+				context: [options.url.prefix],
+				target: options.url.server,
+				secure: false,
+				changeOrigin: true
+			}
+		]
 	};
 }
 

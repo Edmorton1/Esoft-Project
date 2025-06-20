@@ -21,3 +21,7 @@ export const TIMEZONE = 5
 export const FORM_SEARCH_LIMIT = 2 + 1
 
 export const pickFieldsForm = {id: true, name: true, city: true, age: true, avatar: true, last_active: true} as const
+
+export const PREFIX = "/api"
+
+export const COOKIE_NAME = "sessionid"

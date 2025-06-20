@@ -4,6 +4,9 @@ import buildWebpack from './config/buildWebpack';
 import { WebpackConfiguration } from 'webpack-dev-server';
 import { buildMode, buildPlatform } from './config/types';
 
+//@ts-ignore
+//ПОТОМ ПРИДУМАТЬ КАК СЮДА СЕРВЕР ПЕРЕДАТЬ
+
 interface envTypes {
 	mode?: buildMode
 	port?: number,
@@ -27,6 +30,10 @@ export default (env:envTypes) => {
 			favicon: path.resolve(__dirname, 'public', 'favicon.ico'),
 			types: path.resolve(__dirname, 'types'),
 			test: path.resolve(__dirname, 'tests')
+		},
+		url: {
+			prefix: "/api",
+			server: "https://192.168.1.125:3000"
 		},
 		analyzer: env.analyzer
 	})
