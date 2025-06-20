@@ -1,4 +1,4 @@
-import { requestToLike } from "@s/infrastructure/db/requests/SQLform";
+import { requestToLike } from "@s/infrastructure/db/SQL/SQLform";
 import { ReqForm } from "@s/infrastructure/endpoints/Form/middlewares/FormMiddlewares";
 import { FORM_SEARCH_LIMIT, pickFieldsForm } from "@shared/CONST";
 import { Request, Response } from "express";

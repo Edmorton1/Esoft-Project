@@ -1,8 +1,8 @@
-import ORM from "@s/infrastructure/db/requests/ORM";
+import ORM from "@s/infrastructure/db/SQL/ORM";
 import UploadFileService from "@s/infrastructure/endpoints/Files/services/UploadFileService";
 // import TokenHelper from "@s/infrastructure/endpoints/Token/services/TokenHelper";
 import { FormDTOServer } from "@s/infrastructure/endpoints/Auth/services/validation/RegistrationZOD";
-import logger from "@s/logger";
+import logger from "@s/helpers/logger";
 import { one } from "@shared/MAPPERS";
 import { FormDTO, TagsDTO, UserDTO } from "@t/gen/dtoObjects";
 import { Form, FormSchema, Tags, User } from "@t/gen/Users";

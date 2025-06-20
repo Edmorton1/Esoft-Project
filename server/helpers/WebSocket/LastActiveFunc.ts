@@ -1,7 +1,7 @@
-import ORM from "@s/infrastructure/db/requests/ORM";
-import logger from "@s/logger";
-import { toSOCl } from "@s/WebSocket/JSONParsers";
-import { WebSocketWidh } from "@s/WebSocket/socket";
+import ORM from "@s/infrastructure/db/SQL/ORM";
+import logger from "@s/helpers/logger";
+import { toSOCl } from "@s/helpers/WebSocket/JSONParsers";
+import { WebSocketWidh } from "@s/helpers/WebSocket/socket";
 import { TIMEZONE } from "@shared/CONST";
 
 const activeTimers = new Map()

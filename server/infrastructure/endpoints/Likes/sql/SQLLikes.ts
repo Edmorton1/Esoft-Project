@@ -1,7 +1,7 @@
 import db from "@s/infrastructure/db/db";
-import { requestToFormManyParams } from "@s/infrastructure/db/requests/SQLform";
-import { fieldsToArr } from "@s/infrastructure/db/requests/utils";
-import logger from "@s/logger";
+import { requestToFormManyParams } from "@s/infrastructure/db/SQL/SQLform";
+import { fieldsToArr } from "@s/infrastructure/db/SQL/utils";
+import logger from "@s/helpers/logger";
 import { LIKES_ON_PAGE } from "@shared/CONST";
 import { lnglatType, Tables, tables } from "@t/gen/types";
 

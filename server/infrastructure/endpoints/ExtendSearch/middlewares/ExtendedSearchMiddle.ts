@@ -1,5 +1,5 @@
 import { queryType, zodParams } from "@s/infrastructure/endpoints/ExtendSearch/middlewares/Schemas";
-import logger from "@s/logger";
+import logger from "@s/helpers/logger";
 import {Request, Response, NextFunction} from "express";
 
 export interface ExtendedParamsInterface extends Request {

@@ -1,5 +1,5 @@
 import Redis from "ioredis"
-import logger from "@s/logger"
+import logger from "@s/helpers/logger"
 
 export const redis = new Redis({
   host: "127.0.0.1",

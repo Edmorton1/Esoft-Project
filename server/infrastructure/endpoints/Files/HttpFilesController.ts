@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import ORM from "../../db/requests/ORM";
+import ORM from "../../db/SQL/ORM";
 import FileService from "./services/FileService";
 import { fileTypeFromBuffer } from "file-type";
-import Yandex from "@s/yandex";
-import logger from "@s/logger";
+import Yandex from "@s/helpers/yandex";
+import logger from "@s/helpers/logger";
 import { z } from "zod";
 // import fileType from "file-type"
 

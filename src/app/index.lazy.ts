@@ -11,6 +11,7 @@ export const LazyRoom = lazy(() => import('@/pages/Room/Room'))
 export const LazyMap = lazy(() => import('@/pages/Map/Map'))
 export const LazyLiked = lazy(() => import("@/pages/Liked/Liked"))
 export const LazyMessage = lazy(() => import("@/pages/Messages/outsideMessage/Message"))
+export const LazyAdmin = lazy(() => import("@/pages/Admin/Admin"))
 
 export const LazyFourHundredFour = lazy(() => import('@/shared/Errors/404'))
 

@@ -1,5 +1,5 @@
 import FileService from "@s/infrastructure/endpoints/Files/services/FileService";
-import Yandex from "@s/yandex";
+import Yandex from "@s/helpers/yandex";
 
 class MessageFileHelper {
   uploadFiles = async (id: number | string, files: Express.Multer.File[]): Promise<string[]> => {

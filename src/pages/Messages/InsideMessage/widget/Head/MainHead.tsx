@@ -29,7 +29,6 @@ function MainHead({toid}: {toid: number}) {
           <LastActive last_active={StoreMessages.form?.last_active} />
         </Box>
 
-        {/* <Search /> */}
         <MinButton color="salmon" onClick={handlerCallClick}><CallIcon sx={sxStyle} /></MinButton>
       </Box>
       }

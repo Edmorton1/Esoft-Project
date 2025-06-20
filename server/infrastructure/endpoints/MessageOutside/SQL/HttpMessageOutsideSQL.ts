@@ -1,5 +1,5 @@
 import db from "@s/infrastructure/db/db";
-import logger from "@s/logger";
+import logger from "@s/helpers/logger";
 import { Message, MessageSchema } from "@t/gen/Users";
 import { z } from "zod";
 

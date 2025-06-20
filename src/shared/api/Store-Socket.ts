@@ -1,7 +1,7 @@
 import StoreMessages from "@/pages/Messages/store/Store-Messages";
 import StoreLikes from "@/shared/stores/StoreLikes";
 import { URL_SERVER_WS } from "@shared/URLS";
-import { frSOCl } from "@s/WebSocket/JSONParsers";
+import { frSOCl } from "@s/helpers/WebSocket/JSONParsers";
 import { makeAutoObservable, runInAction } from "mobx";
 import StoreRoom from "@/pages/Room/WebRTC/Store-Room";
 import { assertPeerCaller } from "@t/gen/TypeGuards";

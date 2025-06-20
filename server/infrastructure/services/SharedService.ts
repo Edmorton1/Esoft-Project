@@ -1,6 +1,6 @@
 import db from "@s/infrastructure/db/db";
-import ORM from "@s/infrastructure/db/requests/ORM";
-import logger from "@s/logger";
+import ORM from "@s/infrastructure/db/SQL/ORM";
+import logger from "@s/helpers/logger";
 import { TagsDTO } from "@t/gen/dtoObjects"
 import { LocationType, Tags } from "@t/gen/Users";
 import { Knex } from "knex";

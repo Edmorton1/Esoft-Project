@@ -1,4 +1,4 @@
-import { fieldsToArr } from "@s/infrastructure/db/requests/utils";
+import { fieldsToArr } from "@s/infrastructure/db/SQL/utils";
 import { assertKnex } from "@t/gen/TypeGuardsNode";
 import { tables } from "@t/gen/types";
 

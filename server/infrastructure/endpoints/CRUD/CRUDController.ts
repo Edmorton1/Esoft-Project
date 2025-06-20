@@ -1,7 +1,7 @@
 import { tables } from "@t/gen/types"
-import ORM from "@s/infrastructure/db/requests/ORM"
+import ORM from "@s/infrastructure/db/SQL/ORM"
 import { Request, Response } from "express"
-import logger from "@s/logger";
+import logger from "@s/helpers/logger";
 
 class CRUDController {
   constructor(

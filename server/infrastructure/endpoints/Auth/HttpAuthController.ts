@@ -1,9 +1,9 @@
-import ORM from "@s/infrastructure/db/requests/ORM";
+import ORM from "@s/infrastructure/db/SQL/ORM";
 import { Request, Response } from "express";
 import bcrypt from "bcrypt"
 import { Form, User } from "@t/gen/Users";
 import TokenService from "@s/infrastructure/endpoints/Auth/services/TokenService";
-import logger from "@s/logger";
+import logger from "@s/helpers/logger";
 import { ReqLogin, RequestReg } from "@s/infrastructure/endpoints/Auth/middlewares/AuthoMid";
 import SessionRedis from "@s/infrastructure/redis/SessionRedis";
 

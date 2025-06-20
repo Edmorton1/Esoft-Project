@@ -2,11 +2,11 @@ import { tables, Tables, TablesPost } from "@t/gen/types"
 import { cacheEdit, cacheGet } from "@s/infrastructure/redis/cache"
 import db from "@s/infrastructure/db/db"
 import bcrypt from "bcrypt"
-import { checkFirstType, fieldsToArr } from "@s/infrastructure/db/requests/utils"
-import logger from "../../../logger"
+import { checkFirstType, fieldsToArr } from "@s/infrastructure/db/SQL/utils"
+import logger from "../../../helpers/logger"
 import { Form } from "@t/gen/Users"
 import { SALT } from "@shared/CONST"
-import { requestToFormManyParams, requestToFormParams, standartToForm } from "@s/infrastructure/db/requests/SQLform"
+import { requestToFormManyParams, requestToFormParams, standartToForm } from "@s/infrastructure/db/SQL/SQLform"
 
 logger.info('asdsdadas')
 const fieldsKey = (fields?: string) => `${fields ? '--fields: ' + fields : ''}`

@@ -1,7 +1,7 @@
 import $api from "@/shared/api/api"
-import { makeAutoObservable, runInAction, toJS } from "mobx"
+import { makeAutoObservable, toJS } from "mobx"
 import { Form, Message } from "@t/gen/Users"
-import { toCl, toJSON } from "@shared/MAPPERS"
+import { toJSON } from "@shared/MAPPERS"
 import StoreUser from "@/shared/stores/Store-User"
 import { serverPaths } from "@shared/PATHS"
 import { toFormData } from "@/shared/funcs/filefuncs"
@@ -12,7 +12,7 @@ class StoreMessages {
   messages: Message[] | null = null
   form: Form | null = null
   cursor: number | null = null
-  
+
   constructor() {
     makeAutoObservable(this)
   }

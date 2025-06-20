@@ -1,4 +1,4 @@
-import logger from "@s/logger";
+import logger from "@s/helpers/logger";
 import { tables } from "@t/gen/types";
 import { Request, Response, NextFunction } from "express";
 

@@ -1,6 +1,6 @@
 import FileService from "@s/infrastructure/endpoints/Files/services/FileService";
-import logger from "@s/logger";
-import Yandex from "@s/yandex";
+import logger from "@s/helpers/logger";
+import Yandex from "@s/helpers/yandex";
 
 class UploadFileService {
 	uploadAvatar = async (avatar: Express.Multer.File): Promise<string> => {

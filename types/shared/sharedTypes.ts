@@ -1,5 +1,5 @@
-import { fieldsToArr } from "@s/infrastructure/db/requests/utils"
-import logger from "@s/logger"
+import { fieldsToArr } from "@s/infrastructure/db/SQL/utils"
+import logger from "@s/helpers/logger"
 import { FormSchema, LikesSchema, MessageSchema, TagsSchema, TokenSchema, UserSchema, UserTagsSchema } from "@t/gen/Users"
 import { Tables } from "@t/gen/types"
 

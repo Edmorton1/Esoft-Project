@@ -1,5 +1,5 @@
 import { RegistrationDTOServerSchema } from "@s/infrastructure/endpoints/Auth/services/validation/RegistrationZOD";
-import logger from "@s/logger";
+import logger from "@s/helpers/logger";
 import { UserDTO, UserDTOSchema } from "@t/gen/dtoObjects";
 import { NextFunction, Request, Response } from "express";
 

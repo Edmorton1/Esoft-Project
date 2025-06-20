@@ -1,4 +1,4 @@
-import logger from "@s/logger";
+import logger from "@s/helpers/logger";
 import { LikesDTO, LikesDTOSchema } from "@t/gen/dtoObjects";
 import { zstrnum } from "@t/gen/Schemas";
 import { Request, Response, NextFunction } from "express";

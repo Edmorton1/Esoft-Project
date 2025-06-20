@@ -1,7 +1,7 @@
 import { ExtendedParamsInterface } from "@s/infrastructure/endpoints/ExtendSearch/middlewares/ExtendedSearchMiddle"
 import SQLHard from "@s/infrastructure/endpoints/ExtendSearch/SQL/SQLHard"
 import SQLHelper from "@s/infrastructure/endpoints/ExtendSearch/SQL/SQLHelper"
-import logger from "@s/logger"
+import logger from "@s/helpers/logger"
 import { toJSON } from "@shared/MAPPERS"
 import { Request, Response } from "express"
 

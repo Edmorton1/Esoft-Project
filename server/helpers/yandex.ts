@@ -1,7 +1,7 @@
 import EasyYandexS3 from 'easy-yandex-s3';
 import dotenv from "dotenv"
 import { randomUUID } from 'crypto';
-import logger from '@s/logger';
+import logger from '@s/helpers/logger';
 dotenv.config()
 
 export const s3 = new EasyYandexS3({

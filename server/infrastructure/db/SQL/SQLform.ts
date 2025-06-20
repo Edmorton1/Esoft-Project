@@ -1,6 +1,6 @@
 import db from "@s/infrastructure/db/db";
-import { fieldsToArr } from "@s/infrastructure/db/requests/utils";
-import logger from "@s/logger";
+import { fieldsToArr } from "@s/infrastructure/db/SQL/utils";
+import logger from "@s/helpers/logger";
 import { Form } from "@t/gen/Users";
 
 export const standartToForm = (fields?: string) => {

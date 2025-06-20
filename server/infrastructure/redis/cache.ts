@@ -1,5 +1,5 @@
 import { redis } from "@s/infrastructure/redis/redis"
-import logger from "@s/logger"
+import logger from "@s/helpers/logger"
 import { frJSON, toJSON } from "@shared/MAPPERS"
 import { tables } from "@t/gen/types"
 

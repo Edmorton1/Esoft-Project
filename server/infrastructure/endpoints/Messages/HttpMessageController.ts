@@ -1,16 +1,16 @@
 import { MsgTypesServer } from "@t/gen/socketTypes";
 import { Form, Message } from "@t/gen/Users";
 import { one } from "@shared/MAPPERS";
-import ORM from "@s/infrastructure/db/requests/ORM";
-import { clients } from "@s/WebSocket/socket";
-import Yandex from "@s/yandex";
+import ORM from "@s/infrastructure/db/SQL/ORM";
+import { clients } from "@s/helpers/WebSocket/socket";
+import Yandex from "@s/helpers/yandex";
 import { Request, Response } from "express";
-import MessageFileHelper from "@s/infrastructure/endpoints/Message/services/MessageFileHelper";
-import logger from "@s/logger";
-import { ReqEditMessage, ReqGetMessage, ReqSendMessage } from "@s/infrastructure/endpoints/Message/middlewares/MessageMiddleware";
+import MessageFileHelper from "@s/infrastructure/endpoints/Messages/services/MessageFileHelper";
+import logger from "@s/helpers/logger";
+import { ReqEditMessage, ReqGetMessage, ReqSendMessage } from "@s/infrastructure/endpoints/Messages/middlewares/MessageMiddleware";
 import { RequestOnlyId } from "@s/infrastructure/middlewares/SharedMiddlewares";
-import MessageSQL from "@s/infrastructure/endpoints/Message/SQL/MessageSQL";
-import { toSOSe } from "@s/WebSocket/JSONParsers";
+import MessageSQL from "@s/infrastructure/endpoints/Messages/SQL/MessageSQL";
+import { toSOSe } from "@s/helpers/WebSocket/JSONParsers";
 
 class HttpMessageController {
   sendSocket = <T extends keyof MsgTypesServer>(fromid: number, toid: number, msg: MsgTypesServer[T], type: T) => {

@@ -1,7 +1,7 @@
 import setupDataChannel from "@/pages/Room/WebRTC/config/dataChannelConfig";
 import BasePeer from "@/pages/Room/WebRTC/logic/BasePeer";
 import StoreSocket from "@/shared/api/Store-Socket";
-import { toSOSe } from "@s/WebSocket/JSONParsers";
+import { toSOSe } from "@s/helpers/WebSocket/JSONParsers";
 import StoreForm from "@/shared/stores/Store-Form";
 
 class PeerCaller extends BasePeer {

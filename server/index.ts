@@ -4,13 +4,13 @@ import router from "@s/router"
 import cors from "cors"
 // import http from "http"
 import cookieParser from "cookie-parser"
-import { createWebSocketServer } from "@s/WebSocket/socket"
+import { createWebSocketServer } from "@s/helpers/WebSocket/socket"
 import "@s/infrastructure/redis/redis"
 dotenv.config()
 import https from "https"
 import fs from 'fs'
 import path from 'path'
-import logger from "@s/logger"
+import logger from "@s/helpers/logger"
 import "@t/declarations/server/index"
 
 const app = express()

@@ -1,8 +1,8 @@
 import { ReqPass, ReqProf } from "@s/infrastructure/endpoints/Helpers/middlewares/HelpersMiddlewares"
 import { Request, Response } from "express"
 import bcrypt from "bcrypt"
-import ORM from "@s/infrastructure/db/requests/ORM";
-import logger from "@s/logger";
+import ORM from "@s/infrastructure/db/SQL/ORM";
+import logger from "@s/helpers/logger";
 import { SALT } from "@shared/CONST";
 import SharedService from "@s/infrastructure/services/SharedService";
 import { one } from "@shared/MAPPERS";

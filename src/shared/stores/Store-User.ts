@@ -14,7 +14,7 @@ import { UseFormSetError } from "react-hook-form"
 import axios from "axios"
 import { LoginErrorTypes } from "@s/infrastructure/endpoints/Auth/HttpAuthController"
 import StoreLogin from "@/pages/Login/Store-Login"
-import { toSOSe } from "@s/WebSocket/JSONParsers"
+import { toSOSe } from "@s/helpers/WebSocket/JSONParsers"
 
 export interface responseInterface {
   user: User,

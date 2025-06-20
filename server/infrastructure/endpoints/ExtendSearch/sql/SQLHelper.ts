@@ -1,6 +1,6 @@
 import db from "@s/infrastructure/db/db";
 import {paramsType, tagsTypes} from "@s/infrastructure/endpoints/ExtendSearch/middlewares/Schemas";
-import logger from "@s/logger";
+import logger from "@s/helpers/logger";
 import {Knex} from "knex";
 
 class SQLHelper {

@@ -1,4 +1,4 @@
-import { randomCryptoString } from "@s/infrastructure/db/requests/utils"
+import { randomCryptoString } from "@s/infrastructure/db/SQL/utils"
 import { redis } from "@s/infrastructure/redis/redis"
 import { UserSchema } from "@t/gen/Users"
 import { z } from "zod"
