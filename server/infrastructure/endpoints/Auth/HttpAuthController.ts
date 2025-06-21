@@ -38,13 +38,13 @@ class HttpAuthController {
 
     if (!user) {
       logger.info({user, STATUS: "ТАКОГОЙ ПОЧТЫ НЕТ"})
-      return res.status(400).json(<LoginErrorTypes>{type: "email", message: "Такой почты нет"})
+      return res.status(401).json(<LoginErrorTypes>{type: "email", message: "Такой почты нет"})
     }
 
     const passwordValidate =  await bcrypt.compare(dto.password, user.password)
     if (!passwordValidate) {
       logger.info({user, STATUS: "НЕВЕРНЫЙ ПАРОЛЬ"})
-      return res.status(400).json(<LoginErrorTypes>{type: "password", message: 'Неверный пароль'})
+      return res.status(401).json(<LoginErrorTypes>{type: "password", message: 'Неверный пароль'})
     }
 
     logger.info({user, STATUS: "ВОШЁЛ"})

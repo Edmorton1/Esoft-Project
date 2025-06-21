@@ -9,7 +9,7 @@ import { observer } from "mobx-react-lite"
 function UsersCardModule() {
   const context = useContext(UsersContext)!
   
-  const handleLike = () => StoreLikes.likes?.sent.some(e => e.liked_userid === context!.id) ? StoreLikes.delete(context!.id) : StoreLikes.sendLike({userid: StoreForm.form!.id!, liked_userid: context.id})
+  const handleLike = () => StoreLikes.likes?.sent.some(e => e.liked_userid === context!.id) ? StoreLikes.delete(context!.id) : StoreLikes.sendLike(context.id)
 
   return <UsersCardInfo form={context}>
     {StoreForm.form?.id !== context.id && <Button color="success" variant="contained" onClick={handleLike}>{StoreLikes.likes?.sent.some(e => e.liked_userid === context!.id) ? 'Убрать лайк' : 'Лайкнуть'}</Button>}

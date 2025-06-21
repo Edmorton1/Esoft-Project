@@ -1,5 +1,5 @@
 import logger from "@s/helpers/logger";
-import { LikesDTO, LikesDTOSchema } from "@t/gen/dtoObjects";
+import { LikesDTO } from "@t/gen/dtoObjects";
 import { zstrnum } from "@t/gen/Schemas";
 import { Request, Response, NextFunction } from "express";
 import { z } from "zod";
@@ -7,8 +7,7 @@ import { z } from "zod";
 export type lnglatType = [number, number]
 
 export interface RequestLike extends Request{
-  fields: string | undefined,
-  likes: LikesDTO
+  likesDTO: LikesDTO
 }
 
 export interface RequestGet extends Request{
@@ -26,13 +25,11 @@ class LikesMiddleware {
   sendLike = (req: Request, res: Response, next: NextFunction) => {
     const r = req as RequestLike
 
-    const fields = typeof req.query.fields === 'string' ? req.query.fields : undefined;
-    const likesDTO = LikesDTOSchema.parse(req.body)
+    const liked_userid = z.coerce.number().parse(req.params.liked_userid)
 
-    if(req.session.userid !== likesDTO.userid) return res.sendStatus(403)
+    // if(req.session.userid !== likesDTO.userid) return res.sendStatus(403)
 
-    r.fields = fields,
-    r.likes = likesDTO
+    r.likesDTO = {liked_userid, userid: req.session.userid!}
 
     next()
   };
@@ -52,7 +49,5 @@ class LikesMiddleware {
     next()
   }
 }
-
-
 
 export default new LikesMiddleware

@@ -1,4 +1,5 @@
 import logger from "@s/helpers/logger"
+import ORM from "@s/infrastructure/db/SQL/ORM"
 import { frJSON } from "@shared/MAPPERS"
 import { MessageDTO } from "@t/gen/dtoObjects"
 import { zstrnum } from "@t/gen/Schemas"
@@ -18,7 +19,7 @@ export interface ReqSendMessage extends Request {
 }
 
 export interface ReqEditMessage extends Request {
-  id: number,
+  iid: number,
   data: MessagePutDTOServer
 }
 
@@ -26,7 +27,8 @@ class MessageMiddleware {
   sendMessage = (req: Request, res: Response, next: NextFunction) => {
     const r = req as ReqSendMessage
     logger.info({PRED_MESSAGE: r})
-    const data = MessageDTOServerSchema.parse({...frJSON(req.body.json)!, files: req.files})
+    const toid = z.coerce.number().parse(req.params.toid)
+    const data = MessageDTOServerSchema.parse({...frJSON(req.body.json)!, files: req.files, fromid: req.session.userid, toid})
     const { files, ...message } = data
 
     if (message.fromid !== req.session.userid) return res.sendStatus(403)
@@ -37,16 +39,19 @@ class MessageMiddleware {
     next()
   };
 
-  editMessage = (req: Request, res: Response, next: NextFunction) => {
+  editMessage = async (req: Request, res: Response, next: NextFunction) => {
     const r = req as ReqEditMessage
 
     const id = z.coerce.number().parse(req.params.id)
-    const data = MessagePutDTOServerSchema.parse({...frJSON(req.body.json)!, files: req.files})
+    const data = MessagePutDTOServerSchema.parse({...frJSON(req.body.json)!, files: req.files, fromid: req.session.userid})
 
-    if (data.fromid !== req.session.userid) return res.sendStatus(403)
+    const [request] = await ORM.getById(id, "messages", "fromid")
+    if (request.fromid !== req.session.userid) return res.sendStatus(403)
+
+    // if (data.fromid !== req.session.userid) return res.sendStatus(403)
 
     // logger.info({parsed: frJSON(req.body.json)})
-    r.id = id,
+    r.iid = id,
     r.data = data
     next()
   }

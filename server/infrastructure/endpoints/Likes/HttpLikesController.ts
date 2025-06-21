@@ -1,5 +1,4 @@
 import { Likes } from "@t/gen/Users";
-import { one } from "@shared/MAPPERS";
 import ORM from "@s/infrastructure/db/SQL/ORM";
 import { clients } from "@s/helpers/WebSocket/socket";
 import { Request, Response } from "express";
@@ -13,12 +12,11 @@ class HttpLikesController {
   sendLike = async (req: Request, res: Response) => {
     const r = req as RequestLike
 
-    const fields = r.fields
-    const likeDTO = r.likes
-    
-    const [data] = await ORM.post(likeDTO, 'likes', fields)
+    const likesDTO = r.likesDTO
+
+    const [data] = await ORM.post(likesDTO, 'likes', "id, liked_userid")
     logger.info(clients.keys())
-    const clientTo = clients.get(r.likes.liked_userid)
+    const clientTo = clients.get(r.likesDTO.liked_userid)
     clientTo?.send(toSOSe('like', data))
     
     res.json(data)
@@ -27,9 +25,9 @@ class HttpLikesController {
   sendDelete = async (req: Request, res: Response) => {
     const r = req as RequestOnlyId
 
-    logger.info(r.id)
+    logger.info(r.iid)
 
-    const [data] = await ORM.delete(r.id, 'likes', req.session.userid!)
+    const [data] = await ORM.delete(r.iid, 'likes', req.session.userid!)
 
     if (!data) return res.sendStatus(403)
 
@@ -42,7 +40,7 @@ class HttpLikesController {
   likesGet = async (req: Request, res: Response) => {
     const r = req as RequestGet
 
-    logger.info({riad: r.id})
+    // logger.info({riad: r.iid})
     const ids = (await ORM.getByParams({liked_userid: req.session.userid}, 'likes', 'userid')).map(e => e.userid)
     logger.info({ids})
 

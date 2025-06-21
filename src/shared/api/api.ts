@@ -1,16 +1,24 @@
-import StoreGlobal from "@/shared/api/Store-Global";
-import storeAuthorization, { responseInterface } from "@/shared/stores/Store-User";
-import { URL_SERVER } from "@shared/URLS";
-import { toCl } from "@shared/MAPPERS";
+import {URL_SERVER} from "@shared/URLS";
 import axios from "axios";
-import { runInAction } from "mobx";
-import { serverPaths } from "@shared/PATHS";
-import { PREFIX } from "@shared/CONST";
+import {PREFIX} from "@shared/CONST";
 
 const $api = axios.create({
-  baseURL: URL_SERVER + PREFIX,
-  withCredentials: true
-})
+	baseURL: URL_SERVER + PREFIX,
+	withCredentials: true,
+});
+
+// $api.interceptors.response.use(
+// 	res => {
+// 		console.log("ПЕРЕХВАТ", res.data);
+// 		if (res.status === 401) {
+// 			console.log(res);
+// 		}
+// 		return res;
+// 	},
+// 	err => {
+//     console.log(err)
+//   },
+// );
 
 // $api.interceptors.request.use((config => {
 //   const accessToken = localStorage.getItem("accessToken")
@@ -56,4 +64,4 @@ const $api = axios.create({
 //   )
 // }
 
-export default $api
+export default $api;

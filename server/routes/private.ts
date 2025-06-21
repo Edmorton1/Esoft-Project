@@ -12,6 +12,7 @@ import HelpersMiddlewares from "@s/infrastructure/endpoints/Helpers/middlewares/
 import HttpHelpers from "@s/infrastructure/endpoints/Helpers/HttpHelpers"
 import AuthMiddleware from "@s/infrastructure/middlewares/AuthMiddleware"
 import { upload } from "@s/routes/public";
+import { asyncHandle } from "@s/routes/utils";
 
 const privateRouter = Router();
 
@@ -19,22 +20,20 @@ const privateRouter = Router();
 //ЛОГАУТ
 privateRouter.post(serverPaths.logout, HttpAuthController.logout)
 // СООБЩЕНИЯ
-privateRouter.post(serverPaths.sendMessage, upload.array('files'), AuthMiddleware.OnlyAuth, MessageMiddleware.sendMessage , HttpMessageController.sendMessage)
-privateRouter.put(`${serverPaths.editMessage}/:id`, upload.array('files'), AuthMiddleware.OnlyAuth, MessageMiddleware.editMessage, HttpMessageController.editMessage)
-privateRouter.delete(`${serverPaths.deleteMessage}/:id`, AuthMiddleware.OnlyAuth, SharedMiddlewares.OnlyIdMiddleware, HttpMessageController.deleteMessage)
-privateRouter.get(`${serverPaths.getMessage}/:toid`, AuthMiddleware.OnlyAuth, MessageMiddleware.getMessage, HttpMessageController.getMessage)
+privateRouter.post(`${serverPaths.sendMessage}/:toid`, upload.array('files'), AuthMiddleware.OnlyAuth, MessageMiddleware.sendMessage , asyncHandle(HttpMessageController.sendMessage))
+privateRouter.put(`${serverPaths.editMessage}/:id`, upload.array('files'), AuthMiddleware.OnlyAuth, MessageMiddleware.editMessage, asyncHandle(HttpMessageController.editMessage))
+privateRouter.delete(`${serverPaths.deleteMessage}/:id`, AuthMiddleware.OnlyAuth, SharedMiddlewares.OnlyIdMiddleware, asyncHandle(HttpMessageController.deleteMessage))
+privateRouter.get(`${serverPaths.getMessage}/:toid`, AuthMiddleware.OnlyAuth, MessageMiddleware.getMessage, asyncHandle(HttpMessageController.getMessage))
 // ЗАПРОС ПЕРЕПИСОК
-privateRouter.get(serverPaths.outsideMessages, AuthMiddleware.OnlyAuth, HttpMessageOutsideController.outsideMessages)
+privateRouter.get(serverPaths.outsideMessages, AuthMiddleware.OnlyAuth, asyncHandle(HttpMessageOutsideController.outsideMessages))
 // ЛАЙКИ
-privateRouter.post(serverPaths.likesSend, AuthMiddleware.OnlyAuth, LikesMiddleware.sendLike, HttpLikesController.sendLike)
-privateRouter.delete(`${serverPaths.likesDelete}/:id`, AuthMiddleware.OnlyAuth, SharedMiddlewares.OnlyIdMiddleware, HttpLikesController.sendDelete)
-privateRouter.get(serverPaths.likesGet, AuthMiddleware.OnlyAuth, LikesMiddleware.likesGet, HttpLikesController.likesGet)
+privateRouter.post(`${serverPaths.likesSend}/:liked_userid`, AuthMiddleware.OnlyAuth, LikesMiddleware.sendLike, asyncHandle(HttpLikesController.sendLike))
+privateRouter.delete(`${serverPaths.likesDelete}/:id`, AuthMiddleware.OnlyAuth, SharedMiddlewares.OnlyIdMiddleware, asyncHandle(HttpLikesController.sendDelete))
+privateRouter.get(serverPaths.likesGet, AuthMiddleware.OnlyAuth, LikesMiddleware.likesGet, asyncHandle(HttpLikesController.likesGet))
 // СМЕНА АВАТАРА
-// ПОФИКСИТЬ НА КЛИЕНТЕ
-privateRouter.post(serverPaths.postAvatar, upload.single('avatar'), AuthMiddleware.OnlyAuth, HttpFilesController.postAvatar)
+privateRouter.post(serverPaths.postAvatar, upload.single('avatar'), AuthMiddleware.OnlyAuth, asyncHandle(HttpFilesController.postAvatar))
 // ИЗМЕНЕНИЕ ПРОФИЛЯ
-// ТУТ ВСЁ ТОЖЕ ПОФИКСИТЬ НА КЛИЕНТЕ
-privateRouter.post(serverPaths.passwordCompare, AuthMiddleware.OnlyAuth, HelpersMiddlewares.passwordMiddleware, HttpHelpers.passwordCompare)
-privateRouter.put(serverPaths.profilePut, AuthMiddleware.OnlyAuth, HelpersMiddlewares.profileMiddleware, HttpHelpers.profilePut)
+privateRouter.post(serverPaths.passwordCompare, AuthMiddleware.OnlyAuth, HelpersMiddlewares.passwordMiddleware, asyncHandle(HttpHelpers.passwordCompare))
+privateRouter.put(serverPaths.profilePut, AuthMiddleware.OnlyAuth, HelpersMiddlewares.profileMiddleware, asyncHandle(HttpHelpers.profilePut))
 
 export default privateRouter;

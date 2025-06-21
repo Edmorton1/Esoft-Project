@@ -6,7 +6,7 @@ export const MessageDTOServerSchema = MessageSchema.pick({fromid: true, toid: tr
   files: z.array(expressMulter)
 })
 
-export const MessagePutDTOServerSchema = MessageSchema.pick({fromid: true, toid: true, text: true}).extend({
+export const MessagePutDTOServerSchema = MessageSchema.pick({fromid: true, text: true}).extend({
   files: z.array(expressMulter),
   deleted: z.array(z.string()),
 });

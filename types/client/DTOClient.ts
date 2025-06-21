@@ -3,7 +3,7 @@ import {z} from "zod";
 
 // files: z.custom<FileList>(val => val instanceof FileList).optional(),
 
-export const MessageDTOClientSchema = MessageSchema.pick({fromid: true, toid: true, text: true}).extend({
+export const MessageDTOClientSchema = MessageSchema.pick({text: true}).extend({
   files: z.instanceof(FileList).optional(),
 });
 
@@ -13,12 +13,10 @@ const MessageFilesSchema = z.object({
   old: z.array(z.string()),
 })
 
-export const MessagePutDTOClientSchema = MessageSchema.pick({id: true, fromid: true, toid: true, text: true}).extend({
+export const MessagePutDTOClientSchema = MessageSchema.pick({id: true, text: true}).extend({
   files: MessageFilesSchema,
   deleted: z.array(z.string())
 });
-
-
 
 export type MessageFiles = z.infer<typeof MessageFilesSchema>
 export type MessageDTOClient = z.infer<typeof MessageDTOClientSchema>;

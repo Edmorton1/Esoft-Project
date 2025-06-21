@@ -79,11 +79,9 @@ class VoiceMessage {
   const filelist = fileToFileList(file)
 
   StoreMessages.send({
-    fromid: StoreForm.form!.id,
-    toid: this.toid,
     text: 'test voice2',
     files: filelist
-  })
+  }, this.toid)
 
   this.stream.getTracks().forEach(track => track.stop())
   }

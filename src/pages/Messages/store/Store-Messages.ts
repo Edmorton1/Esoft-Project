@@ -38,7 +38,7 @@ class StoreMessages {
     console.log(toJS(this.messages))    
   }
 
-  send = async (data: MessageDTOClient) => {
+  send = async (data: MessageDTOClient, toid: number) => {
     if (this.checkFileLength(data.files?.length)) return;
 
     const formdata = data.files ? await toFormData(data.files) : new FormData
@@ -47,7 +47,7 @@ class StoreMessages {
     formdata.append('json', toJSON(data))
 
     console.log(formdata.get('files'), formdata.get('json'))
-    const request = await $api.post(serverPaths.sendMessage, formdata, {
+    const request = await $api.post(`${serverPaths.sendMessage}/${toid}`, formdata, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
@@ -57,6 +57,7 @@ class StoreMessages {
 
   put = async (raw: MessagePutDTOClient) => {
     const data = MessagePutDTOClientSchema.parse(raw)
+    console.log({DATA_PARSED: data})
     const old = this.messages!.find(e => e.id == data.id)!
     const fileLen = (data.files.new ? data.files.new?.length : 0) + data.files.old.length - data.deleted.length
 

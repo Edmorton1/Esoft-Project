@@ -63,8 +63,8 @@ class StoreLikes {
     StoreGlobal.sendInfo(`Вы больше не нравитесь пользователю ${like!.userid}`)
   }
 
-  sendLike = async (data: LikesDTO) => {
-    const request: Likes = toCl(await $api.post(`${serverPaths.likesSend}?fields=id, liked_userid`, data))
+  sendLike = async (liked_userid: number) => {
+    const request: Likes = toCl(await $api.post(`${serverPaths.likesSend}/${liked_userid}`))
     console.log(request)
     runInAction(() => this.likes?.sent.push(request))
     console.log('Like agredd', request)

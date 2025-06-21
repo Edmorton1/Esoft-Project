@@ -84,6 +84,10 @@ class ORM {
     return request
   }
 
+  test = async () => {
+    return await db("likes").insert({"liked_userid": 400, "userid": 16}).returning("*")
+  }
+  
   post = async <T extends tables>(dto: TablesPost[T], table: T, fields?: string): Promise<Tables[T][]> => {
     logger.info({table, fields, dto})
     
