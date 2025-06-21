@@ -26,7 +26,10 @@ class HttpMessageController {
     logger.info({toid: r.toid, frid: r.frid, cursor: r.cursor})
 
     const messages = await MessageSQL.getMessage(r.frid, r.toid, r.cursor)
-    const form = one(await ORM.getById(r.toid, 'forms'))
+    
+    if (!messages.length) return res.sendStatus(404)
+
+    const [form] = await ORM.getById(r.toid, 'forms')
 
     const total = r.cursor ? {messages} : {messages, form}
 

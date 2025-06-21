@@ -11,6 +11,7 @@ import { observer } from "mobx-react-lite"
 import ModalFile from "@/shared/ui/components/modal/ModalFile"
 import LoginModal from "@/pages/Login/LoginModal"
 import PasswordModal from "@/pages/Settings/widgets/Account/Modals/PasswordModal"
+import ThrowError from "@/errors/ThrowError"
 
 function Initialization() {
 
@@ -32,6 +33,7 @@ function Initialization() {
     <LoginModal />
     <PasswordModal />
     <CallLine />
+    <ThrowError />
   </>
 }
 

@@ -1,0 +1,23 @@
+.container {
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 100vw;
+  height: 100vh;
+
+  &__message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    border-radius: 50px;
+    gap: 15px;
+  }
+
+  img {
+    filter: grayscale(100%)
+  }
+}

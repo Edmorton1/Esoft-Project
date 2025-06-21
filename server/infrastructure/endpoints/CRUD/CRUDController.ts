@@ -22,6 +22,9 @@ class CRUDController {
     const {fields} = req.query
     const {id} = req.params
     const request = await ORM.getById(id, this.table, fields)
+
+    if (!request.length) return res.sendStatus(404)
+
     res.json(request)
   }
   post = async (req: Request, res: Response) => {

@@ -8,6 +8,8 @@ import { paths } from "@shared/PATHS";
 import ChangeTheme from "@/app/theme/ChangeTheme";
 import "@/shared/css/App.scss"
 import "@/shared/css/modules/LocalRemoteVideo.scss"
+import { ErrorBoundary } from "react-error-boundary";
+import Fallback from "@/errors/Fallback";
 
 // ДЛЯ АССИНХРОННЫХ ОПЕРАЦИЙ ИСПОЛЬЗОВАТЬ suspense
 
@@ -17,9 +19,9 @@ function App() {
 	}, []);
 
 	return (
-		// <ErrorBoundary key={location.pathname + location.search} FallbackComponent={Fallback}>
+		<ChangeTheme>
+		<ErrorBoundary key={location.pathname + location.search} FallbackComponent={Fallback}>
 		<BrowserRouter>
-			<ChangeTheme>
 				<Initialization />
 				<Suspense>
 					<Routes>
@@ -36,7 +38,7 @@ function App() {
 							<Route path={paths.liked} element={<LazyLiked />} />
 							
 							<Route path={paths.room} element={<LazyRoom />} />
-							{/* <Route path="*" element={<LazyFourHundredFour />} /> */}
+							<Route path="*" element={<LazyFourHundredFour />} />
 
 							<Route path={paths.test} element={<LazyTest />} />
 						</Route>
@@ -45,9 +47,9 @@ function App() {
 
 					</Routes>
 				</Suspense>
-			</ChangeTheme>
 		</BrowserRouter>
-		// </ErrorBoundary>
+		</ErrorBoundary>
+		</ChangeTheme>
 	);
 }
 

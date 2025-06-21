@@ -60,12 +60,12 @@ class StoreUser {
           if (axios.isAxiosError(err)) {
             const status = err.status
             const response = err.response?.data as LoginErrorTypes
-            if (status === 400 && response.type === "email") {
+            if (status === 401 && response.type === "email") {
               setError("email", {
                 message: response.message,
                 type: "manual"
               })
-            } else if (status === 400 && response.type === "password") {
+            } else if (status === 401 && response.type === "password") {
               setError("password", {
                 message: response.message,
                 type: "manual"

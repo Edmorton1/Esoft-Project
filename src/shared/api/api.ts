@@ -1,5 +1,5 @@
 import {URL_SERVER} from "@shared/URLS";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import {PREFIX} from "@shared/CONST";
 
 const $api = axios.create({
@@ -7,18 +7,13 @@ const $api = axios.create({
 	withCredentials: true,
 });
 
-// $api.interceptors.response.use(
-// 	res => {
-// 		console.log("ПЕРЕХВАТ", res.data);
-// 		if (res.status === 401) {
-// 			console.log(res);
-// 		}
-// 		return res;
-// 	},
-// 	err => {
-//     console.log(err)
-//   },
-// );
+$api.interceptors.response.use(
+	res => res,
+	(err: AxiosError) => {
+		console.error(err)
+		return Promise.reject(err)
+  },
+);
 
 // $api.interceptors.request.use((config => {
 //   const accessToken = localStorage.getItem("accessToken")
