@@ -10,7 +10,7 @@ import { z } from "zod";
 class HttpFilesController {
   postAvatar = async (req: Request, res: Response) => {
     
-    const id = z.coerce.number().parse(req.params.id)
+    const id = z.coerce.number().parse(req.session.userid)
     const buffer = req.file!.buffer
     const compress = await FileService.imageCompress(buffer)
 

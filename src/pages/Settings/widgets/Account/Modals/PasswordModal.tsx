@@ -1,5 +1,5 @@
 import BaseModal from "@/shared/ui/components/BaseModal/BaseModal"
-import StorePassword from "@/pages/Settings/widgets/store/Store-Password"
+import StoreSettings from "@/pages/Settings/widgets/store/Store-Settings"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { PasswordSchema } from "@/pages/Settings/widgets/schema/Schemas"
@@ -17,10 +17,10 @@ function PasswordModal() {
   const onSubmit = async (data: any) => {
     const parse = PasswordSchema.parse(data)
     console.log(parse)
-    StorePassword.comparePassword(parse.pass, parse.new, setError)
+    StoreSettings.comparePassword(parse.pass, parse.new, setError)
   }
 
-  return <BaseModal Store={StorePassword}>
+  return <BaseModal Store={StoreSettings}>
     <form className={style.container} onSubmit={handleSubmit(data => onSubmit(data))}>
       <Typography variant="h4">Сменить пароль</Typography>
       <InputMui<RegType> register={register} text="Старый пароль" id="pass" error={errors.pass} />

@@ -3,7 +3,7 @@ import Paper from "@mui/material/Paper"
 import Typography from "@mui/material/Typography"
 import IconButton from "@mui/material/IconButton"
 import EditSquareIcon from '@mui/icons-material/EditSquare';
-import StorePassword from "@/pages/Settings/widgets/store/Store-Password"
+import StoreSettings from "@/pages/Settings/widgets/store/Store-Settings"
 
 function AccountSettings() {
   // ПОЧТУ В БУДУЩЕМ СДЕЛАТЬ КОГДА БУДЕТ ДОБАВЛЕНА ПОЧТА САЙТА С РАССЫЛКОЙ
@@ -14,7 +14,7 @@ function AccountSettings() {
     </div>
     <div>
       <Typography>Пароль</Typography>
-      <IconButton onClick={() => StorePassword.openModal()}>{<EditSquareIcon/>}</IconButton>
+      <IconButton onClick={() => StoreSettings.openModal()}>{<EditSquareIcon/>}</IconButton>
     </div>
   </Paper>
 }

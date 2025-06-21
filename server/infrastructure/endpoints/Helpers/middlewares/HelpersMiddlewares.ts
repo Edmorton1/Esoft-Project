@@ -15,13 +15,11 @@ const ProfileSchema = FormSchema
 type ProfileSchemaType = z.infer<typeof ProfileSchema>
 
 export interface ReqPass extends Request {
-  id: number
   oldPass: string
   newPass: string
 }
 
 export interface ReqProf extends Request {
-  id: number,
   profile: ProfileSchemaType
 }
 
@@ -29,11 +27,9 @@ class HeplersMiddlewares {
   passwordMiddleware = (req: Request, res: Response, next: NextFunction) => {
     const r = req as ReqPass
 
-    const id = zstrnum.parse(req.params.id)
     const oldPass = req.body.old
     const newPass = req.body.new
 
-    r.id = id
     r.oldPass = oldPass
     r.newPass = newPass
     
@@ -43,10 +39,8 @@ class HeplersMiddlewares {
   profileMiddleware = (req: Request, res: Response, next: NextFunction) => {
     const r = req as ReqProf
 
-    const id = zstrnum.parse(req.params.id)
     const profile = ProfileSchema.parse(req.body)
 
-    r.id = id
     r.profile = profile
 
     next()

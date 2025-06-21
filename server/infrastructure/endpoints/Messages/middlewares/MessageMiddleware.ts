@@ -1,3 +1,4 @@
+import logger from "@s/helpers/logger"
 import { frJSON } from "@shared/MAPPERS"
 import { MessageDTO } from "@t/gen/dtoObjects"
 import { zstrnum } from "@t/gen/Schemas"
@@ -24,14 +25,15 @@ export interface ReqEditMessage extends Request {
 class MessageMiddleware {
   sendMessage = (req: Request, res: Response, next: NextFunction) => {
     const r = req as ReqSendMessage
-
+    logger.info({PRED_MESSAGE: r})
     const data = MessageDTOServerSchema.parse({...frJSON(req.body.json)!, files: req.files})
     const { files, ...message } = data
 
-    if (message.fromid !== req.session.userid) return res.sendStatus(401)
+    if (message.fromid !== req.session.userid) return res.sendStatus(403)
 
     r.files = files
     r.message = message
+    logger.info({SEND_MESSAGE: files, message})
     next()
   };
 
@@ -40,6 +42,8 @@ class MessageMiddleware {
 
     const id = z.coerce.number().parse(req.params.id)
     const data = MessagePutDTOServerSchema.parse({...frJSON(req.body.json)!, files: req.files})
+
+    if (data.fromid !== req.session.userid) return res.sendStatus(403)
 
     // logger.info({parsed: frJSON(req.body.json)})
     r.id = id,
@@ -50,7 +54,8 @@ class MessageMiddleware {
   getMessage = (req: Request, res: Response, next: NextFunction) => {
     const r = req as ReqGetMessage
 
-    const frid = zstrnum.parse(req.params.frid)
+    // const frid = zstrnum.parse(req.params.frid)
+    const frid = zstrnum.parse(req.session.userid)
     const toid = zstrnum.parse(req.params.toid)
     const parsed = zstrnum.safeParse(req.query.cursor)
 

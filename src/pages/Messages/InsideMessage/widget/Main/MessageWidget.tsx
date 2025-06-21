@@ -14,7 +14,7 @@ function MessageWidget({toid}: {toid: number}) {
 
   console.log("RERENDER")
   const ref = useRef<HTMLElement>(null)
-  const scrollHandle = useInfinitPagination(ref, `${serverPaths.getMessage}/${StoreUser.user?.id}/${toid}?cursor=${StoreMessages.cursor}`, StoreMessages.cursor === null, (data) => StoreMessages.get(data.data), MESSAGE_ON_PAGE)
+  const scrollHandle = useInfinitPagination(ref, `${serverPaths.getMessage}/${toid}?cursor=${StoreMessages.cursor}`, StoreMessages.cursor === null, (data) => StoreMessages.get(data.data), MESSAGE_ON_PAGE)
 
   return <Box ref={ref} className={style.section__widget} component="section" bgcolor={"background.third"} onScroll={scrollHandle}>
   {/* <button onClick={() => ref.current?.scrollTo(0, 10000)}>Скролнуть</button> */}

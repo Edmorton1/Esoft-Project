@@ -16,12 +16,12 @@ class HttpLikesController {
     const fields = r.fields
     const likeDTO = r.likes
     
-    const request = one(await ORM.post(likeDTO, 'likes', fields))
+    const [data] = await ORM.post(likeDTO, 'likes', fields)
     logger.info(clients.keys())
     const clientTo = clients.get(r.likes.liked_userid)
-    clientTo?.send(toSOSe('like', request))
+    clientTo?.send(toSOSe('like', data))
     
-    res.json(request)
+    res.json(data)
   }
 
   sendDelete = async (req: Request, res: Response) => {
@@ -29,18 +29,21 @@ class HttpLikesController {
 
     logger.info(r.id)
 
-    const request: Likes = one(await ORM.delete(r.id, 'likes'))
-    const clientTo = clients.get(request.liked_userid)
-    clientTo?.send(toSOSe('delete_like', request.id))
+    const [data] = await ORM.delete(r.id, 'likes', req.session.userid!)
 
-    res.json(request)
+    if (!data) return res.sendStatus(403)
+
+    const clientTo = clients.get(data.liked_userid)
+    clientTo?.send(toSOSe('delete_like', data.id))
+
+    res.json(data)
   }
 
   likesGet = async (req: Request, res: Response) => {
     const r = req as RequestGet
 
     logger.info({riad: r.id})
-    const ids = (await ORM.getByParams({liked_userid: r.id}, 'likes', 'userid')).map(e => e.userid)
+    const ids = (await ORM.getByParams({liked_userid: req.session.userid}, 'likes', 'userid')).map(e => e.userid)
     logger.info({ids})
 
     const response = await getManyByParam("id", ids, r.lnglat, r.cursor)

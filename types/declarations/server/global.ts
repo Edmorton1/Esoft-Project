@@ -4,7 +4,7 @@ import { UserRoleType } from "@t/gen/Users";
 
 declare module "express-session" {
   interface SessionData {
-    userid?: number,
-    role?: UserRoleType
+    userid: number,
+    role: UserRoleType
   }
 }

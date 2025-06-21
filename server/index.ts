@@ -1,6 +1,5 @@
 import dotenv from "dotenv"
 import express, { NextFunction, Request, Response } from "express"
-import router from "@s/router"
 import cors from "cors"
 // import http from "http"
 import cookieParser from "cookie-parser"
@@ -10,9 +9,14 @@ dotenv.config()
 import https from "https"
 import fs from 'fs'
 import path from 'path'
-import logger from "@s/helpers/logger"
+import logger, { httpLogger } from "@s/helpers/logger"
 import "@t/declarations/server/index"
-import { PREFIX } from "@shared/CONST"
+import { COOKIE_NAME, PREFIX } from "@shared/CONST"
+import session from "express-session"
+import { redisStore } from "@s/infrastructure/redis/redis"
+import publicRouter from "@s/routes/public"
+import privateRouter from "@s/routes/private"
+import adminRouter from "@s/routes/admin"
 
 const app = express()
 
@@ -35,20 +39,31 @@ app.use(cookieParser())
 
 app.use(express.json())
 
-app.use(PREFIX, router)
+// РОУТЕР
+app.use(session({
+  store: redisStore,
+  secret: process.env.SESSION_SECRET,
+  name: COOKIE_NAME,
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    secure: false,
+    maxAge: 1000 * 60 * 60 * 600000000
+  },
+  // rolling: true
+}))
+
+app.use(httpLogger)
+
+app.use(PREFIX, publicRouter)
+app.use(PREFIX, privateRouter)
+app.use(PREFIX, adminRouter)
 
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   logger.info({ОШИБКА_500: err})
   res.status(500).json({ error: err })
 })
-
-// app.get('/', (req, res) => {
-//   // Получаем IP из заголовков
-//   const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
-//   logger.info("User's IP:", ip);  // Выводим IP в консоль
-
-//   res.send(`Your IP is: ${ip}`);
-// });
+// РОУТЕР
 
 // ОТКЛЮЧЕНИЕ ВАРНИНГА У ЯНДЕКСА и require У FileType
 process.removeAllListeners('warning');

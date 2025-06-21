@@ -86,6 +86,7 @@ class ORM {
 
   post = async <T extends tables>(dto: TablesPost[T], table: T, fields?: string): Promise<Tables[T][]> => {
     logger.info({table, fields, dto})
+    
     if (typeof dto === 'object' && "password" in dto && typeof dto.password === "string") {
       const hashed = await bcrypt.hash(dto.password, SALT)
       // dto.password = hashed as Tables[T][keyof Tables[T]]
@@ -140,10 +141,21 @@ class ORM {
     return request
   }
 
-  delete = async <T extends tables>(id: number | string, table: T): Promise<Tables[T][]> => {
+  delete = async <T extends tables>(id: number | string, table: T, userid: number): Promise<Tables[T][] | [undefined]> => {
     // logger.info("delete", id, table)
+    let checkWord = "id"
 
-    const request = await db(table).where("id", "=", id).delete().returning("*")
+    if (table === "messages") {
+      checkWord = "fromid"
+    } else if (table === "likes") {
+      checkWord = "userid"
+    } else if (table === "tags") {
+      //@ts-ignore
+      // С ТЕГАМИ ПОТОМ СДЕЛАТЬ ЧТО ИХ МОЖЕТ УДАЛЯТЬ ТОЛКЬО АДМИН
+      checkWord = "id"
+    }
+    
+    const request = await db(table).where("id", "=", id).andWhere(checkWord, "=", userid).delete().returning("*")
     
     cacheEdit(table, request, 'delete')
     return request

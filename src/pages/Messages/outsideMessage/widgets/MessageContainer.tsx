@@ -7,7 +7,7 @@ import { observer } from "mobx-react-lite"
 import * as styles from "@/shared/css/pages/Messages.module.scss"
 
 function MessageContainer() {
-  useGetBy(`${serverPaths.outsideMessages}/${StoreUser.user?.id}`, {callback: (data) => StoreMessage.initial(data)})
+  useGetBy(`${serverPaths.outsideMessages}`, {callback: (data) => StoreMessage.initial(data)})
   console.log(StoreMessage.lastMessages)
   
   // return <div>asdasdsda</div>

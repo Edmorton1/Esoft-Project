@@ -20,7 +20,7 @@ class AuthMiddleware {
 
     // req.userid = user.id
 
-    // logger.info("ЛОГИНИЗАЦИЯ ПРОШЛА УСПЕШНО")
+    logger.info("ЛОГИНИЗАЦИЯ ПРОШЛА УСПЕШНО")
     next()
   }
 

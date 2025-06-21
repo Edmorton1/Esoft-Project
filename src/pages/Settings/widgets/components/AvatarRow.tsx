@@ -1,4 +1,4 @@
-import StorePassword from "@/pages/Settings/widgets/store/Store-Password"
+import StoreSettings from "@/pages/Settings/widgets/store/Store-Settings"
 import Box from "@mui/material/Box"
 import { useRef } from "react"
 import * as style from "@/shared/css/pages/Settings.module.scss"
@@ -11,7 +11,7 @@ function AvatarRow({sx}: {sx: object}) {
     const onChange = () => {
       const file = fileRef.current?.files![0]
       console.log("FILE,", file)
-      file && StorePassword.uploadAvatar(file)
+      file && StoreSettings.uploadAvatar(file)
     }
     const onClick = () => {
       fileRef.current?.click()

@@ -12,7 +12,7 @@ import {UseFormSetError} from "react-hook-form";
 
 // }
 
-class StorePassword extends StoreBaseModal {
+class StoreSettings extends StoreBaseModal {
 	constructor() {
 		super();
 		makeObservable(this, {
@@ -24,7 +24,7 @@ class StorePassword extends StoreBaseModal {
 
 	comparePassword = async (oldPass: string, newPass: string, setError: UseFormSetError<PasswordType>) => {
 		try {
-			const request = await $api.post(`${serverPaths.passwordCompare}/${StoreUser.user?.id}`, {old: oldPass, new: newPass});
+			const request = await $api.post(serverPaths.passwordCompare, {old: oldPass, new: newPass});
 
 			if (request.status === 200) {
 				console.log("Пароль верный");
@@ -39,7 +39,7 @@ class StorePassword extends StoreBaseModal {
 	};
 
 	updateForm = async (id: number, data: ProfileType) => {
-		const request = await $api.put(`${serverPaths.profilePut}/${id}`, data)
+		const request = await $api.put(serverPaths.profilePut, data)
 		window.location.replace(URL_CLIENT)
 		console.log('ФОРМА ПОМЕНЯНА', request)
 	}
@@ -49,8 +49,8 @@ class StorePassword extends StoreBaseModal {
 		formData.append('avatar', file)
 		console.log(formData.get(file.name))
 
-		await StoreFiles.postAvatar(formData, StoreUser.user!.id)
+		await StoreFiles.postAvatar(formData)
 	}
 }
 
-export default new StorePassword();
+export default new StoreSettings();

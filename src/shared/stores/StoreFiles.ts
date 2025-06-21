@@ -9,8 +9,8 @@ class StoreFiles {
     makeAutoObservable(this)
   }
 
-  async postAvatar(file: FormData, id: number): Promise<string> {
-    const {data} = await $api.post(`${serverPaths.postAvatar}/${id}`, file)
+  async postAvatar(file: FormData): Promise<string> {
+    const {data} = await $api.post(`${serverPaths.postAvatar}`, file)
     const parse = z.coerce.string().parse(data)
 
     console.log("AVATAR NEW URL", parse)

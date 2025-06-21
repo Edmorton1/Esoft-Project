@@ -13,7 +13,7 @@ import MapWidget from "@/shared/widgets/MapWidget/MapWidget"
 import TagsRow from "@/pages/Settings/widgets/components/TagsRow"
 import Box from "@mui/material/Box"
 import DescriptionRow from "@/pages/Settings/widgets/components/DescriptionRow"
-import StorePassword from "@/pages/Settings/widgets/store/Store-Password"
+import StoreSettings from "@/pages/Settings/widgets/store/Store-Settings"
 import SharedRequests from "@shared/Shared-Requests"
 import AvatarRow from "@/pages/Settings/widgets/components/AvatarRow"
 
@@ -36,7 +36,7 @@ function ProfileSettings() {
 
   const submit = (data: any) => {
     console.log(data)
-    StorePassword.updateForm(StoreUser.user!.id, data)
+    StoreSettings.updateForm(StoreUser.user!.id, data)
   }
 
   const handleLocation = async (data: Parameters<LocationCallback>[0]) => {

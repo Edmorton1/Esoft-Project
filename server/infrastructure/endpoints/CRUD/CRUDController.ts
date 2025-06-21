@@ -38,8 +38,11 @@ class CRUDController {
   }
   delete = async (req: Request, res: Response) => {
     const {id} = req.params
-    const request = await ORM.delete(id, this.table)
-    res.json(request)
+    const data = await ORM.delete(id, this.table, req.session.userid!)
+
+    if (!data[0]) return res.sendStatus(403)
+    
+    res.json(data)
   }
 }
 

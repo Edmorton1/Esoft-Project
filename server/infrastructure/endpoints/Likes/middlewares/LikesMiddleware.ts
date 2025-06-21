@@ -12,7 +12,6 @@ export interface RequestLike extends Request{
 }
 
 export interface RequestGet extends Request{
-  id: number,
   lnglat?: lnglatType,
   cursor?: number;
 }
@@ -30,6 +29,8 @@ class LikesMiddleware {
     const fields = typeof req.query.fields === 'string' ? req.query.fields : undefined;
     const likesDTO = LikesDTOSchema.parse(req.body)
 
+    if(req.session.userid !== likesDTO.userid) return res.sendStatus(403)
+
     r.fields = fields,
     r.likes = likesDTO
 
@@ -39,7 +40,6 @@ class LikesMiddleware {
   likesGet = (req: Request, res: Response, next: NextFunction) => {
     const r = req as RequestGet
 
-    const id = z.coerce.number().parse(req.params.id)
     logger.info({lng: req.query.lng, lat: req.query.lat})
     const parse = zstrnum.safeParse(req.query.cursor)
     const cursor = parse.success ? parse.data : undefined
@@ -47,7 +47,6 @@ class LikesMiddleware {
     const lng = lngLatValidate.parse(req.query.lng)
     const lat = lngLatValidate.parse(req.query.lat)
 
-    r.id = id
     r.lnglat = lng && lat ? [lng, lat] : undefined
     r.cursor = cursor
     next()
