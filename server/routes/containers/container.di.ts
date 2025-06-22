@@ -16,6 +16,11 @@ import FormController from "@s/infrastructure/endpoints/Form/Form.controller";
 import SettingsController from "@s/infrastructure/endpoints/Settings/Settings.controller";
 import Yandex from "@s/helpers/yandex";
 import SettingsService from "@s/infrastructure/endpoints/Settings/services/Settings.service";
+import MessagesOutModule from "@s/infrastructure/endpoints/MessageOutside/SQL/MessagesOut.module";
+import MessagesOutController from "@s/infrastructure/endpoints/MessageOutside/MessagesOut.controller";
+import MessagesController from "@s/infrastructure/endpoints/Messages/Messages.controller";
+import MessagesSQL from "@s/infrastructure/endpoints/Messages/SQL/Message.module";
+import MessagesService from "@s/infrastructure/endpoints/Messages/services/Messages.service";
 
 export const tablesArr: tables[] = ['users', 'forms', 'likes', 'messages', 'tags', 'user_tags']
 
@@ -54,6 +59,14 @@ container.bind<FormController>(FormController).toSelf()
 
 container.bind<SettingsService>(SettingsService).toSelf()
 container.bind<SettingsController>(SettingsController).toSelf()
+
+container.bind<MessagesOutModule>(MessagesOutModule).toSelf()
+container.bind<MessagesOutController>(MessagesOutController).toSelf()
+
+
+container.bind<MessagesSQL>(MessagesSQL).toSelf()
+container.bind<MessagesService>(MessagesService).toSelf()
+container.bind<MessagesController>(MessagesController).toSelf()
 
 export default container
 

@@ -5,11 +5,16 @@ import logger from "@s/helpers/logger"
 import { CARDS_ON_PAGE } from "@shared/CONST"
 import { Knex } from "knex"
 import { inject, injectable } from "inversify"
+import { Form } from "@t/gen/Users"
 
 type propsType = Omit<queryType, 'tags'> & {tags: tagsTypes}
 
+interface ExtendedSearchRepo {
+  getByTags: (props: propsType) => Promise<{ forms: Form[], count: number }>
+}
+
 @injectable()
-class ExtendedSearchModule {
+class ExtendedSearchModule implements ExtendedSearchRepo{
   constructor (
     @inject(ExtendedSeacrhSQLhelper)
     private readonly ExtendedSeacrhSQLhelper: ExtendedSeacrhSQLhelper
@@ -79,7 +84,7 @@ class ExtendedSearchModule {
       return query
   }
 
-  getByTags = async ({tags, page, min_age, max_age, avatar, location, max_distance, name, params}: propsType) => {
+  getByTags: ExtendedSearchRepo['getByTags'] = async ({tags, page, min_age, max_age, avatar, location, max_distance, name, params}) => {
     const props = {tags, page, min_age, max_age, avatar, location, max_distance, name, params}
     logger.info("GET BY TAGS")
 

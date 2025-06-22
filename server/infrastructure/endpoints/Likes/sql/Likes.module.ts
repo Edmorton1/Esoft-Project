@@ -5,9 +5,12 @@ import logger from "@s/helpers/logger";
 import { LIKES_ON_PAGE } from "@shared/CONST";
 import { lnglatType } from "@t/gen/types";
 
-// export const getManyByParam = async <T extends tables>(param: keyof Tables[T], need: any[], table: T, fields?: string) => {
-class LikesModule {
-  getManyByParam = async (name: string, need: any[], distance?: lnglatType, cursor?: number) => {
+interface LikesModuleRepo {
+  getManyByParam: (name: string, need: any[], distance?: lnglatType, cursor?: number) => Promise<any[]>
+}
+
+class LikesModule implements LikesModuleRepo {
+  getManyByParam: LikesModuleRepo['getManyByParam'] = async (name, need, distance, cursor) => {
     // logger.info({GET_BY_MANY_PARAMS: ""});
     const knexDistance = distance
     ? db.raw(`

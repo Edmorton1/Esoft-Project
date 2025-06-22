@@ -3,6 +3,7 @@ import { createContext, memo, useCallback, useEffect, useState } from "react"
 import MessageBody from "./MessageBody"
 import StoreMessages from "../../../../store/Store-Messages"
 import { MessageFiles } from "@t/client/DTOClient"
+import { observer } from "mobx-react-lite"
 
 // files, value, inputNewFile, textInput, submitClick, clickDeleteFile
 
@@ -67,4 +68,4 @@ function MessageHead({msg, editing, setEditMessage}: propsInterface) {
   </MessageContext.Provider>
 }
 
-export default memo(MessageHead)
+export default observer(MessageHead)

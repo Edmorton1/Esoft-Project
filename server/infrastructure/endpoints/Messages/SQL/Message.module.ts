@@ -4,8 +4,12 @@ import { MESSAGE_ON_PAGE } from "@shared/CONST"
 import { Message, MessageSchema } from "@t/gen/Users"
 import { z } from "zod"
 
-class MessageSQL {
-  async getMessage(frid: number, toid: number, cursor?: number): Promise<Message[]> {
+interface MessagesSQLRepo {
+  getMessage: (frid: number, toid: number, cursor?: number) => Promise<Message[]>
+}
+
+class MessagesSQL implements MessagesSQLRepo {
+  getMessage: MessagesSQLRepo['getMessage'] = async (frid, toid, cursor) => {
 
     let subquery = db('messages')
       .select(
@@ -37,7 +41,7 @@ class MessageSQL {
   }
 }
 
-export default new MessageSQL
+export default MessagesSQL
 
     // const query = db.raw(`
     //   SELECT 

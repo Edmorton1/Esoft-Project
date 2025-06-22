@@ -25,6 +25,9 @@ function useInfinitPagination(ref: React.RefObject<HTMLElement | null>, url: str
 
     if (fetching || firstRender) {
       $api.get(url)
+        // НЕ ПЕРЕЗАПИСЫВАЕТ СООБЩЕНИЯ У РАЗНЫХ ПОЛЬЗОВАТЕЛЕЙ, У ВСЕХ ОНИ ОДИНАКОЫЕ
+        //@ts-ignore
+        // НЕ ЗАГРУЖАЕТ ЕСЛИ ВСЕГО СООБЩЕНИЙ МЕНЬШЕ ЛИМИТА
         .then(data => {data.data.messages.length < limit ? setStop(true) : callback(data)})
         .then(() => setFetching(false))
     }

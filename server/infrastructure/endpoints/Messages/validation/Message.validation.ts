@@ -4,61 +4,38 @@ import { frJSON } from "@shared/MAPPERS"
 import { MessageDTO } from "@t/gen/dtoObjects"
 import { zstrnum } from "@t/gen/Schemas"
 import { MessageDTOServerSchema, MessagePutDTOServer, MessagePutDTOServerSchema } from "@t/server/DTOServer"
-import { Request, Response, NextFunction } from "webpack-dev-server"
+import { Request, Response } from "express"
 import { z } from "zod"
 
-export interface ReqGetMessage extends Request {
-  frid: number,
-  toid: number,
-  cursor?: number
-}
-
-export interface ReqSendMessage extends Request {
-  message: MessageDTO,
-  files: Express.Multer.File[]
-}
-
-export interface ReqEditMessage extends Request {
-  iid: number,
-  data: MessagePutDTOServer
-}
-
-class MessageMiddleware {
-  sendMessage = (req: Request, res: Response, next: NextFunction) => {
-    const r = req as ReqSendMessage
-    logger.info({PRED_MESSAGE: r})
+class MessagesValidation {
+  sendMessage = (req: Request, res: Response): [MessageDTO, Express.Multer.File[]] | void => {
+    logger.info({PRED_MESSAGE: req})
     const toid = z.coerce.number().parse(req.params.toid)
     const data = MessageDTOServerSchema.parse({...frJSON(req.body.json)!, files: req.files, fromid: req.session.userid, toid})
     const { files, ...message } = data
 
-    if (message.fromid !== req.session.userid) return res.sendStatus(403)
+    if (message.fromid !== req.session.userid) {res.sendStatus(403); return;}
 
-    r.files = files
-    r.message = message
     logger.info({SEND_MESSAGE: files, message})
-    next()
+    return [message, files]
   };
 
-  editMessage = async (req: Request, res: Response, next: NextFunction) => {
-    const r = req as ReqEditMessage
+  editMessage = async (req: Request, res: Response): Promise<[number, MessagePutDTOServer] | void> => {
 
     const id = z.coerce.number().parse(req.params.id)
     const data = MessagePutDTOServerSchema.parse({...frJSON(req.body.json)!, files: req.files, fromid: req.session.userid})
 
     const [request] = await ORM.getById(id, "messages", "fromid")
-    if (request.fromid !== req.session.userid) return res.sendStatus(403)
+    if (request.fromid !== req.session.userid) {res.sendStatus(403); return;}
 
     // if (data.fromid !== req.session.userid) return res.sendStatus(403)
 
     // logger.info({parsed: frJSON(req.body.json)})
-    r.iid = id,
-    r.data = data
-    next()
+
+    return [id, data]
   }
 
-  getMessage = (req: Request, res: Response, next: NextFunction) => {
-    const r = req as ReqGetMessage
-
+  getMessage = (req: Request): [number, number, number | undefined] => {
     // const frid = zstrnum.parse(req.params.frid)
     const frid = zstrnum.parse(req.session.userid)
     const toid = zstrnum.parse(req.params.toid)
@@ -66,12 +43,8 @@ class MessageMiddleware {
 
     const cursor = parsed.success ? parsed.data : undefined
 
-    r.frid = frid
-    r.toid = toid
-    r.cursor = cursor
-
-    next()
+    return [frid, toid, cursor]
   };
 }
 
-export default new MessageMiddleware
+export default new MessagesValidation

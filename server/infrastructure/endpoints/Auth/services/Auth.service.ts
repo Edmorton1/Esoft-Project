@@ -5,17 +5,21 @@ import { FormDTO, TagsDTO, UserDTO } from "@t/gen/dtoObjects";
 import { Form, FormSchema, Tags, User } from "@t/gen/Users";
 import ORMCopy from "@s/infrastructure/db/SQL/ORMCopy";
 import { inject, injectable } from "inversify";
-import TYPES from "@s/routes/containers/types";
+
+interface AuthServiceRepo {
+	registration: (formDTO: Omit<FormDTOServer, 'password' | 'email' | 'tags'>, userDTO: UserDTO, tags: TagsDTO[]) => Promise<{form: Form, user: User}>
+}
 
 @injectable()
-class AuthService {
+class AuthService implements AuthServiceRepo{
 	constructor(
 		@inject(ORMCopy)
 		private readonly ORM: ORMCopy,
 		@inject(UploadFileService)
 		private readonly UploadFileService: UploadFileService
 	) {}
-	registration = async (formDTO: Omit<FormDTOServer, 'password' | 'email' | 'tags'>, userDTO: UserDTO, tags: TagsDTO[]): Promise<{form: Form, user: User}> => {
+	
+	registration: AuthServiceRepo['registration'] = async (formDTO, userDTO, tags) => {
 		const [user] = await this.ORM.post(userDTO, "users");
 		const avatar = formDTO.avatar && (await this.UploadFileService.uploadAvatar(formDTO.avatar));
 		const formPost: FormDTO = {...formDTO, avatar, id: user.id};

@@ -3,8 +3,14 @@ import {paramsType, tagsTypes} from "@s/infrastructure/endpoints/ExtendSearch/va
 import logger from "@s/helpers/logger";
 import {Knex} from "knex";
 
-class ExtendedSeacrhSQLhelper {
-	getUserTags = async (tags: string[]): Promise<tagsTypes> => {
+interface ExtendedSeacrhSQLhelperRepo {
+  getUserTags: (tags: string[]) => Promise<tagsTypes>,
+  toSQLgetByTags: (tags: tagsTypes) => string,
+  toSQLWhere: (props?: paramsType) => Knex.Raw | null
+}
+
+class ExtendedSeacrhSQLhelper implements ExtendedSeacrhSQLhelperRepo {
+	getUserTags: ExtendedSeacrhSQLhelperRepo['getUserTags'] = async (tags) => {
 		logger.info("GET USER TAGS");
 		const placeholders = tags.map(() => "?").join(",");
 		const sql = `
@@ -35,7 +41,7 @@ class ExtendedSeacrhSQLhelper {
 		return (await request).rows;
 	};
 
-	toSQLgetByTags = (tags: tagsTypes): string =>
+	toSQLgetByTags: ExtendedSeacrhSQLhelperRepo['toSQLgetByTags'] = (tags) =>
 		tags
 			.map(
 				e => `
@@ -49,7 +55,7 @@ class ExtendedSeacrhSQLhelper {
 			)
 			.join(" AND ");
 
-	toSQLWhere = (props?: paramsType): Knex.Raw | null => {
+	toSQLWhere: ExtendedSeacrhSQLhelperRepo['toSQLWhere'] = (props) => {
 		if (!props) return null;
 
 		const entries = Object.entries(props).filter(

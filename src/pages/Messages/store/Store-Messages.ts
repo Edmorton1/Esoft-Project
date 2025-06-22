@@ -25,6 +25,7 @@ class StoreMessages {
   }
 
   get = async (data: {messages: Message[], form: Form}) => {
+    console.log("ГЕТ МЕССАДЖ")
     if (this.messages !== null) {
       this.messages.unshift(...data.messages)
     } else {
@@ -93,6 +94,7 @@ class StoreMessages {
   }
   
   socketGet = (data: Message) => {
+    console.log("СОКЕТ ГЕТ")
     // console.log(StoreUser.user.id, data.toid, data.fromid)
     if (data.toid === StoreUser.user!.id) {
       return this.messages!.push(data)

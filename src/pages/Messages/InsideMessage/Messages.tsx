@@ -8,8 +8,6 @@ import MainHead from "@/pages/Messages/InsideMessage/widget/Head/MainHead"
 
 function Messages() {
   const toid = z.coerce.number().parse(useParams().toid)
-
-    // const [voiceRef] = useMedia(VoiceMessage, undefined, toid)
   
   return <section className={style.section}>
       <MainHead toid={toid} />
