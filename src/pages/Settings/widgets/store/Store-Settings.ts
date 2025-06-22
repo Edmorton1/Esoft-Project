@@ -28,8 +28,10 @@ class StoreSettings extends StoreBaseModal {
 
 			if (request.status === 200) {
 				console.log("Пароль верный");
-        await StoreUser.logout()
-        window.location.replace(URL_CLIENT)
+				// ВИДИМО В STOER USER LOGOUT ОШИБКА!
+				//@ts-ignore
+        // await StoreUser.logout()
+        // window.location.replace(URL_CLIENT)
 			}
 		} catch (error: any) {
 			if (error.response?.status === 400) {

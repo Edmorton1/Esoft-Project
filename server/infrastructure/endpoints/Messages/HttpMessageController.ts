@@ -59,7 +59,10 @@ class HttpMessageController {
       [total] = await ORM.put({text: r.data.text}, r.iid, 'messages')
     } else {
       logger.info({id: r.iid, data: r.data.deleted})
-      const ostavshiesa = await Yandex.deleteArr(r.iid, r.data.deleted)
+      //@ts-ignore
+      // ВРЕМЕННАЯ ЗАГЛУШКА
+      const ya = new Yandex()
+      const ostavshiesa = await ya.deleteArr(r.iid, r.data.deleted)
       const paths = r.data.files.length > 0 ?  await MessageFileHelper.uploadFiles(r.iid, r.data.files) : []
   
       total = one(await ORM.put({files: [...ostavshiesa, ...paths], text: r.data.text}, r.iid, 'messages'))
@@ -72,6 +75,9 @@ class HttpMessageController {
   }
 
   deleteMessage = async (req: Request, res: Response) => {
+    //@ts-ignore
+    // ВРЕМЕННАЯ ЗАГЛУШКА
+    const ya = new Yandex()
     const r = req as RequestOnlyId
 
     const [data] = await ORM.delete(r.iid, 'messages', req.session.userid!)
@@ -79,7 +85,7 @@ class HttpMessageController {
 
     if (!data) return res.sendStatus(403)
 
-    await Yandex.deleteFolder(r.iid)
+    await ya.deleteFolder(r.iid)
     logger.info({frid: data.fromid, toid: data.toid, id: r.iid})
 
     this.sendSocket(data.fromid, data.toid, r.iid, "delete_message")

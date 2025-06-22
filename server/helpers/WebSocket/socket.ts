@@ -7,6 +7,8 @@ export interface WebSocketWidh extends WebSocket {
   id: number
 }
 
+export type clientsType = Map<number, WebSocket>
+
 const clients = new Map<number, WebSocket>()
 
 function createWebSocketServer(server: any) {

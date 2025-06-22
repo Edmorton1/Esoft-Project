@@ -60,7 +60,7 @@ class Yandex {
   }
 }
 
-export default new Yandex
+export default Yandex
 
 
 

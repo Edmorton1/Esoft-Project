@@ -12,29 +12,14 @@ class AuthMiddleware {
     
     if (!req.session.userid) return res.sendStatus(401)
 
-    // const sessionid = req.session.sessionid
-    // logger.info({СЕССИЯ: req.session})
-    // if (!sessionid) return res.sendStatus(401);
-    // const user = await SessionRedis.get(sessionid)
-    // if (!user) return res.sendStatus(401)
-
-    // req.userid = user.id
-
     logger.info("ЛОГИНИЗАЦИЯ ПРОШЛА УСПЕШНО")
+
     next()
   }
 
   OnlyAdmin = async (req: Request, res: Response, next: NextFunction) => {
 
     if (!req.session.userid || req.session.role != "admin") return res.sendStatus(401)
-
-    // const sessionid = req.session.sessionid
-    // if (!sessionid) return res.sendStatus(401);
-    // const user = await SessionRedis.get(sessionid)
-    // if (!user) return res.sendStatus(401)
-    // if (user.role !== "admin") return res.sendStatus(403)
-
-    // req.userid = user.id
 
     next()
   }

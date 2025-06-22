@@ -7,15 +7,16 @@ import Button from "@mui/material/Button"
 import { observer } from "mobx-react-lite"
 
 function AvatarRow({sx}: {sx: object}) {
-    const fileRef = useRef<HTMLInputElement | null>(null)
-    const onChange = () => {
-      const file = fileRef.current?.files![0]
-      console.log("FILE,", file)
-      file && StoreSettings.uploadAvatar(file)
-    }
-    const onClick = () => {
-      fileRef.current?.click()
-    }
+  const fileRef = useRef<HTMLInputElement | null>(null)
+  const onChange = () => {
+    const file = fileRef.current?.files![0]
+    console.log("FILE,", file)
+    file && StoreSettings.uploadAvatar(file)
+  }
+  
+  const onClick = () => {
+    fileRef.current?.click()
+  }
 
   return <Box sx={sx} component={"div"} className={style['container__form--avatar']}>
     <img src={StoreForm.form?.avatar} alt="" />

@@ -1,13 +1,20 @@
 import db from "@s/infrastructure/db/db"
-import { queryType, tagsTypes } from "@s/infrastructure/endpoints/ExtendSearch/middlewares/Schemas"
-import SQLHelper from "@s/infrastructure/endpoints/ExtendSearch/SQL/SQLHelper"
+import { queryType, tagsTypes } from "@s/infrastructure/endpoints/ExtendSearch/validation/ExtendedSearch.schemas"
+import ExtendedSeacrhSQLhelper from "@s/infrastructure/endpoints/ExtendSearch/SQL/ExtendedSeacrh.SQLhelper"
 import logger from "@s/helpers/logger"
 import { CARDS_ON_PAGE } from "@shared/CONST"
 import { Knex } from "knex"
+import { inject, injectable } from "inversify"
 
 type propsType = Omit<queryType, 'tags'> & {tags: tagsTypes}
 
-class SQLHard {
+@injectable()
+class ExtendedSearchModule {
+  constructor (
+    @inject(ExtendedSeacrhSQLhelper)
+    private readonly ExtendedSeacrhSQLhelper: ExtendedSeacrhSQLhelper
+  ) {}
+
   private buildLocation = (location: propsType['location']) => {
     // LOCATION
     let distanceRaw;
@@ -31,7 +38,7 @@ class SQLHard {
     const conditions: (string | Knex.Raw<any>)[] = []
 
     // FORM PARAMS
-    const whereClause = SQLHelper.toSQLWhere(params)
+    const whereClause = this.ExtendedSeacrhSQLhelper.toSQLWhere(params)
     if (whereClause) conditions.push(whereClause)
     
 
@@ -47,7 +54,7 @@ class SQLHard {
     if (ageFilter) conditions.push(ageFilter)
 
     // TAGS
-    if (tags.length > 0) conditions.push(SQLHelper.toSQLgetByTags(tags))
+    if (tags.length > 0) conditions.push(this.ExtendedSeacrhSQLhelper.toSQLgetByTags(tags))
 
     // AVATAR TOGGLE
     if (avatar === true) conditions.push('NOT forms.avatar IS NULL')
@@ -120,4 +127,4 @@ class SQLHard {
   }
 }
 
-export default new SQLHard
+export default ExtendedSearchModule

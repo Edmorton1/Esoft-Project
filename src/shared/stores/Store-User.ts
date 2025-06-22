@@ -12,7 +12,7 @@ import { makeAutoObservable, runInAction } from "mobx"
 import { RegistrationDTOClient, StoreUserRegistrationSchema } from "@t/client/RegistrationZOD"
 import { UseFormSetError } from "react-hook-form"
 import axios from "axios"
-import { LoginErrorTypes } from "@s/infrastructure/endpoints/Auth/HttpAuthController"
+import { LoginErrorTypes } from "@s/infrastructure/endpoints/Auth/Auth.controller"
 import StoreLogin from "@/pages/Login/Store-Login"
 import { toSOSe } from "@s/helpers/WebSocket/JSONParsers"
 

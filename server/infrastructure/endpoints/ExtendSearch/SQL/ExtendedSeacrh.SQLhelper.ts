@@ -1,9 +1,9 @@
 import db from "@s/infrastructure/db/db";
-import {paramsType, tagsTypes} from "@s/infrastructure/endpoints/ExtendSearch/middlewares/Schemas";
+import {paramsType, tagsTypes} from "@s/infrastructure/endpoints/ExtendSearch/validation/ExtendedSearch.schemas";
 import logger from "@s/helpers/logger";
 import {Knex} from "knex";
 
-class SQLHelper {
+class ExtendedSeacrhSQLhelper {
 	getUserTags = async (tags: string[]): Promise<tagsTypes> => {
 		logger.info("GET USER TAGS");
 		const placeholders = tags.map(() => "?").join(",");
@@ -64,4 +64,4 @@ class SQLHelper {
 	};
 }
 
-export default new SQLHelper;
+export default ExtendedSeacrhSQLhelper;
