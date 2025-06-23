@@ -19,7 +19,7 @@ function FileComponent({fileLink, children, mode = "full"}: propsInterface) {
 
   const handleOpen = (e: any) => {e.preventDefault(); e.stopPropagation(); StoreModalFile.setFile(fileLink); StoreModalFile.openModal()};
 
-	console.log(type);
+	// console.log(type);
 
 	if (mode === 'mini') {
 		return <>

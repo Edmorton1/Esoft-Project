@@ -1,11 +1,14 @@
+import { MessagesContext } from "@/pages/Messages/InsideMessage/Messages"
 import SentBody from "@/pages/Messages/InsideMessage/widget/Main/modules/components/sent/SentBody"
-import StoreMessages from "@/pages/Messages/store/Store-Messages"
 import StoreForm from "@/shared/stores/Store-Form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { MessageDTOClientSchema } from "@t/client/DTOClient"
+import { useContext } from "react"
 import { useForm } from "react-hook-form"
 
 function SentHead({toid}: {toid: number}) {
+  const StoreMessages = useContext(MessagesContext)!
+
   const {register, handleSubmit, reset} = useForm({resolver: zodResolver(MessageDTOClientSchema)})
 
   const handleSend = (data: any) => {

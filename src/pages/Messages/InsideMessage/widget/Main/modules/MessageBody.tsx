@@ -10,8 +10,9 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import { PLACEHOLDER_IMG } from "@shared/PUBLIC";
 import { Message } from "@t/gen/Users"
-import { memo } from "react";
+import { memo, useContext } from "react";
 import * as style from "@/shared/css/pages/MessagesInside.module.scss"
+import { MessagesContext } from "@/pages/Messages/InsideMessage/Messages";
 
 interface propsInterface {
   editing: boolean,
@@ -21,7 +22,9 @@ interface propsInterface {
 
 function MessageBody({editing, msg, changeClick}: propsInterface) {
   const isAuthor = msg.fromid === StoreForm.form?.id
-  console.log("МЕССАДЖ РЕНДРР")
+  const StoreMessages = useContext(MessagesContext)!
+
+  // console.log("МЕССАДЖ РЕНДРР")
   // console.log('COMPONENT RENDER', msg.id, editing, files)
   
   return <Paper component={"article"} onClick={changeClick} elevation={editing ? 1 : 0} sx={{width: "100%", bgcolor: editing ? "background.paper" : "transparent"}}>

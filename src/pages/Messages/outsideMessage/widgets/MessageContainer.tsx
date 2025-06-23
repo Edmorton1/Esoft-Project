@@ -1,7 +1,6 @@
 import MessageBranch from "@/pages/Messages/outsideMessage/widgets/components/MessageBranch"
 import StoreMessage from "@/pages/Messages/store/Store-Message"
 import useGetBy from "@/shared/hooks/useGetBy"
-import StoreUser from "@/shared/stores/Store-User"
 import { serverPaths } from "@shared/PATHS"
 import { observer } from "mobx-react-lite"
 import * as styles from "@/shared/css/pages/Messages.module.scss"

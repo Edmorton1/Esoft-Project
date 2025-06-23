@@ -1,9 +1,10 @@
 import { Message } from "@t/gen/Users"
-import { createContext, memo, useCallback, useEffect, useState } from "react"
+import { createContext, memo, useCallback, useContext, useEffect, useState } from "react"
 import MessageBody from "./MessageBody"
 import StoreMessages from "../../../../store/Store-Messages"
 import { MessageFiles } from "@t/client/DTOClient"
 import { observer } from "mobx-react-lite"
+import { MessagesContext } from "@/pages/Messages/InsideMessage/Messages"
 
 // files, value, inputNewFile, textInput, submitClick, clickDeleteFile
 
@@ -27,6 +28,7 @@ export const MessageContext = createContext<contextInterface | null>(null)
 
 function MessageHead({msg, editing, setEditMessage}: propsInterface) {
   // console.log("MODULE RENDER", msg.id)
+  const StoreMessages = useContext(MessagesContext)!
   const [value, setValue] = useState('')
   const [files, setFiles] = useState<{new: FileList | null, old: string[]} | null>(null)
 

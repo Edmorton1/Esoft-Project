@@ -1,21 +1,23 @@
-import { useRef, useState } from "react"
-import StoreMessages from "../../../store/Store-Messages"
+import { useContext, useRef, useState } from "react"
 import MessageHead from "./modules/MessageHead"
 import { observer } from "mobx-react-lite"
 import { serverPaths } from "@shared/PATHS"
-import StoreUser from "@/shared/stores/Store-User"
 import useInfinitPagination from "@/shared/hooks/useInfinitPagination"
 import { MESSAGE_ON_PAGE } from "@shared/CONST"
 import * as style from "@/shared/css/pages/MessagesInside.module.scss"
 import Box from "@mui/material/Box"
+import { MessagesContext } from "@/pages/Messages/InsideMessage/Messages"
 
 function MessageWidget({toid}: {toid: number}) {
+  const StoreMessages = useContext(MessagesContext)!
+  
   const [editMessage, setEditMessage] = useState<null | number>(null)
 
   console.log("RERENDER")
   const ref = useRef<HTMLElement>(null)
   
   console.log(`ссылка ${serverPaths.getMessage}/${toid}?cursor=${StoreMessages.cursor}`)
+
   const scrollHandle = useInfinitPagination(ref, `${serverPaths.getMessage}/${toid}?cursor=${StoreMessages.cursor}`, StoreMessages.cursor === null, (data) => StoreMessages.get(data.data), MESSAGE_ON_PAGE)
 
   return <Box ref={ref} className={style.section__widget} component="section" bgcolor={"background.third"} onScroll={scrollHandle}>

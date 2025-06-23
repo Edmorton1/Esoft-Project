@@ -44,15 +44,15 @@ class MessagesSQL implements MessagesSQLRepo {
 export default MessagesSQL
 
     // const query = db.raw(`
-    //   SELECT 
-    //   CASE
-    //     WHEN fromid = ? THEN true
-    //     ELSE false
-    //   END as isAuthor, 
-    //   *
-    //   FROM messages
-    //   WHERE ((fromid = ? AND toid = ?) OR (fromid = ? AND toid = ?))
-    //   AND id < ?
-    //   ORDER BY id DESC
-    //   LIMIT 3
+      // SELECT 
+      // CASE
+      //   WHEN fromid = ? THEN true
+      //   ELSE false
+      // END as isAuthor, 
+      // *
+      // FROM messages
+      // WHERE ((fromid = ? AND toid = ?) OR (fromid = ? AND toid = ?))
+      // AND id < ?
+      // ORDER BY id DESC
+      // LIMIT 3
     // `, [frid, frid, toid, toid, frid, cursor])

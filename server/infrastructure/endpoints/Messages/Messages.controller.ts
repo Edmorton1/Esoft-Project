@@ -100,7 +100,7 @@ class MessagesController {
     await this.Yandex.deleteFolder(r.iid)
     logger.info({frid: data.fromid, toid: data.toid, id: r.iid})
 
-    this.sendSocket(data.fromid, data.toid, r.iid, "delete_message")
+    this.sendSocket(data.fromid, data.toid, {toid: data.toid, mesid: data.id}, "delete_message")
     res.json(data)
   }
 }

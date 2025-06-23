@@ -9,11 +9,14 @@ import { MessageDTOClient, MessagePutDTOClient, MessagePutDTOClientSchema } from
 import { FILES_LIMIT, FILES_LIMIT_MESSAGE } from "@shared/CONST"
 
 class StoreMessages {
+
   messages: Message[] | null = null
   form: Form | null = null
   cursor: number | null = null
 
-  constructor() {
+  constructor(
+    readonly toid: number
+  ) {
     makeAutoObservable(this)
   }
 
@@ -114,4 +117,4 @@ class StoreMessages {
   }
 }
 
-export default new StoreMessages
+export default StoreMessages

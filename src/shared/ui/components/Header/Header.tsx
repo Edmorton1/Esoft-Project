@@ -24,10 +24,10 @@ import { observer } from "mobx-react-lite"
 import SearchHeader from "@/shared/ui/components/Header/SearchHeader"
 import { toJS } from "mobx"
 import StoreUser from "@/shared/stores/Store-User"
-import StoreMessages from "@/pages/Messages/store/Store-Messages"
 import StoreLikes from "@/shared/stores/StoreLikes"
 import StoreTags from "@/shared/stores/Store-Tags"
 import StoreUsers from "@/pages/Users/widgets/store/Store-Users"
+import StoreMessagesManager from "@/pages/Messages/store/Store-Messages-Manager"
 
 const HeadButton = ({isActive, children}: {isActive: boolean, children: ReactNode}) => (
 <Button color={"salmon"} variant={isActive ? "contained" : "outlined"}>
@@ -40,7 +40,6 @@ const NavButton = ({to, children}: {to: string, children: ReactNode}) => <NavLin
   </NavLink>
 
 function Header() {
-
   return <>
       <AppBar component="header">
         <Toolbar component={"nav"} className={style.header}>
@@ -55,7 +54,7 @@ function Header() {
         <button onClick={() => console.log(
           'User: ', toJS(StoreUser.user),
           'Form:', toJS(StoreForm.form),
-          'Messages:', toJS(StoreMessages.messages),
+          'Messages:', toJS(StoreMessagesManager.chats),
           'Likes:', toJS(StoreLikes.likes),
           "Tags:", toJS(StoreTags.tags),
           toJS(StoreUsers.users)

@@ -20,16 +20,17 @@ function useInfinitPagination(ref: React.RefObject<HTMLElement | null>, url: str
   }
 
   useEffect(() => {
-    console.log(ref.current?.clientHeight)
+    console.log("ЮРЛ ДОЛЖЕН ПОМЕНЯТЬСЯ", url)
     if (url.includes("undefined")) return;
 
-    if (fetching || firstRender) {
+    if (firstRender || fetching) {
+      console.log("ФЕТЧИНГ", url)
       $api.get(url)
-        // НЕ ПЕРЕЗАПИСЫВАЕТ СООБЩЕНИЯ У РАЗНЫХ ПОЛЬЗОВАТЕЛЕЙ, У ВСЕХ ОНИ ОДИНАКОЫЕ
-        //@ts-ignore
-        // НЕ ЗАГРУЖАЕТ ЕСЛИ ВСЕГО СООБЩЕНИЙ МЕНЬШЕ ЛИМИТА
-        .then(data => {data.data.messages.length < limit ? setStop(true) : callback(data)})
+        .then(data => {console.log({FETCHI_FETCH: data}); return data})
+        .then(data => {data.data.messages.length === 0 ? setStop(true) : callback(data)})
         .then(() => setFetching(false))
+        
+        .catch(() => setStop(false))
     }
 
   }, [fetching, url])

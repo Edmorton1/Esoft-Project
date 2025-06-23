@@ -1,4 +1,5 @@
 import StoreMessages from "@/pages/Messages/store/Store-Messages";
+import StoreMessagesManager from "@/pages/Messages/store/Store-Messages-Manager";
 import { fileToFileList } from "@/shared/funcs/filefuncs";
 import StoreForm from "@/shared/stores/Store-Form";
 import { blobToFile } from "@shared/MAPPERS";
@@ -78,7 +79,7 @@ class VoiceMessage {
   const file = blobToFile(blob, "file")
   const filelist = fileToFileList(file)
 
-  StoreMessages.send({
+  StoreMessagesManager.getOrCreateStore(this.toid)!.send({
     text: 'test voice2',
     files: filelist
   }, this.toid)

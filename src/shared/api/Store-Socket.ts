@@ -1,4 +1,3 @@
-import StoreMessages from "@/pages/Messages/store/Store-Messages";
 import StoreLikes from "@/shared/stores/StoreLikes";
 import { URL_SERVER_WS } from "@shared/URLS";
 import { frSOCl } from "@s/helpers/WebSocket/JSONParsers";
@@ -9,6 +8,7 @@ import { FormSchema } from "@t/gen/Users";
 import StoreCall from "@/pages/Room/widgets/ModalCall/store/Store-Call";
 import StoreTalking from "@/pages/Room/widgets/ModalTalking/store/Store-Talking";
 import StoreForm from "@/shared/stores/Store-Form";
+import StoreMessagesManager from "@/pages/Messages/store/Store-Messages-Manager";
 
 class SocketStore {
   socket: WebSocket | null = null
@@ -45,13 +45,13 @@ class SocketStore {
       switch (type) {
         case "message":
           console.log(data)
-          StoreMessages.socketGet(data)
+          StoreMessagesManager.getOrCreateStore(data.toid)!.socketGet(data)
           break
         case "delete_message":
-          StoreMessages.socketDelete(data)
+          StoreMessagesManager.getOrCreateStore(data.toid).socketDelete(data.mesid)
           break
         case "edit_message":
-          StoreMessages.socketPut(data)
+          StoreMessagesManager.getOrCreateStore(data.toid)!.socketPut(data)
           break
 
         case "like":

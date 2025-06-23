@@ -11,8 +11,12 @@ import CallIcon from '@mui/icons-material/Call';
 import MinButton from "@/shared/ui/MinButton"
 import { sxStyle } from "@/shared/ui/CircleButton"
 import LastActive from "@/shared/ui/components/LastActive"
+import { useContext } from "react"
+import { MessagesContext } from "@/pages/Messages/InsideMessage/Messages"
 
 function MainHead({toid}: {toid: number}) {
+  const StoreMessages = useContext(MessagesContext)!
+
   const br = 30
   const wh = 50
   const handlerCallClick = () => StoreRoom.makeCall(StoreUser.user!.id, toid)
@@ -38,9 +42,3 @@ function MainHead({toid}: {toid: number}) {
 }
 
 export default observer(MainHead)
-
-      // title={<Box display={"flex"} alignItems={"center"} justifyContent={"space-between"}>
-      //   <Typography>{StoreMessages.form?.name}</Typography>
-      //   <Search />
-      //   <MinButton color="salmon" onClick={handlerCallClick}><CallIcon sx={sxStyle} /></MinButton>
-      // </Box>}

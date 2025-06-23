@@ -3,7 +3,7 @@ import { Form, Likes, Message } from "@t/gen/Users"
 export interface MsgTypesServer {
   userid: number,
   message: Message,
-  delete_message: number,
+  delete_message: {toid: number, mesid: number},
   edit_message: Message,
 
   like: Likes
@@ -22,8 +22,8 @@ export type OverdriveProperty<T, R> = Omit<T, keyof R> & R
 export type MsgTypesClient = OverdriveProperty<MsgTypesServer, {
   answer: {toForm: Form, description: RTCSessionDescriptionInit},
   candidate: {isCaller: boolean, candidate: RTCIceCandidate},
-  cancel: undefined
-  last_active: string
+  cancel: undefined,
+  last_active: string,
 }>
 
 export type SocketMessageClientInterface = {

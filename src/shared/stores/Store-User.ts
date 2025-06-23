@@ -44,7 +44,6 @@ class StoreUser {
         StoreForm.form = null;
         StoreTags.tags = null;
         StoreLikes.likes = null;
-        StoreMessages.messages = null;
       })
     }
   }
