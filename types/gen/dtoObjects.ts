@@ -12,7 +12,6 @@ export const JWTDTOSchema = UserSchema
 
 export const TokenReturnDTOSchema = z.object({
   user: UserSchema,
-  accessToken: z.string(),
 });
 
 export const FormDTOShema = FormSchema.omit({tags: true, last_active: true})

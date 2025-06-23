@@ -62,6 +62,12 @@ class LikesController implements LikesRepository {
     const response = await this.likesModule.getManyByParam("id", ids, lnglat, cursor)
     res.json(response)
   }
+
+  getPairs = async (req: Request, res: Response) => {
+    const id = req.session.userid!;
+    const data = await this.likesModule.getPairs(id)
+    res.json(data)
+  }
 }
 
 export default LikesController

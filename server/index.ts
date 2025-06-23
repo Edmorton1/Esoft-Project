@@ -45,10 +45,10 @@ app.use(session({
   secret: process.env.SESSION_SECRET,
   name: COOKIE_NAME,
   resave: false,
-  saveUninitialized: false,
+  saveUninitialized: true,
   cookie: {
     secure: false,
-    maxAge: 1000 * 60 * 60 * 600000000
+    maxAge: 1000 * 60 * 60 * 600
   },
   // rolling: true
 }))

@@ -51,7 +51,6 @@ export type RegistrationDTOClient = z.infer<typeof RegistrationDTOClientSchema>;
 export const StoreUserRegistrationSchema = z.object({
   form: FormSchema,
   user: UserSchema,
-  accessToken: z.string()
 })
 
 export type StoreUserRegistration = z.infer<typeof StoreUserRegistrationSchema>

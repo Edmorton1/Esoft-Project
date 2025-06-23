@@ -10,7 +10,9 @@ export const paths = {
   map: '/map',
 
   test: "/test",
-  liked: "/liked"
+  liked: "/liked",
+
+  pairs: "/pairs"
 } as const
 
 // 'users', 'forms', 'likes', 'messages', 'tags', 'user_tags', 'tokens'
@@ -33,6 +35,7 @@ export const serverPaths = {
   likesSend: "/likesSend",
   likesDelete: "/likesDelete",
   likesGet: "/likesGet",
+  likesPairs: "/likesPairs",
 
   postAvatar: "/postAvatar",
 

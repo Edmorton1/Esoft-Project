@@ -23,6 +23,7 @@ function Liked() {
             <Button sx={{width: "100%"}} variant="contained">Написать</Button>
           </Link>
           
+          <Button variant="contained" color="success" onClick={() => StoreLikes.sendLike(e.id)}>{StoreLikes.likes?.sent.find(item => item.liked_userid === e.id) ? 'Убрать лайк' : "Лайкнуть"}</Button>
           <Button color="error" variant="contained">Отклонить</Button>
         {/* </div> */}
       </UsersCardInfo>

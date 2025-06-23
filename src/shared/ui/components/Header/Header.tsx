@@ -28,6 +28,8 @@ import StoreLikes from "@/shared/stores/StoreLikes"
 import StoreTags from "@/shared/stores/Store-Tags"
 import StoreUsers from "@/pages/Users/widgets/store/Store-Users"
 import StoreMessagesManager from "@/pages/Messages/store/Store-Messages-Manager"
+import * as main from "@/shared/css/modules/Main.module.scss"
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 
 const HeadButton = ({isActive, children}: {isActive: boolean, children: ReactNode}) => (
 <Button color={"salmon"} variant={isActive ? "contained" : "outlined"}>
@@ -67,7 +69,8 @@ function Header() {
           <NavButton to={paths.messages}>Сообщения <ForumIcon /></NavButton>
           <NavButton to={paths.users}>Пользователи <GroupIcon /></NavButton>
           <NavButton to={paths.map}>MAP <MapIcon /></NavButton>
-          <NavButton to={paths.liked}>Liked <FavoriteIcon/></NavButton>
+          <NavButton to={paths.liked}>Liked <ThumbUpIcon /></NavButton>
+          <NavButton to={paths.pairs}>Пары <FavoriteIcon /></NavButton>
           <ThemeButton />
         </div>
 
@@ -96,7 +99,7 @@ function Header() {
         </Toolbar>
       </AppBar>
       
-      <Box component={"main"} sx={{backgroundColor: "background.alt"}}>
+      <Box component={"main"} className={main.main} sx={{backgroundColor: "background.alt"}}>
         <Outlet />
       </Box>
     </>

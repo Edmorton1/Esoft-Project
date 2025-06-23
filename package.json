@@ -102,6 +102,7 @@
     "pino": "^9.7.0",
     "pino-http": "^10.4.0",
     "prettier": "^3.5.3",
+    "ra-data-simple-rest": "^5.9.0",
     "react": "^19.0.0",
     "react-admin": "^5.8.4",
     "react-dom": "^19.0.0",

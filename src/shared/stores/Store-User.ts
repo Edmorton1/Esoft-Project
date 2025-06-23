@@ -16,7 +16,6 @@ import { toSOSe } from "@s/helpers/WebSocket/JSONParsers"
 
 export interface responseInterface {
   user: User,
-  accessToken: string
 }
 
 class StoreUser {
@@ -74,7 +73,6 @@ class StoreUser {
 
   logout = async () => {
     const request = toCl(await $api.post(serverPaths.logout))
-    // localStorage.removeItem("accessToken")
     runInAction(() => this.user = null)
     runInAction(() => StoreForm.form = null)
 
@@ -85,20 +83,8 @@ class StoreUser {
     $api.get(serverPaths.initial)
       .then(data => this.user = data.data)
       .then(() => this.loadModules())
-      .catch(err => console.log(err))
-      
-    // if (request?.accessToken) {
-    //   runInAction(() => this.user = request.user)
-    //   await StoreForm.initial(request.user.id)
-    //   // localStorage.setItem("accessToken", request.accessToken)
-    //   await storeSocket.waitSocket(storeSocket.socket!)
-    //   storeSocket.socket!.send(toSOSe('userid', this.user!.id))
 
-    //   await this.loadModules()
-      
-    // } else {
-    //   this.loadModules(true)
-    // }
+      .catch(err => console.log(err))
   }
 
   registration = async (user: RegistrationDTOClient) => {
@@ -117,7 +103,6 @@ class StoreUser {
     const response = StoreUserRegistrationSchema.parse(request)
 
     console.log(request)
-    // localStorage.setItem("accessToken", request.accessToken)
 
     runInAction(() => this.user = request.user)
     runInAction(() => StoreForm.form = response.form)

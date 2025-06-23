@@ -1,4 +1,3 @@
-@use "@/shared/css/const" as c;
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
 // :root {
@@ -10,21 +9,6 @@
 //   --bg-color: #242424;
 //   --ft-color: white;
 // }
-
-main {
-  // display: flex;
-  // flex-direction: column;
-  // align-items: flex-start;
-  // gap: c.$g;
-
-  // max-width: c.$w;
-  width: c.$w;
-  // justify-self: center;
-  margin: 0 auto;
-  margin-top: c.$hh;
-  padding: c.$p;
-  border-radius: 32px;
-}
 
 * {
   font-family: 'Roboto', sans-serif;

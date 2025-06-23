@@ -1,16 +1,18 @@
 import db from "@s/infrastructure/db/db";
-import { requestToFormManyParams } from "@s/infrastructure/db/SQL/SQLform";
+import { requestToFormManyParams, standartToForm } from "@s/infrastructure/db/SQL/SQLform";
 import { fieldsToArr } from "@s/infrastructure/db/SQL/utils";
 import logger from "@s/helpers/logger";
 import { LIKES_ON_PAGE } from "@shared/CONST";
 import { lnglatType } from "@t/gen/types";
+import { Knex } from "knex";
 
 interface LikesModuleRepo {
-  getManyByParam: (name: string, need: any[], distance?: lnglatType, cursor?: number) => Promise<any[]>
+  getManyByParam: (name: string, need: any[], distance?: lnglatType, cursor?: number) => Knex.QueryBuilder<any>,
+  getPairs: (id: number) => Knex.QueryBuilder<any>
 }
 
 class LikesModule implements LikesModuleRepo {
-  getManyByParam: LikesModuleRepo['getManyByParam'] = async (name, need, distance, cursor) => {
+  getManyByParam: LikesModuleRepo['getManyByParam'] = (name, need, distance, cursor) => {
     // logger.info({GET_BY_MANY_PARAMS: ""});
     const knexDistance = distance
     ? db.raw(`
@@ -38,10 +40,61 @@ class LikesModule implements LikesModuleRepo {
       query.andWhere('forms.id', '>', cursor)
     }
 
-    const callback = await query
-
-    return callback;
+    return query;
   };
+
+  getPairs: LikesModuleRepo['getPairs'] = (id) => {
+    const baseQuery = standartToForm()
+    const query = db("likes")
+      .leftJoin(baseQuery.as("forms"), "forms.id", "likes.liked_userid")
+      .leftJoin("likes as likes2", function () {
+        this.on("likes.userid", "=", "likes2.liked_userid")
+          .andOn("likes.liked_userid", "likes2.userid")
+      })
+      .where("likes.userid", id)
+    
+    logger.info({QUERY_SQL: query.toSQL().toNative()})
+
+    return query
+  }
 }
 
 export default LikesModule
+
+// ------------ ПОЛУЧИТЬ ВЗАИМНЫЕ ЛАЙКИ
+// SELECT likes.userid, likes.liked_userid
+// FROM likes
+// JOIN likes AS likes2
+//   ON likes.userid = likes2.liked_userid
+//  AND likes.liked_userid = likes2.userid
+// WHERE likes.userid = 16
+
+// ------------- ПОЛУЧИТЬ ФОРМЫ ПО ВЗАИМНЫМ ЛАЙКАМ
+// SELECT 
+//   forms.id,
+//   forms.name,
+//   forms.sex,
+//   forms.age,
+//   forms.avatar,
+//   forms.description,
+//   forms.target,
+//   forms.city,
+//   forms.last_active,
+//   -- forms.title,
+//   jsonb_build_object(
+//     'lng', ST_X(location::geometry),
+//     'lat', ST_Y(location::geometry)
+//   ) AS location,
+//   json_agg(json_build_object('id', tags.id, 'tag', tags.tag)) AS tags
+// FROM likes
+// JOIN likes AS likes2
+//   ON likes.userid = likes2.liked_userid
+//  AND likes.liked_userid = likes2.userid
+ 
+// LEFT JOIN forms ON forms.id = likes.liked_userid
+// LEFT JOIN user_tags ON forms.id = user_tags.id
+// LEFT JOIN tags ON user_tags.tagid = tags.id
+
+// WHERE likes.userid = 16
+
+// GROUP BY forms.id;

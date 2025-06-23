@@ -1,7 +1,8 @@
+import StoreError from "@/errors/Store-Error"
+
 function FourHundredFour() {
-  return (
-    <main>Такой страницы нет</main>
-  )
+  StoreError.FourtyFour()
+  return <></>
 }
 
 export default FourHundredFour

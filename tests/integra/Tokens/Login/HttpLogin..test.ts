@@ -22,9 +22,8 @@ async function login(data: any) {
 describe('[LOGIN]: Тест логинизации', () => {
   test('Логинизация верная', async () => {
     const request = await login(body) as LoginResponse
-    const {accessToken, user} = request
+    const {user} = request
 
-    expect(typeof accessToken).toStrictEqual('string')
     expect(typeof user.id).toStrictEqual("number")
     expect(typeof user.created_at).toStrictEqual("string")
     expect(user.email).toStrictEqual(body.email)

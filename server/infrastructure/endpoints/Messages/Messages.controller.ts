@@ -43,7 +43,7 @@ class MessagesController {
 
     const messages = await this.MessageSQL.getMessage(frid, toid, cursor)
     
-    if (!messages.length) return res.sendStatus(404)
+    // if (!messages.length) return res.sendStatus(404)
 
     const [form] = await this.ORM.getById(toid, 'forms')
 

@@ -1,5 +1,5 @@
 import {BrowserRouter, Routes, Route} from "react-router";
-import { LazyAdmin, LazyFourHundredFour, LazyLiked, LazyLogin, LazyMain, LazyMap, LazyMessage, LazyMessages, LazyProfile, LazyRegistration, LazyRoom, LazySettings, LazyTest, LazyUsers } from "@/app/index.lazy";
+import { LazyAdmin, LazyFourHundredFour, LazyLiked, LazyLogin, LazyMain, LazyMap, LazyMessage, LazyMessages, LazyPairs, LazyProfile, LazyRegistration, LazyRoom, LazySettings, LazyTest, LazyUsers } from "@/app/index.lazy";
 import SocketStore from "@/shared/api/Store-Socket";
 import {Suspense, useEffect} from "react";
 import Initialization from "@/app/Initialization";
@@ -20,8 +20,9 @@ function App() {
 
 	return (
 		<ChangeTheme>
-		<ErrorBoundary key={location.pathname + location.search} FallbackComponent={Fallback}>
 		<BrowserRouter>
+		<ErrorBoundary key={location.pathname + location.search} FallbackComponent={Fallback}>
+
 				<Initialization />
 				<Suspense>
 					<Routes>
@@ -36,6 +37,7 @@ function App() {
 							<Route path={paths.settings} element={<LazySettings/>}/>
 							<Route path={paths.map} element={<LazyMap />} />
 							<Route path={paths.liked} element={<LazyLiked />} />
+							<Route path={paths.pairs} element={<LazyPairs />} />
 							
 							<Route path={paths.room} element={<LazyRoom />} />
 							<Route path="*" element={<LazyFourHundredFour />} />
@@ -47,8 +49,8 @@ function App() {
 
 					</Routes>
 				</Suspense>
-		</BrowserRouter>
 		</ErrorBoundary>
+		</BrowserRouter>
 		</ChangeTheme>
 	);
 }

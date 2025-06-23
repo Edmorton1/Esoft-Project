@@ -51,7 +51,6 @@ class AuthController implements AuthControllerRepo {
     res.json(false)
   }
 
-  // login = async (req: Request, res: Response<{user: any, accessToke: any}>) => {
   login = async (req: Request, res: Response<User | LoginErrorTypes>) => {
     const dto = AuthValidation.login(req)
     logger.info({dtoUser: dto})
@@ -96,32 +95,3 @@ class AuthController implements AuthControllerRepo {
 }
 
 export default AuthController
-
-  // refresh = async (req: Request, res: Response) => {
-  //   // ТУТ ПОСМОТРЕТЬ ПОТОМ ГДЕ !
-  //   const authHeader = req.headers.authorization
-  //   let accessToken = ''
-  //   if (authHeader?.startsWith('Bearer')) {
-  //     accessToken = req.headers.authorization!.split(' ')[1]
-  //   }
-
-  //   const verifyAccess = await TokenHelper.validateAccess(accessToken)
-    
-  //   if (verifyAccess) {
-  //     // logger.info('access')
-  //     const user = one(await ORM.getById(verifyAccess.id, 'users'))
-  //     return TokenHelper.returnDTO({user, accessToken}, res)
-  //   }
-    
-  //   const verifyRefresh = await TokenHelper.validateRefresh(req.cookies.refreshToken)
-
-  //   if (!verifyAccess && verifyRefresh) {
-  //     // logger.info('refresh')
-  //     const user = one(await ORM.getById(verifyRefresh.id, 'users'))
-  //     const accessToken = await TokenHelper.createTokens(verifyRefresh.id, verifyRefresh.role, res)
-  //     return TokenHelper.returnDTO({user, accessToken}, res)
-  //   }
-  //   logger.info('Не прошёл')
-  //   res.clearCookie('refreshToken')
-  //   res.sendStatus(401)
-  // }
