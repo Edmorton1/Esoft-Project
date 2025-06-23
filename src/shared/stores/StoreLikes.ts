@@ -1,7 +1,6 @@
 import $api from "@/shared/api/api";
 import StoreGlobal from "@/shared/api/Store-Global";
 import { Likes } from "@t/gen/Users";
-import { LikesDTO } from "@t/gen/dtoObjects";
 import { toCl } from "@shared/MAPPERS";
 import { makeAutoObservable, runInAction, toJS } from "mobx";
 import StoreUser from "@/shared/stores/Store-User";
@@ -19,8 +18,8 @@ class StoreLikes {
 
   initial = async () => {
     // console.log(StoreForm.form)
-    const sent = toCl<Likes[]>(await $api.get(`${serverPaths.likes}?userid=${StoreUser.user!.id}&fields=id, liked_userid`))
-    const received = toCl<Likes[]>(await $api.get(`${serverPaths.likes}?liked_userid=${StoreUser.user!.id}&fields=id, userid`))
+    const sent = toCl<Likes[]>(await $api.get(`${serverPaths.likes}?userid=${StoreUser.user!.id}`))
+    const received = toCl<Likes[]>(await $api.get(`${serverPaths.likes}?liked_userid=${StoreUser.user!.id}`))
     runInAction(() => this.likes = {sent, received})
     // console.log('[SNET]', await $api.get(`${serverPaths.likes}?userid=${StoreUser.user!.id}&fields=id, liked_userid`))
     // console.log(toJS(this.likes))

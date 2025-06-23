@@ -19,7 +19,7 @@ class AuthMiddleware {
 
   OnlyAdmin = async (req: Request, res: Response, next: NextFunction) => {
 
-    if (!req.session.userid || req.session.role != "admin") return res.sendStatus(401)
+    if (!req.session.userid || req.session.role != "admin") return res.sendStatus(403)
 
     next()
   }

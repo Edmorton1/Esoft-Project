@@ -2,6 +2,7 @@ import { FormDTOServer, RegistrationDTOServerSchema } from "@s/infrastructure/en
 import logger from "@s/helpers/logger";
 import { TagsDTO, UserDTO, UserDTOSchema } from "@t/gen/dtoObjects";
 import { Request } from "express";
+import { z } from "zod";
 
 export interface ReqLogin {
   dto: UserDTO
@@ -19,6 +20,10 @@ class AuthValidation {
     const userDTO: UserDTO = {email, password}
 
     return [userDTO, formDTO, tags]
+  }
+  checkEmail = (req: Request) => {
+    const email = z.coerce.string().parse(req.params.email)
+    return email
   }
 
   login = (req: Request): UserDTO => {

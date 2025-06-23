@@ -22,7 +22,7 @@ class LikesController implements LikesRepository {
     private readonly ORM: ORMCopy,
     @inject(TYPES.clients)
     private readonly clients: clientsType,
-    @inject(ORMCopy)
+    @inject(LikesModule)
     private readonly likesModule: LikesModule
   ) {}
 
@@ -53,7 +53,8 @@ class LikesController implements LikesRepository {
 
   likesGet = async (req: Request, res: Response) => {
     const [lnglat, cursor] = LikesValidation.likesGet(req)
-    
+    // logger.info({lnglat, cursor})
+
     // logger.info({riad: r.iid})
     const ids = (await this.ORM.getByParams({liked_userid: req.session.userid}, 'likes', 'userid')).map(e => e.userid)
     logger.info({ids})

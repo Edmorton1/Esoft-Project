@@ -17,6 +17,7 @@ export interface LoginErrorTypes {
 
 interface AuthControllerRepo {
   registartion(req: Request, res: Response): Promise<void>,
+  checkEmail(req: Request, res: Response): Promise<void>,
   login(req: Request, res: Response): Promise<void>,
   logout(req: Request, res: Response): Promise<void>,
   initial(req: Request, res: Response): Promise<void>,
@@ -40,6 +41,14 @@ class AuthController implements AuthControllerRepo {
     req.session.role = total.user.role
 
     res.json(total)
+  }
+
+  checkEmail = async (req: Request, res: Response<boolean>) => {
+    const email = AuthValidation.checkEmail(req)
+    const findThis = await this.ORM.getByParams({email}, "users", "email")
+    logger.info(findThis)
+    if (!findThis.length) {res.json(true); return;}
+    res.json(false)
   }
 
   // login = async (req: Request, res: Response<{user: any, accessToke: any}>) => {

@@ -21,6 +21,7 @@ export const serverPaths = {
   logout: "/logout",
   // refresh: "/refresh",
   initial: "/initial",
+  checkEmail: "/checkEmail",
 
   createForm: "/createForm",
 
@@ -48,7 +49,6 @@ export const serverPaths = {
   messages: "/messages",
   tags: "/tags",
   user_tags: "/user_tags",
-  tokens: "/tokens",
 
   passwordCompare: "/passwordCompare",
   profilePut: "/profilePut",

@@ -1,6 +1,5 @@
 import $api from "@/shared/api/api"
 import StoreForm from "@/shared/stores/Store-Form"
-import StoreMessages from "@/pages/Messages/store/Store-Messages"
 import storeSocket from "@/shared/api/Store-Socket"
 import StoreTags from "@/shared/stores/Store-Tags"
 import StoreLikes from "@/shared/stores/StoreLikes"
@@ -13,7 +12,6 @@ import { RegistrationDTOClient, StoreUserRegistrationSchema } from "@t/client/Re
 import { UseFormSetError } from "react-hook-form"
 import axios from "axios"
 import { LoginErrorTypes } from "@s/infrastructure/endpoints/Auth/Auth.controller"
-import StoreLogin from "@/pages/Login/Store-Login"
 import { toSOSe } from "@s/helpers/WebSocket/JSONParsers"
 
 export interface responseInterface {
@@ -72,28 +70,6 @@ class StoreUser {
             }
           }
         })
-      // localStorage.setItem("accessToken", request.accessToken)
-
-      // await this.initial()
-    //   StoreLogin.closeModal()
-    // } catch(error: unknown) {
-    //   console.log(error)
-      // if (axios.isAxiosError(error)) {
-      //   const status = error.status
-      //   const response = error.response?.data as LoginErrorTypes
-      //   if (status === 400 && response.type === "email") {
-      //     setError("email", {
-      //       message: response.message,
-      //       type: "manual"
-      //     })
-      //   } else if (status === 400 && response.type === "password") {
-      //     setError("password", {
-      //       message: response.message,
-      //       type: "manual"
-      //     })
-      //   }
-      // }
-    // }
   }
 
   logout = async () => {

@@ -1,9 +1,7 @@
 import { GISKEY } from "@/envClient"
 import $api from "@/shared/api/api"
-import { toCl } from "@shared/MAPPERS"
 import { serverPaths } from "@shared/PATHS"
 import { LocationDTO } from "@t/gen/dtoObjects"
-import { User } from "@t/gen/Users"
 import axios from "axios"
 import { makeAutoObservable } from "mobx"
 
@@ -29,8 +27,8 @@ class StoreRegistration {
   }
 
   async emailIsFree(email: string) {
-    const request = toCl<Pick<User, 'email'>[]>(await $api.get(`${serverPaths.users}?fields=email`)).map(e => e.email)
-    return !request.includes(email)
+    const {data} = await $api.get(`${serverPaths.checkEmail}/${email}`)
+    return data
   }
 }
 
