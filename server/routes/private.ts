@@ -29,6 +29,7 @@ privateRouter.post(`${serverPaths.likesSend}/:liked_userid`, AuthMiddleware.Only
 privateRouter.delete(`${serverPaths.likesDelete}/:id`, AuthMiddleware.OnlyAuth, SharedMiddlewares.OnlyIdMiddleware, asyncHandle(container.get(LikesController).sendDelete))
 privateRouter.get(serverPaths.likesGet, AuthMiddleware.OnlyAuth, asyncHandle(container.get(LikesController).likesGet))
 privateRouter.get(serverPaths.likesPairs, AuthMiddleware.OnlyAuth, asyncHandle(container.get(LikesController).getPairs))
+privateRouter.delete(`${serverPaths.rejectLike}/:liked_userid`, AuthMiddleware.OnlyAuth, asyncHandle(container.get(LikesController).rejectLike))
 // ИЗМЕНЕНИЕ ПРОФИЛЯ
 privateRouter.post(serverPaths.passwordCompare, AuthMiddleware.OnlyAuth, asyncHandle(container.get(SettingsController).passwordCompare))
 privateRouter.put(serverPaths.profilePut, AuthMiddleware.OnlyAuth, asyncHandle(container.get(SettingsController).profilePut))

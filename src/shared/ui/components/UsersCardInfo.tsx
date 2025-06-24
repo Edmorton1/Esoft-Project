@@ -16,7 +16,7 @@ import { Tags } from "@t/gen/Users"
 import { toJS } from "mobx"
 
 function UsersCardInfo({form, children}: {form: FormWithDistanse, children?: ReactNode}) {
-  console.log("TAGS", toJS(form.tags))
+  // console.log("TAGS", toJS(form.tags))
   return <Card component={"article"} className={style.container}>
     {/* <Avatar src={form.avatar!} className={style.container__avatar} /> */}
     <div className={style.container__avatar}>

@@ -13,6 +13,7 @@ import { UseFormSetError } from "react-hook-form"
 import axios from "axios"
 import { LoginErrorTypes } from "@s/infrastructure/endpoints/Auth/Auth.controller"
 import { toSOSe } from "@s/helpers/WebSocket/JSONParsers"
+import StorePairs from "@/shared/stores/Store-Pairs"
 
 export interface responseInterface {
   user: User,
@@ -30,9 +31,10 @@ class StoreUser {
       console.log("LOAD MODULES")
       StoreForm.initial()
       StoreLikes.initial()
+      StorePairs.initial()
       // await StoreMessages.initial()
       // await StoreTags.initial()
-      console.log("LOADLOADLOADLOADLOADLOADLOADLOADLOADLOADLOADLOADLOADLOADLOADLOADLOADLOADLOAD 2")
+      console.log("RELOAD 2")
       await storeSocket.waitSocket(storeSocket.socket!)
       await storeSocket.socket!.send(toSOSe('userid', this.user!.id))
     } else {
@@ -41,6 +43,7 @@ class StoreUser {
         StoreForm.form = null;
         StoreTags.tags = null;
         StoreLikes.likes = null;
+        StorePairs.pairs = null
       })
     }
   }

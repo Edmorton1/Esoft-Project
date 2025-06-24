@@ -159,7 +159,9 @@ class ORMCopy {
       checkWord = "id"
     }
     
-    const request = await db(table).where("id", "=", id).andWhere(checkWord, "=", userid).delete().returning("*")
+    const query = db(table).where("id", "=", id).andWhere(checkWord, "=", userid).delete().returning("*")
+    logger.info({DELETE_QUERY: query.toSQL().toNative()})
+    const request = await query
     
     cacheEdit(table, request, 'delete')
     return request

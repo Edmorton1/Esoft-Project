@@ -36,6 +36,7 @@ export const serverPaths = {
   likesDelete: "/likesDelete",
   likesGet: "/likesGet",
   likesPairs: "/likesPairs",
+  rejectLike: "/rejectLike",
 
   postAvatar: "/postAvatar",
 

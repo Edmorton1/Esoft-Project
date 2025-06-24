@@ -21,7 +21,7 @@ function useInfinitPagination(ref: React.RefObject<HTMLElement | null>, url: str
 
   useEffect(() => {
     console.log("ЮРЛ ДОЛЖЕН ПОМЕНЯТЬСЯ", url)
-    if (url.includes("undefined")) return;
+    // if (url.includes("undefined")) return;
 
     if (firstRender || fetching) {
       console.log("ФЕТЧИНГ", url)
@@ -41,7 +41,6 @@ function useInfinitPagination(ref: React.RefObject<HTMLElement | null>, url: str
         
         .catch(() => setStop(false))
     }
-
   }, [fetching, url])
 
   // РАБОТАЕТ ТОЛЬКО ПРИ ПЕРВОЙ ЗАГРУЗКЕ

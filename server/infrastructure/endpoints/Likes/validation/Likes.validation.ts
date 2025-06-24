@@ -31,6 +31,11 @@ class LikesValidation {
 
     return [lnglat, cursor]
   }
+
+  rejectLike = (req: Request) => {
+    const liked_userid = z.coerce.number().parse(req.params.liked_userid);
+    return liked_userid
+  }
 }
 
 export default new LikesValidation

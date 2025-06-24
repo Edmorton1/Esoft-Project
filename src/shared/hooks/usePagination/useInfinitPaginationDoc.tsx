@@ -1,18 +1,34 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import $api from "@/shared/api/api"
 
 function useInfinitPaginationDoc(url: string, firstRender: boolean, callback: (data: any) => void, limit: number) {
   const [stop, setStop] = useState(false)
   const [fetching, setFetching] = useState(false)
+  const urlRef = useRef(url)
+
+  console.log("CURSOR INSIDE", url)
 
   useEffect(() => {
-    if (url.includes("undefined")) return;
+    // if (url.includes("undefined")) return;
 
     if (fetching || firstRender) {
       $api.get(url)
-        .then(data => {console.log('then data', data.data.length === 0); return data})
-        .then(data => {data.data.length < limit? setStop(true) : callback(data.data)  })
+        .then(data => {console.log('then data', {FETCHI_FETCH: data.data}); return data.data})
+        .then(data => {
+          if (data.length === 0) {
+            if (firstRender) {
+              callback(data)
+            }
+            setStop(true)
+          } else {
+            callback(data)
+          }
+          // data.data.length < limit? setStop(true) : callback(data.data)
+        })
         .then(() => setFetching(false))
+
+        .catch(() => setStop(false))
+      // requestPagination(url, firstRender, callback, setStop, setFetching)
     }
   }, [fetching, url])
 
@@ -29,8 +45,8 @@ function useInfinitPaginationDoc(url: string, firstRender: boolean, callback: (d
       console.log(height - position)
 
       if (height - position < 300 && !stop) {
-        console.log('stop', stop)
-        console.log(url)
+        // console.log('stop', stop)
+        console.log("CURSOR OUTSIDE", url)
         setFetching(true)
       }
     }

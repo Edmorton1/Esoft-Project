@@ -21,6 +21,7 @@ import MessagesOutController from "@s/infrastructure/endpoints/MessageOutside/Me
 import MessagesController from "@s/infrastructure/endpoints/Messages/Messages.controller";
 import MessagesSQL from "@s/infrastructure/endpoints/Messages/SQL/Message.module";
 import MessagesService from "@s/infrastructure/endpoints/Messages/services/Messages.service";
+import LikesService from "@s/infrastructure/endpoints/Likes/services/LikesService";
 
 export const tablesArr: tables[] = ['users', 'forms', 'likes', 'messages', 'tags', 'user_tags']
 
@@ -29,7 +30,7 @@ const container = new Container()
 container.bind<ORMCopy>(ORMCopy).toSelf()
 container.bind<clientsType>(TYPES.clients).toConstantValue(clients)
 container.bind<LikesModule>(LikesModule).toSelf()
-
+container.bind<LikesService>(LikesService).toSelf()
 container.bind<LikesController>(LikesController).toSelf()
 
 container.bind<Factory<CRUDController>>(TYPES.CRUD.Factory).toFactory(context => {
@@ -49,16 +50,21 @@ container.bind<Yandex>(Yandex).toSelf()
 container.bind<UploadFileService>(UploadFileService).toSelf()
 container.bind<AuthService>(AuthService).toSelf()
 
+
 container.bind<AuthController>(AuthController).toSelf()
+
 
 container.bind<ExtendedSeacrhSQLhelper>(ExtendedSeacrhSQLhelper).toSelf()
 container.bind<ExtendedSearchModule>(ExtendedSearchModule).toSelf()
 container.bind<ExtendedSearchController>(ExtendedSearchController).toSelf()
 
+
 container.bind<FormController>(FormController).toSelf()
+
 
 container.bind<SettingsService>(SettingsService).toSelf()
 container.bind<SettingsController>(SettingsController).toSelf()
+
 
 container.bind<MessagesOutModule>(MessagesOutModule).toSelf()
 container.bind<MessagesOutController>(MessagesOutController).toSelf()

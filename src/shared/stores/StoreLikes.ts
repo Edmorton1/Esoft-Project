@@ -6,6 +6,7 @@ import { makeAutoObservable, runInAction, toJS } from "mobx";
 import StoreUser from "@/shared/stores/Store-User";
 import { serverPaths } from "@shared/PATHS";
 import { FormWithDistanse } from "@t/gen/types";
+import StorePairs from "@/shared/stores/Store-Pairs";
 
 class StoreLikes {
   likes: {sent: {id: number, liked_userid: number}[]; received: {id: number, userid: number}[]} | null = null;
@@ -50,6 +51,7 @@ class StoreLikes {
       console.log(liked_userid, this.likes?.sent.filter(e => e.id != liked_userid))
       runInAction(() => this.likes!.sent = this.likes!.sent.filter(e => e.liked_userid != liked_userid))
       console.log(request)
+      StorePairs.pairs = StorePairs.pairs!.filter(e => e.id !== liked_userid)
     }
     catch(err) {
       console.log(err)

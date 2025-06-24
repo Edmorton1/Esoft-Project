@@ -1,73 +1,83 @@
-import { clientsType } from "@s/helpers/WebSocket/socket";
 import { Request, Response } from "express";
-import logger from "@s/helpers/logger";
 import LikesValidation from "@s/infrastructure/endpoints/Likes/validation/Likes.validation";
 import LikesModule from "@s/infrastructure/endpoints/Likes/sql/Likes.module";
-import { toSOSe } from "@s/helpers/WebSocket/JSONParsers";
-import ORMCopy from "@s/infrastructure/db/SQL/ORMCopy";
 import SharedValidation from "@s/infrastructure/middlewares/Shared.validation";
 import { inject, injectable } from "inversify";
-import TYPES from "@s/routes/containers/types";
+import LikesService from "@s/infrastructure/endpoints/Likes/services/LikesService";
+import { Form } from "@t/gen/Users";
+import logger from "@s/helpers/logger";
 
 interface LikesRepository {
-  sendLike(req: Request, res: Response): Promise<void>,
-  sendDelete(req: Request, res: Response): Promise<void>,
-  likesGet(req: Request, res: Response): Promise<void>,
+	sendLike(req: Request, res: Response): Promise<void>;
+	sendDelete(req: Request, res: Response): Promise<void>;
+	likesGet(req: Request, res: Response): Promise<void>;
 }
 
 @injectable()
 class LikesController implements LikesRepository {
-  constructor(
-    @inject(ORMCopy)
-    private readonly ORM: ORMCopy,
-    @inject(TYPES.clients)
-    private readonly clients: clientsType,
-    @inject(LikesModule)
-    private readonly likesModule: LikesModule
-  ) {}
+	constructor(
+		@inject(LikesModule)
+		private readonly likesModule: LikesModule,
+		@inject(LikesService)
+		private readonly likesService: LikesService,
+	) {}
 
-  sendLike = async (req: Request, res: Response) => {
+	sendLike = async (req: Request, res: Response) => {
+		const likesDTO = LikesValidation.sendLike(req);
 
-    const likesDTO = LikesValidation.sendLike(req)
+		const data = await this.likesService.sendLike(likesDTO);
 
-    const [data] = await this.ORM.post(likesDTO, 'likes', "id, liked_userid")
-    logger.info(this.clients.keys())
-    const clientTo = this.clients.get(likesDTO.liked_userid)
-    clientTo?.send(toSOSe('like', data))
-    
-    res.json(data)
-  }
+		res.json(data);
+	};
 
-  sendDelete = async (req: Request, res: Response) => {
-    const [id] = SharedValidation.OnlyId(req)
+	sendDelete = async (req: Request, res: Response) => {
+		const [id] = SharedValidation.OnlyId(req);
+		const userid = req.session.userid!;
 
-    const [data] = await this.ORM.delete(id, 'likes', req.session.userid!)
+		const data = await this.likesService.sendDelete(id, userid);
 
-    if (!data) {res.sendStatus(403); return;} 
+		if (!data) {
+			res.sendStatus(403);
+			return;
+		}
 
-    const clientTo = this.clients.get(data.liked_userid)
-    clientTo?.send(toSOSe('delete_like', data.id))
+		res.json(data);
+	};
 
-    res.json(data)
-  }
+	likesGet = async (req: Request, res: Response<Form[]>) => {
+		const [lnglat, cursor] = LikesValidation.likesGet(req);
+		// logger.info({lnglat, cursor})
 
-  likesGet = async (req: Request, res: Response) => {
-    const [lnglat, cursor] = LikesValidation.likesGet(req)
-    // logger.info({lnglat, cursor})
+		const response = await this.likesService.likesGet(
+			req.session.userid!,
+			lnglat,
+			cursor,
+		);
 
-    // logger.info({riad: r.iid})
-    const ids = (await this.ORM.getByParams({liked_userid: req.session.userid}, 'likes', 'userid')).map(e => e.userid)
-    logger.info({ids})
+		res.json(response);
+	};
 
-    const response = await this.likesModule.getManyByParam("id", ids, lnglat, cursor)
-    res.json(response)
-  }
+	getPairs = async (req: Request, res: Response) => {
+		const id = req.session.userid!;
+		const data = await this.likesModule.getPairs(id);
+		res.json(data);
+	};
 
-  getPairs = async (req: Request, res: Response) => {
-    const id = req.session.userid!;
-    const data = await this.likesModule.getPairs(id)
-    res.json(data)
-  }
+	rejectLike = async (req: Request, res: Response) => {
+		const liked_userid = LikesValidation.rejectLike(req);
+		const userid = req.session.userid!;
+
+		logger.info({userid, liked_userid})
+		const data = await this.likesService.rejectLike(userid, liked_userid);
+		logger.info({ASDASDASD: data})
+
+		if (!data) {
+			res.sendStatus(404);
+			return;
+		}
+
+		res.sendStatus(200);
+	};
 }
 
-export default LikesController
+export default LikesController;
