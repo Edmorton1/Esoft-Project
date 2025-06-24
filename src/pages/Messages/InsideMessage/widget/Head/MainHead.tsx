@@ -21,7 +21,8 @@ function MainHead({toid}: {toid: number}) {
   const wh = 50
   const handlerCallClick = () => StoreRoom.makeCall(StoreUser.user!.id, toid)
 
-  console.log(StoreMessages.form?.last_active)
+  // console.log(StoreMessages.form?.last_active)
+  console.log({ГОЛОВА_ЮЗЕР: StoreMessages.form})
 
   return <>
     <CardHeader

@@ -27,7 +27,16 @@ function useInfinitPagination(ref: React.RefObject<HTMLElement | null>, url: str
       console.log("ФЕТЧИНГ", url)
       $api.get(url)
         .then(data => {console.log({FETCHI_FETCH: data}); return data})
-        .then(data => {data.data.messages.length === 0 ? setStop(true) : callback(data)})
+        .then(data => {
+          if (data.data.messages.length === 0) {
+            if (firstRender) {
+              callback(data)
+            }
+            setStop(true)
+          } else {
+            callback(data)
+          } 
+          })
         .then(() => setFetching(false))
         
         .catch(() => setStop(false))

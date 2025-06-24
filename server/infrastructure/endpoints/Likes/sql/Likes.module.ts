@@ -46,12 +46,14 @@ class LikesModule implements LikesModuleRepo {
   getPairs: LikesModuleRepo['getPairs'] = (id) => {
     const baseQuery = standartToForm()
     const query = db("likes")
+      .select("forms.*")
       .leftJoin(baseQuery.as("forms"), "forms.id", "likes.liked_userid")
       .leftJoin("likes as likes2", function () {
         this.on("likes.userid", "=", "likes2.liked_userid")
           .andOn("likes.liked_userid", "likes2.userid")
       })
       .where("likes.userid", id)
+      .orderBy("likes.created_at")
     
     logger.info({QUERY_SQL: query.toSQL().toNative()})
 

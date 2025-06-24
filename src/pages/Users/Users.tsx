@@ -11,6 +11,7 @@ function Users() {
   console.log("USERS")
   return (
     <Suspense>
+      {/* <Title>Пользователи</Title> */}
       <section className={style.section}>
         {/* <button onClick={StoreUser.logout}>Выйти</button>
         <button onClick={() => StoreGlobal.sendInfo(String(Math.random()))}>Тру</button>

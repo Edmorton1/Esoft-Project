@@ -3,16 +3,16 @@ import { makeAutoObservable } from "mobx"
 
 class StorePairs {
   forms: Form[] = [];
-  cursor: number | null = null
+  // cursor: number | null = null
 
   constructor () {
     makeAutoObservable(this)
   }
 
   initial = (data: Form[]) => {
+    console.log({data})
     this.forms = data
-    this.cursor = data
   }
 }
 
-export default StorePairs
+export default new StorePairs

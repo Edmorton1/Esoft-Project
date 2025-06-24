@@ -15,6 +15,7 @@ import Paper from "@mui/material/Paper";
 import MapWidget from "@/shared/widgets/MapWidget/MapWidget";
 import * as style from "@/shared/css/pages/Registration.module.scss"
 import { TagsDTO } from "@t/gen/dtoObjects";
+import Title from "@/shared/ui/Ttile";
 
 interface propsInterface {
   onSubmit: (...args: any[]) => any,
@@ -24,7 +25,6 @@ function RegistrationBody({onSubmit}: propsInterface) {
   const { register, setValue, formState: {errors}, control } = useFormContext()
   const [input, setInput] = useState('')
 
-  const Title = ({children}: {children: string}) => <Typography variant="h3" component={"h3"} align="center">{children}</Typography>
   const tags: TagsDTO[] = useWatch({name: 'tags'})
 
   return <form onSubmit={onSubmit} className={style.form}>

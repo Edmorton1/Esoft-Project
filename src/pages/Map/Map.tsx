@@ -4,6 +4,7 @@ import {useRef} from "react";
 import useMap from "@/shared/hooks/Map/useMap";
 import useClusterer from "@/pages/Map/hooks/useClusterer";
 import useMapCustomization from "@/pages/Map/hooks/useMapCustomization";
+import Title from "@/shared/ui/Ttile";
 
 function MapPage() {
 	const containerRef = useRef<HTMLDivElement>(null);
@@ -14,9 +15,10 @@ function MapPage() {
 	const clusterer = useClusterer(mapgl, map);
 
 	return (
-		<>
-			<MapWrapper height="1000px" width="100%" ref={containerRef} />
-		</>
+		<section>
+			<Title>Карта всех пользователей</Title>
+			<MapWrapper height="725px" width="100%" ref={containerRef} />
+		</section>
 	);
 }
 
