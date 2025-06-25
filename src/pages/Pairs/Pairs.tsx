@@ -27,7 +27,7 @@ function Pairs() {
     <section className={style.container}>
       {StorePairs.pairs?.map(e => {
       const handleClick = () => StoreRoom.makeCall(StoreUser.user!.id, e.id)
-      const handleDelete = () => StoreLikes.delete(e.id)
+      const handleDelete = () => StoreLikes.delete(e)
 
       return <Paper key={e.id}>
           <CardHeader

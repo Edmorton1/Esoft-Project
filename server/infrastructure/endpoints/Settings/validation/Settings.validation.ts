@@ -10,7 +10,7 @@ const ProfileSchema = FormSchema
   })
   .partial()
 
-type ProfileSchemaType = z.infer<typeof ProfileSchema>
+export type ProfileSchema = z.infer<typeof ProfileSchema>
 
 class SettingsValidation {
   password = (req: Request): [string, string] => {
@@ -20,7 +20,7 @@ class SettingsValidation {
     return [oldPass, newPass]
   }
 
-  profile = (req: Request): ProfileSchemaType => {
+  profile = (req: Request): ProfileSchema => {
     const profile = ProfileSchema.parse(req.body)
 
     return profile

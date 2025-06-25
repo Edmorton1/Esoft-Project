@@ -1,5 +1,4 @@
 import logger from "@s/helpers/logger"
-import ORM from "@s/infrastructure/db/SQL/ORM"
 import { frJSON } from "@shared/MAPPERS"
 import { MessageDTO } from "@t/gen/dtoObjects"
 import { zstrnum } from "@t/gen/Schemas"
@@ -8,25 +7,20 @@ import { Request, Response } from "express"
 import { z } from "zod"
 
 class MessagesValidation {
-  sendMessage = (req: Request, res: Response): [MessageDTO, Express.Multer.File[]] | void => {
+  sendMessage = (req: Request): [MessageDTO, Express.Multer.File[]] | void => {
     logger.info({PRED_MESSAGE: req})
     const toid = z.coerce.number().parse(req.params.toid)
     const data = MessageDTOServerSchema.parse({...frJSON(req.body.json)!, files: req.files, fromid: req.session.userid, toid})
     const { files, ...message } = data
 
-    if (message.fromid !== req.session.userid) {res.sendStatus(403); return;}
-
     logger.info({SEND_MESSAGE: files, message})
     return [message, files]
   };
 
-  editMessage = async (req: Request, res: Response): Promise<[number, MessagePutDTOServer] | void> => {
+  editMessage = async (req: Request): Promise<[number, MessagePutDTOServer] | void> => {
 
     const id = z.coerce.number().parse(req.params.id)
     const data = MessagePutDTOServerSchema.parse({...frJSON(req.body.json)!, files: req.files, fromid: req.session.userid})
-
-    const [request] = await ORM.getById(id, "messages", "fromid")
-    if (request.fromid !== req.session.userid) {res.sendStatus(403); return;}
 
     // if (data.fromid !== req.session.userid) return res.sendStatus(403)
 

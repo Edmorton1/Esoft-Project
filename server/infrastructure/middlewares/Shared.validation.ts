@@ -9,5 +9,4 @@ class SharedValidation {
   }
 };
 
-
 export default new SharedValidation

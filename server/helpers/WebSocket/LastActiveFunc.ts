@@ -1,12 +1,15 @@
-import ORM from "@s/infrastructure/db/SQL/ORM";
 import logger from "@s/helpers/logger";
 import { toSOCl } from "@s/helpers/WebSocket/JSONParsers";
 import { WebSocketWidh } from "@s/helpers/WebSocket/socket";
+import ORMCopy from "@s/infrastructure/db/SQL/ORMCopy";
 import { TIMEZONE } from "@shared/CONST";
 
 const activeTimers = new Map()
 
 export async function TimePoint(wsClient: WebSocketWidh, id: number) {
+  //@ts-ignore
+  // ВРЕМЕННАЯ ЗАГЛУШКА
+  const ORM = new ORMCopy()
   if (activeTimers.has(id)) return;
 
   const doIter = () => {

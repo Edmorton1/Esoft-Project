@@ -6,77 +6,85 @@ import { inject, injectable } from "inversify";
 import LikesService from "@s/infrastructure/endpoints/Likes/services/LikesService";
 import { Form } from "@t/gen/Users";
 import logger from "@s/helpers/logger";
+import HttpContext from "@s/infrastructure/express/Http.context";
+import { z } from "zod";
 
-interface LikesRepository {
-	sendLike(req: Request, res: Response): Promise<void>;
-	sendDelete(req: Request, res: Response): Promise<void>;
-	likesGet(req: Request, res: Response): Promise<void>;
+interface ILikesController {
+	sendLike(ctx: HttpContext): Promise<void>;
+	sendDelete(ctx: HttpContext): Promise<void>;
+	likesGet(ctx: HttpContext): Promise<void>;
+	getPairs(ctx: HttpContext): Promise<void>;
+	rejectLike(ctx: HttpContext): Promise<void>
 }
 
 @injectable()
-class LikesController implements LikesRepository {
+class LikesController implements ILikesController {
 	constructor(
 		@inject(LikesModule)
 		private readonly likesModule: LikesModule,
 		@inject(LikesService)
 		private readonly likesService: LikesService,
+		@inject(LikesValidation)
+		private readonly likesValidation: LikesValidation
 	) {}
 
-	sendLike = async (req: Request, res: Response) => {
-		const likesDTO = LikesValidation.sendLike(req);
+	sendLike: ILikesController["sendLike"] = async ctx => {
+		const likesDTO = this.likesValidation.sendLike(ctx);
 
 		const data = await this.likesService.sendLike(likesDTO);
 
-		res.json(data);
+		ctx.json(data);
 	};
 
-	sendDelete = async (req: Request, res: Response) => {
-		const [id] = SharedValidation.OnlyId(req);
-		const userid = req.session.userid!;
+	sendDelete: ILikesController["sendDelete"] = async (ctx) => {
+		//@ts-ignore ПОТОМ ВЕРНУТЬ
+		// const [id] = SharedValidation.OnlyId(ctx);
+		const id = z.coerce.number().parse(ctx.params.id)
+		const userid = ctx.session.userid!;
 
 		const data = await this.likesService.sendDelete(id, userid);
 
 		if (!data) {
-			res.sendStatus(403);
+			ctx.sendStatus(403);
 			return;
 		}
 
-		res.json(data);
+		ctx.json(data);
 	};
 
-	likesGet = async (req: Request, res: Response<Form[]>) => {
-		const [lnglat, cursor] = LikesValidation.likesGet(req);
+	likesGet: ILikesController["likesGet"] = async (ctx) => {
+		const [lnglat, cursor] = this.likesValidation.likesGet(ctx);
 		// logger.info({lnglat, cursor})
 
 		const response = await this.likesService.likesGet(
-			req.session.userid!,
+			ctx.session.userid!,
 			lnglat,
 			cursor,
 		);
 
-		res.json(response);
+		ctx.json(response);
 	};
 
-	getPairs = async (req: Request, res: Response) => {
-		const id = req.session.userid!;
+	getPairs: ILikesController['getPairs'] = async (ctx) => {
+		const id = ctx.session.userid!;
 		const data = await this.likesModule.getPairs(id);
-		res.json(data);
+		ctx.json(data);
 	};
 
-	rejectLike = async (req: Request, res: Response) => {
-		const liked_userid = LikesValidation.rejectLike(req);
-		const userid = req.session.userid!;
+	rejectLike: ILikesController['rejectLike'] = async (ctx) => {
+		const liked_userid = this.likesValidation.rejectLike(ctx);
+		const userid = ctx.session.userid!;
 
-		logger.info({userid, liked_userid})
+		logger.info({ userid, liked_userid });
 		const data = await this.likesService.rejectLike(userid, liked_userid);
-		logger.info({ASDASDASD: data})
+		logger.info({ TAIDADA: data });
 
 		if (!data) {
-			res.sendStatus(404);
+			ctx.sendStatus(404);
 			return;
 		}
 
-		res.sendStatus(200);
+		ctx.sendStatus(200);
 	};
 }
 

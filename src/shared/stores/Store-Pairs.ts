@@ -20,13 +20,6 @@ class StorePairs {
 		this.pairs = data;
 	};
 
-	resolveUser = async (form: Form) => {
-		const liked = StoreLikes.liked;
-		await StoreLikes.sendLike(form.id);
-		if (liked) StoreLikes.liked = liked?.filter(e => e.id !== form.id);
-		if (this.pairs) this.pairs.unshift(form);
-	};
-
 	rejectUser = async (id: number) => {
     const liked = StoreLikes.liked;
 		await $api.delete(`${serverPaths.rejectLike}/${id}`);

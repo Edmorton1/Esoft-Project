@@ -1,5 +1,5 @@
 import dotenv from "dotenv"
-import express, { NextFunction, Request, Response } from "express"
+import express from "express"
 import cors from "cors"
 // import http from "http"
 import cookieParser from "cookie-parser"
@@ -11,12 +11,12 @@ import fs from 'fs'
 import path from 'path'
 import logger, { httpLogger } from "@s/helpers/logger"
 import "@t/declarations/server/index"
-import { COOKIE_NAME, PREFIX } from "@shared/CONST"
-import session from "express-session"
-import { redisStore } from "@s/infrastructure/redis/redis"
+import { PREFIX } from "@shared/CONST"
 import publicRouter from "@s/routes/public"
 import privateRouter from "@s/routes/private"
 import adminRouter from "@s/routes/admin"
+import expressSession from "@s/routes/middlewares/Express.session"
+import expressError from "@s/routes/middlewares/Express.error"
 
 const app = express()
 
@@ -40,18 +40,7 @@ app.use(cookieParser())
 app.use(express.json())
 
 // РОУТЕР
-app.use(session({
-  store: redisStore,
-  secret: process.env.SESSION_SECRET,
-  name: COOKIE_NAME,
-  resave: false,
-  saveUninitialized: true,
-  cookie: {
-    secure: false,
-    maxAge: 1000 * 60 * 60 * 600
-  },
-  // rolling: true
-}))
+app.use(expressSession)
 
 app.use(httpLogger)
 
@@ -59,10 +48,7 @@ app.use(PREFIX, publicRouter)
 app.use(PREFIX, privateRouter)
 app.use(PREFIX, adminRouter)
 
-app.use((err: any, req: Request, res: Response, next: NextFunction) => {
-  logger.info({ОШИБКА_500: err})
-  res.status(500).json({ error: err })
-})
+app.use(expressError)
 // РОУТЕР
 
 // ОТКЛЮЧЕНИЕ ВАРНИНГА У ЯНДЕКСА и require У FileType

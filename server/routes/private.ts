@@ -9,7 +9,7 @@ import SharedMiddlewares from "@s/infrastructure/middlewares/SharedMiddlewares"
 import SettingsController from "@s/infrastructure/endpoints/Settings/Settings.controller"
 import AuthMiddleware from "@s/infrastructure/middlewares/AuthMiddleware"
 import { upload } from "@s/routes/public";
-import { asyncHandle } from "@s/routes/utils";
+import { adaptController, asyncHandle } from "@s/routes/adapters";
 import container from "@s/routes/containers/container.di";
 
 const privateRouter = Router();
@@ -25,11 +25,11 @@ privateRouter.get(`${serverPaths.getMessage}/:toid`, AuthMiddleware.OnlyAuth, as
 // ЗАПРОС ПЕРЕПИСОК
 privateRouter.get(serverPaths.outsideMessages, AuthMiddleware.OnlyAuth, asyncHandle(container.get(MessagesOutController).outsideMessages))
 // ЛАЙКИ
-privateRouter.post(`${serverPaths.likesSend}/:liked_userid`, AuthMiddleware.OnlyAuth, asyncHandle(container.get(LikesController).sendLike))
-privateRouter.delete(`${serverPaths.likesDelete}/:id`, AuthMiddleware.OnlyAuth, SharedMiddlewares.OnlyIdMiddleware, asyncHandle(container.get(LikesController).sendDelete))
-privateRouter.get(serverPaths.likesGet, AuthMiddleware.OnlyAuth, asyncHandle(container.get(LikesController).likesGet))
-privateRouter.get(serverPaths.likesPairs, AuthMiddleware.OnlyAuth, asyncHandle(container.get(LikesController).getPairs))
-privateRouter.delete(`${serverPaths.rejectLike}/:liked_userid`, AuthMiddleware.OnlyAuth, asyncHandle(container.get(LikesController).rejectLike))
+privateRouter.post(`${serverPaths.likesSend}/:liked_userid`, AuthMiddleware.OnlyAuth, adaptController(container.get(LikesController).sendLike))
+privateRouter.delete(`${serverPaths.likesDelete}/:id`, AuthMiddleware.OnlyAuth, SharedMiddlewares.OnlyIdMiddleware, adaptController(container.get(LikesController).sendDelete))
+privateRouter.get(serverPaths.likesGet, AuthMiddleware.OnlyAuth, adaptController(container.get(LikesController).likesGet))
+privateRouter.get(serverPaths.likesPairs, AuthMiddleware.OnlyAuth, adaptController(container.get(LikesController).getPairs))
+privateRouter.delete(`${serverPaths.rejectLike}/:liked_userid`, AuthMiddleware.OnlyAuth, adaptController(container.get(LikesController).rejectLike))
 // ИЗМЕНЕНИЕ ПРОФИЛЯ
 privateRouter.post(serverPaths.passwordCompare, AuthMiddleware.OnlyAuth, asyncHandle(container.get(SettingsController).passwordCompare))
 privateRouter.put(serverPaths.profilePut, AuthMiddleware.OnlyAuth, asyncHandle(container.get(SettingsController).profilePut))

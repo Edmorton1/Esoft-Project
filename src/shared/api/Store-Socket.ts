@@ -55,10 +55,10 @@ class SocketStore {
           break
 
         case "like":
-          StoreLikes.socketGet(data)
+          StoreLikes.socketGetLike(data)
           break
         case "delete_like":
-          StoreLikes.sendDelete(data)
+          StoreLikes.socketGetDelete(data)
           break
 
         case "offer": {

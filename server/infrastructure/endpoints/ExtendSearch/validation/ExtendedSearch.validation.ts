@@ -1,4 +1,4 @@
-import { queryType, zodParams } from "@s/infrastructure/endpoints/ExtendSearch/validation/ExtendedSearch.schemas";
+import { zodParams } from "@s/infrastructure/endpoints/ExtendSearch/validation/ExtendedSearch.schemas";
 import logger from "@s/helpers/logger";
 import {Request} from "express";
 

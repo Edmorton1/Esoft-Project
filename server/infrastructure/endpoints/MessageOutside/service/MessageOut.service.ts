@@ -1,0 +1,46 @@
+import logger from "@s/helpers/logger";
+import ORMCopy from "@s/infrastructure/db/SQL/ORMCopy";
+import MessagesOutModule from "@s/infrastructure/endpoints/MessageOutside/sql/MessagesOut.module";
+import { MessageFormSchema, MessageFormType } from "@t/gen/Schemas";
+import { inject, injectable } from "inversify";
+import { z } from "zod";
+
+@injectable()
+class MessageOutService {
+	constructor(
+		@inject(MessagesOutModule)
+		private readonly SQL: MessagesOutModule,
+		@inject(ORMCopy)
+		private readonly ORM: ORMCopy,
+	) {}
+
+	outsideMessages = async (id: number) => {
+		const total: MessageFormType[] = [];
+
+		const messages = await this.SQL.getAllLastMessages(id);
+		const params = messages.map(e => {
+			if (e.toid !== id) {
+				return e.toid;
+			} else if (e.fromid !== id) {
+				return e.fromid;
+			}
+		});
+		let forms;
+
+		if (params.length > 0) {
+			forms = await this.ORM.getManyParams(params, undefined);
+		}
+
+		for (let i = 0; i < params.length; i++) {
+			total.push({ message: messages[i], form: forms![i] });
+		}
+
+		const arrZod = z.array(MessageFormSchema);
+		const parsedTotal = arrZod.parse(total);
+
+		logger.info({ request: messages });
+    return parsedTotal
+	};
+}
+
+export default MessageOutService;

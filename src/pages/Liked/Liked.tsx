@@ -15,7 +15,7 @@ function Liked() {
   // useGetBy(`${serverPaths.likesGet}/${StoreUser.user?.id}?lat=${StoreForm.form?.location?.lat}&lng=${StoreForm.form?.location?.lng}?cursor=${StoreLikes.cursor}`, {callback: (data) => StoreLikes.likedUser(data)})
 
   console.log("CURSOR", StoreLikes.cursor)
-  useInfinitPaginationDoc(`${serverPaths.likesGet}?lat=${StoreForm.form?.location?.lat}&lng=${StoreForm.form?.location?.lng}&cursor=${StoreLikes.cursor}`, StoreLikes.cursor === null, (data) => StoreLikes.likedUser(data), LIKES_ON_PAGE)
+  useInfinitPaginationDoc(`${serverPaths.likesGet}?lat=${StoreForm.form?.location?.lat}&lng=${StoreForm.form?.location?.lng}&cursor=${StoreLikes.cursor}`, StoreLikes.cursor === null, (data) => StoreLikes.loadLiked(data), LIKES_ON_PAGE)
 
   return <section className={style.container}>
     <Title>Вы понравились этим пользователям</Title>
@@ -24,7 +24,7 @@ function Liked() {
     <section className={style.container__cards}>
       {StoreLikes.liked?.map(e => {
 
-        const resolveHandle = () => StorePairs.resolveUser(e)
+        const resolveHandle = () => StoreLikes.like(e)
         const rejectHandle = () => StorePairs.rejectUser(e.id)
 
         return <UsersCardInfo form={e} key={e.id}>
@@ -32,7 +32,9 @@ function Liked() {
           {/* <Link to={`${paths.messages}/${e.id}`}><Button sx={{width: "100%"}} variant="contained">Написать</Button></Link> */}
             
           {/* <Button variant="contained" color="success" onClick={() => StoreLikes.sendLike(e.id)}>{StoreLikes.likes?.sent.find(item => item.liked_userid === e.id) ? 'Убрать лайк' : "Лайкнуть"}</Button> */}
-          <p>Дистанция: {e.distance}</p>
+          {/* //@ts-ignore */}
+          {/* В БУДУЩЕМ ВЕРНУТЬ ДИСТАНЦИЮ  */}
+          {/* <p>Дистанция: {e.distance}</p> */}
           <p>{StoreLikes.likes?.sent.find(item => item.liked_userid === e.id) ? 'ТЫ ЕГО ЛАЙКНУЛ' : "НЕ ЛАЙКАЛ"}</p>
           <Button variant="contained" color="success" onClick={resolveHandle}>Одобрить</Button>
           <Button color="error" variant="contained" onClick={rejectHandle}>Отклонить</Button>

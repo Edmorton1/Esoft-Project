@@ -54,7 +54,8 @@ class MessagesController {
 
   sendMessage = async (req: Request, res: Response) => {
     //@ts-ignore
-    const [message, files] = await MessagesValidation.sendMessage(req, res)
+    const [message, files] = await MessagesValidation.sendMessage(req)
+    if (message.fromid !== req.session.userid) {res.sendStatus(403); return;}
 
     const request: Omit<Message, 'files'> = (await this.ORM.post(message, 'messages'))[0]
 
@@ -68,7 +69,10 @@ class MessagesController {
 
   editMessage = async (req: Request, res: Response) => {
     //@ts-ignore
-    const [id, data] = await MessagesValidation.editMessage(req, res)
+    const [id, data] = await MessagesValidation.editMessage(req)
+
+    const [request] = await this.ORM.getById(id, "messages", "fromid")
+    if (request.fromid !== req.session.userid) {res.sendStatus(403); return;}
 
     let total = null
 
