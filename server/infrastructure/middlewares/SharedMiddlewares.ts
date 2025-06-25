@@ -1,17 +1,12 @@
-import { Request, Response, NextFunction } from "express";
+import HttpContext from "@s/infrastructure/express/Http.context";
 import { z } from "zod";
 
-export interface RequestOnlyId extends Request {
-  iid: number
-}
-
 class SharedMiddlewares {
-	OnlyIdMiddleware = (req: Request, res: Response, next: NextFunction) => {
-		const r = req as RequestOnlyId;
-		const id = z.coerce.number().parse(req.params.id);
-		r.iid = id;
+	OnlyIdMiddleware = (ctx: HttpContext) => {
+		const id = z.coerce.number().parse(ctx.params.id);
+		ctx.par_id = id;
 
-		next();
+		ctx.next();
 	}
 };
 

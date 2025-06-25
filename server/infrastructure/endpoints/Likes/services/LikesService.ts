@@ -3,7 +3,7 @@ import { toSOSe } from "@s/helpers/WebSocket/JSONParsers";
 import { clientsType } from "@s/helpers/WebSocket/socket";
 import ORMCopy from "@s/infrastructure/db/SQL/ORMCopy";
 import LikesModule from "@s/infrastructure/endpoints/Likes/sql/Likes.module";
-import TYPES from "@s/routes/containers/types";
+import TYPES from "@s/config/containers/types";
 import { LikesDTO } from "@t/gen/dtoObjects";
 import { lnglatType } from "@t/gen/types";
 import { Form, FormSchema, Likes } from "@t/gen/Users";

@@ -3,7 +3,6 @@ import { Form, Message } from "@t/gen/Users";
 import { Request, Response } from "express";
 import logger from "@s/helpers/logger";
 import MessagesValidation from "@s/infrastructure/endpoints/Messages/validation/Message.validation";
-import { RequestOnlyId } from "@s/infrastructure/middlewares/SharedMiddlewares";
 import { toSOSe } from "@s/helpers/WebSocket/JSONParsers";
 import ORMCopy from "@s/infrastructure/db/SQL/ORMCopy";
 import { clientsType } from "@s/helpers/WebSocket/socket";
@@ -11,7 +10,7 @@ import { inject, injectable } from "inversify";
 import Yandex from "@s/helpers/yandex";
 import MessagesSQL from "@s/infrastructure/endpoints/Messages/SQL/Message.module";
 import MessagesService from "@s/infrastructure/endpoints/Messages/services/Messages.service";
-import TYPES from "@s/routes/containers/types";
+import TYPES from "@s/config/containers/types";
 
 @injectable()
 class MessagesController {
@@ -94,6 +93,8 @@ class MessagesController {
   }
 
   deleteMessage = async (req: Request, res: Response) => {
+    // ВРЕМЕННАЯ ЗАГЛУШКА
+    //@ts-ignore
     const r = req as RequestOnlyId
 
     const [data] = await this.ORM.delete(r.iid, 'messages', req.session.userid!)

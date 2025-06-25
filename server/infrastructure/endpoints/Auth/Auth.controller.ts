@@ -7,7 +7,7 @@ import { COOKIE_NAME } from "@shared/CONST";
 import { inject, injectable } from "inversify";
 import ORMCopy from "@s/infrastructure/db/SQL/ORMCopy";
 import AuthValidation from "@s/infrastructure/endpoints/Auth/validation/Auth.validation";
-import TYPES from "@s/routes/containers/types";
+import TYPES from "@s/config/containers/types";
 // import SessionRedis from "@s/infrastructure/redis/SessionRedis";
 
 export interface LoginErrorTypes {

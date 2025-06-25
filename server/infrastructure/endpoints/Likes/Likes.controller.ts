@@ -1,20 +1,21 @@
-import { Request, Response } from "express";
 import LikesValidation from "@s/infrastructure/endpoints/Likes/validation/Likes.validation";
 import LikesModule from "@s/infrastructure/endpoints/Likes/sql/Likes.module";
-import SharedValidation from "@s/infrastructure/middlewares/Shared.validation";
 import { inject, injectable } from "inversify";
 import LikesService from "@s/infrastructure/endpoints/Likes/services/LikesService";
 import { Form } from "@t/gen/Users";
 import logger from "@s/helpers/logger";
-import BaseController from "@s/base/Base.controller";
+import BaseController from "@s/config/base/Base.controller";
 import { serverPaths } from "@shared/PATHS";
 import AuthMiddleware from "@s/infrastructure/middlewares/AuthMiddleware";
+import HttpContext from "@s/infrastructure/express/Http.context";
 import SharedMiddlewares from "@s/infrastructure/middlewares/SharedMiddlewares";
 
 interface ILikesController {
-	sendLike(req: Request, res: Response): Promise<void>;
-	sendDelete(req: Request, res: Response): Promise<void>;
-	likesGet(req: Request, res: Response): Promise<void>;
+	sendLike(ctx: HttpContext): Promise<void>;
+	sendDelete(ctx: HttpContext): Promise<void>;
+	likesGet(ctx: HttpContext): Promise<void>;
+	getPairs(ctx: HttpContext): Promise<void>;
+	rejectLike(ctx: HttpContext): Promise<void>;
 }
 
 @injectable()
@@ -32,90 +33,93 @@ class LikesController extends BaseController implements ILikesController {
 				path: `${serverPaths.likesSend}/:liked_userid`,
 				method: "post",
 				middlewares: [AuthMiddleware.OnlyAuth],
-				func: this.sendLike,
+				handle: this.sendLike,
 			},
 			{
 				path: `${serverPaths.likesDelete}/:id`,
 				method: "delete",
-				middlewares: [AuthMiddleware.OnlyAuth, SharedMiddlewares.OnlyIdMiddleware],
-				func: this.sendDelete,
+				middlewares: [
+					AuthMiddleware.OnlyAuth,
+					SharedMiddlewares.OnlyIdMiddleware,
+				],
+				handle: this.sendDelete,
 			},
 			{
 				path: serverPaths.likesGet,
 				method: "get",
 				middlewares: [AuthMiddleware.OnlyAuth],
-				func: this.likesGet,
+				handle: this.likesGet,
 			},
 			{
 				path: serverPaths.likesPairs,
 				method: "get",
 				middlewares: [AuthMiddleware.OnlyAuth],
-				func: this.getPairs,
+				handle: this.getPairs,
 			},
 			{
 				path: `${serverPaths.rejectLike}/:liked_userid`,
 				method: "delete",
 				middlewares: [AuthMiddleware.OnlyAuth],
-				func: this.rejectLike,
+				handle: this.rejectLike,
 			},
 		]);
 	}
 
-	sendLike = async (req: Request, res: Response) => {
-		const likesDTO = LikesValidation.sendLike(req);
+	sendLike: ILikesController['sendLike'] = async (ctx) => {
+		const likesDTO = LikesValidation.sendLike(ctx);
 
 		const data = await this.likesService.sendLike(likesDTO);
 
-		res.json(data);
+		ctx.json(data);
 	};
 
-	sendDelete = async (req: Request, res: Response) => {
-		const [id] = SharedValidation.OnlyId(req);
-		const userid = req.session.userid!;
+	sendDelete: ILikesController['sendDelete'] = async (ctx: HttpContext) => {
+		const userid = ctx.session.userid!;
+		const id = ctx.par_id!
 
 		const data = await this.likesService.sendDelete(id, userid);
 
 		if (!data) {
-			res.sendStatus(403);
+			ctx.sendStatus(403);
 			return;
 		}
 
-		res.json(data);
+		ctx.json(data);
 	};
 
-	likesGet = async (req: Request, res: Response<Form[]>) => {
-		const [lnglat, cursor] = LikesValidation.likesGet(req);
+	likesGet: ILikesController['likesGet'] = async (ctx: HttpContext<Form[]>) => {
+		const [lnglat, cursor] = LikesValidation.likesGet(ctx);
 		// logger.info({lnglat, cursor})
 
 		const response = await this.likesService.likesGet(
-			req.session.userid!,
+			ctx.session.userid!,
 			lnglat,
 			cursor,
 		);
 
-		res.json(response);
+		ctx.json(response);
 	};
 
-	getPairs = async (req: Request, res: Response) => {
-		const id = req.session.userid!;
+	getPairs = async (ctx: HttpContext) => {
+		const id = ctx.session.userid!;
 		const data = await this.likesModule.getPairs(id);
-		res.json(data);
+		ctx.json(data);
 	};
 
-	rejectLike = async (req: Request, res: Response) => {
-		const liked_userid = LikesValidation.rejectLike(req);
-		const userid = req.session.userid!;
+	rejectLike = async (ctx: HttpContext) => {
+		const liked_userid = LikesValidation.rejectLike(ctx);
+		const userid = ctx.session.userid!;
 
 		logger.info({ userid, liked_userid });
 		const data = await this.likesService.rejectLike(userid, liked_userid);
 		logger.info({ ASDASDASD: data });
 
 		if (!data) {
-			res.sendStatus(404);
+			ctx.sendStatus(404);
 			return;
 		}
 
-		res.sendStatus(200);
+		ctx.sendStatus(200);
 	};
 }
 

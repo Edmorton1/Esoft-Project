@@ -5,7 +5,7 @@ import LikesModule from "@s/infrastructure/endpoints/Likes/sql/Likes.module";
 import LikesController from "@s/infrastructure/endpoints/Likes/Likes.controller";
 import { tables } from "@t/gen/types";
 import CRUDController from "@s/infrastructure/endpoints/CRUD/CRUDController";
-import TYPES from "@s/routes/containers/types";
+import TYPES from "@s/config/containers/types";
 import AuthService from "@s/infrastructure/endpoints/Auth/services/Auth.service";
 import UploadFileService from "@s/infrastructure/services/UploadFileService";
 import AuthController from "@s/infrastructure/endpoints/Auth/Auth.controller";
@@ -25,7 +25,9 @@ import LikesService from "@s/infrastructure/endpoints/Likes/services/LikesServic
 import MessageOutService from "@s/infrastructure/endpoints/MessageOutside/service/MessageOut.service";
 import SharedService from "@s/infrastructure/services/SharedService";
 import App from "@s/server";
-import { ConfigService } from "@s/timely/config.service";
+import ConfigService from "@s/config/services/config.service";
+import ServerExpress from "@s/server.express";
+import ServerRoutes from "@s/server.routes";
 // import LikesValidation from "@s/infrastructure/endpoints/Likes/validation/Likes.validation";
 
 export const tablesArr: tables[] = ['users', 'forms', 'likes', 'messages', 'tags', 'user_tags']
@@ -79,6 +81,8 @@ appBindingsContainer.bind<MessagesSQL>(MessagesSQL).toSelf()
 appBindingsContainer.bind<MessagesService>(MessagesService).toSelf()
 appBindingsContainer.bind<MessagesController>(MessagesController).toSelf()
 
+appBindingsContainer.bind<ServerRoutes>(ServerRoutes).toSelf()
+appBindingsContainer.bind<ServerExpress>(ServerExpress).toSelf()
 appBindingsContainer.bind<ConfigService>(ConfigService).toSelf()
 appBindingsContainer.bind<App>(App).toSelf()
 

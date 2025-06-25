@@ -1,10 +1,12 @@
 import logger from "@s/helpers/logger";
+import HttpContext from "@s/infrastructure/express/Http.context";
+import { adaptController } from "@s/routes/adapters";
 import { Router } from "express";
 import { Request, Response, NextFunction } from "express";
 
 export interface IControllerRoute {
 	path: string;
-	func: (req: Request, res: Response, next: NextFunction) => void;
+	handle: (ctx: HttpContext) => Promise<void>;
 	method: keyof Pick<Router, "get" | "post" | "delete" | "patch" | "put">;
 	middlewares?: any[]; //Сами допишите тип для Middlware типа :)
 }
@@ -21,11 +23,11 @@ class BaseController {
 
 	protected bindRoutes(routes: IControllerRoute[]): void {
 		for (const route of routes) {
-			logger.info({ route });
+			logger.info({ route: route.middlewares });
 
 			const pipline = route.middlewares
-				? [...route.middlewares, route.func]
-				: [route.func];
+				? [...route.middlewares, adaptController(route.handle)]
+				: [adaptController(route.handle)];
 			this.router[route.method](route.path, ...pipline);
 		}
 	}

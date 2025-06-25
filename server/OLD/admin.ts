@@ -1,10 +1,9 @@
 import { universalController } from "@s/helpers/controllers";
 import AuthMiddleware from "@s/infrastructure/middlewares/AuthMiddleware";
-import { tablesArr } from "@s/routes/containers/container.di";
+import { tablesArr } from "@s/config/containers/container.di";
 import {Router} from "express";
 
 type HTTPMethod = 'get' | 'post' | 'put' | 'delete'
-
 interface routeInterface {
   method: HTTPMethod
   path: string
@@ -13,8 +12,6 @@ interface routeInterface {
 }
 
 const adminRouter = Router();
-
-// ------------------------------------------ ДОСТУПНЫ ТОЛЬКО АДМИНИСТРАТОРУ -------------------------------------------
 
 // CRUD ЗАПРОСЫ
 const publicEndpoints = [

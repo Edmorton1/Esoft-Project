@@ -1,3 +1,6 @@
+//@ts-ignore
+//ВРЕМЕНННО ПОТОМ УДАЛИТЬ
+
 declare namespace NodeJS {
   interface ProcessEnv {
     PORT: string,

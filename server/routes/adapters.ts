@@ -10,7 +10,7 @@ export const asyncHandle = (fn: Function) => (req: Request, res: Response, next:
 export const adaptController =
 	(controllerFn: (ctx: HttpContext) => Promise<void>) =>
 	(req: Request, res: Response, next: NextFunction) => {
-		const ctx = new HttpContext(new HttpServiceExpress(req, res));
+		const ctx = new HttpContext(new HttpServiceExpress(req, res, next));
 		controllerFn(ctx)
       .catch(err => {
         logger.info({ОШИБКА_В_АДАПТОРЕ: err})

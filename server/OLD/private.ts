@@ -8,9 +8,9 @@ import MessagesOutController from "@s/infrastructure/endpoints/MessageOutside/Me
 import SharedMiddlewares from "@s/infrastructure/middlewares/SharedMiddlewares"
 import SettingsController from "@s/infrastructure/endpoints/Settings/Settings.controller"
 import AuthMiddleware from "@s/infrastructure/middlewares/AuthMiddleware"
-import { upload } from "@s/routes/public";
+import { upload } from "@s/OLD/public";
 import { asyncHandle } from "@s/routes/adapters";
-import appBindingsContainer from "@s/routes/containers/container.di";
+import appBindingsContainer from "@s/config/containers/container.di";
 
 const privateRouter = Router();
 

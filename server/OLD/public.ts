@@ -10,7 +10,7 @@ import FormController from "@s/infrastructure/endpoints/Form/Form.controller"
 import multer from "multer";
 import AuthMiddleware from "@s/infrastructure/middlewares/AuthMiddleware";
 import { asyncHandle } from "@s/routes/adapters";
-import appBindingsContainer, { tablesArr } from "@s/routes/containers/container.di";
+import appBindingsContainer, { tablesArr } from "@s/config/containers/container.di";
 
 export const upload = multer({storage: multer.memoryStorage()})
 

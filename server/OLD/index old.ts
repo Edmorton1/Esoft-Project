@@ -11,11 +11,11 @@ import path from 'path'
 import logger, { httpLogger } from "@s/helpers/logger"
 import "@t/declarations/server/index"
 import { PREFIX } from "@shared/CONST"
-import publicRouter from "@s/routes/public"
-import privateRouter from "@s/routes/private"
-import adminRouter from "@s/routes/admin"
-import expressSession from "@s/routes/middlewares/Express.session"
-import expressError from "@s/routes/middlewares/Express.error"
+import publicRouter from "@s/OLD/public"
+import privateRouter from "@s/OLD/private"
+import adminRouter from "@s/OLD/admin"
+import expressSession from "@s/config/middlewares/Express.session"
+import expressError from "@s/config/middlewares/Express.error"
 // import helmet from "helmet";
 
 const app = express()

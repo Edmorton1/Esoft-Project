@@ -1,13 +1,15 @@
 import { UserRoleType } from "@t/gen/Users";
+import { Session, SessionData } from "express-session";
 
-export interface IHttpContext {
+export interface IHttpContext<T = any> {
 	body: any;
 	params: any;
 	query: any;
-	session: { userid?: number; role?: UserRoleType };
+	session: Session & Partial<SessionData> & { userid?: number; role?: UserRoleType };
 
-	json: (data: any) => void;
+	json: (data: T) => void;
 	sendStatus: (code: number) => void;
+	next: () => void;
 }
 
 export interface IHttpService {
@@ -16,6 +18,7 @@ export interface IHttpService {
 	getQuery: () => any;
 	getSession: () => any;
 
-	json: (data: any) => void;
+	json: <T>(data: T) => void;
 	sendStatus: (code: number) => void;
+	next: () => void;
 }

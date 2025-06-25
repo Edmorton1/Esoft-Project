@@ -1,6 +1,6 @@
 import CRUDController from "@s/infrastructure/endpoints/CRUD/CRUDController"
-import appBindingsContainer from "@s/routes/containers/container.di"
-import TYPES from "@s/routes/containers/types"
+import appBindingsContainer from "@s/config/containers/container.di"
+import TYPES from "@s/config/containers/types"
 import { tables } from "@t/gen/types"
 
 export const universalController = (method: keyof CRUDController, table: tables) => {
