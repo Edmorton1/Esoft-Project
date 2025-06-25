@@ -10,7 +10,7 @@ import FormController from "@s/infrastructure/endpoints/Form/Form.controller"
 import multer from "multer";
 import AuthMiddleware from "@s/infrastructure/middlewares/AuthMiddleware";
 import { asyncHandle } from "@s/routes/adapters";
-import container, { tablesArr } from "@s/routes/containers/container.di";
+import appBindingsContainer, { tablesArr } from "@s/routes/containers/container.di";
 
 export const upload = multer({storage: multer.memoryStorage()})
 
@@ -19,15 +19,15 @@ const publicRouter = Router();
 // СТАНДАРТНЫЙ ЗАПРОС
 publicRouter.get('/', (req, res) => {logger.info('Работает'); res.sendStatus(200)})
 // АВТОРИЗАЦИЯ
-publicRouter.post(serverPaths.registration, upload.single('avatar'), asyncHandle(container.get(AuthController).registartion))
-publicRouter.post(serverPaths.login, asyncHandle(container.get(AuthController).login))
-publicRouter.get(serverPaths.initial, asyncHandle(container.get(AuthController).initial))
-publicRouter.get(`${serverPaths.checkEmail}/:email`, asyncHandle(container.get(AuthController).checkEmail))
+publicRouter.post(serverPaths.registration, upload.single('avatar'), asyncHandle(appBindingsContainer.get(AuthController).registartion))
+publicRouter.post(serverPaths.login, asyncHandle(appBindingsContainer.get(AuthController).login))
+publicRouter.get(serverPaths.initial, asyncHandle(appBindingsContainer.get(AuthController).initial))
+publicRouter.get(`${serverPaths.checkEmail}/:email`, asyncHandle(appBindingsContainer.get(AuthController).checkEmail))
 
 // РАСШИРЕННЫЙ ПОИСК
-publicRouter.get(`${serverPaths.extendedSearch}`, asyncHandle(container.get(ExtendedSearchController).getForms))
+publicRouter.get(`${serverPaths.extendedSearch}`, asyncHandle(appBindingsContainer.get(ExtendedSearchController).getForms))
 // ПОИСК ПОЛЬЗОВАТЕЛЕЙ
-publicRouter.get(`${serverPaths.searchForm}/:search`, asyncHandle(container.get(FormController).searchForm))
+publicRouter.get(`${serverPaths.searchForm}/:search`, asyncHandle(appBindingsContainer.get(FormController).searchForm))
 
 // ТЕСТ КОМПРЕССИИ НЕ УДАЛЯТЬ
 // publicRouter.post(serverPaths.testCompressViedo, upload.single('video'), asyncHandle(HttpFilesController.TestConvertVideo))

@@ -24,60 +24,65 @@ import MessagesService from "@s/infrastructure/endpoints/Messages/services/Messa
 import LikesService from "@s/infrastructure/endpoints/Likes/services/LikesService";
 import MessageOutService from "@s/infrastructure/endpoints/MessageOutside/service/MessageOut.service";
 import SharedService from "@s/infrastructure/services/SharedService";
-import LikesValidation from "@s/infrastructure/endpoints/Likes/validation/Likes.validation";
+import App from "@s/server";
+import { ConfigService } from "@s/timely/config.service";
+// import LikesValidation from "@s/infrastructure/endpoints/Likes/validation/Likes.validation";
 
 export const tablesArr: tables[] = ['users', 'forms', 'likes', 'messages', 'tags', 'user_tags']
 
-const container = new Container()
+const appBindingsContainer = new Container()
 
-container.bind<ORMCopy>(ORMCopy).toSelf()
-container.bind<SharedService>(SharedService).toSelf()
+appBindingsContainer.bind<ORMCopy>(ORMCopy).toSelf()
+appBindingsContainer.bind<SharedService>(SharedService).toSelf()
 
-container.bind<clientsType>(TYPES.clients).toConstantValue(clients)
-container.bind<LikesValidation>(LikesValidation).toSelf()
-container.bind<LikesModule>(LikesModule).toSelf()
-container.bind<LikesService>(LikesService).toSelf()
-container.bind<LikesController>(LikesController).toSelf()
+appBindingsContainer.bind<clientsType>(TYPES.clients).toConstantValue(clients)
+// container.bind<LikesValidation>(LikesValidation).toSelf()
+appBindingsContainer.bind<LikesModule>(LikesModule).toSelf()
+appBindingsContainer.bind<LikesService>(LikesService).toSelf()
+appBindingsContainer.bind<LikesController>(LikesController).toSelf()
 
-container.bind<Factory<CRUDController>>(TYPES.CRUD.Factory).toFactory(context => {
+appBindingsContainer.bind<Factory<CRUDController>>(TYPES.CRUD.Factory).toFactory(context => {
   return (table: tables) => {
     const orm = context.get<ORMCopy>(ORMCopy)
     return new CRUDController(table, orm)
   }
 })
 
-const factory = container.get<(table: tables) => CRUDController>(TYPES.CRUD.Factory)
+const factory = appBindingsContainer.get<(table: tables) => CRUDController>(TYPES.CRUD.Factory)
 tablesArr.forEach((table) => {
   const sym = TYPES.CRUD.Tables[table]
-  container.bind<CRUDController>(sym).toConstantValue(factory(table))
+  appBindingsContainer.bind<CRUDController>(sym).toConstantValue(factory(table))
 })
 
-container.bind<Yandex>(Yandex).toSelf()
-container.bind<UploadFileService>(UploadFileService).toSelf()
-container.bind<AuthService>(AuthService).toSelf()
+appBindingsContainer.bind<Yandex>(Yandex).toSelf()
+appBindingsContainer.bind<UploadFileService>(UploadFileService).toSelf()
+appBindingsContainer.bind<AuthService>(AuthService).toSelf()
 
-container.bind<AuthController>(AuthController).toSelf()
+appBindingsContainer.bind<AuthController>(AuthController).toSelf()
 
-container.bind<ExtendedSeacrhSQLhelper>(ExtendedSeacrhSQLhelper).toSelf()
-container.bind<ExtendedSearchModule>(ExtendedSearchModule).toSelf()
-container.bind<ExtendedSearchController>(ExtendedSearchController).toSelf()
-
-
-container.bind<FormController>(FormController).toSelf()
+appBindingsContainer.bind<ExtendedSeacrhSQLhelper>(ExtendedSeacrhSQLhelper).toSelf()
+appBindingsContainer.bind<ExtendedSearchModule>(ExtendedSearchModule).toSelf()
+appBindingsContainer.bind<ExtendedSearchController>(ExtendedSearchController).toSelf()
 
 
-container.bind<SettingsService>(SettingsService).toSelf()
-container.bind<SettingsController>(SettingsController).toSelf()
+appBindingsContainer.bind<FormController>(FormController).toSelf()
 
-container.bind<MessagesOutModule>(MessagesOutModule).toSelf()
-container.bind<MessageOutService>(MessageOutService).toSelf()
-container.bind<MessagesOutController>(MessagesOutController).toSelf()
 
-container.bind<MessagesSQL>(MessagesSQL).toSelf()
-container.bind<MessagesService>(MessagesService).toSelf()
-container.bind<MessagesController>(MessagesController).toSelf()
+appBindingsContainer.bind<SettingsService>(SettingsService).toSelf()
+appBindingsContainer.bind<SettingsController>(SettingsController).toSelf()
 
-export default container
+appBindingsContainer.bind<MessagesOutModule>(MessagesOutModule).toSelf()
+appBindingsContainer.bind<MessageOutService>(MessageOutService).toSelf()
+appBindingsContainer.bind<MessagesOutController>(MessagesOutController).toSelf()
+
+appBindingsContainer.bind<MessagesSQL>(MessagesSQL).toSelf()
+appBindingsContainer.bind<MessagesService>(MessagesService).toSelf()
+appBindingsContainer.bind<MessagesController>(MessagesController).toSelf()
+
+appBindingsContainer.bind<ConfigService>(ConfigService).toSelf()
+appBindingsContainer.bind<App>(App).toSelf()
+
+export default appBindingsContainer
 
 // ПЕРВЫЙ ПОДХОД
 
