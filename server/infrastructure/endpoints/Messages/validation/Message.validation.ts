@@ -1,26 +1,26 @@
 import logger from "@s/helpers/logger"
+import HttpContext from "@s/infrastructure/express/Http.context"
 import { frJSON } from "@shared/MAPPERS"
 import { MessageDTO } from "@t/gen/dtoObjects"
 import { zstrnum } from "@t/gen/Schemas"
 import { MessageDTOServerSchema, MessagePutDTOServer, MessagePutDTOServerSchema } from "@t/server/DTOServer"
-import { Request, Response } from "express"
 import { z } from "zod"
 
 class MessagesValidation {
-  sendMessage = (req: Request): [MessageDTO, Express.Multer.File[]] | void => {
-    logger.info({PRED_MESSAGE: req})
-    const toid = z.coerce.number().parse(req.params.toid)
-    const data = MessageDTOServerSchema.parse({...frJSON(req.body.json)!, files: req.files, fromid: req.session.userid, toid})
+  sendMessage = (ctx: HttpContext): [MessageDTO, Express.Multer.File[]] => {
+    logger.info({PRED_MESSAGE: ctx})
+    const toid = z.coerce.number().parse(ctx.params.toid)
+    const data = MessageDTOServerSchema.parse({...frJSON(ctx.body.json)!, files: ctx.files, fromid: ctx.session.userid, toid})
     const { files, ...message } = data
 
     logger.info({SEND_MESSAGE: files, message})
     return [message, files]
   };
 
-  editMessage = async (req: Request): Promise<[number, MessagePutDTOServer] | void> => {
+  editMessage = async (ctx: HttpContext): Promise<[number, MessagePutDTOServer]> => {
 
-    const id = z.coerce.number().parse(req.params.id)
-    const data = MessagePutDTOServerSchema.parse({...frJSON(req.body.json)!, files: req.files, fromid: req.session.userid})
+    const id = z.coerce.number().parse(ctx.params.id)
+    const data = MessagePutDTOServerSchema.parse({...frJSON(ctx.body.json)!, files: ctx.files, fromid: ctx.session.userid})
 
     // if (data.fromid !== req.session.userid) return res.sendStatus(403)
 
@@ -29,11 +29,11 @@ class MessagesValidation {
     return [id, data]
   }
 
-  getMessage = (req: Request): [number, number, number | undefined] => {
+  getMessage = (ctx: HttpContext): [number, number, number | undefined] => {
     // const frid = zstrnum.parse(req.params.frid)
-    const frid = zstrnum.parse(req.session.userid)
-    const toid = zstrnum.parse(req.params.toid)
-    const parsed = zstrnum.safeParse(req.query.cursor)
+    const frid = zstrnum.parse(ctx.session.userid)
+    const toid = zstrnum.parse(ctx.params.toid)
+    const parsed = zstrnum.safeParse(ctx.query.cursor)
 
     const cursor = parsed.success ? parsed.data : undefined
 

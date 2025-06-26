@@ -1,9 +1,9 @@
-import {Request} from "express";
+import HttpContext from "@s/infrastructure/express/Http.context";
 import { z } from "zod";
 
 class FormValidation {
-	searchForm = (req: Request): string => {
-    const search = z.coerce.string().toLowerCase().trim().parse(req.params.search)
+	searchForm = (ctx: HttpContext): string => {
+    const search = z.coerce.string().toLowerCase().trim().parse(ctx.params.search)
     
     return search
 	};

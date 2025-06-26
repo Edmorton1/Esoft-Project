@@ -1,4 +1,4 @@
-import certs from "@s/certs";
+import certs from "@s/certs/certs";
 import { createWebSocketServer } from "@s/helpers/WebSocket/socket";
 import LikesController from "@s/infrastructure/endpoints/Likes/Likes.controller";
 import ConfigService from "@s/config/services/config.service";
@@ -11,7 +11,7 @@ import { PREFIX } from "@shared/CONST";
 import logger from "@s/helpers/logger";
 import expressSession from "@s/config/middlewares/Express.session";
 import expressError from "@s/config/middlewares/Express.error";
-import ServerRoutes from "@s/server.routes";
+import ServerRoutes from "@s/serveros/express.routes";
 
 @injectable()
 class ServerExpress {

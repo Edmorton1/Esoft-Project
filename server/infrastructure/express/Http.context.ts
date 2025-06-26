@@ -22,7 +22,15 @@ class HttpContext<T = any> implements IHttpContext<T> {
 		return this.service.getSession();
 	}
 
-	json: IHttpContext<T>["json"] = (data) => {
+	get file() {
+		return this.service.getFile()
+	}
+
+	get files() {
+		return this.service.getFiles()
+	}
+
+	json: IHttpContext<T>["json"] = data => {
 		this.service.json<T>(data);
 	};
 
@@ -31,6 +39,14 @@ class HttpContext<T = any> implements IHttpContext<T> {
 	};
 
 	next = () => this.service.next();
+
+	statusJson: IHttpContext["statusJson"] = (code, data) => {
+		this.service.statusJson(code, data);
+	}
+
+	clearCookie: IHttpContext["clearCookie"] = name => {
+		this.service.clearCookie(name);
+	}
 }
 
 export default HttpContext;

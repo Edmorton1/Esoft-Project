@@ -2,20 +2,31 @@ import ExtendedSearchValidation from "@s/infrastructure/endpoints/ExtendSearch/v
 import ExtendedSearchModule from "@s/infrastructure/endpoints/ExtendSearch/SQL/ExtendedSearch.module"
 import ExtendedSeacrhSQLhelper from "@s/infrastructure/endpoints/ExtendSearch/SQL/ExtendedSeacrh.SQLhelper"
 import logger from "@s/helpers/logger"
-import { toJSON } from "@shared/MAPPERS"
-import { Request, Response } from "express"
 import { inject, injectable } from "inversify"
+import HttpContext from "@s/infrastructure/express/Http.context"
+import BaseController from "@s/config/base/Base.controller"
+import { serverPaths } from "@shared/PATHS"
 
 @injectable()
-class ExtendedSearchController {
+class ExtendedSearchController extends BaseController {
   constructor (
     @inject(ExtendedSearchModule)
     private readonly ExtendedSearchModule: ExtendedSearchModule,
     @inject(ExtendedSeacrhSQLhelper)
     private readonly ExtendedSeacrhSQLhelper: ExtendedSeacrhSQLhelper
-  ) {}
-  getForms = async (req: Request, res: Response) => {
-    const {tags, page, min_age, max_age, avatar, location, max_distance, name, params} = ExtendedSearchValidation(req)
+  ) {
+    super()
+    
+    this.bindRoutes([
+      {
+        path: serverPaths.extendedSearch,
+        method: "get",
+        handle: this.getForms,
+      },
+    ])
+  }
+  getForms = async (ctx: HttpContext) => {
+    const {tags, page, min_age, max_age, avatar, location, max_distance, name, params} = ExtendedSearchValidation(ctx)
 
     const tagsArr = tags ? await this.ExtendedSeacrhSQLhelper.getUserTags(tags) : []
 
@@ -25,8 +36,8 @@ class ExtendedSearchController {
     logger.info(zapisi.forms.length)
 
     // res.set('x-total-count', toJSON(zapisi.count))
-    res.set('x-pages-count', toJSON(zapisi.count))
-    res.json(zapisi)
+    // ctx.set('x-pages-count', toJSON(zapisi.count))
+    ctx.json(zapisi)
   }
 }
 

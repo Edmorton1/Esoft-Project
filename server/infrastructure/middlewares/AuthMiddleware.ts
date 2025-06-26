@@ -1,28 +1,24 @@
 import logger from "@s/helpers/logger";
+import HttpContext from "@s/infrastructure/express/Http.context";
 // import SessionRedis from "@s/infrastructure/redis/SessionRedis";
-import { Request, Response, NextFunction } from "express";
-
-export interface ReqOnlyId extends Request {
-  userid: number
-}
 
 class AuthMiddleware {
-  OnlyAuth = async (req: Request, res: Response, next: NextFunction) => {
-    logger.info({LOGGER_INFO_SESSION: req.session, SESSION_IDL: req.sessionID})
+  OnlyAuth = async (ctx: HttpContext) => {
+    logger.info({LOGGER_INFO_SESSION: ctx.session})
     
-    if (!req.session.userid) return res.sendStatus(401)
+    if (!ctx.session.userid) return ctx.sendStatus(401)
 
     logger.info("ЛОГИНИЗАЦИЯ ПРОШЛА УСПЕШНО")
 
-    next()
+    ctx.next()
   }
 
-  OnlyAdmin = async (req: Request, res: Response, next: NextFunction) => {
+  OnlyAdmin = async (ctx: HttpContext) => {
 
-    logger.info({СЕССРЯ: req.session})
-    if (!req.session.userid || req.session.role != "admin") return res.sendStatus(403)
+    logger.info({СЕССРЯ: ctx.session})
+    if (!ctx.session.userid || ctx.session.role != "admin") return ctx.sendStatus(403)
 
-    next()
+    ctx.next()
   }
 }
 

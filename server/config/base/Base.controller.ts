@@ -1,8 +1,7 @@
 import logger from "@s/helpers/logger";
 import HttpContext from "@s/infrastructure/express/Http.context";
-import { adaptController } from "@s/routes/adapters";
+import { adaptController } from "@s/adapters/Express.adapter";
 import { Router } from "express";
-import { Request, Response, NextFunction } from "express";
 
 export interface IControllerRoute {
 	path: string;
@@ -23,10 +22,10 @@ class BaseController {
 
 	protected bindRoutes(routes: IControllerRoute[]): void {
 		for (const route of routes) {
-			logger.info({ route: route.middlewares });
+			// logger.info({ route });
 
 			const pipline = route.middlewares
-				? [...route.middlewares, adaptController(route.handle)]
+				? [...route.middlewares.map(route => adaptController(route)), adaptController(route.handle)]
 				: [adaptController(route.handle)];
 			this.router[route.method](route.path, ...pipline);
 		}

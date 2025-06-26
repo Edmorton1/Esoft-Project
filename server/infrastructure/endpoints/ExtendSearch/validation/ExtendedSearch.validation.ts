@@ -1,9 +1,9 @@
 import { zodParams } from "@s/infrastructure/endpoints/ExtendSearch/validation/ExtendedSearch.schemas";
 import logger from "@s/helpers/logger";
-import {Request} from "express";
+import HttpContext from "@s/infrastructure/express/Http.context";
 
-function ExtendedSearchValidation(req: Request) {
-  const {tags, min_age, max_age, page, avatar, location, max_distance, name, ...params} = req.query
+function ExtendedSearchValidation(ctx: HttpContext) {
+  const {tags, min_age, max_age, page, avatar, location, max_distance, name, ...params} = ctx.query
 
   const parsed = zodParams.parse({tags, min_age, max_age, page, avatar, location, max_distance, params, name})
 

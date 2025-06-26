@@ -1,4 +1,3 @@
-import { Request, Response } from "express";
 import bcrypt from "bcrypt"
 import { Form, User } from "@t/gen/Users";
 import AuthService from "@s/infrastructure/endpoints/Auth/services/Auth.service";
@@ -7,7 +6,11 @@ import { COOKIE_NAME } from "@shared/CONST";
 import { inject, injectable } from "inversify";
 import ORMCopy from "@s/infrastructure/db/SQL/ORMCopy";
 import AuthValidation from "@s/infrastructure/endpoints/Auth/validation/Auth.validation";
-import TYPES from "@s/config/containers/types";
+import BaseController from "@s/config/base/Base.controller";
+import { serverPaths } from "@shared/PATHS";
+import { upload } from "@s/infrastructure/endpoints/multer";
+import HttpContext from "@s/infrastructure/express/Http.context";
+import AuthMiddleware from "@s/infrastructure/middlewares/AuthMiddleware";
 // import SessionRedis from "@s/infrastructure/redis/SessionRedis";
 
 export interface LoginErrorTypes {
@@ -15,44 +18,75 @@ export interface LoginErrorTypes {
   message: string
 }
 
-interface AuthControllerRepo {
-  registartion(req: Request, res: Response): Promise<void>,
-  checkEmail(req: Request, res: Response): Promise<void>,
-  login(req: Request, res: Response): Promise<void>,
-  logout(req: Request, res: Response): Promise<void>,
-  initial(req: Request, res: Response): Promise<void>,
+interface IAuthController {
+  registartion(ctx: HttpContext<{form: Form, user: User}>): Promise<void>,
+  checkEmail(ctx: HttpContext<boolean>): Promise<void>,
+  login(ctx: HttpContext<User | LoginErrorTypes>): Promise<void>,
+  logout(ctx: HttpContext): Promise<void>,
+  initial(ctx: HttpContext<User>): Promise<void>,
 }
 
 @injectable()
-class AuthController implements AuthControllerRepo {
+class AuthController extends BaseController implements IAuthController {
   constructor(
     @inject(ORMCopy)
     private readonly ORM: ORMCopy,
     @inject(AuthService)
     private readonly AuthService: AuthService
-  ) {}
+  ) {
+    super()
+    this.bindRoutes([
+      {
+        path: serverPaths.registration,
+        method: "post",
+        middlewares: [upload.single("avatar")],
+        handle: this.registartion,
+      },
+      {
+        path: serverPaths.login,
+        method: "post",
+        handle: this.login,
+      },
+      {
+        path: serverPaths.logout,
+        method: "post",
+        middlewares: [AuthMiddleware.OnlyAuth],
+        handle: this.logout
+      },
+      {
+        path: serverPaths.initial,
+        method: "get",
+        handle: this.initial,
+      },
+      {
+        path: `${serverPaths.checkEmail}/:email`,
+        method: "get",
+        handle: this.checkEmail,
+      },
+    ]);
+  }
 
-  registartion = async (req: Request, res: Response<{form: Form, user: User}>) => {
-    const [user, form, tags] = AuthValidation.registration(req)
+  registartion: IAuthController['registartion'] = async (ctx) => {
+    const [user, form, tags] = AuthValidation.registration(ctx)
     const total = await this.AuthService.registration(form, user, tags)
 
     // req.session.sessionid = await SessionRedis.set({id: total.user.id, role: total.user.role})
-    req.session.userid = total.user.id
-    req.session.role = total.user.role
+    ctx.session.userid = total.user.id
+    ctx.session.role = total.user.role
 
-    res.json(total)
+    ctx.json(total)
   }
 
-  checkEmail = async (req: Request, res: Response<boolean>) => {
-    const email = AuthValidation.checkEmail(req)
+  checkEmail: IAuthController['checkEmail'] = async (ctx) => {
+    const email = AuthValidation.checkEmail(ctx)
     const findThis = await this.ORM.getByParams({email}, "users", "email")
     logger.info(findThis)
-    if (!findThis.length) {res.json(true); return;}
-    res.json(false)
+    if (!findThis.length) {ctx.json(true); return;}
+    ctx.json(false)
   }
 
-  login = async (req: Request, res: Response<User | LoginErrorTypes>) => {
-    const dto = AuthValidation.login(req)
+  login: IAuthController['login'] = async (ctx) => {
+    const dto = AuthValidation.login(ctx)
     logger.info({dtoUser: dto})
     const [user] = await this.ORM.getByParams({email: dto.email}, 'users')
 
@@ -60,37 +94,38 @@ class AuthController implements AuthControllerRepo {
 
     if (!user) {
       logger.info({user, STATUS: "ТАКОГОЙ ПОЧТЫ НЕТ"})
-      res.status(401).json(<LoginErrorTypes>{type: "email", message: "Такой почты нет"})
+      // ctx.status(401).json(<LoginErrorTypes>{type: "email", message: "Такой почты нет"})
+      ctx.statusJson<LoginErrorTypes>(401, {type: "email", message: "Такой почты нет"})
       return;
     }
 
     const passwordValidate =  await bcrypt.compare(dto.password, user.password)
     if (!passwordValidate) {
       logger.info({user, STATUS: "НЕВЕРНЫЙ ПАРОЛЬ"})
-      res.status(401).json(<LoginErrorTypes>{type: "password", message: 'Неверный пароль'})
+      ctx.statusJson<LoginErrorTypes>(401, {type: "password", message: 'Неверный пароль'})
       return;
     }
 
     logger.info({user, STATUS: "ВОШЁЛ"})
 
-    req.session.userid = user.id
-    req.session.role = user.role
-    logger.info({SESSION: req.session})
-    res.json(user)
+    ctx.session.userid = user.id
+    ctx.session.role = user.role
+    logger.info({SESSION: ctx.session})
+    ctx.json(user)
   }
   
-  logout = async (req: Request, res: Response) => {
-    req.session.destroy((error) => logger.info(error))
-    res.clearCookie(COOKIE_NAME)
-    res.sendStatus(200)
+  logout = async (ctx: HttpContext) => {
+    ctx.session.destroy((error) => logger.info(error))
+    ctx.clearCookie(COOKIE_NAME)
+    ctx.sendStatus(200)
   }
 
-  initial = async (req: Request, res: Response<User>) => {
-    const userid = req.session.userid
-    if (!userid) {res.sendStatus(401); return}
+  initial: IAuthController['initial'] = async (ctx) => {
+    const userid = ctx.session.userid
+    if (!userid) {ctx.sendStatus(401); return}
 
     const [user] = await this.ORM.getById(userid, "users")
-    res.json(user)
+    ctx.json(user)
   }
 }
 

@@ -1,6 +1,6 @@
+import HttpContext from "@s/infrastructure/express/Http.context";
 import { TagsSchemaDTO } from "@t/gen/dtoObjects";
 import { FormSchema } from "@t/gen/Users";
-import { Request } from "express";
 import { z } from "zod";
 
 const ProfileSchema = FormSchema
@@ -13,15 +13,15 @@ const ProfileSchema = FormSchema
 export type ProfileSchema = z.infer<typeof ProfileSchema>
 
 class SettingsValidation {
-  password = (req: Request): [string, string] => {
-    const oldPass = req.body.old
-    const newPass = req.body.new
+  password = (ctx: HttpContext): [string, string] => {
+    const oldPass = ctx.body.old
+    const newPass = ctx.body.new
     
     return [oldPass, newPass]
   }
 
-  profile = (req: Request): ProfileSchema => {
-    const profile = ProfileSchema.parse(req.body)
+  profile = (ctx: HttpContext): ProfileSchema => {
+    const profile = ProfileSchema.parse(ctx.body)
 
     return profile
   }

@@ -4,6 +4,6 @@ import TYPES from "@s/config/containers/types"
 import { tables } from "@t/gen/types"
 
 export const universalController = (method: keyof CRUDController, table: tables) => {
-  const controller = appBindingsContainer.get<CRUDController>(TYPES.CRUD.Tables[table])
+  const controller = appBindingsContainer.get<CRUDController>(TYPES.CRUD.Controllers[table])
   return (controller[method] as () => any).bind(controller)
 }

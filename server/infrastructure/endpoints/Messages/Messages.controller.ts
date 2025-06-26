@@ -1,6 +1,5 @@
 import { MsgTypesServer } from "@t/gen/socketTypes";
 import { Form, Message } from "@t/gen/Users";
-import { Request, Response } from "express";
 import logger from "@s/helpers/logger";
 import MessagesValidation from "@s/infrastructure/endpoints/Messages/validation/Message.validation";
 import { toSOSe } from "@s/helpers/WebSocket/JSONParsers";
@@ -11,9 +10,22 @@ import Yandex from "@s/helpers/yandex";
 import MessagesSQL from "@s/infrastructure/endpoints/Messages/SQL/Message.module";
 import MessagesService from "@s/infrastructure/endpoints/Messages/services/Messages.service";
 import TYPES from "@s/config/containers/types";
+import BaseController from "@s/config/base/Base.controller";
+import { serverPaths } from "@shared/PATHS";
+import { upload } from "@s/infrastructure/endpoints/multer";
+import AuthMiddleware from "@s/infrastructure/middlewares/AuthMiddleware";
+import HttpContext from "@s/infrastructure/express/Http.context";
+import SharedMiddlewares from "@s/infrastructure/middlewares/SharedMiddlewares";
+
+interface IMessageController {
+  getMessage: (ctx: HttpContext<{messages: Message[]} | {messages: Message[], form: Form}>) => Promise<void>
+  sendMessage: (ctx: HttpContext) => Promise<void>
+  editMessage: (ctx: HttpContext) => Promise<void>
+  deleteMessage: (ctx: HttpContext) => Promise<void>
+}
 
 @injectable()
-class MessagesController {
+class MessagesController extends BaseController {
   constructor (
     @inject(ORMCopy)
     private readonly ORM: ORMCopy,
@@ -25,9 +37,38 @@ class MessagesController {
     private readonly MessageSQL: MessagesSQL,
     @inject(MessagesService)
     private readonly MessageFileHelper: MessagesService
-  ) {}
+  ) {
+    super()
+    
+    this.bindRoutes([
+      {
+        path: `${serverPaths.sendMessage}/:toid`,
+        method: "post",
+        middlewares: [upload.array("files"), AuthMiddleware.OnlyAuth],
+        handle: this.sendMessage,
+      },
+      {
+        path: `${serverPaths.editMessage}/:id`,
+        method: "put",
+        middlewares: [upload.array("files"), AuthMiddleware.OnlyAuth],
+        handle: this.editMessage,
+      },
+      {
+        path: `${serverPaths.deleteMessage}/:id`,
+        method: "delete",
+        middlewares: [AuthMiddleware.OnlyAuth, SharedMiddlewares.OnlyIdMiddleware],
+        handle: this.deleteMessage,
+      },
+      {
+        path: `${serverPaths.getMessage}/:toid`,
+        method: "get",
+        middlewares: [AuthMiddleware.OnlyAuth],
+        handle: this.getMessage,
+      },
+    ])
+  }
 
-  sendSocket = <T extends keyof MsgTypesServer>(fromid: number, toid: number, msg: MsgTypesServer[T], type: T) => {
+  private sendSocket = <T extends keyof MsgTypesServer>(fromid: number, toid: number, msg: MsgTypesServer[T], type: T) => {
     logger.info('socket', fromid, toid)
     const clientFrom = this.clients.get(fromid)
     const clientTo = this.clients.get(toid)
@@ -35,8 +76,8 @@ class MessagesController {
     clientTo?.send(toSOSe(type, msg))
   }
 
-  getMessage = async (req: Request, res: Response<{messages: Message[]} | {messages: Message[], form: Form}>) => {
-    const [frid, toid, cursor] = MessagesValidation.getMessage(req)
+  getMessage: IMessageController['getMessage'] = async (ctx) => {
+    const [frid, toid, cursor] = MessagesValidation.getMessage(ctx)
 
     logger.info({frid, toid, cursor})
 
@@ -48,13 +89,12 @@ class MessagesController {
 
     const total = cursor ? {messages} : {messages, form}
 
-    res.json(total)
+    ctx.json(total)
   }
 
-  sendMessage = async (req: Request, res: Response) => {
-    //@ts-ignore
-    const [message, files] = await MessagesValidation.sendMessage(req)
-    if (message.fromid !== req.session.userid) {res.sendStatus(403); return;}
+  sendMessage = async (ctx: HttpContext) => {
+    const [message, files] = await MessagesValidation.sendMessage(ctx)
+    if (message.fromid !== ctx.session.userid) {ctx.sendStatus(403); return;}
 
     const request: Omit<Message, 'files'> = (await this.ORM.post(message, 'messages'))[0]
 
@@ -63,15 +103,14 @@ class MessagesController {
     const [total] = await this.ORM.put({files: paths}, request.id, 'messages')
 
     this.sendSocket(message.fromid, message.toid, total, 'message')
-    res.json(total)
+    ctx.json(total)
   }
 
-  editMessage = async (req: Request, res: Response) => {
-    //@ts-ignore
-    const [id, data] = await MessagesValidation.editMessage(req)
+  editMessage = async (ctx: HttpContext) => {
+    const [id, data] = await MessagesValidation.editMessage(ctx)
 
     const [request] = await this.ORM.getById(id, "messages", "fromid")
-    if (request.fromid !== req.session.userid) {res.sendStatus(403); return;}
+    if (request.fromid !== ctx.session.userid) {ctx.sendStatus(403); return;}
 
     let total = null
 
@@ -89,24 +128,22 @@ class MessagesController {
     logger.info({total})
     this.sendSocket(data.fromid, total.toid, total, 'edit_message')
 
-    res.json(total)
+    ctx.json(total)
   }
 
-  deleteMessage = async (req: Request, res: Response) => {
-    // ВРЕМЕННАЯ ЗАГЛУШКА
-    //@ts-ignore
-    const r = req as RequestOnlyId
+  deleteMessage = async (ctx: HttpContext) => {
+    const id = ctx.par_id!
 
-    const [data] = await this.ORM.delete(r.iid, 'messages', req.session.userid!)
+    const [data] = await this.ORM.delete(id, 'messages', ctx.session.userid!)
     logger.info({DATA_FORM: data})
 
-    if (!data) return res.sendStatus(403)
+    if (!data) return ctx.sendStatus(403)
 
-    await this.Yandex.deleteFolder(r.iid)
-    logger.info({frid: data.fromid, toid: data.toid, id: r.iid})
+    await this.Yandex.deleteFolder(id)
+    logger.info({frid: data.fromid, toid: data.toid, id})
 
     this.sendSocket(data.fromid, data.toid, {toid: data.toid, mesid: data.id}, "delete_message")
-    res.json(data)
+    ctx.json(data)
   }
 }
 

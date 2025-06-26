@@ -1,4 +1,4 @@
-import { Container, Factory } from "inversify";
+import { Container, ContainerModule, Factory } from "inversify";
 import ORMCopy from "@s/infrastructure/db/SQL/ORMCopy";
 import { clients, clientsType } from "@s/helpers/WebSocket/socket";
 import LikesModule from "@s/infrastructure/endpoints/Likes/sql/Likes.module";
@@ -24,69 +24,74 @@ import MessagesService from "@s/infrastructure/endpoints/Messages/services/Messa
 import LikesService from "@s/infrastructure/endpoints/Likes/services/LikesService";
 import MessageOutService from "@s/infrastructure/endpoints/MessageOutside/service/MessageOut.service";
 import SharedService from "@s/infrastructure/services/SharedService";
-import App from "@s/server";
+import App from "@s/serveros/server";
 import ConfigService from "@s/config/services/config.service";
-import ServerExpress from "@s/server.express";
-import ServerRoutes from "@s/server.routes";
+import ServerExpress from "@s/serveros/server.express";
+import ServerRoutes from "@s/serveros/express.routes";
 // import LikesValidation from "@s/infrastructure/endpoints/Likes/validation/Likes.validation";
 
 export const tablesArr: tables[] = ['users', 'forms', 'likes', 'messages', 'tags', 'user_tags']
 
-const appBindingsContainer = new Container()
+const appBindingsModule = new ContainerModule(({bind}) => {
+  bind<ORMCopy>(ORMCopy).toSelf()
+  bind<SharedService>(SharedService).toSelf()
+  bind<Yandex>(Yandex).toSelf()
+  bind<UploadFileService>(UploadFileService).toSelf()
+  bind<clientsType>(TYPES.clients).toConstantValue(clients)
 
-appBindingsContainer.bind<ORMCopy>(ORMCopy).toSelf()
-appBindingsContainer.bind<SharedService>(SharedService).toSelf()
+  bind<LikesModule>(LikesModule).toSelf()
+  bind<LikesService>(LikesService).toSelf()
 
-appBindingsContainer.bind<clientsType>(TYPES.clients).toConstantValue(clients)
-// container.bind<LikesValidation>(LikesValidation).toSelf()
-appBindingsContainer.bind<LikesModule>(LikesModule).toSelf()
-appBindingsContainer.bind<LikesService>(LikesService).toSelf()
-appBindingsContainer.bind<LikesController>(LikesController).toSelf()
+  bind<AuthService>(AuthService).toSelf()
 
-appBindingsContainer.bind<Factory<CRUDController>>(TYPES.CRUD.Factory).toFactory(context => {
+  bind<ExtendedSeacrhSQLhelper>(ExtendedSeacrhSQLhelper).toSelf()
+  bind<ExtendedSearchModule>(ExtendedSearchModule).toSelf()
+
+  bind<SettingsService>(SettingsService).toSelf()
+
+  bind<MessagesOutModule>(MessagesOutModule).toSelf()
+  bind<MessageOutService>(MessageOutService).toSelf()
+  bind<MessagesSQL>(MessagesSQL).toSelf()
+  bind<MessagesService>(MessagesService).toSelf()
+
+  bind<ServerRoutes>(ServerRoutes).toSelf()
+  bind<ServerExpress>(ServerExpress).toSelf()
+  bind<ConfigService>(ConfigService).toSelf()
+  bind<App>(App).toSelf()
+})
+
+// -------------------------------------------------------------------------
+
+const controllerBindingsContainer = new Container()
+controllerBindingsContainer.load(appBindingsModule)
+
+controllerBindingsContainer.bind<LikesController>(TYPES.Controllers.Likes).to(LikesController)
+
+controllerBindingsContainer.bind<AuthController>(TYPES.Controllers.Auth).to(AuthController)
+controllerBindingsContainer.bind<ExtendedSearchController>(TYPES.Controllers.ExtendedSearch).to(ExtendedSearchController)
+
+controllerBindingsContainer.bind<FormController>(TYPES.Controllers.Form).to(FormController)
+
+controllerBindingsContainer.bind<SettingsController>(TYPES.Controllers.Settings).to(SettingsController)
+
+controllerBindingsContainer.bind<MessagesController>(TYPES.Controllers.Messages).to(MessagesController)
+
+controllerBindingsContainer.bind<MessagesOutController>(TYPES.Controllers.MessagesOut).to(MessagesOutController)
+
+controllerBindingsContainer.bind<Factory<CRUDController>>(TYPES.CRUD.Factory).toFactory(context => {
   return (table: tables) => {
     const orm = context.get<ORMCopy>(ORMCopy)
     return new CRUDController(table, orm)
   }
 })
 
-const factory = appBindingsContainer.get<(table: tables) => CRUDController>(TYPES.CRUD.Factory)
+const factory = controllerBindingsContainer.get<(table: tables) => CRUDController>(TYPES.CRUD.Factory)
 tablesArr.forEach((table) => {
-  const sym = TYPES.CRUD.Tables[table]
-  appBindingsContainer.bind<CRUDController>(sym).toConstantValue(factory(table))
+  const sym = TYPES.CRUD.Controllers[table]
+  controllerBindingsContainer.bind<CRUDController>(sym).toConstantValue(factory(table))
 })
 
-appBindingsContainer.bind<Yandex>(Yandex).toSelf()
-appBindingsContainer.bind<UploadFileService>(UploadFileService).toSelf()
-appBindingsContainer.bind<AuthService>(AuthService).toSelf()
-
-appBindingsContainer.bind<AuthController>(AuthController).toSelf()
-
-appBindingsContainer.bind<ExtendedSeacrhSQLhelper>(ExtendedSeacrhSQLhelper).toSelf()
-appBindingsContainer.bind<ExtendedSearchModule>(ExtendedSearchModule).toSelf()
-appBindingsContainer.bind<ExtendedSearchController>(ExtendedSearchController).toSelf()
-
-
-appBindingsContainer.bind<FormController>(FormController).toSelf()
-
-
-appBindingsContainer.bind<SettingsService>(SettingsService).toSelf()
-appBindingsContainer.bind<SettingsController>(SettingsController).toSelf()
-
-appBindingsContainer.bind<MessagesOutModule>(MessagesOutModule).toSelf()
-appBindingsContainer.bind<MessageOutService>(MessageOutService).toSelf()
-appBindingsContainer.bind<MessagesOutController>(MessagesOutController).toSelf()
-
-appBindingsContainer.bind<MessagesSQL>(MessagesSQL).toSelf()
-appBindingsContainer.bind<MessagesService>(MessagesService).toSelf()
-appBindingsContainer.bind<MessagesController>(MessagesController).toSelf()
-
-appBindingsContainer.bind<ServerRoutes>(ServerRoutes).toSelf()
-appBindingsContainer.bind<ServerExpress>(ServerExpress).toSelf()
-appBindingsContainer.bind<ConfigService>(ConfigService).toSelf()
-appBindingsContainer.bind<App>(App).toSelf()
-
-export default appBindingsContainer
+export default controllerBindingsContainer
 
 // ПЕРВЫЙ ПОДХОД
 

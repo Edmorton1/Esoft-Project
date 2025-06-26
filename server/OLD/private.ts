@@ -8,9 +8,9 @@ import MessagesOutController from "@s/infrastructure/endpoints/MessageOutside/Me
 import SharedMiddlewares from "@s/infrastructure/middlewares/SharedMiddlewares"
 import SettingsController from "@s/infrastructure/endpoints/Settings/Settings.controller"
 import AuthMiddleware from "@s/infrastructure/middlewares/AuthMiddleware"
-import { upload } from "@s/OLD/public";
-import { asyncHandle } from "@s/routes/adapters";
+import { asyncHandle } from "@s/adapters/Express.adapter";
 import appBindingsContainer from "@s/config/containers/container.di";
+import { upload } from "@s/infrastructure/endpoints/multer";
 
 const privateRouter = Router();
 

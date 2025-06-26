@@ -3,17 +3,15 @@ import logger from "@s/helpers/logger";
 import { TagsDTO, UserDTO, UserDTOSchema } from "@t/gen/dtoObjects";
 import { Request } from "express";
 import { z } from "zod";
-
-export interface ReqLogin {
-  dto: UserDTO
-}
+import HttpContext from "@s/infrastructure/express/Http.context";
 
 class AuthValidation {
-  registration = (req: Request): [UserDTO, Omit<FormDTOServer, 'tags' | 'email' | 'password'>, TagsDTO[]] => {
-    logger.info({dataRow: JSON.parse(req.body.json)}, "Грязные")
+  registration = (ctx: HttpContext): [UserDTO, Omit<FormDTOServer, 'tags' | 'email' | 'password'>, TagsDTO[]] => {
+    logger.info({dataRow: JSON.parse(ctx.body.json)}, "Грязные")
     // logger.info(req.file)
 
-    const data = RegistrationDTOServerSchema.parse({...JSON.parse(req.body.json), avatar: req.file})
+    const data = RegistrationDTOServerSchema.parse({...JSON.parse(ctx.body.json), avatar: ctx.file})
+    // const asd = ctx.file
     logger.info({До_Загрузки: data})
       
     const {email, password, tags, ...formDTO} = data
@@ -21,13 +19,13 @@ class AuthValidation {
 
     return [userDTO, formDTO, tags]
   }
-  checkEmail = (req: Request) => {
-    const email = z.coerce.string().parse(req.params.email)
+  checkEmail = (ctx: HttpContext) => {
+    const email = z.coerce.string().parse(ctx.params.email)
     return email
   }
 
-  login = (req: Request): UserDTO => {
-    const dto = UserDTOSchema.parse(req.body)
+  login = (ctx: HttpContext): UserDTO => {
+    const dto = UserDTOSchema.parse(ctx.body)
 
     logger.info({parsed: dto})
     return dto

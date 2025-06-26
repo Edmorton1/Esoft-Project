@@ -1,19 +1,19 @@
-import logger from "@s/helpers/logger";
-import { tables } from "@t/gen/types";
-import { Request, Response, NextFunction } from "express";
+// import logger from "@s/helpers/logger";
+// import HttpContext from "@s/infrastructure/express/Http.context";
+// import { tables } from "@t/gen/types";
 
-class CRUDMiddleware {
-  constructor(
-    readonly table: tables
-  ) {}
+// class CRUDMiddleware {
+//   constructor(
+//     readonly table: tables
+//   ) {}
 
-  CRUDshort = (req: Request, res: Response, next: NextFunction) => {
-    logger.info(this.table)
-    if (this.table === 'forms' || this.table === 'user_tags') {
-      res.set('Cache-Control', `public, max-age=${60 * 5}, must-revalidate`);
-    }
-    next()
-  }
-}
+//   CRUDshort = (ctx: HttpContext) => {
+//     logger.info(this.table)
+//     if (this.table === 'forms' || this.table === 'user_tags') {
+//       ctx.set('Cache-Control', `public, max-age=${60 * 5}, must-revalidate`);
+//     }
+//     ctx.next()
+//   }
+// }
 
-export default CRUDMiddleware
+// export default CRUDMiddleware

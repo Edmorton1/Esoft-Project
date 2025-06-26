@@ -1,23 +1,21 @@
 import {Router} from "express";
-import { universalController } from "@s/helpers/controllers"
+import { universalController } from "@s/OLD/controllers"
 import { serverPaths } from "@shared/PATHS"
 import AuthController from "@s/infrastructure/endpoints/Auth/Auth.controller"
-import HttpFilesController from "@s/infrastructure/endpoints/Files/HttpFilesController"
+// import HttpFilesController from "@s/infrastructure/endpoints/Files/HttpFilesController"
 import ExtendedSearchController from "@s/infrastructure/endpoints/ExtendSearch/ExtendedSearch.controller"
 // import CRUDMiddleware from "@s/infrastructure/middlewares/CRUDMiddleware"
 import logger from "@s/helpers/logger"
 import FormController from "@s/infrastructure/endpoints/Form/Form.controller"
-import multer from "multer";
-import AuthMiddleware from "@s/infrastructure/middlewares/AuthMiddleware";
-import { asyncHandle } from "@s/routes/adapters";
+import { asyncHandle } from "@s/adapters/Express.adapter";
 import appBindingsContainer, { tablesArr } from "@s/config/containers/container.di";
-
-export const upload = multer({storage: multer.memoryStorage()})
+import { upload } from "@s/infrastructure/endpoints/multer";
 
 const publicRouter = Router();
 
 // СТАНДАРТНЫЙ ЗАПРОС
 publicRouter.get('/', (req, res) => {logger.info('Работает'); res.sendStatus(200)})
+
 // АВТОРИЗАЦИЯ
 publicRouter.post(serverPaths.registration, upload.single('avatar'), asyncHandle(appBindingsContainer.get(AuthController).registartion))
 publicRouter.post(serverPaths.login, asyncHandle(appBindingsContainer.get(AuthController).login))

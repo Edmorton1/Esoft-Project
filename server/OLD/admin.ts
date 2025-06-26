@@ -1,4 +1,4 @@
-import { universalController } from "@s/helpers/controllers";
+import { universalController } from "@s/OLD/controllers";
 import AuthMiddleware from "@s/infrastructure/middlewares/AuthMiddleware";
 import { tablesArr } from "@s/config/containers/container.di";
 import {Router} from "express";

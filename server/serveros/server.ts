@@ -1,5 +1,5 @@
 import { inject, injectable } from "inversify";
-import ServerExpress from "@s/server.express";
+import ServerExpress from "@s/serveros/server.express";
 import ConfigService from "@s/config/services/config.service";
 
 // ЭНДПОЙНТЫ РЕАЛИЗОВЫВАТЬ В КОНТРОЛЛЕРАХ

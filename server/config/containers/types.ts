@@ -1,17 +1,32 @@
-const TYPES = {
-  clients: Symbol.for("clients"),
-  
-  CRUD: {
-    Factory: Symbol.for("CRUDControllerFactory"),
-    Tables : {
-      users: Symbol.for("users"),
-      forms: Symbol.for("forms"),
-      likes: Symbol.for("likes"),
-      messages: Symbol.for("messages"),
-      tags: Symbol.for("tags"),
-      user_tags: Symbol.for("user_tags")
-    },
-  },
-}
+import logger from "@s/helpers/logger";
 
-export default TYPES
+const TYPES = {
+	clients: Symbol.for("clients"),
+
+	CRUD: {
+		Factory: Symbol.for("CRUDControllerFactory"),
+
+		Controllers: {
+			users: Symbol.for("crud-controller-users"),
+			forms: Symbol.for("crud-controller-forms"),
+			likes: Symbol.for("crud-controller-likes"),
+			messages: Symbol.for("crud-controller-messages"),
+			tags: Symbol.for("crud-controller-tags"),
+			user_tags: Symbol.for("crud-controller-user_tags"),
+		},
+	},
+
+	Controllers: {
+		Likes: Symbol.for("controllers-tables-likes"),
+		Auth: Symbol.for("controllers-auth"),
+		ExtendedSearch: Symbol.for("controllers-extended_search"),
+		Form: Symbol.for("controllers-form"),
+		Settings: Symbol.for("controllers-settings"),
+		Messages: Symbol.for("controllers-messages"),
+		MessagesOut: Symbol.for("controllers-messages_out"),
+	},
+};
+
+// logger.info({ТАЙПС_ГОЙДА: TYPES})
+
+export default TYPES;
