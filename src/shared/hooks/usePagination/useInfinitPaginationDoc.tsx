@@ -4,7 +4,6 @@ import $api from "@/shared/api/api"
 function useInfinitPaginationDoc(url: string, firstRender: boolean, callback: (data: any) => void, limit: number) {
   const [stop, setStop] = useState(false)
   const [fetching, setFetching] = useState(false)
-  const urlRef = useRef(url)
 
   console.log("CURSOR INSIDE", url)
 

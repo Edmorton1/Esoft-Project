@@ -27,7 +27,6 @@ function App() {
 				<Suspense>
 					<Routes>
 						<Route element={<Header />}>
-							<Route index element={<LazyMain />} />
 							<Route path={paths.login} element={<LazyLogin />} />
 							<Route path={paths.registration} element={<LazyRegistration />} />
 							<Route path={`${paths.messages}/:toid`} element={<LazyMessages />} />
@@ -46,6 +45,7 @@ function App() {
 						</Route>
 						
 						<Route path={`${paths.admin}/*`} element={<LazyAdmin />} />
+						<Route index element={<LazyMain />} />
 
 					</Routes>
 				</Suspense>
