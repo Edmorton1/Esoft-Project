@@ -2,8 +2,6 @@ import { IHttpContext } from "@s/infrastructure/express/Http.interfaces";
 import HttpServiceExpress from "@s/infrastructure/express/Http.service";
 
 class HttpContext<T = any> implements IHttpContext<T> {
-	public par_id?: number;
-
 	constructor(private readonly service: HttpServiceExpress) {}
 
 	get body() {

@@ -8,7 +8,7 @@ import BaseController from "@s/config/base/Base.controller";
 import { serverPaths } from "@shared/PATHS";
 import AuthMiddleware from "@s/infrastructure/middlewares/AuthMiddleware";
 import HttpContext from "@s/infrastructure/express/Http.context";
-import SharedMiddlewares from "@s/infrastructure/middlewares/SharedMiddlewares";
+import SharedValidate from "@s/infrastructure/middlewares/SharedValidate";
 
 interface ILikesController {
 	sendLike(ctx: HttpContext): Promise<void>;
@@ -38,10 +38,7 @@ class LikesController extends BaseController implements ILikesController {
 			{
 				path: `${serverPaths.likesDelete}/:id`,
 				method: "delete",
-				middlewares: [
-					AuthMiddleware.OnlyAuth,
-					SharedMiddlewares.OnlyIdMiddleware,
-				],
+				middlewares: [AuthMiddleware.OnlyAuth],
 				handle: this.sendDelete,
 			},
 			{
@@ -75,7 +72,7 @@ class LikesController extends BaseController implements ILikesController {
 
 	sendDelete: ILikesController['sendDelete'] = async (ctx: HttpContext) => {
 		const userid = ctx.session.userid!;
-		const id = ctx.par_id!
+		const id = SharedValidate.OnlyId(ctx)
 
 		const data = await this.likesService.sendDelete(id, userid);
 

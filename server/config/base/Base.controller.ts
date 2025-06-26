@@ -25,7 +25,7 @@ class BaseController {
 			// logger.info({ route });
 
 			const pipline = route.middlewares
-				? [...route.middlewares.map(route => adaptController(route)), adaptController(route.handle)]
+				? [...route.middlewares, adaptController(route.handle)]
 				: [adaptController(route.handle)];
 			this.router[route.method](route.path, ...pipline);
 		}

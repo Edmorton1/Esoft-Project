@@ -3,7 +3,8 @@ import HttpContext from "@s/infrastructure/express/Http.context";
 import HttpServiceExpress from "@s/infrastructure/express/Http.service";
 import { NextFunction, Request, Response } from "express";
 
-export const asyncHandle = (fn: Function) => (req: Request, res: Response, next: NextFunction) => {
+export const asyncHandle =
+	(fn: Function) => (req: Request, res: Response, next: NextFunction) => {
 		Promise.resolve(fn(req, res, next)).catch(err => next(err));
 	};
 
@@ -12,8 +13,9 @@ export const adaptController =
 	(req: Request, res: Response, next: NextFunction) => {
 		const ctx = new HttpContext(new HttpServiceExpress(req, res, next));
 		controllerFn(ctx)
-      .catch(err => {
-        logger.info({ОШИБКА_В_АДАПТОРЕ: err})
-        next(err)
-      });
+		
+		.catch(err => {
+			logger.error({ ОШИБКА_В_АДАПТОРЕ: err });
+			next(err);
+		});
 	};

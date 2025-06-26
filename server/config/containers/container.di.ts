@@ -24,10 +24,10 @@ import MessagesService from "@s/infrastructure/endpoints/Messages/services/Messa
 import LikesService from "@s/infrastructure/endpoints/Likes/services/LikesService";
 import MessageOutService from "@s/infrastructure/endpoints/MessageOutside/service/MessageOut.service";
 import SharedService from "@s/infrastructure/services/SharedService";
-import App from "@s/serveros/server";
 import ConfigService from "@s/config/services/config.service";
-import ServerExpress from "@s/serveros/server.express";
-import ServerRoutes from "@s/serveros/express.routes";
+import App from "@s/server/server";
+import ServerExpress from "@s/server/server.express";
+import ServerRoutes from "@s/server/express.routes";
 // import LikesValidation from "@s/infrastructure/endpoints/Likes/validation/Likes.validation";
 
 export const tablesArr: tables[] = ['users', 'forms', 'likes', 'messages', 'tags', 'user_tags']

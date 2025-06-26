@@ -15,7 +15,7 @@ import { serverPaths } from "@shared/PATHS";
 import { upload } from "@s/infrastructure/endpoints/multer";
 import AuthMiddleware from "@s/infrastructure/middlewares/AuthMiddleware";
 import HttpContext from "@s/infrastructure/express/Http.context";
-import SharedMiddlewares from "@s/infrastructure/middlewares/SharedMiddlewares";
+import SharedValidate from "@s/infrastructure/middlewares/SharedValidate";
 
 interface IMessageController {
   getMessage: (ctx: HttpContext<{messages: Message[]} | {messages: Message[], form: Form}>) => Promise<void>
@@ -56,7 +56,7 @@ class MessagesController extends BaseController {
       {
         path: `${serverPaths.deleteMessage}/:id`,
         method: "delete",
-        middlewares: [AuthMiddleware.OnlyAuth, SharedMiddlewares.OnlyIdMiddleware],
+        middlewares: [AuthMiddleware.OnlyAuth],
         handle: this.deleteMessage,
       },
       {
@@ -132,7 +132,8 @@ class MessagesController extends BaseController {
   }
 
   deleteMessage = async (ctx: HttpContext) => {
-    const id = ctx.par_id!
+    const id = SharedValidate.OnlyId(ctx)
+    logger.info({DELETE_MESSAGE: id})
 
     const [data] = await this.ORM.delete(id, 'messages', ctx.session.userid!)
     logger.info({DATA_FORM: data})

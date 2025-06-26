@@ -1,14 +1,13 @@
 import HttpContext from "@s/infrastructure/express/Http.context";
 import { z } from "zod";
 
-class SharedMiddlewares {
-	OnlyIdMiddleware = (ctx: HttpContext) => {
+class SharedValidate {
+	OnlyId = (ctx: HttpContext): number => {
 		const id = z.coerce.number().parse(ctx.params.id);
-		ctx.par_id = id;
 
-		ctx.next();
+		return id;
 	}
 };
 
 
-export default new SharedMiddlewares
+export default new SharedValidate

@@ -11,7 +11,7 @@ import { PREFIX } from "@shared/CONST";
 import logger from "@s/helpers/logger";
 import expressSession from "@s/config/middlewares/Express.session";
 import expressError from "@s/config/middlewares/Express.error";
-import ServerRoutes from "@s/serveros/express.routes";
+import ServerRoutes from "@s/server/express.routes";
 
 @injectable()
 class ServerExpress {
@@ -43,7 +43,6 @@ class ServerExpress {
 		// this.app.use(helmet());
 		this.app.use(json());
 		this.app.use(expressSession);
-		this.app.use(expressError);
 
 		return this;
 	};
@@ -56,6 +55,7 @@ class ServerExpress {
 
 	private configureApp = () => {
 		this.applyMiddlewares().useRoutes();
+		this.app.use(expressError);
 	};
 
 	init = async (basePath: string, port: number) => {
