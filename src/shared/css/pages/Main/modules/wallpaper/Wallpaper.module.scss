@@ -1,0 +1,22 @@
+.wallpaper {
+	width: 100vw;
+	height: 100vh;
+	background-position: center;
+	background-size: cover;
+	background-image: url("/public/main.jpg");
+	background-attachment: fixed;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	&__opacity {
+		display: flex;
+		flex-direction: column;
+		gap: 50px;
+
+		&--logo {
+			width: 500px;
+		}
+	}
+}
