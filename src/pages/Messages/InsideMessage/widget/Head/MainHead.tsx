@@ -13,6 +13,7 @@ import { sxStyle } from "@/shared/ui/CircleButton"
 import LastActive from "@/shared/ui/components/LastActive"
 import { useContext } from "react"
 import { MessagesContext } from "@/pages/Messages/InsideMessage/Messages"
+import { BG_THIRD } from "@shared/COLORS"
 
 function MainHead({toid}: {toid: number}) {
   const StoreMessages = useContext(MessagesContext)!
@@ -26,7 +27,7 @@ function MainHead({toid}: {toid: number}) {
 
   return <>
     <CardHeader
-      sx={{p: 0, pt: 0.5, pl: 0.75, bgcolor: "background.third", borderTopLeftRadius: br, borderTopRightRadius: br}}
+      sx={{p: 0, pt: 0.5, pl: 0.75, bgcolor: BG_THIRD, borderTopLeftRadius: br, borderTopRightRadius: br}}
       avatar={<Avatar sx={{width: wh, height: wh}} src={StoreMessages.form?.avatar} />}
       title={<Box display={"flex"} alignItems={"center"} justifyContent={"space-between"}>
         <Box>

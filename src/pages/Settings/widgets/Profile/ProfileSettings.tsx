@@ -16,6 +16,7 @@ import DescriptionRow from "@/pages/Settings/widgets/components/DescriptionRow"
 import StoreSettings from "@/pages/Settings/widgets/store/Store-Settings"
 import SharedRequests from "@shared/Shared-Requests"
 import AvatarRow from "@/pages/Settings/widgets/components/AvatarRow"
+import { BG_ALT } from "@shared/COLORS"
 
 export type LocationCallback = (data: number[]) => void
 
@@ -50,13 +51,13 @@ function ProfileSettings() {
   }
 
   const p = 1.5
-  const sx = {bgcolor: "background.alt", p: 2}
+  const sx = {bgcolor: BG_ALT, p: 2}
 
   return <FormProvider {...methods}>
     <Paper component={"form"} className={style.container__form} onSubmit={methods.handleSubmit(data => submit(data))}>
       {/* <button onClick={() => console.log(methods.formState.errors)}>Errors</button> */}
       <AvatarRow sx={sx} />
-      <Box bgcolor={"background.alt"} component={"div"} className={style['container__form--options']}>
+      <Box bgcolor={BG_ALT} component={"div"} className={style['container__form--options']}>
         <Paper sx={{p: p}}>
           <EditRow label="Имя" name="name" />
           <EditRow label="Возраст" name="age" />

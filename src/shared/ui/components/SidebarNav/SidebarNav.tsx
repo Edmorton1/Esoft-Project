@@ -12,6 +12,7 @@ import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import SettingsIcon from '@mui/icons-material/Settings';
 import * as style from "@/shared/css/modules/SidebarNav.module.scss"
 import Box from "@mui/material/Box";
+import { BG_PAPER } from "@shared/COLORS";
 
 function SidebarNav() {
 	const HeadButton = ({
@@ -34,7 +35,7 @@ function SidebarNav() {
 		</NavLink>
 	);
 
-	return <Box className={style.main} bgcolor={"background.alt"}>
+	return <Box className={style.main} bgcolor={BG_PAPER}>
 			<NavButton to={"/"}>
 				Главная <DomainIcon />
 			</NavButton>

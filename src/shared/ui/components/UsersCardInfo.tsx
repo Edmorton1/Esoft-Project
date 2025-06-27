@@ -14,6 +14,7 @@ import { ReactNode, useState } from "react"
 import ReadMore from "@/shared/ui/components/ReadMore"
 import { Tags } from "@t/gen/Users"
 import { toJS } from "mobx"
+import { BG_ALT } from "@shared/COLORS"
 
 function UsersCardInfo({form, children}: {form: FormWithDistanse, children?: ReactNode}) {
   // console.log("TAGS", toJS(form.tags))
@@ -22,7 +23,7 @@ function UsersCardInfo({form, children}: {form: FormWithDistanse, children?: Rea
     <div className={style.container__avatar}>
       <img src={form.avatar ?? PLACEHOLDER_IMG} alt="" />
     </div>
-    <CardContent sx={{bgcolor: "background.alt"}} className={style.container__content}>
+    <CardContent sx={{bgcolor: BG_ALT}} className={style.container__content}>
       <Divider />
       <Typography><strong>Имя: </strong>{form.name}</Typography>
       <Divider />
@@ -47,7 +48,7 @@ function UsersCardInfo({form, children}: {form: FormWithDistanse, children?: Rea
       <ReadMore
         component={form.tags}
         len={4}
-        RenderWrap={({children}) => <Box sx={{bgcolor: "background.alt"}}>{children}</Box>}
+        RenderWrap={({children}) => <Box sx={{bgcolor: BG_ALT}}>{children}</Box>}
         renderItem={(e: Tags) => <Chip variant="outlined" key={e.tag} label={e.tag} />} />
 
       {form.distance && <Typography><strong>Расстояние: </strong>{form.distance} км</Typography>}

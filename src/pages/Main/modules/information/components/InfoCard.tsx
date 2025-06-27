@@ -6,13 +6,14 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import Box from "@mui/material/Box";
+import { BG_ALT, BG_PAPER, BG_THIRD } from "@shared/COLORS";
 
 function InfoCard({card}: {card: ICard}) {
 	return (
 		<Card
 			sx={{
 				border: "10px solid",
-				borderColor: "background.alt",
+				borderColor: BG_ALT,
 				borderRadius: "50px",
 				minWidth: "350px",
 			}}
@@ -36,10 +37,10 @@ function InfoCard({card}: {card: ICard}) {
 					<Box height={16} />
 					<Stack
 						spacing={1}
-						bgcolor={"background.paper"}
+						bgcolor={BG_PAPER}
 						p={1}
 						border={"5px solid"}
-						borderColor={"background.third"}
+						borderColor={BG_THIRD}
 						borderRadius="10px">
 						{card.items.map(e => (
 							<Box key={e.text} sx={{ display: "flex" }}>

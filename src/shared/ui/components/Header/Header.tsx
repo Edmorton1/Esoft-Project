@@ -1,23 +1,15 @@
 import StoreForm from "@/shared/stores/Store-Form"
-import { Link, NavLink, Outlet } from "react-router-dom"
+import { Link, Outlet } from "react-router-dom"
 import { paths } from "@shared/PATHS"
 import ThemeButton from "@/shared/ui/components/ThemeButton"
 import AppBar from "@mui/material/AppBar"
 import Toolbar from "@mui/material/Toolbar"
 import Box from "@mui/material/Box"
 import { LOGO_IMG_BIG } from "@shared/PUBLIC"
-import { ReactNode } from "react"
 // import * as sharedStyle from "@/shared/css/components/Shared.module.scss"
 import * as style from "@/shared/css/components/Header.module.scss"
 import Button from "@mui/material/Button"
-import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
-import ForumIcon from '@mui/icons-material/Forum';
-import GroupIcon from '@mui/icons-material/Group';
-import MapIcon from '@mui/icons-material/Map';
 import LoginIcon from '@mui/icons-material/Login';
-import DomainIcon from '@mui/icons-material/Domain';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import SettingsIcon from '@mui/icons-material/Settings';
 import Avatar from "@mui/material/Avatar"
 import StoreLogin from "@/pages/Login/Store-Login"
 import { observer } from "mobx-react-lite"
@@ -29,8 +21,8 @@ import StoreTags from "@/shared/stores/Store-Tags"
 import StoreUsers from "@/pages/Users/widgets/store/Store-Users"
 import StoreMessagesManager from "@/pages/Messages/store/Store-Messages-Manager"
 import * as main from "@/shared/css/modules/Main.module.scss"
-import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import SidebarNav from "@/shared/ui/components/SidebarNav/SidebarNav"
+import { BG_ALT } from "@shared/COLORS"
 
 function Header() {
   return <>
@@ -85,7 +77,7 @@ function Header() {
       
       <Box>
         <SidebarNav />
-        <Box component={"main"} className={main.main} sx={{backgroundColor: "background.alt"}}>
+        <Box component={"main"} className={main.main} sx={{backgroundColor: BG_ALT}}>
           <Outlet />
         </Box>
       </Box>
@@ -94,7 +86,7 @@ function Header() {
 
 export default observer(Header)
 
-      // <Box component={"main"} className={main.main} sx={{backgroundColor: "background.alt"}}>
+      // <Box component={"main"} className={main.main}>
       //   <SidebarNav />
       //   <Outlet />
       // </Box>
