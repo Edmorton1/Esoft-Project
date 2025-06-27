@@ -1,6 +1,7 @@
 import { inject, injectable } from "inversify";
 import ServerExpress from "@s/server/server.express";
 import ConfigService from "@s/config/services/config.service";
+import logger from "@s/helpers/logger";
 
 // ЭНДПОЙНТЫ РЕАЛИЗОВЫВАТЬ В КОНТРОЛЛЕРАХ
 
@@ -28,6 +29,7 @@ class App implements IServer {
 	}
 
 	init = async () => {
+		logger.info(`СЕВРЕВ ЗАПУЩЕН НА ${this.configService.get("URL_SERVER")} САЙТ НА ${this.configService.get("URL_CLIENT")}`);
 		this.framework.init(this.basePath, this.port);
 	};
 

@@ -62,7 +62,6 @@ class ServerExpress {
 		this.configureApp();
 
 		this.server.listen(port);
-		logger.info(`${basePath}${PREFIX}/likesPairs`);
 	};
 
 	close = () => {

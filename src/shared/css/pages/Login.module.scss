@@ -1,10 +1,6 @@
 @use "@/shared/css/const" as c;
 
 .modal {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   padding: c.$p;
   display: flex;
   flex-direction: column;

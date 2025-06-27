@@ -31,14 +31,6 @@ function LoginBody({onSubmit, register, handleTest, errors}: {onSubmit: () => vo
           <Button type="submit" variant="contained">Войти</Button>
       </form>
       <Link to={paths.registration}><Button variant="contained" onClick={StoreLogin.closeModal}>Зарегистрироваться</Button></Link>
-
-      {/* <Box display="flex" flexDirection="column">
-        <button onClick={() => console.log(errors)}>Errors</button>
-        <Button onClick={storeAuthorization.logout} variant={buttonVariant}>Выйти</Button>
-        <Button onClick={() => console.log(storeAuthorization.user)} variant={buttonVariant}>Вывести пользователя</Button>
-        <Button onClick={handleTest} variant={buttonVariant}>Запрос на проверку авторизации</Button>
-        <Button onClick={storeAuthorization.initial} variant={buttonVariant}>Инициализация</Button>
-      </Box> */}
     </Paper>
 }
 
