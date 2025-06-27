@@ -1,0 +1,12 @@
+.main {
+  position: fixed;
+
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  padding: 16px;
+  gap: 5px;
+  border-radius: 25px;
+
+  left: 100px;
+}

@@ -1,7 +1,11 @@
+@use "@/shared/css/const" as c;
+
 .header {
   display: flex;
   // flex-wrap: wrap;
   justify-content: space-between;
+  width: c.$w;
+  align-self: center;
 
   &__row {
     gap: 15px;
@@ -9,13 +13,4 @@
     align-items: center;
     justify-content: space-around;
   }
-}
-
-// .header__row:nth-child(2) {
-//   // background-color: red !important;
-// }
-.header__row:nth-child(3) {
-  // background-color: red !important;
-  // flex: 1;
-  // justify-content: end;
 }

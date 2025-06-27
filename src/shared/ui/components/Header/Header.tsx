@@ -30,16 +30,7 @@ import StoreUsers from "@/pages/Users/widgets/store/Store-Users"
 import StoreMessagesManager from "@/pages/Messages/store/Store-Messages-Manager"
 import * as main from "@/shared/css/modules/Main.module.scss"
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
-
-const HeadButton = ({isActive, children}: {isActive: boolean, children: ReactNode}) => (
-<Button color={"salmon"} variant={isActive ? "contained" : "outlined"}>
-    {children}
-  </Button>
-)
-
-const NavButton = ({to, children}: {to: string, children: ReactNode}) => <NavLink to={to}>
-  {({ isActive }) => <HeadButton isActive={isActive}>{children}</HeadButton>}
-  </NavLink>
+import SidebarNav from "@/shared/ui/components/SidebarNav/SidebarNav"
 
 function Header() {
   return <>
@@ -64,18 +55,11 @@ function Header() {
         </button>
 
         <div className={style.header__row}>
-          <NavButton to={"/"}>Главная <DomainIcon /></NavButton>
-          <NavButton to={paths.registration}>Регистрация <AppRegistrationIcon /></NavButton>
-          <NavButton to={paths.messages}>Сообщения <ForumIcon /></NavButton>
-          <NavButton to={paths.users}>Пользователи <GroupIcon /></NavButton>
-          <NavButton to={paths.map}>MAP <MapIcon /></NavButton>
-          <NavButton to={paths.liked}>Liked <ThumbUpIcon /></NavButton>
-          <NavButton to={paths.pairs}>Пары <FavoriteIcon /></NavButton>
           <ThemeButton />
         </div>
 
         <div className={style.header__row}>
-          <NavButton to={paths.settings}>Настройки <SettingsIcon/></NavButton>
+          {/* <NavButton to={paths.settings}>Настройки <SettingsIcon/></NavButton> */}
           {StoreForm.form 
             ? <Link to={`${paths.profile}/${StoreForm.form.id}`}>
                 <Avatar src={StoreForm.form.avatar} />
@@ -99,10 +83,18 @@ function Header() {
         </Toolbar>
       </AppBar>
       
-      <Box component={"main"} className={main.main} sx={{backgroundColor: "background.alt"}}>
-        <Outlet />
+      <Box>
+        <SidebarNav />
+        <Box component={"main"} className={main.main} sx={{backgroundColor: "background.alt"}}>
+          <Outlet />
+        </Box>
       </Box>
     </>
 }
 
 export default observer(Header)
+
+      // <Box component={"main"} className={main.main} sx={{backgroundColor: "background.alt"}}>
+      //   <SidebarNav />
+      //   <Outlet />
+      // </Box>
