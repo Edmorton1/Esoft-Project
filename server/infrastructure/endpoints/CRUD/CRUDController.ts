@@ -2,9 +2,9 @@ import { tables } from "@t/gen/types";
 // import ORM from "@s/infrastructure/db/SQL/ORM"
 import logger from "@s/helpers/logger";
 import { inject, injectable } from "inversify";
-import ORMCopy from "@s/infrastructure/db/SQL/ORMCopy";
+import ORM from "@s/infrastructure/db/SQL/ORM";
 import BaseController from "@s/config/base/Base.controller";
-import HttpContext from "@s/infrastructure/express/Http.context";
+import HttpContext from "@s/config/express/Http.context";
 import AuthMiddleware from "@s/infrastructure/middlewares/AuthMiddleware";
 import { z } from "zod";
 
@@ -20,7 +20,7 @@ class CRUDController extends BaseController {
 		@inject("tables")
 		private readonly table: tables,
 		@inject("ORM")
-		private readonly ORM: ORMCopy,
+		private readonly ORM: ORM,
 	) {
 		super();
 		this.bindRoutes([
@@ -89,7 +89,8 @@ class CRUDController extends BaseController {
 	put = async (ctx: HttpContext) => {
 		const { id } = ctx.params;
 		const dto = ctx.body;
-		const request = await this.ORM.put(dto, id, this.table);
+		const userid = ctx.session.userid!
+		const request = await this.ORM.put(dto, id, this.table, userid);
 		ctx.json(request);
 	};
   

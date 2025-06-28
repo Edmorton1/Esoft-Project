@@ -57,7 +57,12 @@ export const serverPaths = {
   passwordCompare: "/passwordCompare",
   profilePut: "/profilePut",
 
-  searchForm: "/searchForm"
+  searchForm: "/searchForm",
+
+  postsGet: "/postsGet",
+  postsPost: "/postsPost",
+  postsPut: "/postsPut",
+  postsDelete: "/postsDelete",
 } as const
 
 // export type serverPathsTypes = keyof typeof serverPaths

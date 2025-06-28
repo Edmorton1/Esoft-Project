@@ -13,6 +13,7 @@ const TYPES = {
 			messages: Symbol.for("crud-controller-messages"),
 			tags: Symbol.for("crud-controller-tags"),
 			user_tags: Symbol.for("crud-controller-user_tags"),
+			posts: Symbol.for("crud-controller-posts")
 		},
 	},
 
@@ -24,6 +25,7 @@ const TYPES = {
 		Settings: Symbol.for("controllers-settings"),
 		Messages: Symbol.for("controllers-messages"),
 		MessagesOut: Symbol.for("controllers-messages_out"),
+		Posts: Symbol.for("controllers-posts")
 	},
 };
 

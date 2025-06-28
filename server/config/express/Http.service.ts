@@ -1,4 +1,4 @@
-import { IHttpService, NodeFile } from "@s/infrastructure/express/Http.interfaces";
+import { IHttpService, NodeFile } from "@s/config/express/Http.interfaces";
 import { Request, Response, NextFunction } from "express";
 
 class HttpServiceExpress implements IHttpService {
@@ -31,6 +31,10 @@ class HttpServiceExpress implements IHttpService {
 	};
 
 	clearCookie: IHttpService["clearCookie"] = name => this.res.clearCookie(name);
+
+	set: IHttpService['set'] = (field, value) => {
+		this.res.set(field, value)
+	}
 }
 
 export default HttpServiceExpress;

@@ -2,7 +2,7 @@ import SettingsValidation from "@s/infrastructure/endpoints/Settings/validation/
 import { z } from "zod";
 import SettingsService from "@s/infrastructure/endpoints/Settings/services/Settings.service";
 import { inject, injectable } from "inversify";
-import HttpContext from "@s/infrastructure/express/Http.context";
+import HttpContext from "@s/config/express/Http.context";
 import BaseController from "@s/config/base/Base.controller";
 import { serverPaths } from "@shared/PATHS";
 import AuthMiddleware from "@s/infrastructure/middlewares/AuthMiddleware";

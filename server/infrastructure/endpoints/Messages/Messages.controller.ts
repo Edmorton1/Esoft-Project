@@ -3,7 +3,7 @@ import { Form, Message } from "@t/gen/Users";
 import logger from "@s/helpers/logger";
 import MessagesValidation from "@s/infrastructure/endpoints/Messages/validation/Message.validation";
 import { toSOSe } from "@s/helpers/WebSocket/JSONParsers";
-import ORMCopy from "@s/infrastructure/db/SQL/ORMCopy";
+import ORM from "@s/infrastructure/db/SQL/ORM";
 import { clientsType } from "@s/helpers/WebSocket/socket";
 import { inject, injectable } from "inversify";
 import Yandex from "@s/helpers/yandex";
@@ -14,8 +14,9 @@ import BaseController from "@s/config/base/Base.controller";
 import { serverPaths } from "@shared/PATHS";
 import { upload } from "@s/infrastructure/endpoints/multer";
 import AuthMiddleware from "@s/infrastructure/middlewares/AuthMiddleware";
-import HttpContext from "@s/infrastructure/express/Http.context";
+import HttpContext from "@s/config/express/Http.context";
 import SharedValidate from "@s/infrastructure/middlewares/SharedValidate";
+import FilesService from "@s/infrastructure/services/Files.service";
 
 interface IMessageController {
   getMessage: (ctx: HttpContext<{messages: Message[]} | {messages: Message[], form: Form}>) => Promise<void>
@@ -27,16 +28,18 @@ interface IMessageController {
 @injectable()
 class MessagesController extends BaseController {
   constructor (
-    @inject(ORMCopy)
-    private readonly ORM: ORMCopy,
+    @inject(ORM)
+    private readonly ORM: ORM,
     @inject(TYPES.clients)
     private readonly clients: clientsType,
     @inject(Yandex)
-    private readonly Yandex: Yandex,
+    private readonly yandex: Yandex,
     @inject(MessagesSQL)
-    private readonly MessageSQL: MessagesSQL,
+    private readonly messageSQL: MessagesSQL,
     @inject(MessagesService)
-    private readonly MessageFileHelper: MessagesService
+    private readonly messageService: MessagesService,
+    @inject(FilesService)
+    private readonly fileService: FilesService
   ) {
     super()
     
@@ -81,7 +84,7 @@ class MessagesController extends BaseController {
 
     logger.info({frid, toid, cursor})
 
-    const messages = await this.MessageSQL.getMessage(frid, toid, cursor)
+    const messages = await this.messageSQL.getMessage(frid, toid, cursor)
     
     // if (!messages.length) return res.sendStatus(404)
 
@@ -98,31 +101,33 @@ class MessagesController extends BaseController {
 
     const request: Omit<Message, 'files'> = (await this.ORM.post(message, 'messages'))[0]
 
-    const paths = await this.MessageFileHelper.uploadFiles(request.id, files)
+    const paths = await this.fileService.uploadFiles(request.id, files, "messages")
 
-    const [total] = await this.ORM.put({files: paths}, request.id, 'messages')
+    const [total] = await this.ORM.put({files: paths}, request.id, 'messages', ctx.session.userid!)
 
     this.sendSocket(message.fromid, message.toid, total, 'message')
     ctx.json(total)
   }
 
   editMessage = async (ctx: HttpContext) => {
-    const [id, data] = await MessagesValidation.editMessage(ctx)
+    const [id, userid, data] = await MessagesValidation.editMessage(ctx)
 
-    const [request] = await this.ORM.getById(id, "messages", "fromid")
-    if (request.fromid !== ctx.session.userid) {ctx.sendStatus(403); return;}
+    // const [request] = await this.ORM.getById(id, "messages", "fromid")
+    // if (request.fromid !== ctx.session.userid) {ctx.sendStatus(403); return;}
 
     let total = null
 
     logger.info({data: [data.text], id: id})
     if (data.files.length === 0 && data.deleted.length === 0) {
-      [total] = await this.ORM.put({text: data.text}, id, 'messages')
+      [total] = await this.ORM.put({text: data.text}, id, 'messages', userid)
+      if (!total) {ctx.sendStatus(403); return;}
+
     } else {
       logger.info({id: id, data: data.deleted})
-      const ostavshiesa = await this.Yandex.deleteArr(id, data.deleted)
-      const paths = data.files.length > 0 ?  await this.MessageFileHelper.uploadFiles(id, data.files) : []
+      const ostavshiesa = await this.yandex.deleteArr(id, data.deleted)
+      const paths = data.files.length > 0 ?  await this.fileService.uploadFiles(id, data.files, "messages") : []
   
-      total = (await this.ORM.put({files: [...ostavshiesa, ...paths], text: data.text}, id, 'messages'))[0]
+      total = (await this.ORM.put({files: [...ostavshiesa, ...paths], text: data.text}, id, 'messages', userid))[0]
     }
 
     logger.info({total})
@@ -140,7 +145,7 @@ class MessagesController extends BaseController {
 
     if (!data) return ctx.sendStatus(403)
 
-    await this.Yandex.deleteFolder(id)
+    await this.yandex.deleteFolder(id, "messages")
     logger.info({frid: data.fromid, toid: data.toid, id})
 
     this.sendSocket(data.fromid, data.toid, {toid: data.toid, mesid: data.id}, "delete_message")

@@ -1,13 +1,13 @@
 import { MessageSchema } from "@t/gen/Users";
-import {expressMulter} from "@t/shared/zodSnippets";
+import {ExpressMulterFileSchema} from "@t/shared/zodSnippets";
 import z from "zod"
 
 export const MessageDTOServerSchema = MessageSchema.pick({fromid: true, toid: true, text: true}).extend({
-  files: z.array(expressMulter)
+  files: z.array(ExpressMulterFileSchema)
 })
 
 export const MessagePutDTOServerSchema = MessageSchema.pick({fromid: true, text: true}).extend({
-  files: z.array(expressMulter),
+  files: z.array(ExpressMulterFileSchema),
   deleted: z.array(z.string()),
 });
 

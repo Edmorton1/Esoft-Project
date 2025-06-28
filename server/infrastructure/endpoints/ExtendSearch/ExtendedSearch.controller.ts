@@ -3,7 +3,7 @@ import ExtendedSearchModule from "@s/infrastructure/endpoints/ExtendSearch/SQL/E
 import ExtendedSeacrhSQLhelper from "@s/infrastructure/endpoints/ExtendSearch/SQL/ExtendedSeacrh.SQLhelper"
 import logger from "@s/helpers/logger"
 import { inject, injectable } from "inversify"
-import HttpContext from "@s/infrastructure/express/Http.context"
+import HttpContext from "@s/config/express/Http.context"
 import BaseController from "@s/config/base/Base.controller"
 import { serverPaths } from "@shared/PATHS"
 

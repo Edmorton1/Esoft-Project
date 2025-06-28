@@ -1,6 +1,6 @@
 import { TagsSchemaDTO, UserDTOSchema } from "@t/gen/dtoObjects"
 import { FormSchema } from "@t/gen/Users"
-import { expressMulter } from "@t/shared/zodSnippets"
+import { ExpressMulterFileSchema } from "@t/shared/zodSnippets"
 import { z } from "zod"
 
 export const RegistrationDTOServerSchema = FormSchema
@@ -8,7 +8,7 @@ export const RegistrationDTOServerSchema = FormSchema
   .extend({
   // id: zid.optional(),
   // targetCustom: z.string().optional(), // если раскомментируешь
-  avatar: expressMulter.optional(),
+  avatar: ExpressMulterFileSchema.optional(),
   tags: z.array(TagsSchemaDTO).transform(item => item.map((val: {tag: string}) => ({tag: val.tag.toLowerCase()}))),
   city: z.string().optional().transform(val => {
     if (typeof val === 'string') {

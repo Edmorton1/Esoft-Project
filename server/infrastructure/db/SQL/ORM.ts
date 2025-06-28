@@ -2,7 +2,7 @@ import { tables, Tables, TablesPost } from "@t/gen/types"
 import { cacheEdit, cacheGet } from "@s/infrastructure/redis/cache"
 import db from "@s/infrastructure/db/db"
 import bcrypt from "bcrypt"
-import { checkFirstType, fieldsToArr } from "@s/infrastructure/db/SQL/utils"
+import { checkFirstType, fieldsToArr, getCheckWord } from "@s/infrastructure/db/SQL/utils"
 import logger from "../../../helpers/logger"
 import { Form } from "@t/gen/Users"
 import { SALT } from "@shared/CONST"
@@ -11,67 +11,81 @@ import { requestToFormManyParams, requestToFormParams, standartToForm } from "@s
 logger.info('asdsdadas')
 const fieldsKey = (fields?: string) => `${fields ? '--fields: ' + fields : ''}`
 
-class ORMCopy {
+// ПРИНИМАЕТ ТОЛЬКО ID
+interface Ioptions {
+  infinitPagination: {
+    cursor: number
+    limit: number
+    orderBy: "asc" | "desc"
+  }
+}
+
+class ORM {
+  // get = async <T extends tables>(table: T, fields?: string, options?: Ioptions): Promise<Tables[T][]> => {
   get = async <T extends tables>(table: T, fields?: string): Promise<Tables[T][]> => {
     logger.info("GET", 'fields', fields)
     logger.info("get", table, fields)
 
     const key = `${table}${fieldsKey(fields)}`
     
-    let callback = undefined;
+    let query = db(table).select(fieldsToArr(fields, table));
 
     if (table === 'forms') {
-      callback = async () => await standartToForm(fields)
-    } else {
-      callback = async () => await db(table).select(fieldsToArr(fields, table))
+      query = standartToForm(fields)
     }
 
     logger.info('fields in orm', fields)
-    const total = await cacheGet(key, callback)
+
+    const total = await cacheGet<Tables[T][]>(key, query)
     return checkFirstType(total, table, fields)
   }
+  // getById = async <T extends tables>(id: number | string, table: T, fields?: string, options?: Ioptions): Promise<Tables[T][]> => {
   getById = async <T extends tables>(id: number | string, table: T, fields?: string): Promise<Tables[T][]> => {
     logger.info('GET BY ID')
     logger.info({table, fields}, "getById")
 
     const key = `${table}-id-${id}${fieldsKey(fields)}`
 
-    let callback = undefined;
+    let query = db(table).select(fieldsToArr(fields, table)).where('id', '=', id);
     
     if (table === 'forms') {
 
       logger.info("[FORMS]: ЗАПРОС К ФОРМЕ")
       const params = {id: Number(id)}
 
-      logger.info("TO NATIVE", requestToFormParams(params, fields).toSQL().toNative())
-      callback = async () => await requestToFormParams(params, fields)
-    } else {
-      callback = async () => await db(table).select(fieldsToArr(fields, table)).where('id', '=', id)
+      query = requestToFormParams(params, fields)
+      logger.info("TO NATIVE", query.toSQL().toNative())
     }
 
-    logger.info('check type', await cacheGet(key, callback), table)
-    const total = await cacheGet(key, callback)
+    logger.info('check type', await cacheGet(key, query), table)
+    const total = await cacheGet<Tables[T][]>(key, query)
 
     return checkFirstType(total, table, fields)
   }
   
-  getByParams = async <T extends tables>(params: Partial<Tables[T]>, table: T, fields?: string): Promise<Tables[T][]> => {
+  // ПОКА ОПЦИИ К ФОРМЕ НЕ РАБОТАЮТ
+  getByParams = async <T extends tables>(params: Partial<Tables[T]>, table: T, fields?: string, options?: Ioptions): Promise<Tables[T][]> => {
     logger.info("GET BY PARAMS")
     logger.info("getByParams", params, table, fields)
 
     const key = `${table}-${Object.entries(params).flat().join("-")}${fieldsKey(fields)}`
+
     logger.info(params, 'params')
 
-    let callback = undefined;
+    let query = db(table).select(fieldsToArr(fields, table)).where(params);
 
     if (table === 'forms') {
-      callback = async () => requestToFormParams(params, fields)
-    } else {
-      callback = async () => await db(table).select(fieldsToArr(fields, table)).where(params)
+      query = requestToFormParams(params, fields)
+    } else if (options?.infinitPagination && options?.infinitPagination.cursor >= 0 && options.infinitPagination.limit) {
+      const settings = options.infinitPagination
+      query = query
+        .limit(settings.limit)
+        .andWhere("id", settings.orderBy === "asc" ? ">" : "<", settings.cursor)
+        .orderBy("id", settings.orderBy)
     }
     
     logger.info('fields in orm', fields)
-    const total = await cacheGet(key, callback)
+    const total = await cacheGet<Tables[T][]>(key, query)
 
     return checkFirstType(total, table, fields)
   }
@@ -82,10 +96,6 @@ class ORMCopy {
     const request = await requestToFormManyParams({name: "id", params}, fields)
     
     return request
-  }
-
-  test = async () => {
-    return await db("likes").insert({"liked_userid": 400, "userid": 16}).returning("*")
   }
   
   post = async <T extends tables>(dto: TablesPost[T], table: T, fields?: string): Promise<Tables[T][]> => {
@@ -108,7 +118,7 @@ class ORMCopy {
 
     const request = await db(table).insert(dto).returning(parsedFields)
     
-    logger.info({request, parsedFields})
+    // logger.info({request, parsedFields})
 
     cacheEdit(table, request)
     checkFirstType(request, table, fields)
@@ -131,12 +141,14 @@ class ORMCopy {
     return request
   }
 
-  put = async <T extends tables>(dto: Partial<Tables[T]>, id: number | string, table: T, fields?: string): Promise<Tables[T][]> => {
+  put = async <T extends tables>(dto: Partial<Tables[T]>, id: number | string, table: T, userid: number, fields?: string): Promise<Tables[T][]> => {
     logger.info({table, id, dto, method: "PUT"})
+
+    const checkWord = getCheckWord(table)
 
     const parsedFields = fieldsToArr(fields, table)
 
-    const request = await db(table).where("id", '=', id).update(dto).returning(parsedFields)
+    const request = await db(table).where("id", '=', id).andWhere(checkWord, "=", userid).update(dto).returning(parsedFields)
     logger.info({request})
 
     cacheEdit(table, request)
@@ -145,19 +157,10 @@ class ORMCopy {
     return request
   }
 
-  delete = async <T extends tables>(id: number | string, table: T, userid: number): Promise<Tables[T][] | [undefined]> => {
+  delete = async <T extends tables>(id: number | string, table: T, userid: number): Promise<Tables[T][]> => {
     // logger.info("delete", id, table)
-    let checkWord = "id"
 
-    if (table === "messages") {
-      checkWord = "fromid"
-    } else if (table === "likes") {
-      checkWord = "userid"
-    } else if (table === "tags") {
-      //@ts-ignore
-      // С ТЕГАМИ ПОТОМ СДЕЛАТЬ ЧТО ИХ МОЖЕТ УДАЛЯТЬ ТОЛКЬО АДМИН
-      checkWord = "id"
-    }
+    const checkWord = getCheckWord(table)
     
     const query = db(table).where("id", "=", id).andWhere(checkWord, "=", userid).delete().returning("*")
     logger.info({DELETE_QUERY: query.toSQL().toNative()})
@@ -168,4 +171,4 @@ class ORMCopy {
   }
 }
 
-export default ORMCopy
+export default ORM

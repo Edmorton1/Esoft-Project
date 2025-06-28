@@ -1,6 +1,6 @@
 import { fieldsToArr } from "@s/infrastructure/db/SQL/utils"
 import logger from "@s/helpers/logger"
-import { FormSchema, LikesSchema, MessageSchema, TagsSchema, UserSchema, UserTagsSchema } from "@t/gen/Users"
+import { FormSchema, LikesSchema, MessageSchema, PostsSchema, TagsSchema, UserSchema, UserTagsSchema } from "@t/gen/Users"
 import { Tables } from "@t/gen/types"
 
 // export const MulterFileSchema = z.object({
@@ -22,6 +22,7 @@ const schemas = {
   messages: MessageSchema,
   tags: TagsSchema,
   user_tags: UserTagsSchema,
+  posts: PostsSchema
   // tokens: TokenSchema
 } as const
 
@@ -30,7 +31,7 @@ type TableKeys<T extends keyof Tables> = keyof Tables[T]
 
 export const getSchemaByTable = <T extends keyof typeof schemas>(table: T, fields?: string): typeof schemas[T] => {
 
-  console.log(fields, 'fields')
+  // console.log(fields, 'fields')
   let parsedFields = fieldsToArr(fields, table);
   if (table === 'forms') {
     parsedFields = parsedFields.map(e => {

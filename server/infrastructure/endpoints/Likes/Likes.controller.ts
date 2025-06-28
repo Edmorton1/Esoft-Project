@@ -7,7 +7,7 @@ import logger from "@s/helpers/logger";
 import BaseController from "@s/config/base/Base.controller";
 import { serverPaths } from "@shared/PATHS";
 import AuthMiddleware from "@s/infrastructure/middlewares/AuthMiddleware";
-import HttpContext from "@s/infrastructure/express/Http.context";
+import HttpContext from "@s/config/express/Http.context";
 import SharedValidate from "@s/infrastructure/middlewares/SharedValidate";
 
 interface ILikesController {

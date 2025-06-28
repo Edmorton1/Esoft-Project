@@ -12,6 +12,7 @@ import logger from "@s/helpers/logger";
 import expressSession from "@s/config/middlewares/Express.session";
 import expressError from "@s/config/middlewares/Express.error";
 import ServerRoutes from "@s/server/express.routes";
+import helmet from "helmet";
 
 @injectable()
 class ServerExpress {
@@ -40,7 +41,7 @@ class ServerExpress {
 			}),
 		);
 		this.app.use(cookieParser());
-		// this.app.use(helmet());
+		this.app.use(helmet());
 		this.app.use(json());
 		this.app.use(expressSession);
 

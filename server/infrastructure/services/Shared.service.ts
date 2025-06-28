@@ -4,13 +4,13 @@ import { TagsDTO } from "@t/gen/dtoObjects"
 import { LocationType, Tags } from "@t/gen/Users";
 import { Knex } from "knex";
 import { inject, injectable } from "inversify";
-import ORMCopy from "@s/infrastructure/db/SQL/ORMCopy";
+import ORM from "@s/infrastructure/db/SQL/ORM";
 
 @injectable()
 class SharedService {
   constructor (
-    @inject(ORMCopy)
-    private readonly ORM: ORMCopy
+    @inject(ORM)
+    private readonly ORM: ORM
   ) {}
   uploadTags = async (id: number, tags?: TagsDTO[], removeOld: boolean = false): Promise<Tags[] | undefined> => {
     if (tags && tags.length > 0) {

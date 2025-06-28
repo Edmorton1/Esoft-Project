@@ -1,4 +1,4 @@
--- id int primary key generated always as identity 
+-- id int primary key GENERATED ALWAYS AS IDENTITY 
 
 CREATE TYPE role_type AS ENUM ('user', 'admin');
 
@@ -61,7 +61,16 @@ CREATE TABLE messages (
 	toid INT REFERENCES forms(id) ON DELETE CASCADE ON UPDATE CASCADE NOT NULL,
 	text TEXT NOT NULL,
 	files TEXT[],
-	created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
+
+CREATE TABLE posts (
+  id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY ,
+  userid INT REFERENCES forms(id) ON DELETE CASCADE ON UPDATE CASCADE NOT NULL,
+  text VARCHAR(4096) NOT NULL DEFAULT '',
+  files TEXT[] NOT NULL DEFAULT '{}',
+  CHECK (COALESCE(array_length(files, 1), 0) <= 3),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 
 -- CREATE TABLE tokens (

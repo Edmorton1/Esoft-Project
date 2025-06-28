@@ -25,3 +25,5 @@ export const pickFieldsForm = {id: true, name: true, city: true, age: true, avat
 export const PREFIX = "/api"
 
 export const COOKIE_NAME = "sessionid"
+
+export const POSTS_LIMIT = 4

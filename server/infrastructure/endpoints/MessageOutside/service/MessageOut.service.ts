@@ -1,5 +1,5 @@
 import logger from "@s/helpers/logger";
-import ORMCopy from "@s/infrastructure/db/SQL/ORMCopy";
+import ORM from "@s/infrastructure/db/SQL/ORM";
 import MessagesOutModule from "@s/infrastructure/endpoints/MessageOutside/sql/MessagesOut.module";
 import { MessageFormSchema, MessageFormType } from "@t/gen/Schemas";
 import { inject, injectable } from "inversify";
@@ -10,8 +10,8 @@ class MessageOutService {
 	constructor(
 		@inject(MessagesOutModule)
 		private readonly SQL: MessagesOutModule,
-		@inject(ORMCopy)
-		private readonly ORM: ORMCopy,
+		@inject(ORM)
+		private readonly ORM: ORM,
 	) {}
 
 	outsideMessages = async (id: number) => {

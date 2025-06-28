@@ -1,5 +1,5 @@
-import { IHttpContext } from "@s/infrastructure/express/Http.interfaces";
-import HttpServiceExpress from "@s/infrastructure/express/Http.service";
+import { IHttpContext } from "@s/config/express/Http.interfaces";
+import HttpServiceExpress from "@s/config/express/Http.service";
 
 class HttpContext<T = any> implements IHttpContext<T> {
 	constructor(private readonly service: HttpServiceExpress) {}
@@ -44,6 +44,10 @@ class HttpContext<T = any> implements IHttpContext<T> {
 
 	clearCookie: IHttpContext["clearCookie"] = name => {
 		this.service.clearCookie(name);
+	}
+
+	set: IHttpContext['set'] = (field, value) => {
+		this.service.set(field, value)
 	}
 }
 

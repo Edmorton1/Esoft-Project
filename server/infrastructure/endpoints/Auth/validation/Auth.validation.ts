@@ -3,7 +3,7 @@ import logger from "@s/helpers/logger";
 import { TagsDTO, UserDTO, UserDTOSchema } from "@t/gen/dtoObjects";
 import { Request } from "express";
 import { z } from "zod";
-import HttpContext from "@s/infrastructure/express/Http.context";
+import HttpContext from "@s/config/express/Http.context";
 
 class AuthValidation {
   registration = (ctx: HttpContext): [UserDTO, Omit<FormDTOServer, 'tags' | 'email' | 'password'>, TagsDTO[]] => {

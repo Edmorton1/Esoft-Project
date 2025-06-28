@@ -2,6 +2,7 @@ import db from "@s/infrastructure/db/db";
 import { fieldsToArr } from "@s/infrastructure/db/SQL/utils";
 import logger from "@s/helpers/logger";
 import { Form } from "@t/gen/Users";
+import { Knex } from "knex";
 
 export const standartToForm = (fields?: string) => {
   let query = db('forms');
@@ -15,7 +16,7 @@ export const standartToForm = (fields?: string) => {
   return query
 }
 
-export const requestToFormParams = (params: Partial<Form>, fields?: string) => {
+export const requestToFormParams = (params: Partial<Form>, fields?: string): Knex.QueryBuilder<any> => {
   let query = standartToForm(fields)
 
   const prefixedParams = Object.fromEntries(
@@ -27,7 +28,7 @@ export const requestToFormParams = (params: Partial<Form>, fields?: string) => {
   return query
 }
 
-export const requestToFormManyParams = (manyParams: {name: string, params: any[]}, fields?: string) => {
+export const requestToFormManyParams = (manyParams: {name: string, params: any[]}, fields?: string): Knex.QueryBuilder<any> => {
   let query = standartToForm(fields)
   query = query.whereIn('forms.' + manyParams.name, manyParams.params)
 
@@ -35,7 +36,7 @@ export const requestToFormManyParams = (manyParams: {name: string, params: any[]
   return query
 }
 
-export const requestToLike = (params: {name: keyof Form, param: string}, fields?: string) => {
+export const requestToLike = (params: {name: keyof Form, param: string}, fields?: string): Knex.QueryBuilder<any> => {
   const {name, param} = params
   let query = standartToForm(fields)
 

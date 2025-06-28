@@ -1,9 +1,9 @@
-import UploadFileService from "@s/infrastructure/services/UploadFileService";
+import FilesService from "@s/infrastructure/services/Files.service";
 import { FormDTOServer } from "@s/infrastructure/endpoints/Auth/validation/Auth.zod";
 import logger from "@s/helpers/logger";
 import { FormDTO, TagsDTO, UserDTO } from "@t/gen/dtoObjects";
 import { Form, FormSchema, Tags, User } from "@t/gen/Users";
-import ORMCopy from "@s/infrastructure/db/SQL/ORMCopy";
+import ORM from "@s/infrastructure/db/SQL/ORM";
 import { inject, injectable } from "inversify";
 
 interface AuthServiceRepo {
@@ -13,10 +13,10 @@ interface AuthServiceRepo {
 @injectable()
 class AuthService implements AuthServiceRepo{
 	constructor(
-		@inject(ORMCopy)
-		private readonly ORM: ORMCopy,
-		@inject(UploadFileService)
-		private readonly UploadFileService: UploadFileService
+		@inject(ORM)
+		private readonly ORM: ORM,
+		@inject(FilesService)
+		private readonly UploadFileService: FilesService
 	) {}
 	
 	registration: AuthServiceRepo['registration'] = async (formDTO, userDTO, tags) => {

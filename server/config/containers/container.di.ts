@@ -1,5 +1,5 @@
 import { Container, ContainerModule, Factory } from "inversify";
-import ORMCopy from "@s/infrastructure/db/SQL/ORMCopy";
+import ORM from "@s/infrastructure/db/SQL/ORM";
 import { clients, clientsType } from "@s/helpers/WebSocket/socket";
 import LikesModule from "@s/infrastructure/endpoints/Likes/sql/Likes.module";
 import LikesController from "@s/infrastructure/endpoints/Likes/Likes.controller";
@@ -7,7 +7,7 @@ import { tables } from "@t/gen/types";
 import CRUDController from "@s/infrastructure/endpoints/CRUD/CRUDController";
 import TYPES from "@s/config/containers/types";
 import AuthService from "@s/infrastructure/endpoints/Auth/services/Auth.service";
-import UploadFileService from "@s/infrastructure/services/UploadFileService";
+import FilesService from "@s/infrastructure/services/Files.service";
 import AuthController from "@s/infrastructure/endpoints/Auth/Auth.controller";
 import ExtendedSearchModule from "@s/infrastructure/endpoints/ExtendSearch/SQL/ExtendedSearch.module";
 import ExtendedSeacrhSQLhelper from "@s/infrastructure/endpoints/ExtendSearch/SQL/ExtendedSeacrh.SQLhelper";
@@ -23,20 +23,23 @@ import MessagesSQL from "@s/infrastructure/endpoints/Messages/SQL/Message.module
 import MessagesService from "@s/infrastructure/endpoints/Messages/services/Messages.service";
 import LikesService from "@s/infrastructure/endpoints/Likes/services/LikesService";
 import MessageOutService from "@s/infrastructure/endpoints/MessageOutside/service/MessageOut.service";
-import SharedService from "@s/infrastructure/services/SharedService";
+import SharedService from "@s/infrastructure/services/Shared.service";
 import ConfigService from "@s/config/services/config.service";
 import App from "@s/server/server";
 import ServerExpress from "@s/server/server.express";
 import ServerRoutes from "@s/server/express.routes";
+import PostsController from "@s/infrastructure/endpoints/Posts/Posts.controller";
+import PostsService from "@s/infrastructure/endpoints/Posts/services/Posts.service";
+// import PostsModule from "@s/infrastructure/endpoints/Posts/sql/Posts.module";
 // import LikesValidation from "@s/infrastructure/endpoints/Likes/validation/Likes.validation";
 
-export const tablesArr: tables[] = ['users', 'forms', 'likes', 'messages', 'tags', 'user_tags']
+export const tablesArr: tables[] = ['users', 'forms', 'likes', 'messages', 'tags', 'user_tags', "posts"]
 
 const appBindingsModule = new ContainerModule(({bind}) => {
-  bind<ORMCopy>(ORMCopy).toSelf()
+  bind<ORM>(ORM).toSelf()
   bind<SharedService>(SharedService).toSelf()
   bind<Yandex>(Yandex).toSelf()
-  bind<UploadFileService>(UploadFileService).toSelf()
+  bind<FilesService>(FilesService).toSelf()
   bind<clientsType>(TYPES.clients).toConstantValue(clients)
 
   bind<LikesModule>(LikesModule).toSelf()
@@ -53,6 +56,9 @@ const appBindingsModule = new ContainerModule(({bind}) => {
   bind<MessageOutService>(MessageOutService).toSelf()
   bind<MessagesSQL>(MessagesSQL).toSelf()
   bind<MessagesService>(MessagesService).toSelf()
+
+  bind<PostsService>(PostsService).toSelf()
+  // bind<PostsModule>(PostsModule).toSelf()
 
   bind<ServerRoutes>(ServerRoutes).toSelf()
   bind<ServerExpress>(ServerExpress).toSelf()
@@ -78,9 +84,11 @@ controllerBindingsContainer.bind<MessagesController>(TYPES.Controllers.Messages)
 
 controllerBindingsContainer.bind<MessagesOutController>(TYPES.Controllers.MessagesOut).to(MessagesOutController)
 
+controllerBindingsContainer.bind<PostsController>(TYPES.Controllers.Posts).to(PostsController)
+
 controllerBindingsContainer.bind<Factory<CRUDController>>(TYPES.CRUD.Factory).toFactory(context => {
   return (table: tables) => {
-    const orm = context.get<ORMCopy>(ORMCopy)
+    const orm = context.get<ORM>(ORM)
     return new CRUDController(table, orm)
   }
 })

@@ -1,6 +1,6 @@
 import { zodParams } from "@s/infrastructure/endpoints/ExtendSearch/validation/ExtendedSearch.schemas";
 import logger from "@s/helpers/logger";
-import HttpContext from "@s/infrastructure/express/Http.context";
+import HttpContext from "@s/config/express/Http.context";
 
 function ExtendedSearchValidation(ctx: HttpContext) {
   const {tags, min_age, max_age, page, avatar, location, max_distance, name, ...params} = ctx.query

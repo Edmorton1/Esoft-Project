@@ -1,4 +1,4 @@
-import HttpContext from "@s/infrastructure/express/Http.context";
+import HttpContext from "@s/config/express/Http.context";
 import { TagsSchemaDTO } from "@t/gen/dtoObjects";
 import { FormSchema } from "@t/gen/Users";
 import { z } from "zod";

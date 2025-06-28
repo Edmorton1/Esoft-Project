@@ -4,7 +4,7 @@ import { inject, injectable } from "inversify"
 import MessageOutService from "@s/infrastructure/endpoints/MessageOutside/service/MessageOut.service"
 import BaseController from "@s/config/base/Base.controller"
 import { serverPaths } from "@shared/PATHS"
-import HttpContext from "@s/infrastructure/express/Http.context"
+import HttpContext from "@s/config/express/Http.context"
 import AuthMiddleware from "@s/infrastructure/middlewares/AuthMiddleware"
 
 @injectable()

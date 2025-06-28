@@ -1,7 +1,7 @@
 import logger from "@s/helpers/logger";
 import { toSOCl } from "@s/helpers/WebSocket/JSONParsers";
 import { WebSocketWidh } from "@s/helpers/WebSocket/socket";
-import ORMCopy from "@s/infrastructure/db/SQL/ORMCopy";
+import ORM from "@s/infrastructure/db/SQL/ORM";
 import { TIMEZONE } from "@shared/CONST";
 
 const activeTimers = new Map()
@@ -9,13 +9,13 @@ const activeTimers = new Map()
 export async function TimePoint(wsClient: WebSocketWidh, id: number) {
   //@ts-ignore
   // ВРЕМЕННАЯ ЗАГЛУШКА
-  const ORM = new ORMCopy()
+  const ORMs = new ORM()
   if (activeTimers.has(id)) return;
 
   const doIter = () => {
     const last_active =  new Date(Date.now() + TIMEZONE * 1000 * 60 * 60).toISOString()
     logger.info({LAST_POINT: last_active})
-    ORM.put({last_active}, id, "forms")
+    ORMs.put({last_active}, id, "forms", id)
     wsClient.send(toSOCl("last_active", last_active))
     logger.info({ОТПРАВКА_ЗАПРОСА_СО_СМЕНОЙ_ДАТЫ: last_active})
   }

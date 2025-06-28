@@ -2,6 +2,7 @@ import { redisClient } from "@s/infrastructure/redis/redis"
 import logger from "@s/helpers/logger"
 import { frJSON, toJSON } from "@shared/MAPPERS"
 import { tables } from "@t/gen/types"
+import { Knex } from "knex"
 
 export const setCache = async <T>(key: string, data: T): Promise<T> => {
   //@ts-ignore
@@ -19,7 +20,7 @@ export const getCahce = async <T>(key: string): Promise<T | undefined> => {
   } return undefined
 }
 
-export const cacheGet = async <T>(key: string, callback: () => Promise<T>): Promise<T> => {
+export const cacheGet = async <T>(key: string, callback: Knex.QueryBuilder<any>): Promise<T> => {
   // logger.info ('SCANING REDIS', (await redis.scan(0, 'MATCH', `*149*`, 'COUNT', 1000))[1].filter(e => e.includes('forms') || e.includes('user_tags')))
   // if (key.includes('tokens')) {
   //   return await callback()
@@ -31,7 +32,7 @@ export const cacheGet = async <T>(key: string, callback: () => Promise<T>): Prom
     return cache
   }
 
-  const result = await callback()
+  const result = await callback
   // logger.info(result)
   await setCache(key, result)
   return result

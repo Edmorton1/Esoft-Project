@@ -42,10 +42,10 @@ export const fieldsToArr = (fields: string | undefined, table: tables, includeTa
 // ПУТСОЙ МАССИВ РАЗРЕШЁН
 export const checkFirstType = <T extends Array<any>>(data: T, table: tables, fields?: string): T => {
   if (data.length > 0) {
-    logger.info({data, table, fields});
+    // logger.info({data, table, fields});
     const schema = z.array(getSchemaByTable(table, fields))
     // logger.info({SCHEMA: schema})
-    logger.info({SCHEMA_PARSE: schema.parse(data)})
+    // logger.info({SCHEMA_PARSE: schema.parse(data)})
     //@ts-ignore
     return schema.parse(data)
   } else {
@@ -55,4 +55,20 @@ export const checkFirstType = <T extends Array<any>>(data: T, table: tables, fie
 
 export function randomCryptoString() {
   return crypto.randomBytes(32).toString("hex")
+}
+
+export const getCheckWord = (table: tables) => {
+    let checkWord = "id"
+
+    if (table === "messages") {
+      checkWord = "fromid"
+    } else if (table === "likes" || table === "posts") {
+      checkWord = "userid"
+    } else if (table === "tags") {
+      //@ts-ignore
+      // С ТЕГАМИ ПОТОМ СДЕЛАТЬ ЧТО ИХ МОЖЕТ УДАЛЯТЬ ТОЛКЬО АДМИН
+      checkWord = "id"
+    }
+
+  return checkWord
 }

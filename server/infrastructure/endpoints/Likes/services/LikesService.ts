@@ -1,7 +1,7 @@
 import logger from "@s/helpers/logger";
 import { toSOSe } from "@s/helpers/WebSocket/JSONParsers";
 import { clientsType } from "@s/helpers/WebSocket/socket";
-import ORMCopy from "@s/infrastructure/db/SQL/ORMCopy";
+import ORM from "@s/infrastructure/db/SQL/ORM";
 import LikesModule from "@s/infrastructure/endpoints/Likes/sql/Likes.module";
 import TYPES from "@s/config/containers/types";
 import { LikesDTO } from "@t/gen/dtoObjects";
@@ -20,8 +20,8 @@ interface LikesServiceRepo {
 @injectable()
 class LikesService implements LikesServiceRepo {
 	constructor(
-		@inject(ORMCopy)
-		private readonly ORM: ORMCopy,
+		@inject(ORM)
+		private readonly ORM: ORM,
 		@inject(TYPES.clients)
 		private readonly clients: clientsType,
 		@inject(LikesModule)

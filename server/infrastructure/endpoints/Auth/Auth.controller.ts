@@ -4,12 +4,12 @@ import AuthService from "@s/infrastructure/endpoints/Auth/services/Auth.service"
 import logger from "@s/helpers/logger";
 import { COOKIE_NAME } from "@shared/CONST";
 import { inject, injectable } from "inversify";
-import ORMCopy from "@s/infrastructure/db/SQL/ORMCopy";
+import ORM from "@s/infrastructure/db/SQL/ORM";
 import AuthValidation from "@s/infrastructure/endpoints/Auth/validation/Auth.validation";
 import BaseController from "@s/config/base/Base.controller";
 import { serverPaths } from "@shared/PATHS";
 import { upload } from "@s/infrastructure/endpoints/multer";
-import HttpContext from "@s/infrastructure/express/Http.context";
+import HttpContext from "@s/config/express/Http.context";
 import AuthMiddleware from "@s/infrastructure/middlewares/AuthMiddleware";
 // import SessionRedis from "@s/infrastructure/redis/SessionRedis";
 
@@ -29,8 +29,8 @@ interface IAuthController {
 @injectable()
 class AuthController extends BaseController implements IAuthController {
   constructor(
-    @inject(ORMCopy)
-    private readonly ORM: ORMCopy,
+    @inject(ORM)
+    private readonly ORM: ORM,
     @inject(AuthService)
     private readonly AuthService: AuthService
   ) {

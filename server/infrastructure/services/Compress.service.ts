@@ -15,7 +15,7 @@ ffmpeg.setFfmpegPath(ffmpegPath!);
 const writeFileFS = promisify(writeFile);
 const unlinkFS = promisify(unlink);
 
-class FileService {
+class CompressService {
   toBuffer(files: Express.Multer.File[]) {
     return files.map(e => e.buffer)
   }
@@ -121,4 +121,4 @@ class FileService {
   }
 }
 
-export default new FileService
+export default new CompressService

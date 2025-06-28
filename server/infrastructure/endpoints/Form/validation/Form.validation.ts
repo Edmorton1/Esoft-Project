@@ -1,4 +1,4 @@
-import HttpContext from "@s/infrastructure/express/Http.context";
+import HttpContext from "@s/config/express/Http.context";
 import { z } from "zod";
 
 class FormValidation {

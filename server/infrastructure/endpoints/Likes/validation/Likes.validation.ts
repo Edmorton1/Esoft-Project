@@ -1,5 +1,5 @@
 import logger from "@s/helpers/logger";
-import HttpContext from "@s/infrastructure/express/Http.context";
+import HttpContext from "@s/config/express/Http.context";
 import { LikesDTO } from "@t/gen/dtoObjects";
 import { zstrnum } from "@t/gen/Schemas";
 import { z } from "zod";

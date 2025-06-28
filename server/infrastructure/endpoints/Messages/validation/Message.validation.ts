@@ -1,5 +1,5 @@
 import logger from "@s/helpers/logger"
-import HttpContext from "@s/infrastructure/express/Http.context"
+import HttpContext from "@s/config/express/Http.context"
 import { frJSON } from "@shared/MAPPERS"
 import { MessageDTO } from "@t/gen/dtoObjects"
 import { zstrnum } from "@t/gen/Schemas"
@@ -17,16 +17,17 @@ class MessagesValidation {
     return [message, files]
   };
 
-  editMessage = async (ctx: HttpContext): Promise<[number, MessagePutDTOServer]> => {
+  editMessage = async (ctx: HttpContext): Promise<[number, number, MessagePutDTOServer]> => {
 
     const id = z.coerce.number().parse(ctx.params.id)
+    const userid = ctx.session.userid!
     const data = MessagePutDTOServerSchema.parse({...frJSON(ctx.body.json)!, files: ctx.files, fromid: ctx.session.userid})
 
     // if (data.fromid !== req.session.userid) return res.sendStatus(403)
 
     // logger.info({parsed: frJSON(req.body.json)})
 
-    return [id, data]
+    return [id, userid, data]
   }
 
   getMessage = (ctx: HttpContext): [number, number, number | undefined] => {

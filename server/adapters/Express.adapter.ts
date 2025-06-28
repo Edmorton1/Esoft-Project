@@ -1,6 +1,6 @@
 import logger from "@s/helpers/logger";
-import HttpContext from "@s/infrastructure/express/Http.context";
-import HttpServiceExpress from "@s/infrastructure/express/Http.service";
+import HttpContext from "@s/config/express/Http.context";
+import HttpServiceExpress from "@s/config/express/Http.service";
 import { NextFunction, Request, Response } from "express";
 
 export const asyncHandle =
