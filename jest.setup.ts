@@ -7,3 +7,8 @@ jest.mock('@s/infrastructure/redis/redis', () => ({
   },
   redisStore: jest.fn(),
 }));
+
+jest.mock('@s/helpers/logger/logger', () => ({
+  info: jest.fn(),
+  error: jest.fn(),
+}));

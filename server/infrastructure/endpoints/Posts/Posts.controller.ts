@@ -1,5 +1,5 @@
 import BaseController from "@s/config/base/Base.controller";
-import logger from "@s/helpers/logger";
+import logger from "@s/helpers/logger/logger";
 import PostsService from "@s/infrastructure/endpoints/Posts/services/Posts.service";
 import PostsValidation from "@s/infrastructure/endpoints/Posts/validation/Posts.validation";
 import HttpContext from "@s/config/express/Http.context";

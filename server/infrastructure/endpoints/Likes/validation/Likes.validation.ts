@@ -1,4 +1,4 @@
-import logger from "@s/helpers/logger";
+import logger from "@s/helpers/logger/logger";
 import HttpContext from "@s/config/express/Http.context";
 import { LikesDTO } from "@t/gen/dtoObjects";
 import { zstrnum } from "@t/gen/Schemas";

@@ -1,6 +1,5 @@
 import certs from "@s/certs/certs";
 import { createWebSocketServer } from "@s/helpers/WebSocket/socket";
-import LikesController from "@s/infrastructure/endpoints/Likes/Likes.controller";
 import ConfigService from "@s/config/services/config.service";
 import express, { Express, json } from "express";
 import https, { Server } from "https";
@@ -8,11 +7,12 @@ import { inject, injectable } from "inversify";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import { PREFIX } from "@shared/CONST";
-import logger from "@s/helpers/logger";
 import expressSession from "@s/config/middlewares/Express.session";
 import expressError from "@s/config/middlewares/Express.error";
 import ServerRoutes from "@s/server/express.routes";
 import helmet from "helmet";
+import { ILogger } from "@s/helpers/logger/logger.controller";
+import TYPES from "@s/config/containers/types";
 
 @injectable()
 class ServerExpress {
@@ -20,6 +20,8 @@ class ServerExpress {
 	server: Server;
 
 	constructor(
+		@inject(TYPES.LoggerController)
+		private readonly logger: ILogger,
 		@inject(ConfigService)
 		private readonly configService: ConfigService,
 		@inject(ServerRoutes)
@@ -68,7 +70,7 @@ class ServerExpress {
 	close = () => {
 		if (this.server) {
 			this.server.close(() => {
-				logger.info("SERVER CLOSE");
+				this.logger.info("SERVER CLOSE");
 			});
 		}
 	};

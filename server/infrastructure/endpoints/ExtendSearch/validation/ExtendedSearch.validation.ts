@@ -1,5 +1,5 @@
 import { zodParams } from "@s/infrastructure/endpoints/ExtendSearch/validation/ExtendedSearch.schemas";
-import logger from "@s/helpers/logger";
+import logger from "@s/helpers/logger/logger";
 import HttpContext from "@s/config/express/Http.context";
 
 function ExtendedSearchValidation(ctx: HttpContext) {

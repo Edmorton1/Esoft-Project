@@ -1,38 +1,50 @@
 import db from "@s/infrastructure/db/db";
-import { requestToFormManyParams, standartToForm } from "@s/infrastructure/db/SQL/SQLform";
+import {requestToFormManyParams, standartToForm} from "@s/infrastructure/db/SQL/SQLform";
 import { fieldsToArr } from "@s/infrastructure/db/SQL/utils";
-import logger from "@s/helpers/logger";
 import { LIKES_ON_PAGE } from "@shared/CONST";
 import { lnglatType } from "@t/gen/types";
 import { Knex } from "knex";
+import { inject, injectable } from "inversify";
+import { ILogger } from "@s/helpers/logger/logger.controller";
+import TYPES from "@s/config/containers/types";
 
 interface LikesModuleRepo {
-	getLikedIds: (userid: number) => Knex.QueryBuilder<any>
-  getManyByParam: (name: string, need: any[], distance?: lnglatType, cursor?: number) => Knex.QueryBuilder<any>,
-  getPairs: (id: number) => Knex.QueryBuilder<any>
+	getLikedIds: (userid: number) => Knex.QueryBuilder<any>;
+	getManyByParam: (
+		name: string,
+		need: any[],
+		distance?: lnglatType,
+		cursor?: number,
+	) => Knex.QueryBuilder<any>;
+	getPairs: (id: number) => Knex.QueryBuilder<any>;
 }
 
+@injectable()
 class LikesModule implements LikesModuleRepo {
+	constructor(
+		@inject(TYPES.LoggerController)
+		private readonly logger: ILogger,
+	) {}
 	getLikedIds = (userid: number) => {
-	// SELECT json_agg(likes.userid) as forms FROM likes
-	// LEFT JOIN likes as likes2 
-	// 	ON likes.userid = likes2.liked_userid
-	// 	AND likes.liked_userid = likes2.userid
-	// WHERE likes.liked_userid = 16
-	// 	AND likes2.id is NULL
-	const query = db(`likes`)
-		.select(db.raw(`json_agg(likes.userid)`))
-		.from(`likes`)
-		.leftJoin("likes as likes2", function () {
-			this.on("likes.userid", "=", "likes2.liked_userid");
-			this.andOn("likes.liked_userid", "=", "likes2.userid")
-		})
-		.where("likes.liked_userid", "=", userid)
-		.andWhereRaw("likes2.id IS NULL")
+		// SELECT json_agg(likes.userid) as forms FROM likes
+		// LEFT JOIN likes as likes2
+		// 	ON likes.userid = likes2.liked_userid
+		// 	AND likes.liked_userid = likes2.userid
+		// WHERE likes.liked_userid = 16
+		// 	AND likes2.id is NULL
+		const query = db(`likes`)
+			.select(db.raw(`json_agg(likes.userid)`))
+			.from(`likes`)
+			.leftJoin("likes as likes2", function () {
+				this.on("likes.userid", "=", "likes2.liked_userid");
+				this.andOn("likes.liked_userid", "=", "likes2.userid");
+			})
+			.where("likes.liked_userid", "=", userid)
+			.andWhereRaw("likes2.id IS NULL");
 
-	logger.info({getLikedIds: query.toSQL().toNative()})
-	return query
-	}
+		this.logger.info({ getLikedIds: query.toSQL().toNative() });
+		return query;
+	};
 
 	getManyByParam: LikesModuleRepo["getManyByParam"] = (
 		name,
@@ -67,10 +79,10 @@ class LikesModule implements LikesModuleRepo {
 		})
 			.select(totalFields)
 			.limit(LIKES_ON_PAGE)
-			.orderBy("id")
+			.orderBy("id");
 		knexDistance && totalFields.push(knexDistance);
 
-		logger.info({ ZAPROS: query.toSQL().toNative() });
+		this.logger.info({ ZAPROS: query.toSQL().toNative() });
 
 		if (cursor) {
 			query.andWhere("forms.id", ">", cursor);
@@ -94,7 +106,7 @@ class LikesModule implements LikesModuleRepo {
 			.whereNotNull("likes2.id")
 			.orderBy("likes.created_at", "desc");
 
-		logger.info({ QUERY_SQL: query.toSQL().toNative() });
+		this.logger.info({ QUERY_SQL: query.toSQL().toNative() });
 
 		return query;
 	};
@@ -142,7 +154,7 @@ export default LikesModule;
 
 // ------- ПОЛУЧИТЬ ВСЕХ ПОЛЬЗОВАТЕЛЕЙ КОТОРЫЕ ЛАЙКНУЛИ, КОТОРЫХ ТЫ НЕ ЛАЙКАЛ
 // SELECT json_agg(likes.userid) as forms FROM likes
-// LEFT JOIN likes as likes2 
+// LEFT JOIN likes as likes2
 // 	ON likes.userid = likes2.liked_userid
 // 	AND likes.liked_userid = likes2.userid
 // WHERE likes.liked_userid = 16

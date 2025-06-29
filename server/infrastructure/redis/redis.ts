@@ -1,4 +1,4 @@
-import logger from "@s/helpers/logger"
+import logger from "@s/helpers/logger/logger"
 import {RedisStore} from "connect-redis"
 import { createClient } from "redis"
 

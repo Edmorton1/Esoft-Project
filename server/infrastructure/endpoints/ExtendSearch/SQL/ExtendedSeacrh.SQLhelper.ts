@@ -1,6 +1,8 @@
+import TYPES from "@s/config/containers/types";
+import { ILogger } from "@s/helpers/logger/logger.controller";
 import db from "@s/infrastructure/db/db";
 import {paramsType, tagsTypes} from "@s/infrastructure/endpoints/ExtendSearch/validation/ExtendedSearch.schemas";
-import logger from "@s/helpers/logger";
+import { inject, injectable } from "inversify";
 import {Knex} from "knex";
 
 interface ExtendedSeacrhSQLhelperRepo {
@@ -9,9 +11,14 @@ interface ExtendedSeacrhSQLhelperRepo {
   toSQLWhere: (props?: paramsType) => Knex.Raw | null
 }
 
+@injectable()
 class ExtendedSeacrhSQLhelper implements ExtendedSeacrhSQLhelperRepo {
+  constructor (
+    @inject(TYPES.LoggerController)
+    private readonly logger: ILogger,
+  ) {}
 	getUserTags: ExtendedSeacrhSQLhelperRepo['getUserTags'] = async (tags) => {
-		logger.info("GET USER TAGS");
+		this.logger.info("GET USER TAGS");
 		const placeholders = tags.map(() => "?").join(",");
 		const sql = `
     WITH input_words AS (
@@ -36,7 +43,7 @@ class ExtendedSeacrhSQLhelper implements ExtendedSeacrhSQLhelperRepo {
 
 		const request = db.raw(sql, [...tags]);
 
-		logger.info({toNativeUserTags: request.toSQL().toNative()});
+		this.logger.info({toNativeUserTags: request.toSQL().toNative()});
 
 		return (await request).rows;
 	};

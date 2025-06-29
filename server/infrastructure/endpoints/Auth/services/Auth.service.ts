@@ -1,10 +1,11 @@
 import FilesService from "@s/infrastructure/services/Files.service";
 import { FormDTOServer } from "@s/infrastructure/endpoints/Auth/validation/Auth.zod";
-import logger from "@s/helpers/logger";
 import { FormDTO, TagsDTO, UserDTO } from "@t/gen/dtoObjects";
 import { Form, FormSchema, Tags, User } from "@t/gen/Users";
 import ORM from "@s/infrastructure/db/SQL/ORM";
 import { inject, injectable } from "inversify";
+import { ILogger } from "@s/helpers/logger/logger.controller";
+import TYPES from "@s/config/containers/types";
 
 interface AuthServiceRepo {
 	registration: (formDTO: Omit<FormDTOServer, 'password' | 'email' | 'tags'>, userDTO: UserDTO, tags: TagsDTO[]) => Promise<{form: Form, user: User}>
@@ -13,6 +14,8 @@ interface AuthServiceRepo {
 @injectable()
 class AuthService implements AuthServiceRepo{
 	constructor(
+		@inject(TYPES.LoggerController)
+		private readonly logger: ILogger,
 		@inject(ORM)
 		private readonly ORM: ORM,
 		@inject(FilesService)
@@ -40,10 +43,10 @@ class AuthService implements AuthServiceRepo{
 
 		// const location = parseWKB
 		const formTotal = {...form, tags: tagsTotal};
-		logger.info({formTotal})
+		this.logger.info({formTotal})
 		//ТУТ ВЫДАЁТ ОШИБКУ
 		const formParse = FormSchema.parse(formTotal)
-		logger.info('formTotal', formParse)
+		this.logger.info('formTotal', formParse)
 
 		const total = {
 			form: formParse,

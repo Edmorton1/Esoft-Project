@@ -17,7 +17,10 @@ const config: Config = {
 		"^@t/(.*)$": "<rootDir>/types/$1",
 		"^@test/(.*)$": "<rootDir>/tests/$1",
 	},
-	setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
+	setupFilesAfterEnv: [
+		"<rootDir>/jest.setup.ts",
+		"<rootDir>/jest.setup.ts"
+	],
 };
 
 export default config;

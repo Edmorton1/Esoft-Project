@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt"
 import { Form, User } from "@t/gen/Users";
 import AuthService from "@s/infrastructure/endpoints/Auth/services/Auth.service";
-import logger from "@s/helpers/logger";
+import logger from "@s/helpers/logger/logger";
 import { COOKIE_NAME } from "@shared/CONST";
 import { inject, injectable } from "inversify";
 import ORM from "@s/infrastructure/db/SQL/ORM";

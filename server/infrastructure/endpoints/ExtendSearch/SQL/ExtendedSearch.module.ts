@@ -1,11 +1,12 @@
 import db from "@s/infrastructure/db/db"
 import { queryType, tagsTypes } from "@s/infrastructure/endpoints/ExtendSearch/validation/ExtendedSearch.schemas"
 import ExtendedSeacrhSQLhelper from "@s/infrastructure/endpoints/ExtendSearch/SQL/ExtendedSeacrh.SQLhelper"
-import logger from "@s/helpers/logger"
 import { CARDS_ON_PAGE } from "@shared/CONST"
 import { Knex } from "knex"
 import { inject, injectable } from "inversify"
 import { Form } from "@t/gen/Users"
+import { ILogger } from "@s/helpers/logger/logger.controller"
+import TYPES from "@s/config/containers/types"
 
 type propsType = Omit<queryType, 'tags'> & {tags: tagsTypes}
 
@@ -16,6 +17,8 @@ interface ExtendedSearchRepo {
 @injectable()
 class ExtendedSearchModule implements ExtendedSearchRepo{
   constructor (
+    @inject(TYPES.LoggerController)
+    private readonly logger: ILogger,
     @inject(ExtendedSeacrhSQLhelper)
     private readonly ExtendedSeacrhSQLhelper: ExtendedSeacrhSQLhelper
   ) {}
@@ -86,18 +89,18 @@ class ExtendedSearchModule implements ExtendedSearchRepo{
 
   getByTags: ExtendedSearchRepo['getByTags'] = async ({tags, page, min_age, max_age, avatar, location, max_distance, name, params}) => {
     const props = {tags, page, min_age, max_age, avatar, location, max_distance, name, params}
-    logger.info("GET BY TAGS")
+    this.logger.info("GET BY TAGS")
 
     const [distanceRaw, selectDistance] = this.buildLocation(location)
 
     const conditions = this.buildConditions({...props, distanceRaw})
-    logger.info({CONDITOS: conditions})
+    this.logger.info({CONDITOS: conditions})
 
     const havingClause = conditions.length > 0 ? `${conditions.join(' AND ')}` : ''
     
     const offset = (Number(page) - 1) * CARDS_ON_PAGE
 
-    logger.info({offset: offset === -1 ? 0 : offset, CARDS_ON_PAGE})
+    this.logger.info({offset: offset === -1 ? 0 : offset, CARDS_ON_PAGE})
 
     // ФОРМИРОВАНИЕ SELECT
     const baseSelect = [
@@ -115,7 +118,7 @@ class ExtendedSearchModule implements ExtendedSearchRepo{
       .offset(offset === -1 ? 0 : offset)
       .limit(CARDS_ON_PAGE)
 
-    logger.info({TAGS_TAGS: tags})
+    this.logger.info({TAGS_TAGS: tags})
         
     const subquery = this.buildQuery(havingClause)
       .select("forms.id")
@@ -124,9 +127,9 @@ class ExtendedSearchModule implements ExtendedSearchRepo{
       .count('* as count')
       .from(subquery.as('filtered_forms'));
 
-    logger.info({PAGES_COUNT_SQL: pagesCount.toSQL().toNative()})
-    logger.info({DATA_RES: await request})
-    logger.info({toNativeByTags: request.toSQL().toNative()})
+    this.logger.info({PAGES_COUNT_SQL: pagesCount.toSQL().toNative()})
+    this.logger.info({DATA_RES: await request})
+    this.logger.info({toNativeByTags: request.toSQL().toNative()})
 
     return {forms: await request, count: Math.ceil(Number((await pagesCount)[0].count) / CARDS_ON_PAGE)}
   }

@@ -30,12 +30,17 @@ import ServerExpress from "@s/server/server.express";
 import ServerRoutes from "@s/server/express.routes";
 import PostsController from "@s/infrastructure/endpoints/Posts/Posts.controller";
 import PostsService from "@s/infrastructure/endpoints/Posts/services/Posts.service";
+import LoggerController, { ILogger } from "@s/helpers/logger/logger.controller";
+import PinoService from "@s/helpers/logger/pino.service";
 // import PostsModule from "@s/infrastructure/endpoints/Posts/sql/Posts.module";
 // import LikesValidation from "@s/infrastructure/endpoints/Likes/validation/Likes.validation";
 
 export const tablesArr: tables[] = ['users', 'forms', 'likes', 'messages', 'tags', 'user_tags', "posts"]
 
 const appBindingsModule = new ContainerModule(({bind}) => {
+  bind<PinoService>(PinoService).toSelf()
+  bind<ILogger>(TYPES.LoggerController).to(LoggerController)
+
   bind<ORM>(ORM).toSelf()
   bind<SharedService>(SharedService).toSelf()
   bind<Yandex>(Yandex).toSelf()

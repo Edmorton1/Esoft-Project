@@ -1,4 +1,4 @@
-import logger from "@s/helpers/logger";
+import logger from "@s/helpers/logger/logger";
 import { Request, Response, NextFunction } from "express";
 // import SessionRedis from "@s/infrastructure/redis/SessionRedis";
 

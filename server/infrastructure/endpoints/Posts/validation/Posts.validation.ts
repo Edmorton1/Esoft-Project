@@ -1,5 +1,5 @@
 import HttpContext from "@s/config/express/Http.context";
-import logger from "@s/helpers/logger";
+import logger from "@s/helpers/logger/logger";
 import { PostsDTO, PostsDTOPut, PostsDTOPutSchema, PostsDTOSchema } from "@t/gen/dtoObjects";
 import { zid } from "@t/shared/zodSnippets";
 import { z } from "zod";

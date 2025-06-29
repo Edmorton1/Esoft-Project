@@ -1,4 +1,3 @@
-import logger from "@s/helpers/logger";
 import Yandex from "@s/helpers/yandex";
 import ORM from "@s/infrastructure/db/SQL/ORM";
 import { inject, injectable } from "inversify";
@@ -8,6 +7,8 @@ import SharedService from "@s/infrastructure/services/Shared.service";
 import { ProfileSchema } from "@s/infrastructure/endpoints/Settings/validation/Settings.validation";
 import { Form } from "@t/gen/Users";
 import CompressService from "@s/infrastructure/services/Compress.service";
+import { ILogger } from "@s/helpers/logger/logger.controller";
+import TYPES from "@s/config/containers/types";
 
 interface SettingsServiceRepo {
   postAvatar: (id: number, buffer: Buffer<ArrayBufferLike>) => Promise<string | undefined>;
@@ -18,6 +19,8 @@ interface SettingsServiceRepo {
 @injectable()
 class SettingsService implements SettingsServiceRepo {
 	constructor(
+		@inject(TYPES.LoggerController)
+		private readonly logger: ILogger,
 		@inject(Yandex)
 		private readonly Yandex: Yandex,
 		@inject(ORM)
@@ -33,9 +36,9 @@ class SettingsService implements SettingsServiceRepo {
 	) => {
 		const bdPass = (await this.ORM.getById(id, "users", "password"))[0]
 			.password;
-		logger.info({ bdPass });
+		this.logger.info({ bdPass });
 		const rightPass = await bcrypt.compare(oldPass, bdPass);
-		logger.info({ password: rightPass });
+		this.logger.info({ password: rightPass });
 		if (rightPass) {
 			const passwordHash = await bcrypt.hash(newPass, SALT);
 			await this.ORM.put({ password: passwordHash }, id, "users", id, "password");
@@ -46,7 +49,7 @@ class SettingsService implements SettingsServiceRepo {
 
 	profilePut: SettingsServiceRepo["profilePut"] = async (id, profile) => {
     const { tags, location, ...data } = profile;
-		logger.info({ prof: profile });
+		this.logger.info({ prof: profile });
 		const newLocation = location && this.sharedService.parseLocation(location);
 
 		const payload = newLocation ? { ...data, location: newLocation } : data;
@@ -60,7 +63,7 @@ class SettingsService implements SettingsServiceRepo {
   postAvatar: SettingsServiceRepo["postAvatar"] = async (id, buffer) => {
     const compress = await CompressService.imageCompress(buffer);
     
-    logger.info(compress.length);
+    this.logger.info(compress.length);
 
 		const yandex = await this.Yandex.upload(compress, ".webp", "/avatars/");
 		await this.ORM.put({ avatar: yandex!.Location }, id, "forms", id, "avatar");

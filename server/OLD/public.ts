@@ -5,7 +5,7 @@ import AuthController from "@s/infrastructure/endpoints/Auth/Auth.controller"
 // import HttpFilesController from "@s/infrastructure/endpoints/Files/HttpFilesController"
 import ExtendedSearchController from "@s/infrastructure/endpoints/ExtendSearch/ExtendedSearch.controller"
 // import CRUDMiddleware from "@s/infrastructure/middlewares/CRUDMiddleware"
-import logger from "@s/helpers/logger"
+import logger from "@s/helpers/logger/logger"
 import FormController from "@s/infrastructure/endpoints/Form/Form.controller"
 import { asyncHandle } from "@s/adapters/Express.adapter";
 import appBindingsContainer, { tablesArr } from "@s/config/containers/container.di";

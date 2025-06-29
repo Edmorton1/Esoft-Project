@@ -2,6 +2,7 @@ import { IYandex } from "@s/helpers/yandex";
 import { IORM } from "@s/infrastructure/db/SQL/ORM";
 import PostsService from "@s/infrastructure/endpoints/Posts/services/Posts.service";
 import { IFilesService } from "@s/infrastructure/services/Files.service";
+import ConsoleService from "@s/tests/Console.service";
 import { PostsDTOPut } from "@t/gen/dtoObjects";
 
 describe("[POSTS]: Изменение сообщений", () => {
@@ -33,7 +34,7 @@ describe("[POSTS]: Изменение сообщений", () => {
       uploadFiles: jest.fn().mockResolvedValue([])
     }
 
-    const postsService = new PostsService(mockORM, mockYandex, mockFileService)
+    const postsService = new PostsService(new ConsoleService, mockORM, mockYandex, mockFileService)
     const mockDTO: PostsDTOPut = {
       userid: 123,
       remove_old: [],

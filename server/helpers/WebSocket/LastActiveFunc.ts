@@ -1,4 +1,5 @@
-import logger from "@s/helpers/logger";
+import logger from "@s/helpers/logger/logger";
+import PinoService from "@s/helpers/logger/pino.service";
 import { toSOCl } from "@s/helpers/WebSocket/JSONParsers";
 import { WebSocketWidh } from "@s/helpers/WebSocket/socket";
 import ORM from "@s/infrastructure/db/SQL/ORM";
@@ -7,9 +8,7 @@ import { TIMEZONE } from "@shared/CONST";
 const activeTimers = new Map()
 
 export async function TimePoint(wsClient: WebSocketWidh, id: number) {
-  //@ts-ignore
-  // ВРЕМЕННАЯ ЗАГЛУШКА
-  const ORMs = new ORM()
+  const ORMs = new ORM(new PinoService)
   if (activeTimers.has(id)) return;
 
   const doIter = () => {

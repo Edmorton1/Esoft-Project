@@ -1,7 +1,8 @@
-import logger from "@s/helpers/logger";
-
 const TYPES = {
 	clients: Symbol.for("clients"),
+	
+	PinoService: Symbol.for("services-pino"),
+	LoggerController: Symbol.for("controllers-logger"),
 
 	CRUD: {
 		Factory: Symbol.for("CRUDControllerFactory"),

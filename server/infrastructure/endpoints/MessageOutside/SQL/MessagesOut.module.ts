@@ -1,13 +1,20 @@
+import TYPES from "@s/config/containers/types";
+import { ILogger } from "@s/helpers/logger/logger.controller";
 import db from "@s/infrastructure/db/db";
-import logger from "@s/helpers/logger";
 import { Message, MessageSchema } from "@t/gen/Users";
+import { inject, injectable } from "inversify";
 import { z } from "zod";
 
 interface MessagesOutModuleRepo {
   getAllLastMessages: (id: number) => Promise<Message[]>
 }
 
+@injectable()
 class MessagesOutModule implements MessagesOutModuleRepo {
+  constructor (
+    @inject(TYPES.LoggerController)
+    private readonly logger: ILogger,
+  ) {}
   getAllLastMessages: MessagesOutModuleRepo['getAllLastMessages'] = async (id) => {
     const whenThenRaw = db.raw(`
       CASE 
@@ -22,7 +29,7 @@ class MessagesOutModule implements MessagesOutModuleRepo {
       .where('toid', id).orWhere('fromid', id)
       .orderByRaw(`${whenThenRaw}, id DESC`);
 
-    logger.info({allLast: query.toSQL().toNative()})
+    this.logger.info({allLast: query.toSQL().toNative()})
 
     const total = z.array(MessageSchema).parse(await query)
 

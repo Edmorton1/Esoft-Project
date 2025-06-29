@@ -1,7 +1,6 @@
 import EasyYandexS3 from 'easy-yandex-s3';
 import dotenv from "dotenv"
 import { randomUUID } from 'crypto';
-import logger from '@s/helpers/logger';
 import { Yandex_Folders } from '@t/gen/types';
 import type { S3 } from 'aws-sdk';
 dotenv.config()
@@ -59,7 +58,7 @@ class Yandex implements IYandex {
     // logger.info([folder, files])
     for (const e of folder) {
       if (files?.includes(e)) {
-        logger.info("!FILES", e, folder, files)
+        // logger.info("!FILES", e, folder, files)
         await s3.Remove(e);
         folder = folder.filter(item => item != e)
       }

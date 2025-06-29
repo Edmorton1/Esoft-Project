@@ -1,4 +1,4 @@
-import logger from "@s/helpers/logger"
+import logger from "@s/helpers/logger/logger"
 import HttpContext from "@s/config/express/Http.context"
 import { frJSON } from "@shared/MAPPERS"
 import { MessageDTO } from "@t/gen/dtoObjects"

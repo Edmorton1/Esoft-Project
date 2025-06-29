@@ -3,12 +3,13 @@ import { cacheEdit, cacheGet } from "@s/infrastructure/redis/cache"
 import db from "@s/infrastructure/db/db"
 import bcrypt from "bcrypt"
 import { checkFirstType, fieldsToArr, getCheckWord } from "@s/infrastructure/db/SQL/utils"
-import logger from "../../../helpers/logger"
 import { Form } from "@t/gen/Users"
 import { SALT } from "@shared/CONST"
 import { requestToFormManyParams, requestToFormParams, standartToForm } from "@s/infrastructure/db/SQL/SQLform"
+import { inject, injectable } from "inversify"
+import { ILogger } from "@s/helpers/logger/logger.controller"
+import TYPES from "@s/config/containers/types"
 
-logger.info('asdsdadas')
 const fieldsKey = (fields?: string) => `${fields ? '--fields: ' + fields : ''}`
 
 // ПРИНИМАЕТ ТОЛЬКО ID
@@ -50,11 +51,16 @@ export interface IORM {
   ) => Promise<Tables[T][]>;
 }
 
+@injectable()
 class ORM implements IORM {
+  constructor (
+    @inject(TYPES.LoggerController)
+    private readonly logger: ILogger
+  ) {}
   // get = async <T extends tables>(table: T, fields?: string, options?: Ioptions): Promise<Tables[T][]> => {
   get = async <T extends tables>(table: T, fields?: string): Promise<Tables[T][]> => {
-    logger.info("GET", 'fields', fields)
-    logger.info("get", table, fields)
+    this.logger.info("GET", 'fields', fields)
+    this.logger.info("get", table, fields)
 
     const key = `${table}${fieldsKey(fields)}`
     
@@ -64,15 +70,15 @@ class ORM implements IORM {
       query = standartToForm(fields)
     }
 
-    logger.info('fields in orm', fields)
+    this.logger.info('fields in orm', fields)
 
     const total = await cacheGet<Tables[T][]>(key, query)
     return checkFirstType(total, table, fields)
   }
   // getById = async <T extends tables>(id: number | string, table: T, fields?: string, options?: Ioptions): Promise<Tables[T][]> => {
   getById = async <T extends tables>(id: number | string, table: T, fields?: string): Promise<Tables[T][]> => {
-    logger.info('GET BY ID')
-    logger.info({table, fields}, "getById")
+    this.logger.info('GET BY ID')
+    this.logger.info({table, fields}, "getById")
 
     const key = `${table}-id-${id}${fieldsKey(fields)}`
 
@@ -80,14 +86,14 @@ class ORM implements IORM {
     
     if (table === 'forms') {
 
-      logger.info("[FORMS]: ЗАПРОС К ФОРМЕ")
+      this.logger.info("[FORMS]: ЗАПРОС К ФОРМЕ")
       const params = {id: Number(id)}
 
       query = requestToFormParams(params, fields)
-      logger.info("TO NATIVE", query.toSQL().toNative())
+      this.logger.info("TO NATIVE", query.toSQL().toNative())
     }
 
-    logger.info('check type', await cacheGet(key, query), table)
+    this.logger.info('check type', await cacheGet(key, query), table)
     const total = await cacheGet<Tables[T][]>(key, query)
 
     return checkFirstType(total, table, fields)
@@ -95,12 +101,12 @@ class ORM implements IORM {
   
   // ПОКА ОПЦИИ К ФОРМЕ НЕ РАБОТАЮТ
   getByParams = async <T extends tables>(params: Partial<Tables[T]>, table: T, fields?: string, options?: Ioptions): Promise<Tables[T][]> => {
-    logger.info("GET BY PARAMS")
-    logger.info("getByParams", params, table, fields)
+    this.logger.info("GET BY PARAMS")
+    this.logger.info("getByParams", params, table, fields)
 
     const key = `${table}-${Object.entries(params).flat().join("-")}${fieldsKey(fields)}`
 
-    logger.info(params, 'params')
+    this.logger.info(params, 'params')
 
     let query = db(table).select(fieldsToArr(fields, table)).where(params);
 
@@ -114,7 +120,7 @@ class ORM implements IORM {
         .orderBy("id", settings.orderBy)
     }
     
-    logger.info('fields in orm', fields)
+    this.logger.info('fields in orm', fields)
     const total = await cacheGet<Tables[T][]>(key, query)
 
     return checkFirstType(total, table, fields)
@@ -129,7 +135,7 @@ class ORM implements IORM {
   }
   
   post = async <T extends tables>(dto: TablesPost[T], table: T, fields?: string): Promise<Tables[T][]> => {
-    logger.info({table, fields, dto})
+    this.logger.info({table, fields, dto})
     
     if (typeof dto === 'object' && "password" in dto && typeof dto.password === "string") {
       const hashed = await bcrypt.hash(dto.password, SALT)
@@ -172,14 +178,14 @@ class ORM implements IORM {
   }
 
   put = async <T extends tables>(dto: Partial<Tables[T]>, id: number | string, table: T, userid: number, fields?: string): Promise<Tables[T][]> => {
-    logger.info({table, id, dto, method: "PUT"})
+    this.logger.info({table, id, dto, method: "PUT"})
 
     const checkWord = getCheckWord(table)
 
     const parsedFields = fieldsToArr(fields, table)
 
     const request = await db(table).where("id", '=', id).andWhere(checkWord, "=", userid).update(dto).returning(parsedFields)
-    logger.info({request})
+    this.logger.info({request})
 
     cacheEdit(table, request)
     checkFirstType(request, table, fields)
@@ -193,7 +199,7 @@ class ORM implements IORM {
     const checkWord = getCheckWord(table)
     
     const query = db(table).where("id", "=", id).andWhere(checkWord, "=", userid).delete().returning("*")
-    logger.info({DELETE_QUERY: query.toSQL().toNative()})
+    this.logger.info({DELETE_QUERY: query.toSQL().toNative()})
     const request = await query
     
     cacheEdit(table, request, 'delete')

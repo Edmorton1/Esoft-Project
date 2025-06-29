@@ -1,4 +1,4 @@
-import logger from "@s/helpers/logger"
+import logger from "@s/helpers/logger/logger"
 import { MessageFormType } from "@t/gen/Schemas"
 import { inject, injectable } from "inversify"
 import MessageOutService from "@s/infrastructure/endpoints/MessageOutside/service/MessageOut.service"

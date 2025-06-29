@@ -1,4 +1,5 @@
-import logger from "@s/helpers/logger";
+import TYPES from "@s/config/containers/types";
+import { ILogger } from "@s/helpers/logger/logger.controller";
 import Yandex, { IYandex } from "@s/helpers/yandex";
 import ORM, { IORM } from "@s/infrastructure/db/SQL/ORM";
 import FilesService, { IFilesService } from "@s/infrastructure/services/Files.service";
@@ -19,6 +20,8 @@ interface IPostsService {
 @injectable()
 class PostsService {
   constructor (
+    @inject(TYPES.LoggerController)
+    private readonly logger: ILogger,
     @inject(ORM)
     private readonly ORM: IORM,
     @inject(Yandex)
@@ -43,7 +46,7 @@ class PostsService {
 	post: IPostsService["post"] = async (postsDTO) => {
     const {files, ...data} = postsDTO
     const [request] = await this.ORM.post(data, "posts")
-    logger.info({DLINNA: files.length})
+    this.logger.info({DLINNA: files.length})
 
     let total = request;
     if (files.length) {
@@ -58,6 +61,9 @@ class PostsService {
     const {files, remove_old,...data} = postsDTO
 
     const [old_data] = await this.ORM.getById(post_id, "posts", "userid, files")
+
+    this.logger.info({DATA_IN_DB_OLD: old_data})
+
     if (old_data.id === data.userid) return null
 
     let yandexFiles;

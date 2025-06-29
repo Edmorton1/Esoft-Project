@@ -1,4 +1,5 @@
-import logger from "@s/helpers/logger";
+import TYPES from "@s/config/containers/types";
+import { ILogger } from "@s/helpers/logger/logger.controller";
 import ORM from "@s/infrastructure/db/SQL/ORM";
 import MessagesOutModule from "@s/infrastructure/endpoints/MessageOutside/sql/MessagesOut.module";
 import { MessageFormSchema, MessageFormType } from "@t/gen/Schemas";
@@ -8,6 +9,8 @@ import { z } from "zod";
 @injectable()
 class MessageOutService {
 	constructor(
+		@inject(TYPES.LoggerController)
+		private readonly logger: ILogger,
 		@inject(MessagesOutModule)
 		private readonly SQL: MessagesOutModule,
 		@inject(ORM)
@@ -38,7 +41,7 @@ class MessageOutService {
 		const arrZod = z.array(MessageFormSchema);
 		const parsedTotal = arrZod.parse(total);
 
-		logger.info({ request: messages });
+		this.logger.info({ request: messages });
     return parsedTotal
 	};
 }

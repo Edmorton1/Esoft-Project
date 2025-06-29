@@ -1,8 +1,9 @@
 import CompressService from "@s/infrastructure/services/Compress.service";
-import logger from "@s/helpers/logger";
 import { inject, injectable } from "inversify";
 import Yandex from "@s/helpers/yandex";
 import { Yandex_Folders } from "@t/gen/types";
+import { ILogger } from "@s/helpers/logger/logger.controller";
+import TYPES from "@s/config/containers/types";
 
 export interface IFilesService {
   uploadAvatar(avatar: Express.Multer.File): Promise<string>;
@@ -12,6 +13,8 @@ export interface IFilesService {
 @injectable()
 class FilesService implements IFilesService {
 	constructor(
+		@inject(TYPES.LoggerController)
+		private readonly logger: ILogger,
 		@inject(Yandex)
 		private readonly Yandex: Yandex,
 	) {}
@@ -23,7 +26,7 @@ class FilesService implements IFilesService {
 		// res.type("webp")
 		// res.send(compress)
 		const yandex = await this.Yandex.upload(compress, ".webp", "/avatars/");
-		logger.info("ЛОКАЦИЯ АВАТАРА", yandex!.Location);
+		this.logger.info("ЛОКАЦИЯ АВАТАРА", yandex!.Location);
 		return yandex!.Location;
 	};
 

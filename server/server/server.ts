@@ -1,7 +1,8 @@
 import { inject, injectable } from "inversify";
 import ServerExpress from "@s/server/server.express";
 import ConfigService from "@s/config/services/config.service";
-import logger from "@s/helpers/logger";
+import { ILogger } from "@s/helpers/logger/logger.controller";
+import TYPES from "@s/config/containers/types";
 
 // ЭНДПОЙНТЫ РЕАЛИЗОВЫВАТЬ В КОНТРОЛЛЕРАХ
 
@@ -19,6 +20,8 @@ class App implements IServer {
 	port: number;
 
 	constructor(
+		@inject(TYPES.LoggerController)
+		private readonly logger: ILogger,
 		@inject(ConfigService)
 		private readonly configService: ConfigService,
 		@inject(ServerExpress)
@@ -29,7 +32,7 @@ class App implements IServer {
 	}
 
 	init = async () => {
-		logger.info(`СЕВРЕВ ЗАПУЩЕН НА ${this.configService.get("URL_SERVER")} САЙТ НА ${this.configService.get("URL_CLIENT")}`);
+		this.logger.info(`СЕВРЕВ ЗАПУЩЕН НА ${this.configService.get("URL_SERVER")} САЙТ НА ${this.configService.get("URL_CLIENT")}`);
 		this.framework.init(this.basePath, this.port);
 	};
 

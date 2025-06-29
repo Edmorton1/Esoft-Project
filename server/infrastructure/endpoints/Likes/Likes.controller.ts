@@ -3,7 +3,7 @@ import LikesModule from "@s/infrastructure/endpoints/Likes/sql/Likes.module";
 import { inject, injectable } from "inversify";
 import LikesService from "@s/infrastructure/endpoints/Likes/services/LikesService";
 import { Form } from "@t/gen/Users";
-import logger from "@s/helpers/logger";
+import logger from "@s/helpers/logger/logger";
 import BaseController from "@s/config/base/Base.controller";
 import { serverPaths } from "@shared/PATHS";
 import AuthMiddleware from "@s/infrastructure/middlewares/AuthMiddleware";

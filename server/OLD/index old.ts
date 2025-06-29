@@ -8,7 +8,7 @@ dotenv.config()
 import https from "https"
 import fs from 'fs'
 import path from 'path'
-import logger, { httpLogger } from "@s/helpers/logger"
+import logger, { httpLogger } from "@s/helpers/logger/logger"
 import "@t/declarations/server/index"
 import { PREFIX } from "@shared/CONST"
 import publicRouter from "@s/OLD/public"

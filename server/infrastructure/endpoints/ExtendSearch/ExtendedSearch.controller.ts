@@ -1,7 +1,7 @@
 import ExtendedSearchValidation from "@s/infrastructure/endpoints/ExtendSearch/validation/ExtendedSearch.validation"
 import ExtendedSearchModule from "@s/infrastructure/endpoints/ExtendSearch/SQL/ExtendedSearch.module"
 import ExtendedSeacrhSQLhelper from "@s/infrastructure/endpoints/ExtendSearch/SQL/ExtendedSeacrh.SQLhelper"
-import logger from "@s/helpers/logger"
+import logger from "@s/helpers/logger/logger"
 import { inject, injectable } from "inversify"
 import HttpContext from "@s/config/express/Http.context"
 import BaseController from "@s/config/base/Base.controller"

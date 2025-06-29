@@ -1,6 +1,6 @@
 import { MsgTypesServer } from "@t/gen/socketTypes";
 import { Form, Message } from "@t/gen/Users";
-import logger from "@s/helpers/logger";
+import logger from "@s/helpers/logger/logger";
 import MessagesValidation from "@s/infrastructure/endpoints/Messages/validation/Message.validation";
 import { toSOSe } from "@s/helpers/WebSocket/JSONParsers";
 import ORM from "@s/infrastructure/db/SQL/ORM";

@@ -1,6 +1,6 @@
 import { tables } from "@t/gen/types";
 // import ORM from "@s/infrastructure/db/SQL/ORM"
-import logger from "@s/helpers/logger";
+import logger from "@s/helpers/logger/logger";
 import { inject, injectable } from "inversify";
 import ORM from "@s/infrastructure/db/SQL/ORM";
 import BaseController from "@s/config/base/Base.controller";

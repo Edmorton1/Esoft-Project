@@ -1,4 +1,3 @@
-import logger from "@s/helpers/logger";
 import { toSOSe } from "@s/helpers/WebSocket/JSONParsers";
 import { clientsType } from "@s/helpers/WebSocket/socket";
 import ORM from "@s/infrastructure/db/SQL/ORM";
@@ -9,6 +8,7 @@ import { lnglatType } from "@t/gen/types";
 import { Form, FormSchema, Likes } from "@t/gen/Users";
 import { inject, injectable } from "inversify";
 import { z } from "zod";
+import { ILogger } from "@s/helpers/logger/logger.controller";
 
 interface LikesServiceRepo {
   sendLike: (likesDTO: LikesDTO) => Promise<Likes>;
@@ -20,6 +20,8 @@ interface LikesServiceRepo {
 @injectable()
 class LikesService implements LikesServiceRepo {
 	constructor(
+		@inject(TYPES.LoggerController)
+		private readonly logger: ILogger,
 		@inject(ORM)
 		private readonly ORM: ORM,
 		@inject(TYPES.clients)
@@ -30,7 +32,7 @@ class LikesService implements LikesServiceRepo {
 
 	sendLike: LikesServiceRepo["sendLike"] = async likesDTO => {
 		const [data] = await this.ORM.post(likesDTO, "likes", "id, liked_userid");
-		logger.info(this.clients.keys());
+		this.logger.info(this.clients.keys());
 		const clientTo = this.clients.get(likesDTO.liked_userid);
 		clientTo?.send(toSOSe("like", data));
 		return data;
@@ -51,7 +53,7 @@ class LikesService implements LikesServiceRepo {
 	likesGet: LikesServiceRepo["likesGet"] = async (userid, lnglat?, cursor?) => {
 		const [json_agg] = await this.likesModule.getLikedIds(userid)
 
-		logger.info({ json_agg: json_agg });
+		this.logger.info({ json_agg: json_agg });
 
 		const request = await this.likesModule.getManyByParam(
 			"id",
@@ -63,14 +65,14 @@ class LikesService implements LikesServiceRepo {
 	};
 
   rejectLike: LikesServiceRepo['rejectLike'] = async (userid, liked_userid) => {
-    logger.info({userid, liked_userid})
+    this.logger.info({userid, liked_userid})
     const [offer] = await this.ORM.getByParams(
 			{ userid: liked_userid, liked_userid: userid },
 			"likes",
       "id"
 		);
 
-    logger.info({offer})
+    this.logger.info({offer})
 
 		if (!offer) {
 			return false;

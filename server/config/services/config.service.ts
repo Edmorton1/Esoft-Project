@@ -1,6 +1,7 @@
 import { config, DotenvConfigOutput, DotenvParseOutput } from "dotenv";
-import { injectable } from "inversify";
-import logger from "@s/helpers/logger";
+import { inject, injectable } from "inversify";
+import { ILogger } from "@s/helpers/logger/logger.controller";
+import TYPES from "@s/config/containers/types";
 
 interface IEnv {
 	PORT: string;
@@ -27,14 +28,16 @@ interface IEnv {
 class ConfigService {
 	private config: DotenvParseOutput;
 
-	constructor() {
+	constructor(
+		@inject(TYPES.LoggerController)
+		private readonly logger: ILogger,
+	) {
 		const result: DotenvConfigOutput = config();
 
 		if (result.error) {
-			logger.error(result.error);
+			this.logger.error(result.error);
 		}
 
-		logger.info("GOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOD");
 		this.config = result.parsed as DotenvParseOutput;
 	}
 

@@ -1,6 +1,6 @@
 import db from "@s/infrastructure/db/db";
 import { AllRowsFormShort } from "@s/infrastructure/db/SQL/AllRowsFormWithoutLocation";
-import logger from "@s/helpers/logger";
+import logger from "@s/helpers/logger/logger";
 import { tables } from "@t/gen/types"
 import { getSchemaByTable } from "@t/shared/sharedTypes"
 import type { Knex } from "knex";

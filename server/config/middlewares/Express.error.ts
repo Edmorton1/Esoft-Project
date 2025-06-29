@@ -1,4 +1,4 @@
-import logger from "@s/helpers/logger"
+import logger from "@s/helpers/logger/logger"
 import { NextFunction, Request, Response } from "express"
 
 const expressError = (err: any, req: Request, res: Response, next: NextFunction) => {
