@@ -69,6 +69,8 @@ class PostsService {
     let yandexFiles;
 
     const cleanded_old_data = await this.yandex.deleteArr(post_id, remove_old, "posts")
+
+    this.logger.info({cleanded_old_data})
     
     if (files.length + cleanded_old_data.length > 3) throw new Error("Нельзя загрузить больше 3-х файлов")
     // const updateFiles = JSON.stringify(old_data.files.sort()) !== JSON.stringify(files)
@@ -81,6 +83,8 @@ class PostsService {
     }
 
     const total = await this.ORM.put({...data, files: yandexFiles}, post_id, "posts", postsDTO.userid)
+
+    this.logger.info({RESULT: total[0]})
 
     if (!total.length) {
       return null
