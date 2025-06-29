@@ -1,6 +1,6 @@
 import { FormSchema, LocationSchema, MessageSchema, PostsSchema, TagsSchema, UserSchema, UserTagsSchema } from "@t/gen/Users";
 import { ExpressMulterFileSchema, zid, zstring } from "@t/shared/zodSnippets";
-import { z } from 'zod';
+import { boolean, z } from 'zod';
 
 export const UserDTOSchema = UserSchema.pick({email: true, password: true})
 
@@ -37,6 +37,11 @@ export const PostsDTOSchema = PostsSchema
     files: z.array(ExpressMulterFileSchema).max(3)
   })
 
+export const PostsDTOPutSchema = PostsDTOSchema
+  .extend({
+    remove_old: z.array(z.string())
+  })
+
 export type MessageDTO = z.infer<typeof MessageDTOSchema>
 export type UserDTO = z.infer<typeof UserDTOSchema>;
 export type PayloadDTO = z.infer<typeof PayloadDTOSchema>;
@@ -48,3 +53,4 @@ export type TagsDTO = z.infer<typeof TagsSchemaDTO>
 export type UserTagsDTO = z.infer<typeof UserTagsSchemaDTO>
 export type FormDTO = z.infer<typeof FormDTOShema>
 export type PostsDTO = z.infer<typeof PostsDTOSchema>
+export type PostsDTOPut = z.infer<typeof PostsDTOPutSchema>

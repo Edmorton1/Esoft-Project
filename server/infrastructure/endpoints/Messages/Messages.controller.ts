@@ -124,7 +124,7 @@ class MessagesController extends BaseController {
 
     } else {
       logger.info({id: id, data: data.deleted})
-      const ostavshiesa = await this.yandex.deleteArr(id, data.deleted)
+      const ostavshiesa = await this.yandex.deleteArr(id, data.deleted, "messages")
       const paths = data.files.length > 0 ?  await this.fileService.uploadFiles(id, data.files, "messages") : []
   
       total = (await this.ORM.put({files: [...ostavshiesa, ...paths], text: data.text}, id, 'messages', userid))[0]

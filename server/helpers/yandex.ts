@@ -43,8 +43,8 @@ class Yandex {
     return folder
   }
 
-  deleteArr = async (id: number | string, files: string[]): Promise<string[]> => {
-    let folder = await this.getFolder(id, "messages")
+  deleteArr = async (id: number | string, files: string[], path: Yandex_Folders): Promise<string[]> => {
+    let folder = await this.getFolder(id, path)
     files = files?.map(e => e.split('https://znakomstva.storage.yandexcloud.net/')[1])
     // logger.info('folder', folder)
     // logger.info([folder, files])
