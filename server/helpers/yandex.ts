@@ -3,6 +3,7 @@ import dotenv from "dotenv"
 import { randomUUID } from 'crypto';
 import logger from '@s/helpers/logger';
 import { Yandex_Folders } from '@t/gen/types';
+import type { S3 } from 'aws-sdk';
 dotenv.config()
 
 export const s3 = new EasyYandexS3({
@@ -14,8 +15,16 @@ export const s3 = new EasyYandexS3({
   debug: false,
 });
 
-class Yandex {
-  getFolder = async (id: string | number, path: Yandex_Folders): Promise<string[]> => {
+export interface IYandex {
+  getFolder(id: string | number, path: Yandex_Folders): Promise<string[]>;
+  upload(buffer: Buffer, ext: string, path: string): Promise<undefined | S3.ManagedUpload.SendData>;
+  deleteFolder(id: number, path: Yandex_Folders): Promise<string[]>;
+  deleteArr(id: number | string, files: string[], path: Yandex_Folders): Promise<string[]>;
+}
+
+
+class Yandex implements IYandex {
+  getFolder: IYandex['getFolder'] = async (id, path) => {
     const request = await s3.GetList(`/${path}/${id}/`)
     const requestVrap = request === false ? undefined : request
 
@@ -23,7 +32,7 @@ class Yandex {
     return folder
   }
 
-  upload = async (buffer: Buffer, ext: string, path: string) => {
+  upload: IYandex['upload'] = async (buffer, ext, path) => {
 
     const load = await s3.Upload(
       {
@@ -35,7 +44,7 @@ class Yandex {
     return load === false ? undefined : Array.isArray(load) ? load[0] : load
   }
 
-  deleteFolder = async (id: number, path: Yandex_Folders) => {
+  deleteFolder: IYandex['deleteFolder'] = async (id, path) => {
     const folder = await this.getFolder(id, path)
     folder.forEach(async e => {
       await s3.Remove(e)
@@ -43,7 +52,7 @@ class Yandex {
     return folder
   }
 
-  deleteArr = async (id: number | string, files: string[], path: Yandex_Folders): Promise<string[]> => {
+  deleteArr: IYandex['deleteArr'] = async (id, files, path) => {
     let folder = await this.getFolder(id, path)
     files = files?.map(e => e.split('https://znakomstva.storage.yandexcloud.net/')[1])
     // logger.info('folder', folder)

@@ -11,13 +11,15 @@
     "dev:railway": "ts-node server/index.ts",
     "typecheck": "tsc --noEmit",
     "test:integra": "jest tests/integra --runInBand --detectOpenHandles",
-    "test:unit": "chcp 65001 && jest tests/unit"
+    "test:unit": "chcp 65001 && jest tests/unit",
+    "test:server": "chcp 65001 && jest server/tests"
   },
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
     "@babel/core": "^7.26.9",
+    "@babel/plugin-proposal-decorators": "^7.27.1",
     "@babel/plugin-transform-typescript": "^7.26.8",
     "@babel/preset-env": "^7.27.2",
     "@babel/preset-react": "^7.26.3",
@@ -76,6 +78,7 @@
   "dependencies": {
     "@2gis/mapgl": "^1.60.0",
     "@2gis/mapgl-clusterer": "^2.5.0",
+    "@babel/plugin-transform-class-properties": "^7.27.1",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@hookform/resolvers": "^5.0.1",

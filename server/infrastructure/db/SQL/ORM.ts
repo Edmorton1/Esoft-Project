@@ -20,7 +20,37 @@ interface Ioptions {
   }
 }
 
-class ORM {
+export interface IORM {
+  get: <T extends tables>(table: T, fields?: string) => Promise<Tables[T][]>;
+  getById: <T extends tables>(id: number | string, table: T, fields?: string) => Promise<Tables[T][]>;
+  getByParams: <T extends tables>(
+    params: Partial<Tables[T]>,
+    table: T,
+    fields?: string,
+    options?: Ioptions
+  ) => Promise<Tables[T][]>;
+
+  getManyParams: (params: any[], fields?: string) => Promise<Form[]>;
+
+  post: <T extends tables>(dto: TablesPost[T], table: T, fields?: string) => Promise<Tables[T][]>;
+  postArr: <T extends tables>(dto: TablesPost[T][], table: T, removeOld?: number) => Promise<Tables[T][]>;
+
+  put: <T extends tables>(
+    dto: Partial<Tables[T]>,
+    id: number | string,
+    table: T,
+    userid: number,
+    fields?: string
+  ) => Promise<Tables[T][]>;
+
+  delete: <T extends tables>(
+    id: number | string,
+    table: T,
+    userid: number
+  ) => Promise<Tables[T][]>;
+}
+
+class ORM implements IORM {
   // get = async <T extends tables>(table: T, fields?: string, options?: Ioptions): Promise<Tables[T][]> => {
   get = async <T extends tables>(table: T, fields?: string): Promise<Tables[T][]> => {
     logger.info("GET", 'fields', fields)

@@ -1,4 +1,4 @@
-import type {Config} from "jest";
+import type { Config } from "jest";
 
 const config: Config = {
 	transform: {
@@ -17,6 +17,7 @@ const config: Config = {
 		"^@t/(.*)$": "<rootDir>/types/$1",
 		"^@test/(.*)$": "<rootDir>/tests/$1",
 	},
+	setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
 };
 
 export default config;

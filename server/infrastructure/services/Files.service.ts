@@ -4,13 +4,18 @@ import { inject, injectable } from "inversify";
 import Yandex from "@s/helpers/yandex";
 import { Yandex_Folders } from "@t/gen/types";
 
+export interface IFilesService {
+  uploadAvatar(avatar: Express.Multer.File): Promise<string>;
+  uploadFiles(id: number | string, files: Express.Multer.File[], path: Yandex_Folders): Promise<string[]>;
+}
+
 @injectable()
-class FilesService {
+class FilesService implements IFilesService {
 	constructor(
 		@inject(Yandex)
 		private readonly Yandex: Yandex,
 	) {}
-	uploadAvatar = async (avatar: Express.Multer.File): Promise<string> => {
+	uploadAvatar: IFilesService['uploadAvatar'] = async (avatar) => {
 		const buffer = avatar.buffer;
 		const compress = await CompressService.imageCompress(buffer);
 
@@ -22,7 +27,7 @@ class FilesService {
 		return yandex!.Location;
 	};
 
-	uploadFiles = async (id: number | string, files: Express.Multer.File[], path: Yandex_Folders): Promise<string[]> => {
+	uploadFiles: IFilesService['uploadFiles'] = async (id, files, path) => {
 		const buffers = CompressService.toBuffer(files);
 		return await Promise.all(
 			buffers.map(async (e, i) => {

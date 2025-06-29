@@ -1,7 +1,7 @@
 import logger from "@s/helpers/logger";
-import Yandex from "@s/helpers/yandex";
-import ORM from "@s/infrastructure/db/SQL/ORM";
-import FilesService from "@s/infrastructure/services/Files.service";
+import Yandex, { IYandex } from "@s/helpers/yandex";
+import ORM, { IORM } from "@s/infrastructure/db/SQL/ORM";
+import FilesService, { IFilesService } from "@s/infrastructure/services/Files.service";
 // import PostsModule from "@s/infrastructure/endpoints/Posts/sql/Posts.module";
 import { POSTS_LIMIT } from "@shared/CONST";
 import { PostsDTO, PostsDTOPut } from "@t/gen/dtoObjects";
@@ -20,11 +20,11 @@ interface IPostsService {
 class PostsService {
   constructor (
     @inject(ORM)
-    private readonly ORM: ORM,
+    private readonly ORM: IORM,
     @inject(Yandex)
-    private readonly yandex: Yandex,
+    private readonly yandex: IYandex,
     @inject(FilesService)
-    private readonly filesService: FilesService
+    private readonly filesService: IFilesService
     // @inject(PostsModule)
 		// private readonly postsModule: PostsModule,
   ) {}
