@@ -1,5 +1,6 @@
 import HttpContext from "@s/config/express/Http.context";
 import logger from "@s/helpers/logger/logger";
+import { serverPaths } from "@shared/PATHS";
 import { PostsDTO, PostsDTOPut, PostsDTOPutSchema, PostsDTOSchema } from "@t/gen/dtoObjects";
 import { zid } from "@t/shared/zodSnippets";
 import { z } from "zod";
@@ -13,9 +14,12 @@ interface IPostsValidation {
 
 class PostsValidation implements IPostsValidation {
 	get: IPostsValidation["get"] = ctx => {
+		logger.info({ZAPROS: `${serverPaths.postsGet}/${ctx.params.userid}?cursor=${ctx.query.cursor}`})
 		const userid = zid.parse(ctx.params.userid);
-		const cursor = zid.optional().parse(ctx.query.cursor);
-		return [userid, cursor];
+		const cursor = zid.safeParse(ctx.query.cursor);
+		const cursorParsed = cursor.success ? cursor.data : undefined
+		
+		return [userid, cursorParsed];
 	};
 
 	post: IPostsValidation["post"] = ctx => {

@@ -34,9 +34,9 @@ class PostsService {
 	get: IPostsService["get"] = async (userid, cursor) => {
     const total = await this.ORM.getByParams({userid: userid}, "posts", undefined, {
       infinitPagination: {
-        cursor: cursor ? cursor : 0,
+        cursor: cursor,
         limit: POSTS_LIMIT,
-        orderBy: "asc"
+        orderBy: "desc"
       },
     });
 

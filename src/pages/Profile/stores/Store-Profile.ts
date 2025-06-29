@@ -2,6 +2,8 @@ import { Form } from "@t/gen/Users"
 import { makeAutoObservable, runInAction } from "mobx"
 import $api from "@/shared/api/api"
 import { one, toCl } from "@shared/MAPPERS"
+//@ts-ignore
+// ДОБАВИТЬ СЮДА ПОТОМ ДИСТАНИЦЮ
 import { serverPaths } from "@shared/PATHS"
 
 class StoreProfile {

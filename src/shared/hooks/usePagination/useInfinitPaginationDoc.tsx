@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react"
 import $api from "@/shared/api/api"
+import { AxiosResponse } from "axios"
 
-function useInfinitPaginationDoc(url: string, firstRender: boolean, callback: (data: any) => void, limit: number) {
+function useInfinitPaginationDoc(url: string, firstRender: boolean, callback: (data: AxiosResponse<any, any>) => void) {
   const [stop, setStop] = useState(false)
   const [fetching, setFetching] = useState(false)
 
@@ -10,11 +11,14 @@ function useInfinitPaginationDoc(url: string, firstRender: boolean, callback: (d
   useEffect(() => {
     // if (url.includes("undefined")) return;
 
+    //@ts-ignore
+    // ПРОДУМАТЬ ЧТО ЕСЛИ ВЫСОТА ЭКРАНА НЕ ДОСТАЁТ ДО ПРЕДЕЛА ПИКСЕЙЛЕЙ, ТОГДА ЗАГРУЖАТЬ ВСЁ РАВНО
+
     if (fetching || firstRender) {
       $api.get(url)
-        .then(data => {console.log('then data', {FETCHI_FETCH: data.data}); return data.data})
+        .then(data => {console.log('then data', {FETCHI_FETCH: data.data}); return data})
         .then(data => {
-          if (data.length === 0) {
+          if (data.data.length === 0) {
             if (firstRender) {
               callback(data)
             }

@@ -4,7 +4,6 @@ import PostsService from "@s/infrastructure/endpoints/Posts/services/Posts.servi
 import { IFilesService } from "@s/infrastructure/services/Files.service";
 import ConsoleService from "@s/tests/Console.service";
 import { PostsDTOPut } from "@t/gen/dtoObjects";
-import { OverdriveProperty } from "@t/gen/socketTypes";
 import { Posts } from "@t/gen/Users";
 
 type SimplifiedMockDTO = {

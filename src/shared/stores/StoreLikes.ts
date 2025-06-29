@@ -29,7 +29,7 @@ class StoreLikes {
   //@ts-ignore
   // FormWithDistanse
   // ДИСТАНЦИЮ ПОТОМ СЮДА ДОБАВИТЬ
-  loadLiked = async (data: Form[]) => {
+  lazyLoadLiked = async (data: Form[]) => {
     // const forms = toCl(await $api.get(`${serverPaths.likesGet}/2?lat=${StoreForm.form?.location?.lat}&lng=${StoreForm.form?.location?.lng}`))
     // this.liked = data
     // console.log(toJS(data))

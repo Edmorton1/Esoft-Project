@@ -15,7 +15,7 @@ function Liked() {
   // useGetBy(`${serverPaths.likesGet}/${StoreUser.user?.id}?lat=${StoreForm.form?.location?.lat}&lng=${StoreForm.form?.location?.lng}?cursor=${StoreLikes.cursor}`, {callback: (data) => StoreLikes.likedUser(data)})
 
   console.log("CURSOR", StoreLikes.cursor)
-  useInfinitPaginationDoc(`${serverPaths.likesGet}?lat=${StoreForm.form?.location?.lat}&lng=${StoreForm.form?.location?.lng}&cursor=${StoreLikes.cursor}`, StoreLikes.cursor === null, (data) => StoreLikes.loadLiked(data), LIKES_ON_PAGE)
+  useInfinitPaginationDoc(`${serverPaths.likesGet}?lat=${StoreForm.form?.location?.lat}&lng=${StoreForm.form?.location?.lng}&cursor=${StoreLikes.cursor}`, StoreLikes.cursor === null, (data) => StoreLikes.lazyLoadLiked(data.data))
 
   return <section className={style.container}>
     <Title>Вы понравились этим пользователям</Title>

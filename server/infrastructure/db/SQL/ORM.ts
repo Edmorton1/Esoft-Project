@@ -15,7 +15,7 @@ const fieldsKey = (fields?: string) => `${fields ? '--fields: ' + fields : ''}`
 // ПРИНИМАЕТ ТОЛЬКО ID
 interface Ioptions {
   infinitPagination: {
-    cursor: number
+    cursor?: number
     limit: number
     orderBy: "asc" | "desc"
   }
@@ -112,11 +112,13 @@ class ORM implements IORM {
 
     if (table === 'forms') {
       query = requestToFormParams(params, fields)
-    } else if (options?.infinitPagination && options?.infinitPagination.cursor >= 0 && options.infinitPagination.limit) {
+    } else if (options?.infinitPagination && options.infinitPagination.limit) {
       const settings = options.infinitPagination
       query = query
         .limit(settings.limit)
-        .andWhere("id", settings.orderBy === "asc" ? ">" : "<", settings.cursor)
+        .andWhere(qb => {
+          if (settings.cursor) qb.where("id", settings.orderBy === "asc" ? ">" : "<", settings.cursor)
+        })
         .orderBy("id", settings.orderBy)
     }
     

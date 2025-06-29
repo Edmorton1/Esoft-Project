@@ -1,5 +1,4 @@
 import BaseController from "@s/config/base/Base.controller";
-import logger from "@s/helpers/logger/logger";
 import PostsService from "@s/infrastructure/endpoints/Posts/services/Posts.service";
 import PostsValidation from "@s/infrastructure/endpoints/Posts/validation/Posts.validation";
 import HttpContext from "@s/config/express/Http.context";
@@ -54,11 +53,12 @@ class PostsController extends BaseController implements IPostsController {
 
 	get: IPostsController["get"] = async ctx => {
     const [userid, cursor] = PostsValidation.get(ctx)
-    logger.info({posts_get_validate: userid, cursor})
 
     const total = await this.postsService.get(userid, cursor)
 
+		ctx.set("Access-Control-Expose-Headers", "is-author");
     ctx.set(IS_AUTHOR, userid === ctx.session.userid ? "true" : "false")
+		
     ctx.json(total)
     // УСТАНОВИТЬ ЗАГОЛОВОК is_author
   };
@@ -88,7 +88,6 @@ class PostsController extends BaseController implements IPostsController {
 	delete: IPostsController["delete"] = async ctx => {
     const post_id = PostsValidation.delete(ctx)
     const total = await this.postsService.delete(post_id, ctx.session.userid!)
-    logger.info({DELETED: total})
 
     if (total === null) {
       ctx.sendStatus(403)
