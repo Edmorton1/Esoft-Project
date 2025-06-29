@@ -76,7 +76,7 @@ function Header() {
       </AppBar>
       
       <Box>
-        <SidebarNav />
+        {/* <SidebarNav /> */}
         <Box component={"main"} className={main.main} sx={{backgroundColor: BG_ALT}}>
           <Outlet />
         </Box>

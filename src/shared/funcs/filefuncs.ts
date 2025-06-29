@@ -1,4 +1,4 @@
-export function toFormData(files: FileList) {
+export function toFormData(files: FileList): FormData {
   const formData = new FormData()
   if (files) {
     for (const file of files) {

@@ -2,7 +2,7 @@ import { IYandex } from "@s/helpers/yandex";
 import { IORM } from "@s/infrastructure/db/SQL/ORM";
 import PostsService from "@s/infrastructure/endpoints/Posts/services/Posts.service";
 import { IFilesService } from "@s/infrastructure/services/Files.service";
-import ConsoleService from "@s/tests/Console.service";
+import ConsoleService from "@s/tests/console.service";
 import { PostsDTOPut } from "@t/gen/dtoObjects";
 import { Posts } from "@t/gen/Users";
 
