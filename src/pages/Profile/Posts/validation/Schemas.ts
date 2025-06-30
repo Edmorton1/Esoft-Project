@@ -7,7 +7,7 @@ export const PostsDTOPutClientSchema = PostsSchema.omit({created_at: true})
     remove_old: z.array(z.string()),
   })
 
-export const PostsDTOClientSchema = PostsDTOPutClientSchema.omit({id: true})
+export const PostsDTOClientSchema = PostsDTOPutClientSchema.omit({id: true, remove_old: true})
   .extend({files: z.instanceof(FileList)})
 
 export type PostsDTOClient = z.infer<typeof PostsDTOClientSchema>

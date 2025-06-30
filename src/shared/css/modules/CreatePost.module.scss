@@ -1,12 +1,50 @@
+$p: 12px;
+
 .form {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+	display: flex;
+	flex-direction: column;
+	gap: $p;
 
 	&__createPost {
 		display: flex;
 		align-items: center;
-		gap: 7px;
-		padding: 10px;
+		gap: $p;
+		padding: $p;
+	}
+
+	&__cardContent {
+		display: flex;
+		justify-content: flex-start;
+		gap: $p;
+
+		&--cardMedia {
+			object-fit: cover;
+			max-width: 350px;
+			// max-height: 300px;
+			height: 300px;
+			align-self: center;
+		}
+	}
+
+	&__editPost {
+		display: flex;
+		align-items: center;
+		height: 100%;
+		gap: $p;
+		padding: $p;
+	}
+
+	&__deleteFiles {
+		display: flex;
+		justify-content: flex-start;
+		width: 100%;
+		gap: $p;
+		padding: $p;
+
+		&--cardButton {
+			display: flex;
+			flex: 1;
+			flex-direction: column;
+		}
 	}
 }

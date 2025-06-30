@@ -2,7 +2,6 @@ import AddFiles from "@/pages/Messages/InsideMessage/widget/Main/modules/compone
 import { PostsDTOClientSchema } from "@/pages/Profile/Posts/validation/Schemas";
 import StorePosts from "@/pages/Profile/stores/Store-Posts";
 import StoreUser from "@/shared/stores/Store-User";
-import { InputMui } from "@/shared/ui/components/MuiComponents";
 import { zodResolver } from "@hookform/resolvers/zod";
 import TextField from "@mui/material/TextField";
 import { Button } from "react-admin";
@@ -25,7 +24,7 @@ function CreatePost() {
 		<>
 			<Paper component={"form"} onSubmit={onSubmit} className={style.form__createPost}>
 				<AddFiles register={register("files")} />
-				<TextField {...register('text')} label={"Сообщение"} variant="outlined" sx={{flex: 1}} />
+				<TextField {...register('text')} label={"Текст"} variant="outlined" sx={{flex: 1}} />
 				<Button variant="contained" type="submit" sx={{height: "100%"}}>Готово</Button>
 			</Paper>
       {/* <button onClick={() => console.log(errors)}>Errors</button> */}
