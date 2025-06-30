@@ -13,10 +13,10 @@ import Paper from "@mui/material/Paper";
 
 interface propsInterface {
 	post: Posts;
-  handleSuccess: () => void;
+  EditToZero: () => void;
 }
 
-function Edit({ post, handleSuccess }: propsInterface) {
+function Edit({ post, EditToZero: handleSuccess }: propsInterface) {
   const {register, handleSubmit, formState: {errors}, setValue, control } = useForm({resolver: zodResolver(PostsDTOPutClientSchema), defaultValues: {text: post.text, userid: post.userid, remove_old: [], id: post.id}})
 
   const remove_old = useWatch({name: "remove_old", control})

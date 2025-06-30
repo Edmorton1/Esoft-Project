@@ -22,14 +22,14 @@ function PostsHead() {
 
 	return (
 		<section className={style.form}>
-			<CreatePost />
+			{StorePosts.canChange && <CreatePost />}
 			{StorePosts.posts?.map(e => {
         const handleDelete = () => StorePosts.delete(e.id)
 				const handleEdit = () => setEdit(e.id)
-				const handleSuccess = () => setEdit(0)
+				const EditToZero = () => setEdit(0)
 
 				if (edit === e.id) {
-					return <Edit post={e} key={e.id} handleSuccess={handleSuccess} />
+					return <Edit post={e} key={e.id} EditToZero={EditToZero} />
 				}
 
         return <Post post={e} handleEdit={handleEdit} handleDelete={handleDelete} key={e.id} />

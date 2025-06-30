@@ -13,6 +13,7 @@ import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { useRef, useState } from "react";
+import StorePosts from "@/pages/Profile/stores/Store-Posts";
 
 interface propsInterface {
 	post: Posts;
@@ -37,7 +38,7 @@ function Post({ post, handleEdit, handleDelete }: propsInterface) {
 					{StoreProfile.profile?.name}
 				</>}
 				subheader={<Subtitle>{new Date(post.created_at).toLocaleString()}</Subtitle>}
-				action={
+				action={StorePosts.canChange &&
 					<>
 					<IconButton ref={menuRef} onClick={onOpenMenu}>
 						<MoreVertIcon />
@@ -45,7 +46,7 @@ function Post({ post, handleEdit, handleDelete }: propsInterface) {
 					<Menu open={menu} onClose={onCloseMenu} anchorEl={menuRef.current}>
 							<MenuItem onClick={handleEdit}>Изменить</MenuItem>
 							<MenuItem onClick={handleDelete}>Удалить</MenuItem>
-						</Menu>
+					</Menu>
 					</>
 				}
 			/>
