@@ -1,9 +1,16 @@
 import * as style from "@/shared/css/pages/Main/Main.module.scss";
 import Information from "@/pages/Main/modules/information/Information";
 import Wallpaper from "@/pages/Main/modules/wallpaper/Wallpaper";
+import StoreUser from "@/shared/stores/Store-User";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 function Main() {
+	const navigate = useNavigate()
 
+	useEffect(() => {
+		navigate("/profile/16")
+	}, [])
 
 	return (
 		<main className={style.container}>

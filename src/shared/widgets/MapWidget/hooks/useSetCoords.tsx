@@ -17,7 +17,8 @@ function useSetCoords(mapgl: mapDTO[0], map: mapDTO[1], callback: LocationCallba
       anchor: [24, 44]
     })
 
-    map.on('click', async (e) => {callback(e.lngLat), new mapgl.HtmlMarker(map, {
+    map.on('click', async (e) => {
+      callback(e.lngLat), new mapgl.HtmlMarker(map, {
       coordinates: e.lngLat,
       html: marker,
       anchor: [24, 44]

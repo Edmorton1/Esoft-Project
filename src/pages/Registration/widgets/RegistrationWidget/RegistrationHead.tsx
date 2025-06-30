@@ -1,6 +1,6 @@
 import RegistrationBody from "@/pages/Registration/widgets/RegistrationWidget/RegistrationBody";
 import { observer } from "mobx-react-lite";
-import { FieldErrors, FormProvider, useForm } from "react-hook-form"
+import { FormProvider, useForm } from "react-hook-form"
 import { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { RegistrationDTOClient, RegistrationDTOClientSchema } from "@t/client/RegistrationZOD";

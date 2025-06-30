@@ -79,13 +79,13 @@ class LikesModule implements LikesModuleRepo {
 		})
 			.select(totalFields)
 			.limit(LIKES_ON_PAGE)
-			.orderBy("id");
+			.orderBy("id", "desc");
 		knexDistance && totalFields.push(knexDistance);
 
 		this.logger.info({ ZAPROS: query.toSQL().toNative() });
 
 		if (cursor) {
-			query.andWhere("forms.id", ">", cursor);
+			query.andWhere("forms.id", "<", cursor);
 		}
 
 		return query;
@@ -104,7 +104,7 @@ class LikesModule implements LikesModuleRepo {
 			})
 			.where("likes.userid", id)
 			.whereNotNull("likes2.id")
-			.orderBy("likes.created_at", "desc");
+			.orderBy("likes.id", "desc");
 
 		this.logger.info({ QUERY_SQL: query.toSQL().toNative() });
 

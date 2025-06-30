@@ -13,7 +13,7 @@ function MessageContainer() {
 
     return <section className={styles.section}>
     {StoreMessage.lastMessages?.map(e => <MessageBranch id={e.form.id} avatar={e.form.avatar} name={e.form.name} text={e.message.text} created_at={e.message.created_at} key={e.form.id}/>)}
-    <button onClick={() => console.log(StoreMessage.lastMessages)}>LOG</button>
+    {/* <button onClick={() => console.log(StoreMessage.lastMessages)}>LOG</button> */}
   </section>
 }
 

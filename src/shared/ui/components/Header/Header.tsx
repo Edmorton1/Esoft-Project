@@ -6,7 +6,6 @@ import AppBar from "@mui/material/AppBar"
 import Toolbar from "@mui/material/Toolbar"
 import Box from "@mui/material/Box"
 import { LOGO_IMG_BIG } from "@shared/PUBLIC"
-// import * as sharedStyle from "@/shared/css/components/Shared.module.scss"
 import * as style from "@/shared/css/components/Header.module.scss"
 import Button from "@mui/material/Button"
 import LoginIcon from '@mui/icons-material/Login';
@@ -36,7 +35,7 @@ function Header() {
           <SearchHeader />
         </div>
         
-        <button onClick={() => console.log(
+        {/* <button onClick={() => console.log(
           'User: ', toJS(StoreUser.user),
           'Form:', toJS(StoreForm.form),
           'Messages:', toJS(StoreMessagesManager.chats),
@@ -44,7 +43,7 @@ function Header() {
           "Tags:", toJS(StoreTags.tags),
           toJS(StoreUsers.users)
           )}>Вывести сторы
-        </button>
+        </button> */}
 
         <div className={style.header__row}>
           <ThemeButton />
@@ -62,24 +61,13 @@ function Header() {
         
         {/* <NavButton to={`${paths.profile}/2`}>profile 2</NavButton>
         <NavButton to={paths.room}>ROOM</NavButton>
-        <button onClick={() => console.log(
-          'User: ', toJS(StoreUser.user),
-          'Form:', toJS(StoreForm.form),
-          'Messages:', toJS(StoreMessages.messages),
-          'Likes:', toJS(StoreLikes.likes),
-          "Tags:", toJS(StoreTags.tags),
-          toJS(StoreUsers.users)
-          )}>Вывести сторы
-        </button>
         <button onClick={() => StoreGlobal.sendInfo('asadas', 'blue')}>Инфо</button> */}
         </Toolbar>
       </AppBar>
-      
-      <Box>
-        {/* <SidebarNav /> */}
-        <Box component={"main"} className={main.main} sx={{backgroundColor: BG_ALT}}>
-          <Outlet />
-        </Box>
+    
+      <Box component={"main"} className={main.main} sx={{backgroundColor: BG_ALT}}>
+        <SidebarNav />
+        <Outlet />
       </Box>
     </>
 }

@@ -9,7 +9,7 @@ import DarkModeIcon from '@mui/icons-material/DarkMode';
 function ThemeButton() {
   const handleClick = useContext(ThemeContext)
 
-  return <Button sx={sxMinButton} variant="text" color={"salmon"} onClick={handleClick}><ContrastIcon /></Button>
+  return <Button variant="contained" color={"primary"} onClick={handleClick}>Сменить тему</Button>
 }
 
 export default ThemeButton

@@ -1,6 +1,7 @@
 @use "@/shared/css/const" as c;
 
 .main {
+  position: relative;
   // display: flex;
   // flex-direction: column;
   // align-items: flex-start;
@@ -9,8 +10,9 @@
   // max-width: c.$w;
   width: c.$w;
   // justify-self: center;
-  margin: 0 auto;
+  margin: 0 auto; 
   margin-top: c.$hh;
   padding: c.$p;
   border-radius: 32px;
+  // margin-left: 350px;
 }

@@ -28,7 +28,7 @@ function RegistrationBody({onSubmit}: propsInterface) {
   const tags: TagsDTO[] = useWatch({name: 'tags'})
 
   return <form onSubmit={onSubmit} className={style.form}>
-  <button onClick={() => console.log(errors)}>errors</button>
+  {/* <button onClick={() => console.log(errors)}>errors</button> */}
   {/* <div>Добро пожаловать: {StoreUser.user?.email}</div>
   <button onClick={() => console.log(errors)}>errors</button>
   <button onClick={() => console.log(toJS(StoreRegistration.defaultCoords), toJS(StoreRegistration.coords))}>LOG</button> */}
@@ -81,6 +81,7 @@ function RegistrationBody({onSubmit}: propsInterface) {
           <InputMui id="city" text="Город" register={register} disabled={!!StoreRegistration.coords || !!StoreRegistration.defaultCoords} />
         </Box>
 
+        <Typography variant="h4" color="warning" textAlign={"center"}>ВНИМАНИЕ! ЕСЛИ ВЫ УКАЖЕТЕ ГЕОЛОКАЦИЮ ЕЁ БУДУТ ВИДЕТЬ ВСЕ, КТО ЗАЙДЁТ НА САЙТ!</Typography>
         <MapWidget height="1000px" width="100%" callback={(data) => StoreRegistration.setCoords(data)} />
         <Button variant="contained" type="submit">Готво</Button>
         

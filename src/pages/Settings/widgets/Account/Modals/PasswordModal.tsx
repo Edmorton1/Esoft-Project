@@ -9,6 +9,8 @@ import * as style from "@/shared/css/modules/PasswordModal.module.scss"
 import Typography from "@mui/material/Typography"
 import Button from "@mui/material/Button"
 import Divider from "@mui/material/Divider"
+import Box from "@mui/material/Box"
+import { BG_PAPER } from "@shared/COLORS"
 
 function PasswordModal() {
   const {register, handleSubmit, formState: {errors}, setError} = useForm({resolver: zodResolver(PasswordSchema)})
@@ -21,13 +23,13 @@ function PasswordModal() {
   }
 
   return <BaseModal Store={StoreSettings}>
-    <form className={style.container} onSubmit={handleSubmit(data => onSubmit(data))}>
+    <Box bgcolor={BG_PAPER} className={style.container} onSubmit={handleSubmit(data => onSubmit(data))}>
       <Typography variant="h4">Сменить пароль</Typography>
       <InputMui<RegType> register={register} text="Старый пароль" id="pass" error={errors.pass} />
       <InputMui<RegType> register={register} text="Новый пароль" id="new" error={errors.new} />
       <InputMui<RegType> register={register} text="Повторите пароль" id="repeat" error={errors.repeat} />
       <Button variant="contained" type="submit">Готово</Button>
-    </form>
+    </Box>
   </BaseModal>
 }
 

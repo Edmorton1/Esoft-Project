@@ -13,6 +13,9 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import * as style from "@/shared/css/modules/SidebarNav.module.scss"
 import Box from "@mui/material/Box";
 import { BG_PAPER } from "@shared/COLORS";
+import StoreUser from "@/shared/stores/Store-User";
+import HomeIcon from '@mui/icons-material/Home';
+import Typography from "@mui/material/Typography";
 
 function SidebarNav() {
 	const HeadButton = ({
@@ -22,7 +25,7 @@ function SidebarNav() {
 		isActive: boolean;
 		children: ReactNode;
 	}) => (
-		<Button color={"salmon"} variant={isActive ? "contained" : "outlined"} sx={{width: "100%"}}>
+		<Button color={"inherit"} variant={isActive ? "contained" : "outlined"} sx={{textTransform: "none", width: "100%", display: "flex", alignItems: "center", justifyContent: "flex-start", gap: "10px"}}>
 			{children}
 		</Button>
 	);
@@ -35,32 +38,56 @@ function SidebarNav() {
 		</NavLink>
 	);
 
-	return <Box className={style.main} bgcolor={BG_PAPER}>
-			<NavButton to={"/"}>
-				Главная <DomainIcon />
-			</NavButton>
-			<NavButton to={paths.registration}>
-				Регистрация <AppRegistrationIcon />
-			</NavButton>
-			<NavButton to={paths.messages}>
-				Сообщения <ForumIcon />
-			</NavButton>
-			<NavButton to={paths.users}>
-				Пользователи <GroupIcon />
-			</NavButton>
-			<NavButton to={paths.map}>
-				MAP <MapIcon />
-			</NavButton>
-			<NavButton to={paths.liked}>
-				Liked <ThumbUpIcon />
-			</NavButton>
-			<NavButton to={paths.pairs}>
-				Пары <FavoriteIcon />
-			</NavButton>
-			<NavButton to={paths.settings}>
-				Настройки <SettingsIcon />
-			</NavButton>
-		</Box>
+return (
+  <Box className={style.main} bgcolor={BG_PAPER}>
+    {StoreUser.user ? (
+      <NavButton to={`${paths.profile}/${StoreUser.user.id}`}>
+        <HomeIcon />
+        <Typography>Мой профиль</Typography>
+      </NavButton>
+    ) : (
+      <NavButton to={"/"}>
+        <DomainIcon />
+        <Typography>Главная</Typography>
+      </NavButton>
+    )}
+
+    {!StoreUser.user &&<NavButton to={paths.registration}>
+      <AppRegistrationIcon />
+      <Typography>Регистрация</Typography>
+    </NavButton>}
+
+    {StoreUser.user && <NavButton to={paths.messages}>
+      <ForumIcon />
+      <Typography>Сообщения</Typography>
+    </NavButton>}
+
+    <NavButton to={paths.users}>
+      <GroupIcon />
+      <Typography>Пользователи</Typography>
+    </NavButton>
+
+    <NavButton to={paths.map}>
+      <MapIcon />
+      <Typography>Карта</Typography>
+    </NavButton>
+
+    {StoreUser.user && <NavButton to={paths.liked}>
+      <ThumbUpIcon />
+      <Typography>Лайки</Typography>
+    </NavButton>}
+
+    {StoreUser.user && <NavButton to={paths.pairs}>
+      <FavoriteIcon />
+      <Typography>Пары</Typography>
+    </NavButton>}
+
+    {StoreUser.user && <NavButton to={paths.settings}>
+      <SettingsIcon />
+      <Typography>Настройки</Typography>
+    </NavButton>}
+  </Box>
+);
 }
 
 export default SidebarNav;

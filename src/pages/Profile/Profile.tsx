@@ -27,7 +27,7 @@ function Profile() {
   return <section className={style.container}>
     <Title>{StoreProfile.profile.name}</Title>
     <UserInfo />
-
+    <Title>Посты пользователя</Title>
     <PostsHead />
   </section>
 }
