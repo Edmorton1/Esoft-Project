@@ -1,8 +1,14 @@
+import AddFiles from "@/pages/Messages/InsideMessage/widget/Main/modules/components/kit/AddFiles";
 import { PostsDTOClientSchema } from "@/pages/Profile/Posts/validation/Schemas";
 import StorePosts from "@/pages/Profile/stores/Store-Posts";
 import StoreUser from "@/shared/stores/Store-User";
+import { InputMui } from "@/shared/ui/components/MuiComponents";
 import { zodResolver } from "@hookform/resolvers/zod";
+import TextField from "@mui/material/TextField";
+import { Button } from "react-admin";
 import { useForm } from "react-hook-form";
+import Paper from "@mui/material/Paper";
+import * as style from "@/shared/css/modules/CreatePost.module.scss"
 
 function CreatePost() {
 	const {
@@ -17,14 +23,12 @@ function CreatePost() {
 
 	return (
 		<>
-			<form
-				onSubmit={onSubmit}
-				style={{ display: "flex", flexDirection: "column", width: "300px" }}>
-				<input {...register("text")} type="text" />
-				<input {...register("files")} type="file" multiple />
-				<button>Готово</button>
-			</form>
-      <button onClick={() => console.log(errors)}>Errors</button>
+			<Paper component={"form"} onSubmit={onSubmit} className={style.form__createPost}>
+				<AddFiles register={register("files")} />
+				<TextField {...register('text')} label={"Сообщение"} variant="outlined" sx={{flex: 1}} />
+				<Button variant="contained" type="submit" sx={{height: "100%"}}>Готово</Button>
+			</Paper>
+      {/* <button onClick={() => console.log(errors)}>Errors</button> */}
 		</>
 	);
 }

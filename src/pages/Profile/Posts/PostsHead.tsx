@@ -7,18 +7,22 @@ import { observer } from "mobx-react-lite";
 import { useState } from "react";
 import Edit from "@/pages/Profile/Posts/components/Edit";
 import Post from "@/pages/Profile/Posts/components/Post";
+import * as style from "@/shared/css/modules/CreatePost.module.scss"
 
 function PostsHead() {
 	const [edit, setEdit] = useState(0)
 
+	// console.log("ПЕРЕД THEN CURSOR", StorePosts.cursor)
+
 	useInfinitPaginationDoc(
-		`${serverPaths.postsGet}/${StoreProfile.profile?.id}?cursor=${StorePosts.cursor}`,
-		StorePosts.cursor === null,
+		{main: `${serverPaths.postsGet}/${StoreProfile.profile?.id}`},
 		data => StorePosts.lazyLoadPosts(data),
+		"desc"
 	);
 
 	return (
-		<section>
+		<section className={style.form}>
+			<CreatePost />
 			{StorePosts.posts?.map(e => {
         const handleDelete = () => StorePosts.delete(e.id)
 				const handleEdit = () => setEdit(e.id)
@@ -30,7 +34,6 @@ function PostsHead() {
 
         return <Post post={e} handleEdit={handleEdit} handleDelete={handleDelete} key={e.id} />
       })}
-      <CreatePost />
 		</section>
 	);
 }

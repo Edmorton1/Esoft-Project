@@ -13,7 +13,6 @@ import { z } from "zod";
 
 class StorePosts {
 	posts: Posts[] | null = null;
-	cursor: number | null = null;
 	canChange: boolean = false;
 
 	constructor() {
@@ -33,7 +32,7 @@ class StorePosts {
 			this.canChange = data.headers["is-author"] === "true";
 			this.posts = parsed;
 		}
-		this.cursor = parsed[parsed.length - 1].id;
+		// this.cursor = parsed[parsed.length - 1].id;
 	};
 
 	post = async (dataRaw: PostsDTOClient) => {

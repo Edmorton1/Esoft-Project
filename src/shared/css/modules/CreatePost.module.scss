@@ -1,0 +1,12 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+	&__createPost {
+		display: flex;
+		align-items: center;
+		gap: 7px;
+		padding: 10px;
+	}
+}

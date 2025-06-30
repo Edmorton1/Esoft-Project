@@ -11,7 +11,6 @@ import StorePairs from "@/shared/stores/Store-Pairs";
 class StoreLikes {
   likes: {sent: {id: number, liked_userid: number}[]; received: {id: number, userid: number}[]} | null = null;
   liked: Form[] | null = null;
-  cursor: number | null = null
 
   constructor() {
     makeAutoObservable(this)
@@ -38,9 +37,6 @@ class StoreLikes {
     } else {
       this.liked = data
     }
-    
-    console.log("THIS CURSOR NEW ", data, this.cursor)
-    this.cursor = data[data.length - 1]?.id
         
     // console.log(this.liked, this.liked)
     console.log(toJS(this.liked))
