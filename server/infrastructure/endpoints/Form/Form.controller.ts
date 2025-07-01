@@ -1,5 +1,5 @@
 import BaseController from "@s/config/base/Base.controller";
-import { requestToLike } from "@s/infrastructure/db/SQL/SQLform";
+import { requestToFormParams, requestToLike, standartToForm } from "@s/infrastructure/db/SQL/SQLform";
 import FormValidation from "@s/infrastructure/endpoints/Form/validation/Form.validation";
 import HttpContext from "@s/config/express/Http.context";
 import { FORM_SEARCH_LIMIT, pickFieldsForm } from "@shared/CONST";
@@ -15,14 +15,25 @@ class FormController extends BaseController {
         method: "get",
         handle: this.searchForm,
       },
+      {
+        path: `${serverPaths.profileGet}/:id`,
+        method: "get",
+        handle: this.profileGet
+      }
     ])
   }
   searchForm = async (ctx: HttpContext) => {
-    const search = FormValidation.searchForm(ctx)
+    const [search, lnglat] = FormValidation.searchForm(ctx)
     // const rawSearch = requestToForm(undefined, {name: })
-    let query = requestToLike({name: "name", param: search}, Object.keys(pickFieldsForm).join(', '))
+    let query = requestToLike({name: "name", param: search}, Object.keys(pickFieldsForm).filter(e => e !== "distance").join(', '), lnglat)
     query = query.limit(FORM_SEARCH_LIMIT)
 
+    ctx.json(await query)
+  }
+
+  profileGet = async (ctx: HttpContext) => {
+    const [id, lnglat] = FormValidation.profileGet(ctx)
+    const query = requestToFormParams({id}, undefined, lnglat)
     ctx.json(await query)
   }
 }

@@ -2,6 +2,7 @@ import {URL_SERVER} from "@shared/URLS";
 import axios, { AxiosError } from "axios";
 import {PREFIX} from "@shared/CONST";
 import StoreForm from "@/shared/stores/Store-Form";
+import { XLNGLAT } from "@shared/HEADERS";
 
 const $api = axios.create({
 	baseURL: URL_SERVER + PREFIX,
@@ -13,7 +14,7 @@ $api.interceptors.request.use(config => {
 	const lat = StoreForm.form?.location?.lat
 
 	if (lng !== null && lat !== null) {
-		config.headers['x-lnglat'] = JSON.stringify([lng, lat])
+		config.headers[XLNGLAT] = JSON.stringify([lng, lat])
 	}
 
 	return config

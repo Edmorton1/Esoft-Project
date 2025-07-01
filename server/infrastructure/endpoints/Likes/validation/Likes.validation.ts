@@ -3,8 +3,9 @@ import HttpContext from "@s/config/express/Http.context";
 import { LikesDTO } from "@t/gen/dtoObjects";
 import { zstrnum } from "@t/gen/Schemas";
 import { z } from "zod";
-
-export type lnglatType = [number, number]
+import { XLNGLAT } from "@shared/HEADERS";
+import { lnglatParse } from "@s/infrastructure/endpoints/Likes/validation/Headers.parser";
+import { lnglatType } from "@t/gen/types";
 
 const lngLatValidate = z.preprocess(val => {
   if (Number.isNaN(Number(val))) {
@@ -25,12 +26,14 @@ class LikesValidation {
     const parse = zstrnum.safeParse(ctx.query.cursor)
     const cursor = parse.success ? parse.data : undefined
 
-    const lng = lngLatValidate.parse(ctx.query.lng)
-    const lat = lngLatValidate.parse(ctx.query.lat)
-    const lnglat: lnglatType | undefined = lng && lat ? [lng, lat] : undefined
-    
-    logger.info({ЛНГ_ЛАТ: lng, lat})
-    logger.info({ХЕДЫРС: ctx.headers('x-lnglat')})
+    // const lng = lngLatValidate.parse(ctx.query.lng)
+    // const lat = lngLatValidate.parse(ctx.query.lat)
+    // const lnglat: lnglatType | undefined = lng && lat ? [lng, lat] : undefined
+    // JSON.parse(ctx.headers(XLNGLAT))
+    const lnglat = lnglatParse(ctx.headers(XLNGLAT))
+
+    // logger.info({ЛНГ_ЛАТ: lng, lat})
+    logger.info({ХЕДЫРС: ctx.headers(XLNGLAT)})
 
     return [lnglat, cursor]
   }

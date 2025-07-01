@@ -5,7 +5,6 @@ import { toCl } from "@shared/MAPPERS";
 import { makeAutoObservable, runInAction, toJS } from "mobx";
 import StoreUser from "@/shared/stores/Store-User";
 import { serverPaths } from "@shared/PATHS";
-import { FormWithDistanse } from "@t/gen/types";
 import StorePairs from "@/shared/stores/Store-Pairs";
 import { LikesDeleteSocketDTO, LikesSendSocketDTO } from "@t/gen/socketTypes";
 
@@ -26,10 +25,8 @@ class StoreLikes {
     // console.log(toJS(this.likes))
   }
 
-  //@ts-ignore
-  // FormWithDistanse
-  // ДИСТАНЦИЮ ПОТОМ СЮДА ДОБАВИТЬ
   lazyLoadLiked = async (data: Form[]) => {
+    console.log(data)
     // const forms = toCl(await $api.get(`${serverPaths.likesGet}/2?lat=${StoreForm.form?.location?.lat}&lng=${StoreForm.form?.location?.lng}`))
     // this.liked = data
     // console.log(toJS(data))

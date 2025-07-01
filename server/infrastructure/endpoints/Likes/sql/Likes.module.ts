@@ -49,30 +49,28 @@ class LikesModule implements LikesModuleRepo {
 	getManyByParam: LikesModuleRepo["getManyByParam"] = (
 		name,
 		need,
-		distance,
+		lnglat,
 		cursor,
 	) => {
+		this.logger.info({ЛНГ_ЛАТ_В_МОДУЛЕ: lnglat})
 		// logger.info({GET_BY_MANY_PARAMS: ""});
-		const knexDistance = distance
-			? db.raw(
-					`
-      ROUND(
-        (ST_Distance(
-        location::geography,
-        ST_SetSRID(ST_MakePoint(?, ?), 4326)::geography
-        ) / 1000)::numeric,
-        2
-      ) AS distance`,
-					distance,
-				)
-			: undefined;
+		// const knexDistance = lnglat
+		// 	? db.raw(
+		// 			`
+    //   ROUND(
+    //     (ST_Distance(
+    //     location::geography,
+    //     ST_SetSRID(ST_MakePoint(?, ?), 4326)::geography
+    //     ) / 1000)::numeric,
+    //     2
+    //   ) AS distance`,
+		// 			lnglat,
+		// 		)
+		// 	: undefined;
 
 		// const fields = 'id, name sex, avatar, age, description, target, city, tags, location'
 
-		//@ts-ignore
-		// ТУТ НАДО БУДЕТ ПОТОМ СДЕЛАТЬ ЧТОБЫ ОН ФИЛЬТРОВАЛ НЕ ПО ID, А ПО СОЗДАНИИ ЛАЙКА
-
-		const totalFields = fieldsToArr(undefined, "forms", true);
+		const totalFields = fieldsToArr(undefined, "forms", true, lnglat);
 		const query = requestToFormManyParams({
 			name: name as string,
 			params: need,
@@ -80,7 +78,7 @@ class LikesModule implements LikesModuleRepo {
 			.select(totalFields)
 			.limit(LIKES_ON_PAGE)
 			.orderBy("id", "desc");
-		knexDistance && totalFields.push(knexDistance);
+		// knexDistance && totalFields.push(knexDistance);
 
 		this.logger.info({ ZAPROS: query.toSQL().toNative() });
 

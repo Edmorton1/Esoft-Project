@@ -1,7 +1,7 @@
 import db from "@s/infrastructure/db/db";
 import { AllRowsFormShort } from "@s/infrastructure/db/SQL/AllRowsFormWithoutLocation";
 import logger from "@s/helpers/logger/logger";
-import { tables } from "@t/gen/types"
+import { lnglatType, tables } from "@t/gen/types"
 import { getSchemaByTable } from "@t/shared/sharedTypes"
 import type { Knex } from "knex";
 import { z } from "zod";
@@ -9,7 +9,7 @@ import crypto from "crypto"
 
 type RawString = (string | Knex.Raw<any>)[]
 
-export const fieldsToArr = (fields: string | undefined, table: tables, includeTags: boolean = false): RawString => {
+export const fieldsToArr = (fields: string | undefined, table: tables, includeTags: boolean = false, lnglat?: lnglatType): RawString => {
   logger.info({ЗАПРОС_НА_ПОЛЯ: fields})
   if (table === 'forms') {
     let parsed: RawString = fields?.trim()?.split(',').map(e => 'forms.' + e.trim()) ?? [...AllRowsFormShort.map(e => 'forms.' + e), 'forms.location', includeTags && 'forms.tags'].filter(e => e !== false)
@@ -24,7 +24,16 @@ export const fieldsToArr = (fields: string | undefined, table: tables, includeTa
       } return item
     })
 
-
+    if (lnglat) parsed.push(db.raw(`
+      ROUND(
+        (ST_Distance(
+        location::geography,
+        ST_SetSRID(ST_MakePoint(?, ?), 4326)::geography
+        ) / 1000)::numeric,
+        2
+      ) AS distance`,
+					lnglat,
+		))
     logger.info({parsingFields: parsed})
    return parsed
   };

@@ -1,3 +1,4 @@
+import { lnglatParse } from "@s/infrastructure/endpoints/Likes/validation/Headers.parser";
 import { FormSchema, TargetTypeSchema } from "@t/gen/Users";
 import { queryBoolean } from "@t/shared/zodSnippets";
 import { z } from "zod";
@@ -32,13 +33,8 @@ export const zodParams = z.object({
   name: z.coerce.string().optional(),
 
   location: z.preprocess(val => {
-    if (typeof val === 'string') {
-      try {
-        return JSON.parse(val)
-      } catch {
-        return undefined
-      }
-    } return undefined
+    //@ts-ignore
+    return lnglatParse(val)
   }, z.tuple([z.coerce.number(), z.coerce.number()]).optional()),
 
   params: z.preprocess(val => {

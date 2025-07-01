@@ -21,6 +21,7 @@ class StoreSearchForm {
     if (search.length < 2) return this.finded = [];
 
     const { data } = await $api.get(`${serverPaths.searchForm}/${search}`)
+    console.log("SEARCH DATA", data)
     const parsed = z.array(MicroCardSchema).parse(data)
     this.finded = parsed
     console.log(parsed)

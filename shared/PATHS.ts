@@ -58,6 +58,7 @@ export const serverPaths = {
   profilePut: "/profilePut",
 
   searchForm: "/searchForm",
+  profileGet: "/profileGet",
 
   postsGet: "/postsGet",
   postsPost: "/postsPost",

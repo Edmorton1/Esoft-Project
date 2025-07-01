@@ -13,12 +13,14 @@ import Chip from "@mui/material/Chip"
 import PostsHead from "@/pages/Profile/Posts/PostsHead"
 import Title from "@/shared/ui/Ttile"
 import UserInfo from "@/pages/Profile/widgets/UserInfo/UserInfo"
+import { serverPaths } from "@shared/PATHS"
 
 function Profile() {
   const id = Number(useParams().id)
   const last_active = useLastActive(StoreForm.form?.last_active)
+  console.log("/forms", `/${serverPaths.forms}`)
 
-  useGetById(`/forms/${id}`, {returnOne: true, callback: StoreProfile.initial})
+  useGetById(`${serverPaths.profileGet}/${id}`, {returnOne: true, callback: StoreProfile.initial})
 
   if (StoreProfile.profile === null) {
     return <Loading />

@@ -25,6 +25,7 @@ function MicroCard({MicroForm, handleClick}: propsInterface) {
         <Link to={url} onClick={handleClick}><UnderTypo>{MicroForm.name}</UnderTypo></Link>
         <Typography>Локация: {MicroForm.city}</Typography>
         <Typography>Возраст: {MicroForm.age}</Typography>
+        {MicroForm.distance && <Typography>Дистаниця: {MicroForm.distance} км</Typography>}
         <LastActive last_active={MicroForm.last_active} />
       </Box>}
     />

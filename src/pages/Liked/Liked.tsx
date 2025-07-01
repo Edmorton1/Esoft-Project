@@ -6,7 +6,6 @@ import * as style from "@/shared/css/pages/Liked.module.scss"
 import { observer } from "mobx-react-lite"
 import Button from "@mui/material/Button"
 import useInfinitPaginationDoc from "@/shared/hooks/usePagination/useInfinitPaginationDoc"
-import { LIKES_ON_PAGE } from "@shared/CONST"
 import Paper from "@mui/material/Paper"
 import Title from "@/shared/ui/Ttile"
 import StorePairs from "@/shared/stores/Store-Pairs"
@@ -31,9 +30,7 @@ function Liked() {
           {/* <Link to={`${paths.messages}/${e.id}`}><Button sx={{width: "100%"}} variant="contained">Написать</Button></Link> */}
             
           {/* <Button variant="contained" color="success" onClick={() => StoreLikes.sendLike(e.id)}>{StoreLikes.likes?.sent.find(item => item.liked_userid === e.id) ? 'Убрать лайк' : "Лайкнуть"}</Button> */}
-          {/* //@ts-ignore */}
-          {/* В БУДУЩЕМ ВЕРНУТЬ ДИСТАНЦИЮ  */}
-          {/* <p>Дистанция: {e.distance}</p> */}
+          <p>Дистанция: {e.distance}</p>
           <p>{StoreLikes.likes?.sent.find(item => item.liked_userid === e.id) ? 'ТЫ ЕГО ЛАЙКНУЛ' : "НЕ ЛАЙКАЛ"}</p>
           <Button variant="contained" color="success" onClick={resolveHandle}>Одобрить</Button>
           <Button color="error" variant="contained" onClick={rejectHandle}>Отклонить</Button>

@@ -3,11 +3,12 @@ import { fieldsToArr } from "@s/infrastructure/db/SQL/utils";
 import logger from "@s/helpers/logger/logger";
 import { Form } from "@t/gen/Users";
 import { Knex } from "knex";
+import { lnglatType } from "@t/gen/types";
 
-export const standartToForm = (fields?: string) => {
+export const standartToForm = (fields?: string, lnglat?: lnglatType) => {
   let query = db('forms');
   logger.info({sql: query.toSQL().toNative()}, 'toNative1');
-  const totalFields = fieldsToArr(fields, 'forms', true)
+  const totalFields = fieldsToArr(fields, 'forms', true, lnglat)
 
   query = query.select(totalFields)
     .leftJoin("user_tags", "forms.id", "user_tags.id")
@@ -16,8 +17,8 @@ export const standartToForm = (fields?: string) => {
   return query
 }
 
-export const requestToFormParams = (params: Partial<Form>, fields?: string): Knex.QueryBuilder<any> => {
-  let query = standartToForm(fields)
+export const requestToFormParams = (params: Partial<Form>, fields?: string, lnglat?: lnglatType): Knex.QueryBuilder<any> => {
+  let query = standartToForm(fields, lnglat)
 
   const prefixedParams = Object.fromEntries(
     Object.entries(params).map(([key, value]) => [`forms.${key}`, value]),
@@ -36,9 +37,9 @@ export const requestToFormManyParams = (manyParams: {name: string, params: any[]
   return query
 }
 
-export const requestToLike = (params: {name: keyof Form, param: string}, fields?: string): Knex.QueryBuilder<any> => {
+export const requestToLike = (params: {name: keyof Form, param: string}, fields?: string, lnglat?: lnglatType): Knex.QueryBuilder<any> => {
   const {name, param} = params
-  let query = standartToForm(fields)
+  let query = standartToForm(fields, lnglat)
 
   query = query.whereILike(name, `%${param}%`)
   

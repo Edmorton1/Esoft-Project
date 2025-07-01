@@ -7,6 +7,7 @@ import Stack from "@mui/material/Stack";
 import Paper from "@mui/material/Paper";
 import * as style from "@/shared/css/pages/Profile.module.scss"
 import { BG_ALT, BG_PAPER } from "@shared/COLORS";
+import StorePosts from "@/pages/Profile/stores/Store-Posts";
 
 const sxFont = {fontSize: "20px"}
 
@@ -45,6 +46,10 @@ function UserInfo() {
 							<ReadMore component={profile.description} len={110} />
 						</Typography>
 					)}
+
+					{profile.distance && !StorePosts.canChange && <Typography sx={sxFont}>
+						<strong>Дистанция:</strong> {profile.distance} км
+					</Typography>}
 
 					{profile.tags?.length && (
 						<Box>

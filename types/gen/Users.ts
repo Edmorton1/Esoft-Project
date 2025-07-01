@@ -79,6 +79,7 @@ export const FormSchema = z.object({
 	tags: z.preprocess(nullToUndefined, z.array(TagsSchema).optional()),
 	// last_active: z.preprocess(date => JSON.stringify(date), z.string())
 	last_active: zISOString,
+	distance: z.preprocess(nullToUndefined, z.string().optional()) 
 	// likes: z.array(z.number()).optional(),
 	// message: z.array(MessageSchema).optional(),
 });

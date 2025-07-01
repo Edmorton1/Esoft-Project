@@ -1,15 +1,15 @@
-import { FormWithDistanse, lnglatType } from "@t/gen/types";
+import { lnglatType } from "@t/gen/types";
 import { Form } from "@t/gen/Users";
 import { makeAutoObservable } from "mobx";
 
 type requestType = {
-  forms: FormWithDistanse[],
+  forms: Form[],
   count: number
   geolocation: lnglatType
 }
 
 class StoreUsers {
-  users: FormWithDistanse[] | null = null
+  users: Form[] | null = null
   pagesCount: number | null = null
   
   constructor() {

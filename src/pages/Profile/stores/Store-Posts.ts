@@ -21,6 +21,9 @@ class StorePosts {
 
 	lazyLoadPosts = (data: AxiosResponse<any, any>) => {
 		// this.canChange = data.headers[IS_AUTHOR]
+
+		//@ts-ignore
+		// ЗДЕСЬ ПОТОМ ПОМЕНЯТЬ НА ПЕРЕМЕННУЮ IS_AUTHOR
 		console.log("HEADERS", data.headers["is-author"] === "true");
 
 		const parsed = z.array(PostsSchema).parse(data.data);

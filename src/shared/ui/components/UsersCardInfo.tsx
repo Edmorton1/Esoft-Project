@@ -3,19 +3,18 @@ import Card from "@mui/material/Card"
 import CardContent from "@mui/material/CardContent"
 import Chip from "@mui/material/Chip"
 import Typography from "@mui/material/Typography"
-import { FormWithDistanse } from "@t/gen/types"
 import { observer } from "mobx-react-lite"
 import * as style from "@/shared/css/components/UserCard.module.scss"
 import Divider from "@mui/material/Divider"
 import { ReactNode } from "react"
 import ReadMore from "@/shared/ui/components/ReadMore"
-import { Tags } from "@t/gen/Users"
+import { Form, Tags } from "@t/gen/Users"
 import { BG_ALT } from "@shared/COLORS"
 import { paths } from "@shared/PATHS"
 import AvatarImg from "@/shared/ui/components/mui_styled/AvatarImg"
 import { Link } from "react-router-dom"
 
-function UsersCardInfo({form, children}: {form: FormWithDistanse, children?: ReactNode}) {
+function UsersCardInfo({form, children}: {form: Form, children?: ReactNode}) {
   // console.log("TAGS", toJS(form.tags))
   const url = `${paths.profile}/${form.id}`
 
