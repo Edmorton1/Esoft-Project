@@ -12,6 +12,7 @@ import ModalFile from "@/shared/ui/components/modal/ModalFile"
 import LoginModal from "@/pages/Login/LoginModal"
 import PasswordModal from "@/pages/Settings/widgets/Account/Modals/PasswordModal"
 import ThrowError from "@/errors/ThrowError"
+import ModalExit from "@/shared/ui/components/Exit/ModalExit"
 
 function Initialization() {
 
@@ -34,6 +35,7 @@ function Initialization() {
     <PasswordModal />
     <CallLine />
     <ThrowError />
+    <ModalExit />
   </>
 }
 

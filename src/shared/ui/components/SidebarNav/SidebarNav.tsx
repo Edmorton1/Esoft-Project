@@ -16,6 +16,10 @@ import { BG_PAPER } from "@shared/COLORS";
 import StoreUser from "@/shared/stores/Store-User";
 import HomeIcon from '@mui/icons-material/Home';
 import Typography from "@mui/material/Typography";
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import StoreExit from "@/shared/ui/components/Exit/Store-Exit";
+
+const sxBut = {textTransform: "none", width: "100%", display: "flex", alignItems: "center", justifyContent: "flex-start", gap: "10px"}
 
 function SidebarNav() {
 	const HeadButton = ({
@@ -25,7 +29,7 @@ function SidebarNav() {
 		isActive: boolean;
 		children: ReactNode;
 	}) => (
-		<Button color={"inherit"} variant={isActive ? "contained" : "outlined"} sx={{textTransform: "none", width: "100%", display: "flex", alignItems: "center", justifyContent: "flex-start", gap: "10px"}}>
+		<Button color={"inherit"} variant={isActive ? "contained" : "outlined"} sx={sxBut}>
 			{children}
 		</Button>
 	);
@@ -62,16 +66,6 @@ return (
       <Typography>Сообщения</Typography>
     </NavButton>}
 
-    <NavButton to={paths.users}>
-      <GroupIcon />
-      <Typography>Пользователи</Typography>
-    </NavButton>
-
-    <NavButton to={paths.map}>
-      <MapIcon />
-      <Typography>Карта</Typography>
-    </NavButton>
-
     {StoreUser.user && <NavButton to={paths.liked}>
       <ThumbUpIcon />
       <Typography>Лайки</Typography>
@@ -82,10 +76,26 @@ return (
       <Typography>Пары</Typography>
     </NavButton>}
 
+    <NavButton to={paths.users}>
+      <GroupIcon />
+      <Typography>Пользователи</Typography>
+    </NavButton>
+
+    <NavButton to={paths.map}>
+      <MapIcon />
+      <Typography>Карта</Typography>
+    </NavButton>
+
     {StoreUser.user && <NavButton to={paths.settings}>
       <SettingsIcon />
       <Typography>Настройки</Typography>
     </NavButton>}
+
+    {StoreUser.user && <Button variant="outlined" color="inherit" sx={sxBut} onClick={() => StoreExit.openModal()}>
+      <ExitToAppIcon />
+      <Typography>Выйти</Typography>
+    </Button>}
+    
   </Box>
 );
 }

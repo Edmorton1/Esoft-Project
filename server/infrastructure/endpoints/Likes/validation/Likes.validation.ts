@@ -28,6 +28,9 @@ class LikesValidation {
     const lng = lngLatValidate.parse(ctx.query.lng)
     const lat = lngLatValidate.parse(ctx.query.lat)
     const lnglat: lnglatType | undefined = lng && lat ? [lng, lat] : undefined
+    
+    logger.info({ЛНГ_ЛАТ: lng, lat})
+    logger.info({ХЕДЫРС: ctx.headers('x-lnglat')})
 
     return [lnglat, cursor]
   }

@@ -4,8 +4,10 @@
   display: flex;
   // flex-wrap: wrap;
   justify-content: space-between;
+  margin: 0 auto;
   width: c.$w;
   align-self: center;
+  padding: 0 !important;
 
   &__row {
     gap: 15px;

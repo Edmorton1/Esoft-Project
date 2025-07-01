@@ -12,7 +12,7 @@ import { paths } from "@shared/PATHS";
 import { Link } from "react-router-dom";
 import StoreLogin from "@/pages/Login/Store-Login";
 
-function LoginBody({onSubmit, register, handleTest, errors}: {onSubmit: () => void, register: UseFormRegister<UserDTO>, handleTest: () => void, errors: FieldErrors<UserDTO>}) {
+function LoginBody({onSubmit, register, errors}: {onSubmit: () => void, register: UseFormRegister<UserDTO>, errors: FieldErrors<UserDTO>}) {
   // const buttonVariant = 'outlined'
 
   return <Paper className={style.modal}>
@@ -24,7 +24,7 @@ function LoginBody({onSubmit, register, handleTest, errors}: {onSubmit: () => vo
       <form onSubmit={onSubmit} className={style.modal__form}>
         <InputMui text={"Почта"} id="email" error={errors.email} register={register} />
         <InputMui text={"Пароль"} id="password" type="password" error={errors.password} register={register}>
-          <FormHelperText id="password">Забыли пароль?</FormHelperText>
+          {/* <FormHelperText id="password">Забыли пароль?</FormHelperText> */}
         </InputMui>
           {/* <input {...register('email')} type="text" placeholder="email" />
           <input {...register('password')} type="text" placeholder="password" value="123" /> */}

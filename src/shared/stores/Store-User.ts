@@ -6,7 +6,7 @@ import StoreLikes from "@/shared/stores/StoreLikes"
 import { User, UserSchema } from "@t/gen/Users"
 import { UserDTO } from "@t/gen/dtoObjects"
 import { toCl, toJSON } from "@shared/MAPPERS"
-import { serverPaths } from "@shared/PATHS"
+import { paths, serverPaths } from "@shared/PATHS"
 import { makeAutoObservable, runInAction } from "mobx"
 import { RegistrationDTOClient, StoreUserRegistrationSchema } from "@t/client/RegistrationZOD"
 import { UseFormSetError } from "react-hook-form"
@@ -14,6 +14,7 @@ import axios from "axios"
 import { LoginErrorTypes } from "@s/infrastructure/endpoints/Auth/Auth.controller"
 import { toSOSe } from "@s/helpers/WebSocket/JSONParsers"
 import StorePairs from "@/shared/stores/Store-Pairs"
+import StoreLogin from "@/pages/Login/Store-Login"
 
 export interface responseInterface {
   user: User,
@@ -48,12 +49,14 @@ class StoreUser {
     }
   }
   
-  login = (data: UserDTO, setError: UseFormSetError<UserDTO>) => {
+  login = (data: UserDTO, setError: UseFormSetError<UserDTO>, navigate: Function) => {
     // try {
       $api.post(`${serverPaths.login}`, data)
         .then(data => UserSchema.parse(data.data))
         .then(user => this.user = user)
         .then(() => this.initial())
+        .then(() => StoreLogin.closeModal())
+        .then(() => navigate(`${paths.profile}/${this.user?.id}`))
 
         .catch(err => {
           if (axios.isAxiosError(err)) {

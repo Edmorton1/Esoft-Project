@@ -35,6 +35,10 @@ class HttpServiceExpress implements IHttpService {
 	set: IHttpService['set'] = (field, value) => {
 		this.res.set(field, value)
 	}
+	
+	headers: IHttpService['headers'] = (name: string) => {
+		return this.req.headers[name]
+	}
 }
 
 export default HttpServiceExpress;

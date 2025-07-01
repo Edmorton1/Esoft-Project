@@ -21,7 +21,7 @@ function SearchBase({onChange, value}: {onChange: (e: React.ChangeEvent<HTMLInpu
         <SearchIcon />
       </div>
       <InputBase
-        placeholder="Search…"
+        placeholder="Найти по имени..."
         classes={{ root: style['styled-input'] }}
         inputProps={{ 'aria-label': 'search' }}
         value={value}

@@ -21,11 +21,11 @@ class HttpContext<T = any> implements IHttpContext<T> {
 	}
 
 	get file() {
-		return this.service.getFile()
+		return this.service.getFile();
 	}
 
 	get files() {
-		return this.service.getFiles()
+		return this.service.getFiles();
 	}
 
 	json: IHttpContext<T>["json"] = data => {
@@ -40,15 +40,19 @@ class HttpContext<T = any> implements IHttpContext<T> {
 
 	statusJson: IHttpContext["statusJson"] = (code, data) => {
 		this.service.statusJson(code, data);
-	}
+	};
 
 	clearCookie: IHttpContext["clearCookie"] = name => {
 		this.service.clearCookie(name);
-	}
+	};
 
-	set: IHttpContext['set'] = (field, value) => {
-		this.service.set(field, value)
-	}
+	set: IHttpContext["set"] = (field, value) => {
+		this.service.set(field, value);
+	};
+
+	headers: IHttpContext['headers'] = (name) => {
+		return this.service.headers(name);
+	};
 }
 
 export default HttpContext;

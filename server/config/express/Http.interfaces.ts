@@ -19,6 +19,7 @@ export interface IHttpContext<T = any> {
 	statusJson: <R>(code: number, data: R) => void;
 	clearCookie: (name: string) => void;
 	set: (field: string, value: string) => void
+	headers: (name: string) => string | string[] | undefined
 }
 
 export interface IHttpService {
@@ -35,4 +36,5 @@ export interface IHttpService {
 	statusJson: <R>(code: number, data: R) => void;
 	clearCookie: (name: string) => void;
 	set: (field: string, value: string) => void
+	headers: (name: string) => string | string[] | undefined
 }
