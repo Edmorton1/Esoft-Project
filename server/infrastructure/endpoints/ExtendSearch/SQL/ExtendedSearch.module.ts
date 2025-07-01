@@ -41,15 +41,45 @@ class ExtendedSearchModule implements ExtendedSearchRepo{
     
     return [distanceRaw, selectDistance]
   }
+
+  private buildParams = (params: propsType['params']): Knex.Raw<any> | undefined => {
+    if (params) {
+      const filtered = Object.entries(params)
+        .filter(([key, value]) => value !== undefined && value !== '');
+
+      const values = filtered.map(([key, value]) => key === "city" ? `%${value}%` : value);
+      const entries = filtered.map(([key, value]) => {
+        this.logger.info({ FROM_ENTRIES: { key, value } });
+        if (key === "city") {
+          return `${key} ILIKE ?`
+        }
+        return `${key} = ?`;
+      });
+
+      const united_cond = entries.join(' AND ');
+
+      this.logger.info({
+        TOTAL_CONDITIONS: {
+          conditions: united_cond,
+          values,
+        },
+      });
+
+      if (united_cond) {
+        return db.raw(united_cond, values);
+      }
+    }
+
+    return undefined
+  }
   
   private buildConditions = ({tags, min_age, max_age, avatar, max_distance, name, params, distanceRaw}: propsType & {distanceRaw: Knex.Raw<any> | undefined}): (string | Knex.Raw<any>)[] => {
     const conditions: (string | Knex.Raw<any>)[] = []
 
     // FORM PARAMS
-    const whereClause = this.ExtendedSeacrhSQLhelper.toSQLWhere(params)
-    if (whereClause) conditions.push(whereClause)
+    const buildParams = this.buildParams(params)
+    if (buildParams) conditions.push(buildParams)
     
-
     // if (params) conditions.push(toSQLWhere(params, false)) 
 
     //INAME

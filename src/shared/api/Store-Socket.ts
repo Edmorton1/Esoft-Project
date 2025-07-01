@@ -55,9 +55,11 @@ class SocketStore {
           break
 
         case "like":
+          console.log("LIKE DATA", data)
           StoreLikes.socketGetLike(data)
           break
         case "delete_like":
+          console.log("DELETE LIKE DATA", data)
           StoreLikes.socketGetDelete(data)
           break
 

@@ -21,9 +21,21 @@ function TwinRange() {
     
 	};
 
+	const marks = [
+  {
+		value: value[0],
+    label: value[0],
+  },
+  {
+		value: value[1],
+    label: value[1],
+  },
+];
+
 	return <Slider
 			min={18}
 			max={122}
+			marks={marks}
 			value={value}
       //@ts-ignore
 			onChange={changeHandle}

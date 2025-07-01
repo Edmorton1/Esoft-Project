@@ -1,9 +1,18 @@
+@use "@/shared/css/const" as c;
+
 .toast {
+  margin-top: calc(#{c.$hh} / 3);
   position: fixed; 
-  background-color: blue;
   color: white;
   text-align: center;
-  width: 400px;
-  height: 20px;
+  max-width: 100%;
+  height: 35px;
   right: 40px;
+  padding: 15px;
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+  border-radius: 20px;
 }

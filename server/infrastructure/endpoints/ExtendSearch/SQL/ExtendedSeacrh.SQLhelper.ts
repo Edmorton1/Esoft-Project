@@ -8,7 +8,7 @@ import {Knex} from "knex";
 interface ExtendedSeacrhSQLhelperRepo {
   getUserTags: (tags: string[]) => Promise<tagsTypes>,
   toSQLgetByTags: (tags: tagsTypes) => string,
-  toSQLWhere: (props?: paramsType) => Knex.Raw | null
+  // toSQLWhere: (props?: paramsType) => Knex.Raw | null
 }
 
 @injectable()
@@ -62,19 +62,19 @@ class ExtendedSeacrhSQLhelper implements ExtendedSeacrhSQLhelperRepo {
 			)
 			.join(" AND ");
 
-	toSQLWhere: ExtendedSeacrhSQLhelperRepo['toSQLWhere'] = (props) => {
-		if (!props) return null;
+	// toSQLWhere: ExtendedSeacrhSQLhelperRepo['toSQLWhere'] = (props) => {
+	// 	if (!props) return null;
 
-		const entries = Object.entries(props).filter(
-			([k, v]) => v !== "" && v !== undefined,
-		);
-		if (entries.length === 0) return null;
+	// 	const entries = Object.entries(props).filter(
+	// 		([k, v]) => v !== "" && v !== undefined,
+	// 	);
+	// 	if (entries.length === 0) return null;
 
-		const conditions = entries.map(([key]) => `${key} = ?`).join(" AND ");
-		const values = entries.map(([, value]) => value);
+	// 	const conditions = entries.map(([key]) => `${key} = ?`).join(" AND ");
+	// 	const values = entries.map(([, value]) => value);
 
-		return db.raw(conditions, values);
-	};
+	// 	return db.raw(conditions, values);
+	// };
 }
 
 export default ExtendedSeacrhSQLhelper;

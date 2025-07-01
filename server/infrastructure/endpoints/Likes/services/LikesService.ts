@@ -1,4 +1,4 @@
-import { toSOSe } from "@s/helpers/WebSocket/JSONParsers";
+import { toSOCl } from "@s/helpers/WebSocket/JSONParsers";
 import { clientsType } from "@s/helpers/WebSocket/socket";
 import ORM from "@s/infrastructure/db/SQL/ORM";
 import LikesModule from "@s/infrastructure/endpoints/Likes/sql/Likes.module";
@@ -34,7 +34,7 @@ class LikesService implements LikesServiceRepo {
 		const [data] = await this.ORM.post(likesDTO, "likes", "id, liked_userid");
 		this.logger.info(this.clients.keys());
 		const clientTo = this.clients.get(likesDTO.liked_userid);
-		clientTo?.send(toSOSe("like", data));
+		clientTo?.send(toSOCl("like", data));
 		return data;
 	};
 
@@ -46,7 +46,7 @@ class LikesService implements LikesServiceRepo {
 		}
 
 		const clientTo = this.clients.get(data.liked_userid);
-		clientTo?.send(toSOSe("delete_like", data.id));
+		clientTo?.send(toSOCl("delete_like", data.id));
     return data
 	};
 

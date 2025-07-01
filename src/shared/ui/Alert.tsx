@@ -1,24 +1,26 @@
 import React, { useRef } from 'react';
 import { observer } from "mobx-react-lite";
 import Toast from "@/shared/ui/Toast";
-import StoreGlobal from "@/shared/api/Store-Global";
+import StoreAlert from "@/shared/api/Store-Alert";
 import * as style from "@/shared/css/components/ToastLike.module.scss"
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
 
 function Alert() {
   const nodeRefs = useRef<{ [key: string]: React.RefObject<HTMLDivElement | null> }>({});
 
   return (
     <>
-      {StoreGlobal.data.map((e, i) => {
+      {StoreAlert.data.map((e, i) => {
         if (!nodeRefs.current[e.id]) {
           nodeRefs.current[e.id] = React.createRef<HTMLDivElement>();
         }
 
         return (
           <Toast key={e.id} nodeRef={nodeRefs.current[e.id]} usl={e.visible} id={String(e.id)}>
-            <div ref={nodeRefs.current[e.id]} className={style.toast} style={{top: `${(i + 1) * 30}px`, backgroundColor: e.color}}>
-              {e.text}
-            </div>
+            <Box component={"aside"} ref={nodeRefs.current[e.id]} className={style.toast} bgcolor={e.color ?? "primary.main"} sx={{top: `${(i + 1) * 47}px`, }}>
+              <Typography variant='h6'>{e.text}</Typography>
+            </Box>
           </Toast>
         );
       })}

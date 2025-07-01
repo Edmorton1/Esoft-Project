@@ -1,5 +1,5 @@
 import $api from "@/shared/api/api";
-import StoreGlobal from "@/shared/api/Store-Global";
+import StoreAlert from "@/shared/api/Store-Alert";
 import { Form, Likes } from "@t/gen/Users";
 import { toCl } from "@shared/MAPPERS";
 import { makeAutoObservable, runInAction, toJS } from "mobx";
@@ -82,12 +82,12 @@ class StoreLikes {
   socketGetDelete = async (id: number) => {
     const like = this.likes?.received.find(e => e.id == id)
     runInAction(() => this.likes?.received.filter(e => e.id != id))
-    StoreGlobal.sendInfo(`Вы больше не нравитесь пользователю ${like!.userid}`)
+    StoreAlert.sendInfo(`Вы больше не нравитесь пользователю ${like!.userid}`)
   }
 
   socketGetLike = async (data: Likes) => {
     runInAction(() => this.likes?.received.push({id: data.id, userid: data.userid}))
-    StoreGlobal.sendInfo(`Вы понравились пользователю ${data.userid}`, 'blue')
+    StoreAlert.sendInfo(`Вы понравились пользователю ${data.userid}`, 'primary.main')
   }
 }
 

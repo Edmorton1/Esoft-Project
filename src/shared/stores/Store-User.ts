@@ -1,7 +1,7 @@
 import $api from "@/shared/api/api"
 import StoreForm from "@/shared/stores/Store-Form"
 import storeSocket from "@/shared/api/Store-Socket"
-import StoreTags from "@/shared/stores/Store-Tags"
+// import StoreTags from "@/shared/stores/Store-Tags"
 import StoreLikes from "@/shared/stores/StoreLikes"
 import { User, UserSchema } from "@t/gen/Users"
 import { UserDTO } from "@t/gen/dtoObjects"
@@ -41,7 +41,7 @@ class StoreUser {
       runInAction(() => {
         this.user = null;
         StoreForm.form = null;
-        StoreTags.tags = null;
+        // StoreTags.tags = null;
         StoreLikes.likes = null;
         StorePairs.pairs = null
       })

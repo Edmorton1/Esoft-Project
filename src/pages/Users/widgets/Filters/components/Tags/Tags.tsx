@@ -1,7 +1,7 @@
 import Tag from "@/pages/Users/widgets/Filters/components/Tags/Tag";
 import useUpdateParams from "@/shared/hooks/useChangeParams";
 import StoreForm from "@/shared/stores/Store-Form";
-import StoreTags from "@/shared/stores/Store-Tags";
+// import StoreTags from "@/shared/stores/Store-Tags";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
@@ -13,10 +13,9 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
 import {observer} from "mobx-react-lite";
-import {useEffect, useRef} from "react";
+import {useRef} from "react";
 
 function Tags() {
-	const tagRef = useRef<HTMLInputElement | null>(null);
 	const [params, updateParams] = useUpdateParams();
 
 	// useEffect(() => {
@@ -30,15 +29,25 @@ function Tags() {
 	// )
 
 	// const handleClick = () => userTags!.push(<ol><input type="checkbox" id={tagRef.current?.value} /><label htmlFor={tagRef.current?.value}>{tagRef.current?.value}</label></ol>)
+
+	const paramsTags = params.tags ? params.tags.split(',').map(e => e.trim()) : []
+	const formTags = [...paramsTags, ...StoreForm.form?.tags?.map(e => e.tag) ?? []]
+	// console.log("LOG CLEAN", paramsTags, formTags)
+
+	const tagsRef = useRef<string[]>(Array.from(new Set(formTags)))
+	const tagRef = useRef<HTMLInputElement | null>(null);
+
 	const handleClick = () => {
-		!StoreTags.tags?.includes(tagRef.current!.value)
-			? StoreTags.addTags(tagRef.current!.value!)
-			: "";
-    updateParams('tags', tagRef.current!.value, false, true)
+		if (!tagsRef.current?.includes(tagRef.current!.value)) {
+			tagsRef.current.unshift(tagRef.current!.value!)
+			updateParams('tags', tagRef.current!.value, false, true)
+			if (tagRef.current) tagRef.current.value = ""
+		}
   }
 
-	console.log("STORE TAGS", StoreTags.tags);
+	// console.log("STORE TAGS", StoreTags.tags);
   console.log("PARMS TAGS", params.tags)
+	console.log("BUTTON VALUE", tagRef.current?.value)
 
 	return <FormControl fullWidth>
 		<InputLabel id="tags-label">Тэги</InputLabel>
@@ -52,16 +61,15 @@ function Tags() {
 					})}
 				</Box>
 			)}>
-			{StoreTags.tags?.map(tag => (
+			{tagsRef.current.map(tag => (
 				<MenuItem key={tag} value={tag} onClick={() => {updateParams('tags', tag, false, true)}}>
-					{/* <Checkbox checked={params?.tags?.includes(tag) ?? false} /> */}
 					<ListItemText primary={tag} />
 				</MenuItem>
 			))}
 		</Select>
 
     <TextField label="Напишите тэг" inputRef={tagRef} />
-    <Button onClick={handleClick} variant="contained">Добавить</Button>
+		<Button onClick={handleClick} variant="contained">Добавить</Button>
   </FormControl>
 }
 

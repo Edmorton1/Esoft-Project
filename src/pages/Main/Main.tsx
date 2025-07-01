@@ -9,7 +9,9 @@ function Main() {
 	const navigate = useNavigate()
 
 	useEffect(() => {
-		navigate("/profile/16")
+		if (StoreUser.user) {
+			navigate("/profile/16")
+		}
 	}, [])
 
 	return (
