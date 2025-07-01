@@ -17,6 +17,7 @@ import Title from "@/shared/ui/Ttile"
 import { observer } from "mobx-react-lite"
 import Button from "@mui/material/Button"
 import StoreLikes from "@/shared/stores/StoreLikes"
+import UnderTypo from "@/shared/ui/components/mui_styled/UnderTypo"
 
 function Pairs() {
   // useGetBy(`${serverPaths.likesPairs}`, {callback: (data) => StorePairs.initial(data)})
@@ -28,12 +29,13 @@ function Pairs() {
       {StorePairs.pairs?.map(e => {
       const handleClick = () => StoreRoom.makeCall(StoreUser.user!.id, e.id)
       const handleDelete = () => StoreLikes.delete(e)
+      const url = `${paths.profile}/${e.id}`
 
       return <Paper key={e.id}>
           <CardHeader
-            avatar={<Avatar src={e.avatar} />}
+            avatar={<Link to={url}><Avatar src={e.avatar} /></Link>}
             title={<>
-            <Typography>{e.name}</Typography>
+            <Link to={url}><UnderTypo>{e.name}</UnderTypo></Link>
             <LastActive last_active={e.last_active} />
             <div className={style.container__actions}>
               <Link to={`${paths.messages}/${e.id}`}><Subtitle><ForumIcon /> Написать</Subtitle></Link>

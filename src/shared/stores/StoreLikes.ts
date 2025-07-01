@@ -7,6 +7,7 @@ import StoreUser from "@/shared/stores/Store-User";
 import { serverPaths } from "@shared/PATHS";
 import { FormWithDistanse } from "@t/gen/types";
 import StorePairs from "@/shared/stores/Store-Pairs";
+import { LikesDeleteSocketDTO, LikesSendSocketDTO } from "@t/gen/socketTypes";
 
 class StoreLikes {
   likes: {sent: {id: number, liked_userid: number}[]; received: {id: number, userid: number}[]} | null = null;
@@ -79,15 +80,21 @@ class StoreLikes {
     }
   }
 
-  socketGetDelete = async (id: number) => {
-    const like = this.likes?.received.find(e => e.id == id)
-    runInAction(() => this.likes?.received.filter(e => e.id != id))
-    StoreAlert.sendInfo(`Вы больше не нравитесь пользователю ${like!.userid}`)
+  socketGetDelete = async (data: LikesDeleteSocketDTO) => {
+    const {userid, name} = data
+    const like = toJS(this.likes?.received.find(e => e.userid == userid))
+    console.log("УДАЛЁННЫЙ ЛАЙК", toJS(this.likes), userid, like)
+
+    const received = this.likes?.received.filter(e => e.userid != userid)
+    if (received) this.likes!.received = received
+
+    StoreAlert.likeInfo(userid, `Вы больше не нравитесь пользователю ${name}`)
   }
 
-  socketGetLike = async (data: Likes) => {
-    runInAction(() => this.likes?.received.push({id: data.id, userid: data.userid}))
-    StoreAlert.sendInfo(`Вы понравились пользователю ${data.userid}`, 'primary.main')
+  socketGetLike = async (data: LikesSendSocketDTO) => {
+    const {name, ...like} = data
+    runInAction(() => this.likes?.received.push(like))
+    StoreAlert.likeInfo(like.userid, `Вы понравились пользователю ${name}`)
   }
 }
 

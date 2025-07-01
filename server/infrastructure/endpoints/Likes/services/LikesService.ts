@@ -31,10 +31,12 @@ class LikesService implements LikesServiceRepo {
 	) {}
 
 	sendLike: LikesServiceRepo["sendLike"] = async likesDTO => {
-		const [data] = await this.ORM.post(likesDTO, "likes", "id, liked_userid");
+		const [data] = await this.ORM.post(likesDTO, "likes");
 		this.logger.info(this.clients.keys());
 		const clientTo = this.clients.get(likesDTO.liked_userid);
-		clientTo?.send(toSOCl("like", data));
+		console.log("PARAMS BEFOR NAME", data.userid, data)
+		const {name} = (await this.ORM.getById(data.userid, "forms", "name"))[0]
+		clientTo?.send(toSOCl("like", {id: data.id, userid: data.userid, name: name}));
 		return data;
 	};
 
@@ -46,7 +48,8 @@ class LikesService implements LikesServiceRepo {
 		}
 
 		const clientTo = this.clients.get(data.liked_userid);
-		clientTo?.send(toSOCl("delete_like", data.id));
+		const {name} = (await this.ORM.getById(data.userid, "forms", "name"))[0]
+		clientTo?.send(toSOCl("delete_like", {userid: data.userid, name}));
     return data
 	};
 

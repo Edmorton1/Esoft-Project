@@ -1,6 +1,5 @@
 import FormEdit from "@/pages/Messages/InsideMessage/widget/Main/modules/components/edit/FormEdit";
 import FileComponent from "@/pages/Messages/InsideMessage/widget/Main/modules/components/file/FileComponent";
-import StoreMessages from "@/pages/Messages/store/Store-Messages";
 import StoreForm from "@/shared/stores/Store-Form"
 import Avatar from "@mui/material/Avatar";
 import CardContent from "@mui/material/CardContent";
@@ -13,6 +12,9 @@ import { Message } from "@t/gen/Users"
 import { memo, useContext } from "react";
 import * as style from "@/shared/css/pages/MessagesInside.module.scss"
 import { MessagesContext } from "@/pages/Messages/InsideMessage/Messages";
+import { paths } from "@shared/PATHS";
+import { Link } from "react-router-dom";
+import UnderTypo from "@/shared/ui/components/mui_styled/UnderTypo";
 
 interface propsInterface {
   editing: boolean,
@@ -24,14 +26,15 @@ function MessageBody({editing, msg, changeClick}: propsInterface) {
   const isAuthor = msg.fromid === StoreForm.form?.id
   const StoreMessages = useContext(MessagesContext)!
 
+  const url = `${paths.profile}/${msg.fromid}`
   // console.log("МЕССАДЖ РЕНДРР")
   // console.log('COMPONENT RENDER', msg.id, editing, files)
   
   return <Paper component={"article"} onClick={changeClick} elevation={editing ? 1 : 0} sx={{width: "100%", bgcolor: editing ? "background.paper" : "transparent"}}>
     <Divider></Divider>
     <CardHeader
-      avatar={<Avatar src={isAuthor ? StoreForm.form?.avatar ?? PLACEHOLDER_IMG : StoreMessages.form?.avatar ?? PLACEHOLDER_IMG} />}
-      title={<Typography variant="subtitle1" color="primary">{isAuthor ? StoreForm.form?.name : StoreMessages.form?.name}</Typography>}
+      avatar={<Link to={url}><Avatar src={isAuthor ? StoreForm.form?.avatar ?? PLACEHOLDER_IMG : StoreMessages.form?.avatar ?? PLACEHOLDER_IMG} /></Link>}
+      title={<Link to={url}><UnderTypo variant="subtitle1" color="primary">{isAuthor ? StoreForm.form?.name : StoreMessages.form?.name}</UnderTypo></Link>}
       // subheader={<div style={{display: "flex", justifyContent: "space-between"}}>
       subheader={<div>
         <Typography color="text.primary">{msg.text}</Typography>

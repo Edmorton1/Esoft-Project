@@ -1,6 +1,4 @@
-import StoreLikes from "@/shared/stores/StoreLikes"
 import Box from "@mui/material/Box"
-import Button from "@mui/material/Button"
 import Card from "@mui/material/Card"
 import CardContent from "@mui/material/CardContent"
 import Chip from "@mui/material/Chip"
@@ -8,21 +6,28 @@ import Typography from "@mui/material/Typography"
 import { FormWithDistanse } from "@t/gen/types"
 import { observer } from "mobx-react-lite"
 import * as style from "@/shared/css/components/UserCard.module.scss"
-import { PLACEHOLDER_IMG } from "@shared/PUBLIC"
 import Divider from "@mui/material/Divider"
-import { ReactNode, useState } from "react"
+import { ReactNode } from "react"
 import ReadMore from "@/shared/ui/components/ReadMore"
 import { Tags } from "@t/gen/Users"
-import { toJS } from "mobx"
 import { BG_ALT } from "@shared/COLORS"
+import { paths } from "@shared/PATHS"
+import AvatarImg from "@/shared/ui/components/mui_styled/AvatarImg"
+import { Link } from "react-router-dom"
 
 function UsersCardInfo({form, children}: {form: FormWithDistanse, children?: ReactNode}) {
   // console.log("TAGS", toJS(form.tags))
+  const url = `${paths.profile}/${form.id}`
+
   return <Card component={"article"} className={style.container}>
     {/* <Avatar src={form.avatar!} className={style.container__avatar} /> */}
-    <div className={style.container__avatar}>
-      <img src={form.avatar ?? PLACEHOLDER_IMG} alt="" />
-    </div>
+    <Link to={url}>
+      <Box sx={{padding: "12px", height: "350px"}}>
+        <AvatarImg src={form.avatar} className={style.container__avatar} />
+      </Box>
+    </Link>
+
+  
     <CardContent sx={{bgcolor: BG_ALT}} className={style.container__content}>
       <Divider />
       <Typography><strong>Имя: </strong>{form.name}</Typography>

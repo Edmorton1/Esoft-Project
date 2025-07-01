@@ -17,8 +17,8 @@ function FindedPanel({search}: propsInterface) {
   const finded = StoreSearchForm.finded
 
   return !StoreSearchForm.hide && finded?.length > 0 && <Box component={"div"} bgcolor={"background.paper"} className={style.container__wrapperRow} tabIndex={-1}>
-    {finded?.map(e => <MicroCard MicroForm={e} key={e.id} />)}
-    {finded?.length >= FORM_SEARCH_LIMIT && <Link to={`${paths.users}?name=${search}`}><Button onClick={handleClick} variant="contained" color="inherit">Показать ещё</Button></Link>}
+    {finded?.map(e => <MicroCard key={e.id} MicroForm={e} handleClick={handleClick} />)}
+    {finded?.length >= FORM_SEARCH_LIMIT && <Link to={`${paths.users}?name=${search}`}><Button onClick={handleClick} variant="contained" color="primary" sx={{width: "100%"}}>Показать ещё</Button></Link>}
   </Box>
 }
 

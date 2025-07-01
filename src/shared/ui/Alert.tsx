@@ -5,21 +5,29 @@ import StoreAlert from "@/shared/api/Store-Alert";
 import * as style from "@/shared/css/components/ToastLike.module.scss"
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import { Link } from 'react-router-dom';
 
 function Alert() {
   const nodeRefs = useRef<{ [key: string]: React.RefObject<HTMLDivElement | null> }>({});
 
   return (
     <>
-      {StoreAlert.data.map((e, i) => {
-        if (!nodeRefs.current[e.id]) {
-          nodeRefs.current[e.id] = React.createRef<HTMLDivElement>();
+      {StoreAlert.data.map((data, i) => {
+        if (!nodeRefs.current[data.id]) {
+          nodeRefs.current[data.id] = React.createRef<HTMLDivElement>();
         }
 
+        const infoEl = <Typography variant='h6'>{data.text}</Typography>
+
         return (
-          <Toast key={e.id} nodeRef={nodeRefs.current[e.id]} usl={e.visible} id={String(e.id)}>
-            <Box component={"aside"} ref={nodeRefs.current[e.id]} className={style.toast} bgcolor={e.color ?? "primary.main"} sx={{top: `${(i + 1) * 47}px`, }}>
-              <Typography variant='h6'>{e.text}</Typography>
+          <Toast key={data.id} nodeRef={nodeRefs.current[data.id]} usl={data.visible} id={String(data.id)}>
+            <Box component={"aside"} ref={nodeRefs.current[data.id]} className={style.toast} bgcolor={data.color ?? "primary.main"} sx={{top: `${(i + 1) * 47}px`, }}>
+              {data.url
+                ? <Link to={data.url}>
+                  {infoEl}
+                </Link>
+                : infoEl
+              }
             </Box>
           </Toast>
         );

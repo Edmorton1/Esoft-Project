@@ -1,4 +1,3 @@
-import StoreMessages from "@/pages/Messages/store/Store-Messages"
 import StoreRoom from "@/pages/Room/WebRTC/Store-Room"
 import StoreUser from "@/shared/stores/Store-User"
 import Avatar from "@mui/material/Avatar"
@@ -14,6 +13,9 @@ import LastActive from "@/shared/ui/components/LastActive"
 import { useContext } from "react"
 import { MessagesContext } from "@/pages/Messages/InsideMessage/Messages"
 import { BG_THIRD } from "@shared/COLORS"
+import { Link } from "react-router-dom"
+import { paths } from "@shared/PATHS"
+import UnderTypo from "@/shared/ui/components/mui_styled/UnderTypo"
 
 function MainHead({toid}: {toid: number}) {
   const StoreMessages = useContext(MessagesContext)!
@@ -24,14 +26,17 @@ function MainHead({toid}: {toid: number}) {
 
   // console.log(StoreMessages.form?.last_active)
   console.log({ГОЛОВА_ЮЗЕР: StoreMessages.form})
+  const link = `${paths.profile}/${StoreMessages.form?.id}`
 
   return <>
     <CardHeader
       sx={{p: 0, pt: 0.5, pl: 0.75, bgcolor: BG_THIRD, borderTopLeftRadius: br, borderTopRightRadius: br}}
-      avatar={<Avatar sx={{width: wh, height: wh}} src={StoreMessages.form?.avatar} />}
+      avatar={<Link to={link}><Avatar sx={{width: wh, height: wh}} src={StoreMessages.form?.avatar} /></Link>}
       title={<Box display={"flex"} alignItems={"center"} justifyContent={"space-between"}>
         <Box>
-          <Typography>{StoreMessages.form?.name}</Typography>
+          <Link to={link}>
+            <UnderTypo>{StoreMessages.form?.name}</UnderTypo>
+          </Link>
           <LastActive last_active={StoreMessages.form?.last_active} />
         </Box>
 

@@ -1,5 +1,8 @@
 import { Form, Likes, Message } from "@t/gen/Users"
 
+export type LikesSendSocketDTO = Omit<Likes, "liked_userid"> & {name: string}
+export type LikesDeleteSocketDTO = {userid: number, name: string}
+
 export interface MsgTypesServer {
   userid: number,
   message: Message,
@@ -24,6 +27,9 @@ export type MsgTypesClient = OverdriveProperty<MsgTypesServer, {
   candidate: {isCaller: boolean, candidate: RTCIceCandidate},
   cancel: undefined,
   last_active: string,
+
+  like: LikesSendSocketDTO
+  delete_like: LikesDeleteSocketDTO
 }>
 
 export type SocketMessageClientInterface = {
