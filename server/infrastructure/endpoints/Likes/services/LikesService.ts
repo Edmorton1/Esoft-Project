@@ -54,13 +54,17 @@ class LikesService implements LikesServiceRepo {
 	};
 
 	likesGet: LikesServiceRepo["likesGet"] = async (userid, lnglat?, cursor?) => {
-		const [json_agg] = await this.likesModule.getLikedIds(userid)
+		const {json_agg} = (await this.likesModule.getLikedIds(userid))[0]
 
 		this.logger.info({ json_agg: json_agg });
 
+		if (!json_agg) {
+			return []
+		}
+
 		const request = await this.likesModule.getManyByParam(
 			"id",
-			json_agg.json_agg,
+			json_agg,
 			lnglat,
 			cursor,
 		);

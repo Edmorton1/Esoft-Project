@@ -8,6 +8,7 @@ import * as style from "@/shared/css/pages/MessagesInside.module.scss"
 import Box from "@mui/material/Box"
 import { MessagesContext } from "@/pages/Messages/InsideMessage/Messages"
 import { BG_THIRD } from "@shared/COLORS"
+import EmptyText, { emptyGrid } from "@/shared/ui/EmptyText"
 
 function MessageWidget({toid}: {toid: number}) {
   const StoreMessages = useContext(MessagesContext)!
@@ -21,12 +22,14 @@ function MessageWidget({toid}: {toid: number}) {
 
   const scrollHandle = useInfinitPagination(ref, `${serverPaths.getMessage}/${toid}?cursor=${StoreMessages.cursor}`, StoreMessages.cursor === null, (data) => StoreMessages.get(data.data), MESSAGE_ON_PAGE)
 
-  return <Box ref={ref} className={style.section__widget} component="section" bgcolor={BG_THIRD} onScroll={scrollHandle}>
-  {/* <button onClick={() => ref.current?.scrollTo(0, 10000)}>Скролнуть</button> */}
-  {/* return <section> */}
-    {StoreMessages.messages?.map(msg => (
-      <MessageHead key={msg.id} msg={msg} editing={editMessage === msg.id} setEditMessage={setEditMessage}/>
-    ))}
+  return <Box ref={ref} className={style.section__widget} component="section" bgcolor={BG_THIRD} onScroll={scrollHandle} sx={emptyGrid(StoreMessages.messages?.length)}>
+    {StoreMessages.messages?.length
+      ? StoreMessages.messages?.map(msg => (
+        <MessageHead key={msg.id} msg={msg} editing={editMessage === msg.id} setEditMessage={setEditMessage}/>
+      ))
+      : <EmptyText />
+    }
+    
   </Box>
 }
 

@@ -13,10 +13,13 @@ import { BG_ALT } from "@shared/COLORS"
 import { paths } from "@shared/PATHS"
 import AvatarImg from "@/shared/ui/components/mui_styled/AvatarImg"
 import { Link } from "react-router-dom"
+import { toJS } from "mobx"
 
-function UsersCardInfo({form, children}: {form: Form, children?: ReactNode}) {
+function UsersCardInfo({formRaw, children}: {formRaw: Form, children?: ReactNode}) {
+  const form = {...formRaw, tags: formRaw.tags?.map(e => e.tag).filter(e => e)}
   // console.log("TAGS", toJS(form.tags))
   const url = `${paths.profile}/${form.id}`
+  console.log(toJS(form))
 
   return <Card component={"article"} className={style.container}>
     {/* <Avatar src={form.avatar!} className={style.container__avatar} /> */}
@@ -44,16 +47,16 @@ function UsersCardInfo({form, children}: {form: Form, children?: ReactNode}) {
       <Divider />
       <Typography><strong>Город: </strong>{form.city}</Typography>
       <Divider />
-      {/* ПОКА КОСТЫЛЬ, ПОТОМ ПОПРАВЛЮ  
-      МОЖЕТ ВЫДАТЬ {id: null, tag: null}
-      //@ts-ignore */}
+      {form.tags && form.tags?.length > 0 && <>
       <Typography><strong>Тэги: </strong></Typography>
       
       <ReadMore
         component={form.tags}
         len={4}
         RenderWrap={({children}) => <Box sx={{bgcolor: BG_ALT}}>{children}</Box>}
-        renderItem={(e: Tags) => <Chip variant="outlined" key={e.tag} label={e.tag} />} />
+        renderItem={(e: string) => <Chip variant="outlined" key={e} label={e} />} />
+
+      </>}
 
       {form.distance && <Typography><strong>Расстояние: </strong>{form.distance} км</Typography>}
       {children}
