@@ -16,6 +16,14 @@ function Liked() {
 		{
 			main: serverPaths.likesGet,
 		},
+		{
+			cursor: StoreLikes.cursor,
+			setCursor: (cursor => StoreLikes.cursor = cursor),
+			history: StoreLikes.history,
+			setHistory: (url => StoreLikes.history.push(url)),
+			stop: StoreLikes.stop,
+			setStop: (() => StoreLikes.stop = true)
+		},
 		data => StoreLikes.lazyLoadLiked(data.data),
 		"desc",
 		"cursor"

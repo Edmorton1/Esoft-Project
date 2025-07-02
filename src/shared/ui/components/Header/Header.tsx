@@ -22,6 +22,8 @@ import StoreMessagesManager from "@/pages/Messages/store/Store-Messages-Manager"
 import * as main from "@/shared/css/modules/Main.module.scss"
 import SidebarNav from "@/shared/ui/components/SidebarNav/SidebarNav"
 import { BG_ALT } from "@shared/COLORS"
+import StorePairs from "@/shared/stores/Store-Pairs"
+import StorePostsManager from "@/pages/Profile/stores/Store-Posts-Manager"
 
 function Header() {
   return <>
@@ -62,6 +64,8 @@ function Header() {
         {/* <NavButton to={`${paths.profile}/2`}>profile 2</NavButton>
         <NavButton to={paths.room}>ROOM</NavButton>
         <button onClick={() => StoreGlobal.sendInfo('asadas', 'blue')}>Инфо</button> */}
+        {/* <button onClick={() => console.log({ВСЕ_ЛАЙКИ: toJS(StoreLikes.likes), ЛАЙКЕД: toJS(StoreLikes.liked), ПАРЫ: toJS(StorePairs.pairs)})}>ЛАЙКИ ВСЯ ИНФА</button> */}
+        <button onClick={() => console.log(toJS(StorePostsManager))}>Стор постов</button>
         </Toolbar>
       </AppBar>
     

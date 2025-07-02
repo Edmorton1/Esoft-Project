@@ -7,8 +7,9 @@ import Stack from "@mui/material/Stack";
 import Paper from "@mui/material/Paper";
 import * as style from "@/shared/css/pages/Profile.module.scss"
 import { BG_ALT, BG_PAPER } from "@shared/COLORS";
-import StorePosts from "@/pages/Profile/stores/Store-Posts";
+import StorePostsAuthor from "@/pages/Profile/stores/Store-Posts";
 import LastActive from "@/shared/ui/components/LastActive";
+import usePostsStore from "@/pages/Profile/Posts/hooks/usePostsStore";
 
 const sxFont = {fontSize: "20px"}
 
@@ -17,6 +18,7 @@ function UserInfo() {
 	const profile = StoreProfile.profile;
 	const filtredTags = StoreProfile.profile?.tags?.filter(e => e.tag)
 	console.log("filtredTags", profile)
+	const store = usePostsStore()
 
 	if (!profile) return null;
 
@@ -50,7 +52,7 @@ function UserInfo() {
 						</Typography>
 					)}
 
-					{profile.distance && !StorePosts.canChange && <Typography sx={sxFont}>
+					{profile.distance && !store.canChange && <Typography sx={sxFont}>
 						<strong>Дистанция:</strong> {profile.distance} км
 					</Typography>}
 

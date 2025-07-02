@@ -14,6 +14,7 @@ export interface MsgTypesServer {
 
   like: Likes
   delete_like: number
+  rejectLike: number
 
   offer: {frForm: Form, toid: number, description: RTCSessionDescriptionInit},
   answer: {toForm: Form, frid: number, description: RTCSessionDescriptionInit},
@@ -32,7 +33,7 @@ export type MsgTypesClient = OverdriveProperty<MsgTypesServer, {
   last_active: string,
 
   like: LikesSendSocketDTO
-  delete_like: LikesDeleteSocketDTO
+  delete_like: LikesDeleteSocketDTO,
 }>
 
 export type SocketMessageClientInterface = {

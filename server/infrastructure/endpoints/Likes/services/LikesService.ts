@@ -52,8 +52,11 @@ class LikesService implements LikesServiceRepo {
 		}
 
 		const clientTo = this.clients.get(data.liked_userid);
-		const {name} = (await this.ORM.getById(data.userid, "forms", "name"))[0]
-		clientTo?.send(toSOCl("delete_like", {userid: data.userid, name}));
+		if (clientTo) {
+			const {name} = (await this.ORM.getById(data.userid, "forms", "name"))[0]
+			clientTo?.send(toSOCl("delete_like", {userid: data.userid, name}));
+		}
+		
     return data
 	};
 
@@ -91,6 +94,10 @@ class LikesService implements LikesServiceRepo {
 		}
 
 		await this.ORM.delete(offer.id, "likes", liked_userid);
+		
+		const clientTo = this.clients.get(liked_userid);
+		clientTo?.send(toSOCl("rejectLike", userid))
+
     return true;
   }
 }

@@ -14,11 +14,10 @@ import PostsHead from "@/pages/Profile/Posts/PostsHead"
 import Title from "@/shared/ui/Ttile"
 import UserInfo from "@/pages/Profile/widgets/UserInfo/UserInfo"
 import { serverPaths } from "@shared/PATHS"
+import { z } from "zod"
 
 function Profile() {
-  const id = Number(useParams().id)
-
-  console.log("/forms", `/${serverPaths.forms}`)
+  const id = z.coerce.number().parse(useParams().id)
 
   useGetById(`${serverPaths.profileGet}/${id}`, {returnOne: true, callback: StoreProfile.initial})
 

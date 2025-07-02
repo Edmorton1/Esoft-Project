@@ -13,7 +13,8 @@ import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { useRef, useState } from "react";
-import StorePosts from "@/pages/Profile/stores/Store-Posts";
+import usePostsStore from "@/pages/Profile/Posts/hooks/usePostsStore";
+import { observer } from "mobx-react-lite";
 
 interface propsInterface {
 	post: Posts;
@@ -28,6 +29,8 @@ function Post({ post, handleEdit, handleDelete }: propsInterface) {
 	const onOpenMenu = () => setMenu(true)
 	const onCloseMenu = () => setMenu(false)
 	
+	const store = usePostsStore()
+	
 
 	return (
 		// <div>sasddas</div>
@@ -38,7 +41,7 @@ function Post({ post, handleEdit, handleDelete }: propsInterface) {
 					{StoreProfile.profile?.name}
 				</>}
 				subheader={<Subtitle>{new Date(post.created_at).toLocaleString()}</Subtitle>}
-				action={StorePosts.canChange &&
+				action={store.canChange &&
 					<>
 					<IconButton ref={menuRef} onClick={onOpenMenu}>
 						<MoreVertIcon />
@@ -69,4 +72,4 @@ function Post({ post, handleEdit, handleDelete }: propsInterface) {
 	);
 }
 
-export default Post;
+export default observer(Post);

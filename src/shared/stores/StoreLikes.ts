@@ -11,10 +11,11 @@ import { z } from "zod";
 
 class StoreLikes {
   likes: {sent: {id: number, liked_userid: number}[]; received: {id: number, userid: number}[]} | null = null;
-  liked: Form[] | null = null;
+  liked: Form[] = [];
 
   cursor: number = 0;
-  historyUrls: string[] = []
+  history: string[] = []
+  stop: boolean = false
 
   constructor() {
     makeAutoObservable(this)
@@ -35,11 +36,11 @@ class StoreLikes {
     // const forms = toCl(await $api.get(`${serverPaths.likesGet}/2?lat=${StoreForm.form?.location?.lat}&lng=${StoreForm.form?.location?.lng}`))
     // this.liked = data
     // console.log(toJS(data))
-    if (this.liked !== null) {
-      this.liked.push(...parsed)
-    } else {
-      this.liked = parsed
-    }
+    const ids_liked = this.liked.map(e => e.id)
+    parsed.forEach(e => {
+      if (!ids_liked.includes(e.id)) this.liked.push(e)
+    })
+
         
     // console.log(this.liked, this.liked)
     console.log(toJS(this.liked))
@@ -73,7 +74,7 @@ class StoreLikes {
       const pairs_ids = StorePairs.pairs?.map(e => e.id)
       if (pairs_ids?.includes(form.id)) {
         StorePairs.pairs = StorePairs.pairs!.filter(e => e.id !== form.id)
-        if (this.liked) this.liked?.unshift(form)
+        this.liked?.unshift(form)
       }
       
     }
@@ -86,23 +87,32 @@ class StoreLikes {
     const {userid, name} = data
     
     const like = toJS(this.likes?.received.find(e => e.userid == userid))
-    console.log("УДАЛЁННЫЙ ЛАЙК", toJS(this.likes), userid, like)
+    // console.log("УДАЛЁННЫЙ ЛАЙК", toJS(this.likes), userid, like)
 
     const received = this.likes?.received.filter(e => e.userid != userid)
     if (received) this.likes!.received = received
-    if (this.liked) this.liked = this.liked.filter(e => e.id !== userid)
+    
+    this.liked = this.liked.filter(e => e.id !== userid)
+
+    const filtredPairs = StorePairs.pairs.filter(e => e.id !== userid)
+    StorePairs.pairs = filtredPairs
 
     StoreAlert.likeInfo(userid, `Вы больше не нравитесь пользователю ${name}`)
+    console.log({ВСЕ_ЛАЙКИ: toJS(this.likes), ЛАЙКЕД: toJS(this.liked), ПАРЫ: toJS(StorePairs.pairs)})
   }
 
   socketGetLike = async (data: LikesSendSocketDTO) => {
     const {like, form} = data
     runInAction(() => this.likes?.received.push(like))
-    console.log("ПОЛУЧЕН ЮЗЕР", form)
-    if (this.liked) {
+    // console.log("ПОЛУЧЕН ЮЗЕР", form)
+    if (this.likes?.sent.some(e => e.liked_userid === like.userid)) {
+      StorePairs.pairs.unshift(form)
+    } else {
       this.liked.unshift(form)
     }
+    // console.log("НАЙДЕНО В СЕНТ", this.likes.sent, like.userid)
     StoreAlert.likeInfo(like.userid, `Вы понравились пользователю ${form.name}`)
+    console.log({ВСЕ_ЛАЙКИ: toJS(this.likes), ЛАЙКЕД: toJS(this.liked), ПАРЫ: toJS(StorePairs.pairs)})
   }
 }
 

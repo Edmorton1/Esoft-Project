@@ -15,7 +15,13 @@ class StorePosts {
 	posts: Posts[] | null = null;
 	canChange: boolean = false;
 
-	constructor() {
+	stop: boolean = false;
+	cursor: number = 0;
+	history: string[] = [];
+
+	constructor(
+		readonly profileid: number
+	) {
 		makeAutoObservable(this);
 	}
 
@@ -49,15 +55,15 @@ class StorePosts {
 
 	put = async (dataRaw: PostsDTOPutClient) => {
 		const { files, ...dto } = dataRaw;
-    console.log(files, dto)
-    const fd = toFormData(files)
-    fd.set("json", JSON.stringify(dto))
+		console.log(files, dto);
+		const fd = toFormData(files);
+		fd.set("json", JSON.stringify(dto));
 
-    const {data} = await $api.put(`${serverPaths.postsPut}/${dto.id}`, fd)
-    const parsed = PostsSchema.parse(data)
-    const filtred = this.posts?.map(e => e.id === parsed.id ? parsed : e)
-    if (filtred) this.posts = filtred
-    console.log("TOTAL PUT",data)
+		const { data } = await $api.put(`${serverPaths.postsPut}/${dto.id}`, fd);
+		const parsed = PostsSchema.parse(data);
+		const filtred = this.posts?.map(e => (e.id === parsed.id ? parsed : e));
+		if (filtred) this.posts = filtred;
+		console.log("TOTAL PUT", data);
 	};
 
 	delete = async (post_id: number) => {
@@ -69,4 +75,4 @@ class StorePosts {
 	};
 }
 
-export default new StorePosts();
+export default StorePosts;

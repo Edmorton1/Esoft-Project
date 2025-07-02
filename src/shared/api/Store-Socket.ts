@@ -9,6 +9,7 @@ import StoreCall from "@/pages/Room/widgets/ModalCall/store/Store-Call";
 import StoreTalking from "@/pages/Room/widgets/ModalTalking/store/Store-Talking";
 import StoreForm from "@/shared/stores/Store-Form";
 import StoreMessagesManager from "@/pages/Messages/store/Store-Messages-Manager";
+import StorePairs from "@/shared/stores/Store-Pairs";
 
 class SocketStore {
   socket: WebSocket | null = null
@@ -61,6 +62,10 @@ class SocketStore {
         case "delete_like":
           console.log("DELETE LIKE DATA", data)
           StoreLikes.socketGetDelete(data)
+          break
+        case "rejectLike":
+          console.log("REJECT LIKE AGREED", data)
+          StorePairs.sockerRejectGet(data)
           break
 
         case "offer": {

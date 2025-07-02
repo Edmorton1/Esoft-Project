@@ -1,7 +1,7 @@
 import AddFiles from "@/pages/Messages/InsideMessage/widget/Main/modules/components/kit/AddFiles";
 import FileToCardMedia from "@/pages/Profile/Posts/components/FileToCardMedia";
 import { PostsDTOPutClientSchema } from "@/pages/Profile/Posts/validation/Schemas";
-import StorePosts from "@/pages/Profile/stores/Store-Posts";
+import StorePostsAuthor from "@/pages/Profile/stores/Store-Posts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -10,6 +10,7 @@ import { Posts } from "@t/gen/Users";
 import { useForm, useWatch } from "react-hook-form";
 import * as style from "@/shared/css/modules/CreatePost.module.scss"
 import Paper from "@mui/material/Paper";
+import usePostsStore from "@/pages/Profile/Posts/hooks/usePostsStore";
 
 interface propsInterface {
 	post: Posts;
@@ -20,10 +21,11 @@ function Edit({ post, EditToZero: handleSuccess }: propsInterface) {
   const {register, handleSubmit, formState: {errors}, setValue, control } = useForm({resolver: zodResolver(PostsDTOPutClientSchema), defaultValues: {text: post.text, userid: post.userid, remove_old: [], id: post.id}})
 
   const remove_old = useWatch({name: "remove_old", control})
+  const store = usePostsStore()
   // const text = useWatch({name: "text", control})
 
   const onSubmit = (handleSubmit(data => {
-    StorePosts.put(data)
+    store.put(data)
     handleSuccess()
   }))
 

@@ -5,7 +5,7 @@ import { Form } from "@t/gen/Users";
 import { makeAutoObservable } from "mobx";
 
 class StorePairs {
-	pairs: Form[] | null = null;
+	pairs: Form[] = [];
 	// cursor: number | null = null
 
 	constructor() {
@@ -21,11 +21,25 @@ class StorePairs {
 	};
 
 	rejectUser = async (id: number) => {
+		// ID  ЭТО ЮЗЕРА
     const liked = StoreLikes.liked;
 		await $api.delete(`${serverPaths.rejectLike}/${id}`);
-		if (liked) StoreLikes.liked = liked?.filter(e => e.id !== id);
-    if (this.pairs) this.pairs = this.pairs.filter(e => e.id !== id)
+		StoreLikes.liked = liked?.filter(e => e.id !== id);
+    this.pairs = this.pairs.filter(e => e.id !== id)
+
+		
+		if (StoreLikes.likes?.received) {
+			const filtredReceived = StoreLikes.likes.received.filter(e => e.userid !== id)
+			StoreLikes.likes.received = filtredReceived
+		}
 	};
+
+	sockerRejectGet = (userid: number) => {
+		if (StoreLikes.likes) {
+			const filtredLikes = StoreLikes.likes.sent.filter(e => e.liked_userid !== userid)
+			StoreLikes.likes.sent = filtredLikes
+		}
+	}
 }
 
 export default new StorePairs();
