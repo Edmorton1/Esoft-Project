@@ -22,20 +22,20 @@ class StoreSettings extends StoreBaseModal {
 		});
 	}
 
-	comparePassword = async (oldPass: string, newPass: string, setError: UseFormSetError<PasswordType>) => {
+	comparePassword = async (oldPass: string, newPass: string, setError: UseFormSetError<PasswordType>, navigate: Function) => {
 		try {
 			const request = await $api.post(serverPaths.passwordCompare, {old: oldPass, new: newPass});
 
 			if (request.status === 200) {
 				console.log("Пароль верный");
-				// ВИДИМО В STOER USER LOGOUT ОШИБКА!
-				//@ts-ignore
-        // await StoreUser.logout()
-        // window.location.replace(URL_CLIENT)
+        await StoreUser.logout()
+				this.closeModal()
+        navigate("/")
 			}
 		} catch (error: any) {
+			console.log("ОШИБКА")
 			if (error.response?.status === 400) {
-				setError("pass", {message: "Пароль неверный"});
+				setError("pass", {message: "Пароль неверный", type: "manual"});
 			}
 		}
 	};

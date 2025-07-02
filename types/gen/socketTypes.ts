@@ -1,6 +1,9 @@
 import { Form, Likes, Message } from "@t/gen/Users"
 
-export type LikesSendSocketDTO = Omit<Likes, "liked_userid"> & {name: string}
+export type LikesSendSocketDTO = {
+  like: Omit<Likes, "liked_userid">,
+  form: Form
+}
 export type LikesDeleteSocketDTO = {userid: number, name: string}
 
 export interface MsgTypesServer {

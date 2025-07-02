@@ -12,7 +12,7 @@ function UsersCardModule() {
 
   const handleLike = () => StoreLikes.likes?.sent.some(e => e.liked_userid === context!.id) ? StoreLikes.delete(context) : StoreLikes.like(context)
 
-  return <UsersCardInfo formRaw={context}>
+  return <UsersCardInfo form={context}>
     {StoreForm.form?.id !== context.id && <Button color={liked ? "error" : "success"} variant="contained" onClick={handleLike}>{liked ? 'Убрать лайк' : 'Лайкнуть'}</Button>}
   </UsersCardInfo>
 }

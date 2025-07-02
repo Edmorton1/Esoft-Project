@@ -28,7 +28,7 @@ function RegistrationBody({onSubmit}: propsInterface) {
   const tags: TagsDTO[] = useWatch({name: 'tags'})
 
   return <form onSubmit={onSubmit} className={style.form}>
-  {/* <button onClick={() => console.log(errors)}>errors</button> */}
+  <button onClick={() => console.log(errors)}>errors</button>
   {/* <div>Добро пожаловать: {StoreUser.user?.email}</div>
   <button onClick={() => console.log(errors)}>errors</button>
   <button onClick={() => console.log(toJS(StoreRegistration.defaultCoords), toJS(StoreRegistration.coords))}>LOG</button> */}
@@ -78,7 +78,8 @@ function RegistrationBody({onSubmit}: propsInterface) {
 
           <TextField type="file" label="Загрузить аватар" slotProps={{inputLabel: {shrink: true}}}></TextField>
 
-          <InputMui id="city" text="Город" register={register} disabled={!!StoreRegistration.coords || !!StoreRegistration.defaultCoords} />
+          {/* <InputMui id="city" text="Город" register={register} disabled={!!StoreRegistration.coords || !!StoreRegistration.defaultCoords} /> */}
+          <InputMui error={errors.city} id="city" text="Город" register={register} disabled={!!StoreRegistration.coords?.city} />
         </Box>
 
         <Typography variant="h4" color="warning" textAlign={"center"}>ВНИМАНИЕ! ЕСЛИ ВЫ УКАЖЕТЕ ГЕОЛОКАЦИЮ ЕЁ БУДУТ ВИДЕТЬ ВСЕ, КТО ЗАЙДЁТ НА САЙТ!</Typography>

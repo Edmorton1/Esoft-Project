@@ -33,10 +33,7 @@ export const RegistrationDTOClientSchemaWithoutRefline = RegistrationDTOServerSc
   //   } return val
   // }, z.array(TagsSchemaDTO)),
 
-  city: z.preprocess(val => {
-    if (checkEmptyString(val)) return toCapitalize(val)
-    return undefined
-  }, z.string().trim().nonempty().optional()),
+  city: z.string().trim().nonempty("Город обязателен").transform(toCapitalize),
 
   description: z.preprocess(val => {
     if (checkEmptyString(val)) return val.trim()

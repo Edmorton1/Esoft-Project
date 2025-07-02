@@ -13,6 +13,7 @@ interface LikesModuleRepo {
 	getManyByParam: (
 		name: string,
 		need: any[],
+		userid: number,
 		distance?: lnglatType,
 		cursor?: number,
 	) => Knex.QueryBuilder<any>;
@@ -48,7 +49,8 @@ class LikesModule implements LikesModuleRepo {
 
 	getManyByParam: LikesModuleRepo["getManyByParam"] = (
 		name,
-		need,
+		ids,
+		userid,
 		lnglat,
 		cursor,
 	) => {
@@ -71,19 +73,24 @@ class LikesModule implements LikesModuleRepo {
 		// const fields = 'id, name sex, avatar, age, description, target, city, tags, location'
 
 		const totalFields = fieldsToArr(undefined, "forms", true, lnglat);
+		totalFields.push(db.raw("MAX(likes.id) as cursor"))
 		const query = requestToFormManyParams({
 			name: name as string,
-			params: need,
+			params: ids,
 		})
+			.leftJoin("likes", function() {
+				this.on("likes.userid", "forms.id")
+				.andOn("likes.liked_userid", "=", db.raw("?", [userid]))
+			})
 			.select(totalFields)
 			.limit(LIKES_ON_PAGE)
-			.orderBy("id", "desc");
+			.orderByRaw("MAX(likes.id) DESC");
 		// knexDistance && totalFields.push(knexDistance);
 
 		this.logger.info({ ZAPROS: query.toSQL().toNative() });
 
 		if (cursor) {
-			query.andWhere("forms.id", "<", cursor);
+			query.andWhere("likes.id", "<", cursor);
 		}
 
 		return query;

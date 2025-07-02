@@ -49,7 +49,7 @@ class StoreUser {
     }
   }
   
-  login = (data: UserDTO, setError: UseFormSetError<UserDTO>, navigate: Function) => {
+  login = (data: UserDTO, setError: UseFormSetError<UserDTO>, navigate: Function, reset: Function) => {
     // try {
       $api.post(`${serverPaths.login}`, data)
         .then(data => UserSchema.parse(data.data))
@@ -57,6 +57,7 @@ class StoreUser {
         .then(() => this.initial())
         .then(() => StoreLogin.closeModal())
         .then(() => navigate(`${paths.profile}/${this.user?.id}`))
+        .then(() => reset())
 
         .catch(err => {
           if (axios.isAxiosError(err)) {

@@ -10,7 +10,7 @@ export const RegistrationDTOServerSchema = FormSchema
   // targetCustom: z.string().optional(), // если раскомментируешь
   avatar: ExpressMulterFileSchema.optional(),
   tags: z.array(TagsSchemaDTO).transform(item => item.map((val: {tag: string}) => ({tag: val.tag.toLowerCase()}))),
-  city: z.string().optional().transform(val => {
+  city: z.string().transform(val => {
     if (typeof val === 'string') {
       return val.charAt(0).toUpperCase() + val.slice(1).toLowerCase()
     } return val

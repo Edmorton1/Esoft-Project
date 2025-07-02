@@ -10,12 +10,13 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 function Login() {
-  const { register, handleSubmit, setError, formState: {errors} } = useForm<UserDTO>({resolver: zodResolver(UserDTOSchema)});
+  const { register, handleSubmit, setError, formState: {errors}, reset } = useForm<UserDTO>({resolver: zodResolver(UserDTOSchema)});
 
   const navigate = useNavigate()
 
   const handleLogin = (data: UserDTO) => {
-    StoreUser.login(data, setError, navigate)
+    StoreUser.login(data, setError, navigate, reset)
+    // reset()
   }
 
   const onSubmit = handleSubmit((data: UserDTO) => handleLogin(data))

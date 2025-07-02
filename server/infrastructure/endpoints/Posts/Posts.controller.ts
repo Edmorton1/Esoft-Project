@@ -60,7 +60,6 @@ class PostsController extends BaseController implements IPostsController {
     ctx.set(IS_AUTHOR, userid === ctx.session.userid ? "true" : "false")
 		
     ctx.json(total)
-    // УСТАНОВИТЬ ЗАГОЛОВОК is_author
   };
 
   // ПОТОМУ ЗДЕСЬ ТОЖЕ ПОМЕНЯТЬ НА ФОРМ ДАТУ

@@ -1,6 +1,4 @@
 import useDebounce from "@/shared/hooks/useDebounce"
-//@ts-ignore
-// ТУТ ПОМЕНЯТЬ search на Search сейчас ругается
 import SearchBase from "@/shared/ui/components/Search/SearchBase"
 import StoreSearchForm from "@/shared/ui/components/Header/Store-searchForm"
 import { useEffect, useState } from "react"

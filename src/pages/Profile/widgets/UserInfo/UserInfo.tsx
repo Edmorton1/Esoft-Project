@@ -8,12 +8,15 @@ import Paper from "@mui/material/Paper";
 import * as style from "@/shared/css/pages/Profile.module.scss"
 import { BG_ALT, BG_PAPER } from "@shared/COLORS";
 import StorePosts from "@/pages/Profile/stores/Store-Posts";
+import LastActive from "@/shared/ui/components/LastActive";
 
 const sxFont = {fontSize: "20px"}
 
 // ПОТОМ СДЕЛАТЬ С ИНФОРМАЦИЕЙ КАК МОДАЛКУ
 function UserInfo() {
 	const profile = StoreProfile.profile;
+	const filtredTags = StoreProfile.profile?.tags?.filter(e => e.tag)
+	console.log("filtredTags", profile)
 
 	if (!profile) return null;
 
@@ -26,7 +29,7 @@ function UserInfo() {
 
 			<Box sx={{ flex: 1 }}>
 				<Stack spacing={1.5}>
-
+					<LastActive last_active={profile.last_active} />
 					<Typography sx={sxFont}>
 						<strong>Пол:</strong> {profile.sex ? "Мужчина" : "Женщина"}
 					</Typography>
@@ -51,13 +54,13 @@ function UserInfo() {
 						<strong>Дистанция:</strong> {profile.distance} км
 					</Typography>}
 
-					{profile.tags?.length && (
+					{filtredTags && filtredTags.length > 0 && (
 						<Box>
 							<Typography sx={sxFont}>
 								<strong>Теги:</strong>
 							</Typography>
 							<Stack direction="row" spacing={1} flexWrap="wrap" mt={1}>
-								{profile.tags.map(tag => (
+								{filtredTags.map(tag => (
 									<Chip key={tag.tag} label={tag.tag} variant="outlined" sx={{fontSize: '17px', height: 40, padding: '0 12px'}} />
 								))}
 							</Stack>

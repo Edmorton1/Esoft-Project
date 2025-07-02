@@ -11,7 +11,7 @@ function UserCardWidget({data}: {data: Form}) {
 	const rejectHandle = () => StorePairs.rejectUser(data.id);
 
 	return (
-		<UsersCardInfo formRaw={data} key={data.id}>
+		<UsersCardInfo form={data} key={data.id}>
 			<Paper className={style["container__cards--actions"]}>
 				{/* <Link to={`${paths.messages}/${e.id}`}><Button sx={{width: "100%"}} variant="contained">Написать</Button></Link> */}
 				{/* <Button variant="contained" color="success" onClick={() => StoreLikes.sendLike(e.id)}>{StoreLikes.likes?.sent.find(item => item.liked_userid === e.id) ? 'Убрать лайк' : "Лайкнуть"}</Button> */}

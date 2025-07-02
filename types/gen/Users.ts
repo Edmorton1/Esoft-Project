@@ -73,7 +73,7 @@ export const FormSchema = z.object({
 		.preprocess(nullToUndefined, z.string().nonempty().optional())
 		.optional(),
 	description: z.preprocess(nullToUndefined, zstring.optional()).optional(),
-	city: z.preprocess(nullToUndefined, zstring.optional()).optional(),
+	city: zstring,
 	// location: z.preprocess(nullToUndefiend, z.union([LocationSchema, z.string()]).optional()),
 	location: z.preprocess(nullToUndefined, LocationSchema.optional()),
 	tags: z.preprocess(nullToUndefined, z.array(TagsSchema).optional()),

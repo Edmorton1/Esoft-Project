@@ -17,7 +17,8 @@ function PostsHead() {
 	useInfinitPaginationDoc(
 		{main: `${serverPaths.postsGet}/${StoreProfile.profile?.id}`},
 		data => StorePosts.lazyLoadPosts(data),
-		"desc"
+		"desc",
+		"id"
 	);
 
 	return (

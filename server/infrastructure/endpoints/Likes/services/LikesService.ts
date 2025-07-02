@@ -9,6 +9,7 @@ import { Form, FormSchema, Likes } from "@t/gen/Users";
 import { inject, injectable } from "inversify";
 import { z } from "zod";
 import { ILogger } from "@s/helpers/logger/logger.controller";
+import { FormWithCursorSchema } from "@s/infrastructure/endpoints/Likes/services/Schemas";
 
 interface LikesServiceRepo {
   sendLike: (likesDTO: LikesDTO) => Promise<Likes>;
@@ -34,9 +35,12 @@ class LikesService implements LikesServiceRepo {
 		const [data] = await this.ORM.post(likesDTO, "likes");
 		this.logger.info(this.clients.keys());
 		const clientTo = this.clients.get(likesDTO.liked_userid);
-		console.log("PARAMS BEFOR NAME", data.userid, data)
-		const {name} = (await this.ORM.getById(data.userid, "forms", "name"))[0]
-		clientTo?.send(toSOCl("like", {id: data.id, userid: data.userid, name: name}));
+		if (clientTo) {
+			console.log("PARAMS BEFOR NAME", data.userid, data)
+			const form = (await this.ORM.getById(data.userid, "forms", undefined))[0]
+			clientTo?.send(toSOCl("like", {like: {id: data.id, userid: data.userid}, form}));
+		}
+		
 		return data;
 	};
 
@@ -65,10 +69,11 @@ class LikesService implements LikesServiceRepo {
 		const request = await this.likesModule.getManyByParam(
 			"id",
 			json_agg,
+			userid,
 			lnglat,
 			cursor,
 		);
-		return z.array(FormSchema).parse(request);
+		return z.array(FormWithCursorSchema).parse(request);
 	};
 
   rejectLike: LikesServiceRepo['rejectLike'] = async (userid, liked_userid) => {

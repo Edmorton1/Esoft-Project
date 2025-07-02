@@ -1,20 +1,28 @@
 import { PaletteOptions, Palette } from "@mui/material/styles";
 
 declare module "@mui/material/styles" {
-	interface Palette {
-		salmon: Palette["primary"];
-	}
+  interface Palette {
+    salmon: Palette["primary"];
+    third: Palette["primary"];
+    alt: Palette["primary"];
+  }
 
-	interface PaletteOptions {
-		salmon?: PaletteOptions["primary"];
-	}
+  interface PaletteOptions {
+    salmon?: PaletteOptions["primary"];
+    third?: PaletteOptions["primary"];
+    alt?: PaletteOptions["primary"];
+  }
+
+  interface TypeBackground {
+    third: string;
+    alt: string;
+  }
 }
 
-// Update the Button's color options to include a salmon option
 declare module "@mui/material/Button" {
-	interface ButtonPropsColorOverrides {
-		salmon: true;
-	}
+  interface ButtonPropsColorOverrides {
+    salmon: true;
+  }
 }
 
 declare module "@mui/material/SvgIcon" {

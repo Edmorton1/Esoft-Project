@@ -2,6 +2,7 @@ import {useState} from "react";
 import useDebounceParams from "@/shared/hooks/useDebounceParams";
 import Slider from "@mui/material/Slider"
 import useUpdateParams from "@/shared/hooks/useChangeParams";
+import { z } from "zod";
 
 function TwinRange() {
   const [params] = useUpdateParams()
@@ -11,13 +12,14 @@ function TwinRange() {
 
 	const [value, setValue] = useState<[number, number]>([Number(params.min_age) || 18, Number(params.max_age) || 122]);
 
-	const changeHandle = (e: any, v: [number, number]) => {
-    console.log(v)
+	const changeHandle = (e: any, v: number[]) => {
+		const parsedV = z.tuple([z.number(), z.number()]).parse(v)
+    console.log(parsedV)
     
-		setValue(v)
+		setValue(parsedV)
 
-    {v[0] !== value[0] && setMinAgeParam(v[0])}
-    {v[1] !== value[1] && setMaxAgeParam(v[1])}
+		if (v[0] !== value[0]) setMinAgeParam(parsedV[0])
+		if (v[1] !== value[1]) setMaxAgeParam(parsedV[1])
     
 	};
 
@@ -37,7 +39,6 @@ function TwinRange() {
 			max={122}
 			marks={marks}
 			value={value}
-      //@ts-ignore
 			onChange={changeHandle}
 		/>
 }

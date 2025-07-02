@@ -7,38 +7,51 @@ interface IUrl {
   params?: string
 }
 
-function useInfinitPaginationDoc(url: IUrl, callback: (data: AxiosResponse<any, any>) => void, order: "asc" | "desc") {
+function useInfinitPaginationDoc(url: IUrl, callback: (data: AxiosResponse<any, any>) => void, order: "asc" | "desc", cursorField: string) {
   const [stop, setStop] = useState(false)
   const [fetching, setFetching] = useState(false)
+  
   const firstRender = useRef<boolean>(true)
   const cursor = useRef<number>(0)
+  const urls = useRef<string[]>([])
 
   // console.log("CURSOR INSIDE", url)
 
-  useEffect(() => {
-    const fetchData = async () => {
+  useEffect(() => {    
+    const fetchData = async (request: string) => {
+      firstRender.current = false
       try {
-        const res = await $api.get(`${url.main}?cursor=${cursor.current}${url.params ? url.params : ''}`)
-        console.log('then data', {FETCHI_FETCH: res.data}, {URL: `${url.main}?cursor=${cursor.current}${url.params ? url.params : ''}`, CURSOR_IN_REF: cursor.current, SETUP_CURSOR: res.data[res.data.length - 1].id})
-        cursor.current = order === "desc" ? cursor.current = res.data[res.data.length - 1].id : cursor.current = res.data[0].id
+        const res = await $api.get(request)
+
+        console.log("ПОГНАЛ", res.data.length, stop)
+        // console.log('then data', {FETCHI_FETCH: res.data}, {URL: `${url.main}?cursor=${cursor.current}${url.params ? url.params : ''}`, CURSOR_IN_REF: cursor.current, SETUP_CURSOR: res.data[res.data.length - 1].id})
+        
         if (res.data.length === 0) {
           if (firstRender.current) {
             callback(res)
             }
           setStop(true)
         } else {
+          cursor.current = order === "desc" ? cursor.current = res.data[res.data.length - 1][cursorField] : cursor.current = res.data[0][cursorField]
           callback(res)
         }
         setFetching(false)
-      } catch {
-        setStop(false)
+      } catch (err) {
+        console.error(err)
+        setStop(true)
       } finally {
-        firstRender.current = false
+        setFetching(false)
       }
       
     }
-    if (fetching || firstRender.current) {
-     fetchData()
+
+    const request = `${url.main}?cursor=${cursor.current}${url.params ? url.params : ''}`
+
+    console.log("РЕКВЕСТ", request, urls.current)
+
+    if ((fetching || firstRender.current) && !stop && !urls.current.includes(request)) {
+    urls.current.push(request)
+     fetchData(request)
     }
   }, [fetching, url])
 
@@ -66,16 +79,16 @@ function useInfinitPaginationDoc(url: IUrl, callback: (data: AxiosResponse<any, 
 
   useEffect(() => {
     const checkAndFetchMore = () => {
-      console.log("CHECK ZAPROS")
+      console.log("CHECK ZAPROS", stop)
       const windowHeight = window.innerHeight;
       const docHeight = document.documentElement.scrollHeight;
 
-      console.log("windowHeight", windowHeight, "docHeight", docHeight);
+      // console.log("windowHeight", windowHeight, "docHeight", docHeight);
 
-      if (document.documentElement.scrollHeight <= window.innerHeight && !stop) {
-        setFetching(true);
-      } else {
+      if (stop || docHeight > windowHeight) {
         clearInterval(interval)
+      } else if (document.documentElement.scrollHeight <= window.innerHeight) {
+        setFetching(true);
       }
     };
 
@@ -84,7 +97,7 @@ function useInfinitPaginationDoc(url: IUrl, callback: (data: AxiosResponse<any, 
     return () => window.clearInterval(interval)
     // checkAndFetchMore();
 
-  }, [])
+  }, [stop])
 }
 
 export default useInfinitPaginationDoc

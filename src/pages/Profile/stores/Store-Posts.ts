@@ -22,9 +22,7 @@ class StorePosts {
 	lazyLoadPosts = (data: AxiosResponse<any, any>) => {
 		// this.canChange = data.headers[IS_AUTHOR]
 
-		//@ts-ignore
-		// ЗДЕСЬ ПОТОМ ПОМЕНЯТЬ НА ПЕРЕМЕННУЮ IS_AUTHOR
-		console.log("HEADERS", data.headers["is-author"] === "true");
+		console.log("HEADERS", data.headers[IS_AUTHOR] === "true");
 
 		const parsed = z.array(PostsSchema).parse(data.data);
 		console.log("POSTS", parsed);
@@ -32,7 +30,7 @@ class StorePosts {
 		if (this.posts !== null) {
 			this.posts.push(...parsed);
 		} else {
-			this.canChange = data.headers["is-author"] === "true";
+			this.canChange = data.headers[IS_AUTHOR] === "true";
 			this.posts = parsed;
 		}
 		// this.cursor = parsed[parsed.length - 1].id;

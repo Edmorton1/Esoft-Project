@@ -17,7 +17,7 @@ import { serverPaths } from "@shared/PATHS"
 
 function Profile() {
   const id = Number(useParams().id)
-  const last_active = useLastActive(StoreForm.form?.last_active)
+
   console.log("/forms", `/${serverPaths.forms}`)
 
   useGetById(`${serverPaths.profileGet}/${id}`, {returnOne: true, callback: StoreProfile.initial})
