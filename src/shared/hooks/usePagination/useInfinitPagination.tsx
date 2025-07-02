@@ -20,6 +20,30 @@ function useInfinitPagination(ref: React.RefObject<HTMLElement | null>, url: str
   }
 
   useEffect(() => {
+    const checkAndFetchMore = () => {
+      if (!ref.current) return;
+      // console.log("CHECK ZAPROS", store.stop)
+      
+      const windowHeight = ref.current.clientHeight;
+      const docHeight = ref.current.scrollHeight;
+
+      console.log("windowHeight", windowHeight, "docHeight", docHeight);
+
+      if (stop || docHeight > windowHeight) {
+        clearInterval(interval)
+      } else if (document.documentElement.scrollHeight <= window.innerHeight) {
+        setFetching(true);
+      }
+    };
+
+    const interval = setInterval(() => checkAndFetchMore(), 300);
+    
+    return () => window.clearInterval(interval)
+    // checkAndFetchMore();
+
+  }, [stop])
+
+  useEffect(() => {
     console.log("ЮРЛ ДОЛЖЕН ПОМЕНЯТЬСЯ", url)
     // if (url.includes("undefined")) return;
 
@@ -94,7 +118,6 @@ function useInfinitPagination(ref: React.RefObject<HTMLElement | null>, url: str
         img.removeEventListener('error', onImageLoad)
       })
     }
-
   }, [ref.current])
 
   return scrollHandle

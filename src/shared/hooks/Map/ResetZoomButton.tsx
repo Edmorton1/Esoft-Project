@@ -13,7 +13,7 @@ function ResetZoomButton({map, coords}: {map: Map, coords: LocationDTO}) {
 
 	return (
 		<>
-			<MapButton onClick={handleReset} color="salmon" variant="contained"><GpsNotFixedIcon sx={sxStyleMap} /></MapButton>
+			<MapButton onClick={handleReset} color="plombir" variant="contained"><GpsNotFixedIcon sx={sxStyleMap} /></MapButton>
 		</>
 	);
 }

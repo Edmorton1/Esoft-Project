@@ -13,7 +13,7 @@ function SexButton() {
 		<>
 			<MapButton
 				onClick={handleSex}
-				color="salmon"
+				color="plombir"
 				variant="contained">
 				{StoreMap.sex === "man" ? (
 					<MaleIcon sx={sxStyleMap} />

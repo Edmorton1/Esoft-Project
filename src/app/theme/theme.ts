@@ -22,11 +22,11 @@ export const getMuiTheme = (mode: "light" | "dark"): Theme => {
 	});
 	theme = createTheme(theme, {
 		palette: {
-			salmon: theme.palette.augmentColor({
+			plombir: theme.palette.augmentColor({
 				color: {
 					main: "#ffffff",
 				},
-				name: "salmon",
+				name: "plombir",
 			}),
 		},
 	});

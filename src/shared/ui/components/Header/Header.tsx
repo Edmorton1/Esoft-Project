@@ -57,7 +57,7 @@ function Header() {
             ? <Link to={`${paths.profile}/${StoreForm.form.id}`}>
                 <Avatar src={StoreForm.form.avatar} />
               </Link> 
-            : <Button variant="contained" color="salmon" onClick={StoreLogin.openModal} >Войти <LoginIcon /></Button>
+            : <Button variant="contained" color="plombir" onClick={StoreLogin.openModal} >Войти <LoginIcon /></Button>
           }
         </div>
         

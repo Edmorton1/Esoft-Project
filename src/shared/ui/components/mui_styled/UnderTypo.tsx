@@ -7,6 +7,8 @@ const UnderTypo = styled(Typography)({
   '&:hover': {
     textDecoration: 'underline',
   },
+  display: "inline",
+  width: "auto"
 });
 
 export default UnderTypo

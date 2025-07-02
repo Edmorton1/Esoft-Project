@@ -92,12 +92,12 @@ function useInfinitPaginationDoc(url: IUrl, store: ICursor, callback: (data: Axi
   useEffect(() => {
     const checkAndFetchMore = () => {
       // console.log("CHECK ZAPROS", store.stop)
-      const windowHeight = window.innerHeight;
-      const docHeight = document.documentElement.scrollHeight;
+      const winHeight = window.innerHeight;
+      const winScroll = document.documentElement.scrollHeight;
 
       // console.log("windowHeight", windowHeight, "docHeight", docHeight);
 
-      if (store.stop || docHeight > windowHeight) {
+      if (store.stop || winScroll > winHeight) {
         clearInterval(interval)
       } else if (document.documentElement.scrollHeight <= window.innerHeight) {
         setFetching(true);

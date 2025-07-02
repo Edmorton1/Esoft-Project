@@ -8,7 +8,7 @@ function MicroFile({fileLink, onClick}: {fileLink: string, onClick: () => void})
   // const onMouseLeave = (e: MouseEventType) => console.log(e)
 
   return <FileComponent fileLink={fileLink} mode="mini">
-    <CloseIcon color="salmon" sx={{width: "100px", height: "100px"}} className={style['main__files--close']} onClick={onClick} />
+    <CloseIcon color="plombir" sx={{width: "100px", height: "100px"}} className={style['main__files--close']} onClick={onClick} />
   </FileComponent>
 }
 
