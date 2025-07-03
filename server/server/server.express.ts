@@ -1,4 +1,4 @@
-import certs from "@s/certs/certs";
+import certs from "certs/certs";
 import { createWebSocketServer } from "@s/helpers/WebSocket/socket";
 import ConfigService from "@s/config/services/config.service";
 import express, { Express, json } from "express";

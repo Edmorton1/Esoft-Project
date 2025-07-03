@@ -8,6 +8,7 @@ import TYPES from "@s/config/containers/types"
 
 interface MessagesSQLRepo {
   getMessage: (frid: number, toid: number, cursor?: number) => Promise<Message[]>
+  checkMatch(userid: number, liked_userid: number): Promise<boolean>
 }
 
 @injectable()
@@ -45,6 +46,23 @@ class MessagesSQL implements MessagesSQLRepo {
     this.logger.info({ГОТОВЫЙ_ЗАПРОС: total})
 
     return parsed
+  }
+
+  checkMatch: MessagesSQLRepo['checkMatch'] = async (userid, liked_userid) => {
+    const query = db("likes")
+      .select(db.raw(`COUNT(*) = 2 AS is_match`))
+      .where(qb => 
+        qb.where("userid", "=", userid).andWhere("liked_userid", "=", liked_userid)
+        .orWhere("userid", "=", liked_userid).andWhere("liked_userid", "=", userid)
+      );
+
+    this.logger.info({CHECK_MATCH_SQL: query.toSQL().toNative()})
+
+    // const {is_match} = (await query)[0]
+    const [{is_match}] = await query
+    this.logger.info(is_match)
+    return is_match
+      // .whereAnd("liked_userid", "=", liked_userid)
   }
 }
 

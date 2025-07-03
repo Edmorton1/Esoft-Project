@@ -12,13 +12,13 @@ import SharedValidate from "@s/infrastructure/middlewares/SharedValidate";
 
 interface IMessageController {
   getMessage: (ctx: HttpContext<{messages: Message[]} | {messages: Message[], form: Form}>) => Promise<void>
-  sendMessage: (ctx: HttpContext) => Promise<void>
-  editMessage: (ctx: HttpContext) => Promise<void>
-  deleteMessage: (ctx: HttpContext) => Promise<void>
+  sendMessage: (ctx: HttpContext<Message>) => Promise<void>
+  editMessage: (ctx: HttpContext<Message>) => Promise<void>
+  deleteMessage: (ctx: HttpContext<Message>) => Promise<void>
 }
 
 @injectable()
-class MessagesController extends BaseController {
+class MessagesController extends BaseController implements IMessageController {
   constructor (
     @inject(MessagesService)
     private readonly messageService: MessagesService,
@@ -63,17 +63,17 @@ class MessagesController extends BaseController {
     ctx.json(total)
   }
 
-  sendMessage = async (ctx: HttpContext) => {
+  sendMessage: IMessageController['sendMessage'] = async (ctx) => {
     const [message, files] = await MessagesValidation.sendMessage(ctx)
     if (message.fromid !== ctx.session.userid) {ctx.sendStatus(403); return;}
 
     const total = await this.messageService.sendMessage(message, files, ctx.session.userid!)
-
+    if (total === null) {ctx.sendStatus(403); return}
 
     ctx.json(total)
   }
 
-  editMessage = async (ctx: HttpContext) => {
+  editMessage: IMessageController['editMessage'] = async (ctx) => {
     const [id, userid, data] = await MessagesValidation.editMessage(ctx)
 
     // const [request] = await this.ORM.getById(id, "messages", "fromid")
@@ -86,7 +86,7 @@ class MessagesController extends BaseController {
     ctx.json(total)
   }
 
-  deleteMessage = async (ctx: HttpContext) => {
+  deleteMessage: IMessageController['deleteMessage'] = async (ctx) => {
     const id = SharedValidate.OnlyId(ctx)
     logger.info({DELETE_MESSAGE: id})
 

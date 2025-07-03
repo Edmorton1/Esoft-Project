@@ -2,6 +2,7 @@ import {Configuration} from "mini-css-extract-plugin";
 import {BuildOptions} from "./types";
 import fs from 'fs'
 import path from 'path';
+import certs from "../certs/certs";
 
 function buildDevServer(options: BuildOptions): Configuration["devServer"] {
 	const isDev = options.mode == "development";
@@ -22,8 +23,8 @@ function buildDevServer(options: BuildOptions): Configuration["devServer"] {
 		server: {
 			type: "https",
 			options: {
-     	  key: fs.readFileSync(path.resolve(__dirname, '..', 'server', 'certs', '192.168.1.125-key.pem')),
-      	cert: fs.readFileSync(path.resolve(__dirname, '..', 'server', 'certs', '192.168.1.125.pem')),
+     	  key: certs.key,
+      	cert: certs.cert,
 			}
 		},
 		proxy: [

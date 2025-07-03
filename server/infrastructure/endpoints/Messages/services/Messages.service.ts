@@ -14,7 +14,7 @@ import { MessagePutDTOServer } from "@t/server/DTOServer";
 
 interface MessagesServiceRepo {
   getMessage(fromId: number, toId: number, cursor?: number): Promise<{messages: Message[]} | {messages: Message[], form: Form}>,
-  sendMessage(message: MessageDTO, files: Express.Multer.File[], userid: number): Promise<Message>,
+  sendMessage(message: MessageDTO, files: Express.Multer.File[], userid: number): Promise<Message | null>,
   editMessage(id: number, userid: number, data: MessagePutDTOServer): Promise<Message | null>,
   deleteMessage(id: number, userid: number): Promise<Message | null>
 }
@@ -29,7 +29,7 @@ class MessagesService implements MessagesServiceRepo {
     @inject(ORM)
     private readonly ORM: ORM,
     @inject(MessagesSQL)
-    private readonly messageSQL: MessagesSQL,
+    private readonly serviceMessages: MessagesSQL,
     @inject(Yandex)
     private readonly yandex: Yandex,
     @inject(FilesService)
@@ -47,7 +47,7 @@ class MessagesService implements MessagesServiceRepo {
   
       this.logger.info({frid, toid, cursor})
   
-      const messages = await this.messageSQL.getMessage(frid, toid, cursor)
+      const messages = await this.serviceMessages.getMessage(frid, toid, cursor)
       
       // if (!messages.length) return res.sendStatus(404)
   
@@ -58,6 +58,11 @@ class MessagesService implements MessagesServiceRepo {
     }
   
     sendMessage: MessagesServiceRepo['sendMessage'] = async (message, files, userid) => {
+      const is_match = await this.serviceMessages.checkMatch(userid, message.toid)
+
+      console.log("IS MATCH", is_match)
+      if (!is_match) return null;
+
       const request: Omit<Message, 'files'> = (await this.ORM.post(message, 'messages'))[0]
   
       const paths = await this.fileService.uploadFiles(request.id, files, "messages")
@@ -75,6 +80,9 @@ class MessagesService implements MessagesServiceRepo {
       if (data.files.length === 0 && data.deleted.length === 0) {
         [total] = await this.ORM.put({text: data.text}, id, 'messages', userid)
         if (!total) {return null;}
+
+        const is_match = await this.serviceMessages.checkMatch(userid, total.toid)
+        if (!is_match) return null
   
       } else {
         this.logger.info({id: id, data: data.deleted})
@@ -95,6 +103,9 @@ class MessagesService implements MessagesServiceRepo {
       this.logger.info({DATA_FORM: data})
   
       if (!data) return null
+
+      const is_match = await this.serviceMessages.checkMatch(userid, data.toid)
+      if (!is_match) return null
   
       await this.yandex.deleteFolder(id, "messages")
       this.logger.info({frid: data.fromid, toid: data.toid, id})
