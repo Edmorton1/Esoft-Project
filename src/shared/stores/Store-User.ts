@@ -13,8 +13,8 @@ import { UseFormSetError } from "react-hook-form"
 import axios from "axios"
 import { LoginErrorTypes } from "@s/infrastructure/endpoints/Auth/Auth.controller"
 import { toSOSe } from "@s/helpers/WebSocket/JSONParsers"
-import StorePairs from "@/shared/stores/Store-Pairs"
-import StoreLogin from "@/pages/Login/Store-Login"
+import StoreLogin from "@/shared/ui/modals/Login/stores/Store-Login"
+import StorePairs from "@/pages/Pairs/widgets/stores/Store-Pairs"
 
 export interface responseInterface {
   user: User,
@@ -53,7 +53,7 @@ class StoreUser {
     // try {
       $api.post(`${serverPaths.login}`, data)
         .then(data => UserSchema.parse(data.data))
-        .then(user => this.user = user)
+        .then(user => runInAction(() => this.user = user))
         .then(() => this.initial())
         .then(() => StoreLogin.closeModal())
         .then(() => navigate(`${paths.profile}/${this.user?.id}`))
@@ -80,15 +80,17 @@ class StoreUser {
 
   logout = async () => {
     const request = toCl(await $api.post(serverPaths.logout))
-    runInAction(() => this.user = null)
-    runInAction(() => StoreForm.form = null)
+    runInAction(() => {
+      this.user = null
+      StoreForm.form = null
+    })
 
     this.loadModules(true)
   }
 
   initial = () => {
     $api.get(serverPaths.initial)
-      .then(data => this.user = data.data)
+      .then(data => runInAction(() => this.user = data.data))
       .then(() => this.loadModules())
 
       .catch(err => console.log(err))
@@ -111,8 +113,11 @@ class StoreUser {
 
     console.log(request)
 
-    runInAction(() => this.user = request.user)
-    runInAction(() => StoreForm.form = response.form)
+    runInAction(() => {
+      this.user = request.user
+      StoreForm.form = response.form
+    })
+
     this.initial()
     return request.user.id
   }

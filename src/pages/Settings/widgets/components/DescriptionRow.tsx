@@ -1,5 +1,5 @@
 import { ProfileType } from "@/pages/Settings/widgets/schema/Schemas"
-import { TextAreaMui } from "@/shared/ui/components/MuiComponents"
+import { TextAreaMui } from "@/shared/ui/mui_module_components/MuiComponents"
 import StoreForm from "@/shared/stores/Store-Form"
 import { useFormContext, useWatch } from "react-hook-form"
 

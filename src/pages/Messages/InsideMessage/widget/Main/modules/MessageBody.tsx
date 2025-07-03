@@ -14,7 +14,7 @@ import * as style from "@/shared/css/pages/MessagesInside.module.scss"
 import { MessagesContext } from "@/pages/Messages/InsideMessage/Messages";
 import { paths } from "@shared/PATHS";
 import { Link } from "react-router-dom";
-import UnderTypo from "@/shared/ui/components/mui_styled/UnderTypo";
+import UnderTypo from "@/shared/ui/mui_components/UnderTypo";
 
 interface propsInterface {
   editing: boolean,

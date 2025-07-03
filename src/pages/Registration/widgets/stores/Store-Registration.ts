@@ -1,6 +1,6 @@
 import { GISKEY } from "@/envClient"
 import $api from "@/shared/api/api"
-import StoreAlert from "@/shared/api/Store-Alert"
+import StoreAlert from "@/shared/ui/Toast/Store-Alert"
 import { serverPaths } from "@shared/PATHS"
 import { LocationDTO } from "@t/gen/dtoObjects"
 import axios from "axios"

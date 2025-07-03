@@ -2,27 +2,23 @@ import StoreLikes from "@/shared/stores/StoreLikes";
 import { serverPaths } from "@shared/PATHS";
 import * as style from "@/shared/css/pages/Liked.module.scss";
 import { observer } from "mobx-react-lite";
-import useInfinitPaginationDoc from "@/shared/hooks/usePagination/useInfinitPaginationDoc";
-import Title from "@/shared/ui/Ttile";
-import EmptyText, { emptyFlex } from "@/shared/ui/EmptyText";
-import UserCardWidget from "@/pages/Liked/widgets/UserCardWidget";
+import useInfinitPaginationDoc from "@/shared/hooks/usePagination/doc/useInfinitPaginationDoc";
+import Title from "@/shared/ui/mui_components/Ttile";
+import EmptyText, { emptyFlex } from "@/shared/ui/mui_components/EmptyText";
+import UserCardModule from "@/pages/Liked/modules/UserCardModule";
 
 function Liked() {
-	// useGetBy(`${serverPaths.likesGet}/${StoreUser.user?.id}?lat=${StoreForm.form?.location?.lat}&lng=${StoreForm.form?.location?.lng}?cursor=${StoreLikes.cursor}`, {callback: (data) => StoreLikes.likedUser(data)})
-	const loaded = StoreLikes.liked && StoreLikes.liked?.length > 0
-	// !loaded ? {main: serverPaths.likesGet} : {main: "null"},
-
 	useInfinitPaginationDoc(
 		{
 			main: serverPaths.likesGet,
 		},
 		{
 			cursor: StoreLikes.cursor,
-			setCursor: (cursor => StoreLikes.cursor = cursor),
+			setCursor: StoreLikes.setCursor,
 			history: StoreLikes.history,
-			setHistory: (url => StoreLikes.history.push(url)),
+			setHistory: StoreLikes.setHistory,
 			stop: StoreLikes.stop,
-			setStop: (() => StoreLikes.stop = true)
+			setStop: StoreLikes.setStop
 		},
 		data => StoreLikes.lazyLoadLiked(data.data),
 		"desc",
@@ -38,7 +34,7 @@ function Liked() {
 
 				{StoreLikes.liked?.length ? (
 					<section className={style.container__cards}>
-						{StoreLikes.liked?.map(e => <UserCardWidget key={e.id} data={e} />)}
+						{StoreLikes.liked?.map(e => <UserCardModule key={e.id} data={e} />)}
 					</section>
 				) : <EmptyText />}
 			</section>

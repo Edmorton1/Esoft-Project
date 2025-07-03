@@ -1,5 +1,5 @@
 import { MessageFormType } from "@t/gen/Schemas"
-import { makeAutoObservable } from "mobx"
+import { makeAutoObservable, runInAction } from "mobx"
 
 class StoreMessage {
   constructor() {

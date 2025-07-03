@@ -1,5 +1,5 @@
 import $api from "@/shared/api/api"
-import { makeAutoObservable, toJS } from "mobx"
+import { action, makeAutoObservable, runInAction, toJS } from "mobx"
 import { Form, Message } from "@t/gen/Users"
 import { toJSON } from "@shared/MAPPERS"
 import StoreUser from "@/shared/stores/Store-User"
@@ -29,14 +29,17 @@ class StoreMessages {
 
   get = async (data: {messages: Message[], form: Form}) => {
     console.log("ГЕТ МЕССАДЖ")
-    if (this.messages !== null) {
-      this.messages.unshift(...data.messages)
-    } else {
-      this.messages = data.messages
-      this.form = data.form
-    }
-    console.log("THIS CURSOR NEW ", data.messages, this.cursor)
-    this.cursor = data.messages[0]?.id
+
+    runInAction(() => {
+      if (this.messages !== null) {
+        this.messages.unshift(...data.messages)
+      } else {
+        this.messages = data.messages
+        this.form = data.form
+      }
+      console.log("THIS CURSOR NEW ", data.messages, this.cursor)
+      this.cursor = data.messages[0]?.id
+    })
     
     console.log(this.messages, this.form)
     console.log(toJS(this.messages))    
@@ -93,7 +96,7 @@ class StoreMessages {
 
   delete = async (id: number) => {
     console.log(id)
-    const request = await $api.delete(`${serverPaths.deleteMessage}/${id}`)
+    await $api.delete(`${serverPaths.deleteMessage}/${id}`)
   }
   
   socketGet = (data: Message) => {

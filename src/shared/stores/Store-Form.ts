@@ -22,9 +22,9 @@ class FormStore {
     }
   }
 
-  async addTags(tags: Tags[]) {
-    runInAction(() => this.form!.tags = tags)
-  }
+  // addTags(tags: Tags[]) {
+  //   this.form!.tags = tags
+  // }
 
   // async postForm(data: RegistrationDTOClient) {
   //   const request = toCl<Form>(await $api.post(`${serverPaths.createForm}`, data))

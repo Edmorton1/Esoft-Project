@@ -2,7 +2,7 @@ import Typography from '@mui/material/Typography';
 import * as style from "@/shared/css/pages/Settings.module.scss"
 import { useFormContext, useWatch } from 'react-hook-form';
 import { ProfileType } from '@/pages/Settings/widgets/schema/Schemas';
-import { InputMui, InputNumberMui } from '@/shared/ui/components/MuiComponents';
+import { InputMui, InputNumberMui } from '@/shared/ui/mui_module_components/MuiComponents';
 import StoreForm from '@/shared/stores/Store-Form';
 import { memo } from 'react';
 

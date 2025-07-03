@@ -1,8 +1,8 @@
-import {createRoots} from "@/shared/hooks/Map/createRoot";
+import { createRoots } from "@/shared/hooks/Map/createRoot";
 import StoreMap from "@/pages/Map/store/Store-Map";
-import {InputMarker} from "@2gis/mapgl-clusterer";
+import { InputMarker } from "@2gis/mapgl-clusterer";
 import MarkerMap from "@/pages/Map/components/MarkerMap";
-import {Map} from "@2gis/mapgl/types";
+import { Map } from "@2gis/mapgl/types";
 
 const createMarkers = async (map: Map) => {
 	const forms = await StoreMap.getForms();
@@ -15,10 +15,10 @@ const createMarkers = async (map: Map) => {
 			coordinates: e.location!,
 			html: container,
 			preventMapInteractions: false,
-			payload: {id: e.id},
+			payload: { id: e.id },
 		};
 	});
-  
+
 	return markers;
 };
 

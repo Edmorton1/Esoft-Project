@@ -8,14 +8,13 @@ import * as style from "@/shared/css/pages/MessagesInside.module.scss"
 import Box from "@mui/material/Box"
 import { MessagesContext } from "@/pages/Messages/InsideMessage/Messages"
 import { BG_THIRD } from "@shared/COLORS"
-import EmptyText, { emptyGrid } from "@/shared/ui/EmptyText"
+import EmptyText, { emptyGrid } from "@/shared/ui/mui_components/EmptyText"
 
 function MessageWidget({toid}: {toid: number}) {
   const StoreMessages = useContext(MessagesContext)!
   
   const [editMessage, setEditMessage] = useState<null | number>(null)
 
-  console.log("RERENDER")
   const ref = useRef<HTMLElement>(null)
   
   console.log(`ссылка ${serverPaths.getMessage}/${toid}?cursor=${StoreMessages.cursor}`)

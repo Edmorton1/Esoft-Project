@@ -3,7 +3,7 @@ import FormHelperText from "@mui/material/FormHelperText";
 import StoreRegistration from "@/pages/Registration/widgets/stores/Store-Registration";
 import { observer } from "mobx-react-lite";
 import Typography from "@mui/material/Typography";
-import { InputMui, InputNumberMui, RadioGroupMui, SelectMui, TagsChips, TextAreaMui } from "@/shared/ui/components/MuiComponents";
+import { InputMui, InputNumberMui, RadioGroupMui, SelectMui, TagsChips, TextAreaMui } from "@/shared/ui/mui_module_components/MuiComponents";
 import MenuItem from "@mui/material/MenuItem";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Radio from "@mui/material/Radio";
@@ -15,7 +15,7 @@ import Paper from "@mui/material/Paper";
 import MapWidget from "@/shared/widgets/MapWidget/MapWidget";
 import * as style from "@/shared/css/pages/Registration.module.scss"
 import { TagsDTO } from "@t/gen/dtoObjects";
-import Title from "@/shared/ui/Ttile";
+import Title from "@/shared/ui/mui_components/Ttile";
 
 interface propsInterface {
   onSubmit: (...args: any[]) => any,

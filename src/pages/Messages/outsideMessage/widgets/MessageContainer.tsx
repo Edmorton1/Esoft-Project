@@ -4,7 +4,7 @@ import useGetBy from "@/shared/hooks/useGetBy"
 import { serverPaths } from "@shared/PATHS"
 import { observer } from "mobx-react-lite"
 import * as styles from "@/shared/css/pages/Messages.module.scss"
-import EmptyText, { emptyGrid } from "@/shared/ui/EmptyText"
+import EmptyText, { emptyGrid } from "@/shared/ui/mui_components/EmptyText"
 
 function MessageContainer() {
   useGetBy(`${serverPaths.outsideMessages}`, {callback: (data) => StoreMessage.initial(data)})

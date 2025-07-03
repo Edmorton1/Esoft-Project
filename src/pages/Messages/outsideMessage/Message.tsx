@@ -1,5 +1,5 @@
 import MessageContainer from "@/pages/Messages/outsideMessage/widgets/MessageContainer"
-import Title from "@/shared/ui/Ttile"
+import Title from "@/shared/ui/mui_components/Ttile"
 
 function Message() {
   

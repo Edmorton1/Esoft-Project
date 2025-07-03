@@ -2,23 +2,16 @@ import useGetById from "@/shared/hooks/useGetBy"
 import StoreProfile from "@/pages/Profile/stores/Store-Profile"
 import { observer } from "mobx-react-lite"
 import { useParams } from "react-router-dom"
-import StoreForm from "@/shared/stores/Store-Form"
-import Loading from "../../shared/ui/Loading"
-import useLastActive from "@/shared/hooks/useLastActive"
-import Box from "@mui/material/Box"
+import Loading from "../../shared/ui/components/Loading"
 import * as style from "@/shared/css/pages/Profile.module.scss"
-import Typography from "@mui/material/Typography"
-import ReadMore from "@/shared/ui/components/ReadMore"
-import Chip from "@mui/material/Chip"
-import PostsHead from "@/pages/Profile/Posts/PostsHead"
-import Title from "@/shared/ui/Ttile"
-import UserInfo from "@/pages/Profile/widgets/UserInfo/UserInfo"
+import Title from "@/shared/ui/mui_components/Ttile"
+import UserInfo from "@/pages/Profile/widgets/Profile/UserInfo"
 import { serverPaths } from "@shared/PATHS"
 import { z } from "zod"
+import PostsHead from "@/pages/Profile/widgets/Posts/PostsHead"
 
 function Profile() {
   const id = z.coerce.number().parse(useParams().id)
-
   useGetById(`${serverPaths.profileGet}/${id}`, {returnOne: true, callback: StoreProfile.initial})
 
   if (StoreProfile.profile === null) {

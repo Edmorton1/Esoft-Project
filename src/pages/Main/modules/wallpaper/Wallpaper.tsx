@@ -1,4 +1,4 @@
-import StoreLogin from "@/pages/Login/Store-Login";
+import StoreLogin from "@/shared/ui/modals/Login/stores/Store-Login";
 import * as style from "@/shared/css/pages/Main/modules/wallpaper/Wallpaper.module.scss";
 import * as bbstyle from "@/shared/css/pages/Main/modules/wallpaper/components/BigButton.module.scss"
 import { WALLPAPER_LOGO } from "@shared/PUBLIC";

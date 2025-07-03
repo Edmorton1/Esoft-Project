@@ -10,7 +10,7 @@ import {observer} from "mobx-react-lite";
 // import CallEndIcon from "@mui/icons-material/CallEnd"
 import CallIcon from "@mui/icons-material/Call";
 import CallEndIcon from "@mui/icons-material/CallEnd";
-import CircleButton, {sxStyle} from "@/shared/ui/CircleButton";
+import CircleButton, {sxStyle} from "@/shared/ui/mui_components/CircleButton";
 
 import * as styles from "@/shared/css/modules/ModalCall.module.scss";
 

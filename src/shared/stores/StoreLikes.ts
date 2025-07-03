@@ -1,24 +1,33 @@
 import $api from "@/shared/api/api";
-import StoreAlert from "@/shared/api/Store-Alert";
+import StoreAlert from "@/shared/ui/Toast/Store-Alert";
 import { Form, FormSchema, Likes } from "@t/gen/Users";
 import { toCl } from "@shared/MAPPERS";
-import { makeAutoObservable, runInAction, toJS } from "mobx";
+import { action, makeAutoObservable, makeObservable, observable, runInAction, toJS } from "mobx";
 import StoreUser from "@/shared/stores/Store-User";
 import { serverPaths } from "@shared/PATHS";
-import StorePairs from "@/shared/stores/Store-Pairs";
 import { LikesDeleteSocketDTO, LikesSendSocketDTO } from "@t/gen/socketTypes";
 import { z } from "zod";
+import StoreBasePaginDoc from "@/shared/hooks/usePagination/doc/Store-Base-PaginDoc";
+import StorePairs from "@/pages/Pairs/widgets/stores/Store-Pairs";
 
-class StoreLikes {
+class StoreLikes extends StoreBasePaginDoc {
   likes: {sent: {id: number, liked_userid: number}[]; received: {id: number, userid: number}[]} | null = null;
   liked: Form[] = [];
 
-  cursor: number = 0;
-  history: string[] = []
-  stop: boolean = false
-
   constructor() {
-    makeAutoObservable(this)
+    super()
+    makeObservable(this, {
+      likes: observable,
+      liked: observable,
+      initial: action,
+      lazyLoadLiked: action,
+      like: action,
+      rejectUser: action,
+      delete: action,
+      sockerRejectGet: action,
+      socketGetDelete: action,
+      socketGetLike: action,
+    })
   }
 
   initial = async () => {
@@ -56,8 +65,8 @@ class StoreLikes {
 		if (liked_ids?.includes(form.id)) {
       const filtred = this.liked?.filter(e => e.id !== form.id)
       if (filtred) {
-        this.liked = filtred
-        if (StorePairs.pairs) StorePairs.pairs.unshift(form)
+        runInAction(() => this.liked = filtred)
+        StorePairs.unshinft(form)
       }
     };
   }
@@ -73,8 +82,8 @@ class StoreLikes {
 
       const pairs_ids = StorePairs.pairs?.map(e => e.id)
       if (pairs_ids?.includes(form.id)) {
-        StorePairs.pairs = StorePairs.pairs!.filter(e => e.id !== form.id)
-        this.liked?.unshift(form)
+        StorePairs.removeById(form.id)
+        runInAction(() => this.liked?.unshift(form))
       }
       
     }
@@ -86,16 +95,15 @@ class StoreLikes {
   socketGetDelete = async (data: LikesDeleteSocketDTO) => {
     const {userid, name} = data
     
-    const like = toJS(this.likes?.received.find(e => e.userid == userid))
+    const like = this.likes?.received.find(e => e.userid == userid)
     // console.log("УДАЛЁННЫЙ ЛАЙК", toJS(this.likes), userid, like)
 
     const received = this.likes?.received.filter(e => e.userid != userid)
-    if (received) this.likes!.received = received
+    if (received) runInAction(() => this.likes!.received = received)
     
-    this.liked = this.liked.filter(e => e.id !== userid)
+    runInAction(() => this.liked = this.liked.filter(e => e.id !== userid))
 
-    const filtredPairs = StorePairs.pairs.filter(e => e.id !== userid)
-    StorePairs.pairs = filtredPairs
+    StorePairs.removeById(userid)
 
     StoreAlert.likeInfo(userid, `Вы больше не нравитесь пользователю ${name}`)
     console.log({ВСЕ_ЛАЙКИ: toJS(this.likes), ЛАЙКЕД: toJS(this.liked), ПАРЫ: toJS(StorePairs.pairs)})
@@ -106,7 +114,7 @@ class StoreLikes {
     runInAction(() => this.likes?.received.push(like))
     // console.log("ПОЛУЧЕН ЮЗЕР", form)
     if (this.likes?.sent.some(e => e.liked_userid === like.userid)) {
-      StorePairs.pairs.unshift(form)
+      StorePairs.unshinft(form)
     } else {
       this.liked.unshift(form)
     }
@@ -114,6 +122,27 @@ class StoreLikes {
     StoreAlert.likeInfo(like.userid, `Вы понравились пользователю ${form.name}`)
     console.log({ВСЕ_ЛАЙКИ: toJS(this.likes), ЛАЙКЕД: toJS(this.liked), ПАРЫ: toJS(StorePairs.pairs)})
   }
+  
+	rejectUser = async (id: number) => {
+		// ID  ЭТО ЮЗЕРА
+    const liked = this.liked;
+		await $api.delete(`${serverPaths.rejectLike}/${id}`);
+		runInAction(() => this.liked = liked?.filter(e => e.id !== id))
+
+    StorePairs.removeById(id)
+		
+		if (this.likes?.received) {
+			const filtredReceived = this.likes.received.filter(e => e.userid !== id)
+			runInAction(() => this.likes!.received = filtredReceived)
+		}
+	};
+
+	sockerRejectGet = (userid: number) => {
+		if (this.likes) {
+			const filtredLikes = this.likes.sent.filter(e => e.liked_userid !== userid)
+			this.likes!.sent = filtredLikes
+		}
+	}
 }
 
 export default new StoreLikes

@@ -6,20 +6,21 @@ import CardHeader from "@mui/material/CardHeader";
 import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import {paths, serverPaths} from "@shared/PATHS";
+import { paths, serverPaths } from "@shared/PATHS";
 
-function PopupMap({id}: {id: number}) {
-	const form = useGetBy<"forms">(`${serverPaths.forms}/${id}`, {
-		returnOne: true,
-	});
+function PopupMap({ id }: { id: number }) {
+	const form = useGetBy<"forms">(`${serverPaths.forms}/${id}`, {returnOne: true,});
 
 	return (
 		<Card className={styles.map__popup}>
-			<a href={`${paths.profile}/${id}`} target="_blank" rel="noopener noreferrer">
+			<a
+				href={`${paths.profile}/${id}`}
+				target="_blank"
+				rel="noopener noreferrer">
 				<CardHeader
 					className={styles.map__popup_header}
 					title={
-						<Typography variant="h6" sx={{fontWeight: 600}}>
+						<Typography variant="h6" sx={{ fontWeight: 600 }}>
 							{form?.name}
 						</Typography>
 					}

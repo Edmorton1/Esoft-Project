@@ -7,15 +7,15 @@ import Divider from "@mui/material/Divider"
 import Typography from "@mui/material/Typography"
 import { observer } from "mobx-react-lite"
 import CallIcon from '@mui/icons-material/Call';
-import MinButton from "@/shared/ui/MinButton"
-import { sxStyle } from "@/shared/ui/CircleButton"
-import LastActive from "@/shared/ui/components/LastActive"
+import MinButton from "@/shared/ui/mui_components/MinButton"
+import { sxStyle } from "@/shared/ui/mui_components/CircleButton"
+import LastActive from "@/shared/ui/mui_module_components/LastActive"
 import { useContext } from "react"
 import { MessagesContext } from "@/pages/Messages/InsideMessage/Messages"
 import { BG_THIRD } from "@shared/COLORS"
 import { Link } from "react-router-dom"
 import { paths } from "@shared/PATHS"
-import UnderTypo from "@/shared/ui/components/mui_styled/UnderTypo"
+import UnderTypo from "@/shared/ui/mui_components/UnderTypo"
 
 function MainHead({toid}: {toid: number}) {
   const StoreMessages = useContext(MessagesContext)!

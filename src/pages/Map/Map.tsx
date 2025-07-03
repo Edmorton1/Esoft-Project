@@ -4,7 +4,7 @@ import {useRef} from "react";
 import useMap from "@/shared/hooks/Map/useMap";
 import useClusterer from "@/pages/Map/hooks/useClusterer";
 import useMapCustomization from "@/pages/Map/hooks/useMapCustomization";
-import Title from "@/shared/ui/Ttile";
+import Title from "@/shared/ui/mui_components/Ttile";
 
 function MapPage() {
 	const containerRef = useRef<HTMLDivElement>(null);

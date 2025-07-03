@@ -3,7 +3,7 @@ import { ReactNode } from "react";
 import AudioFileIcon from '@mui/icons-material/AudioFile';
 import VideoFileIcon from '@mui/icons-material/VideoFile';
 import { convertToResolution, guesType } from "@/pages/Messages/InsideMessage/func/FileFunctions";
-import StoreModalFile from "@/shared/ui/components/modal/StoreModalFile";
+import StoreModalFile from "@/shared/ui/modals/Files/StoreModalFile";
 
 const sxStyle = {width: 100, height: 100}
 

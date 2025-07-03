@@ -3,7 +3,6 @@ import CloseIcon from '@mui/icons-material/Close';
 import * as style from "@/shared/css/modules/FormEdit.module.scss"
 
 function MicroFile({fileLink, onClick}: {fileLink: string, onClick: () => void}) {
-  
   // const onMouseEnter = (e: MouseEventType) => console.log(e)
   // const onMouseLeave = (e: MouseEventType) => console.log(e)
 

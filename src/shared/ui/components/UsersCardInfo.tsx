@@ -7,11 +7,11 @@ import { observer } from "mobx-react-lite"
 import * as style from "@/shared/css/components/UserCard.module.scss"
 import Divider from "@mui/material/Divider"
 import { ReactNode } from "react"
-import ReadMore from "@/shared/ui/components/ReadMore"
+import ReadMore from "@/shared/ui/mui_module_components/ReadMore"
 import { Form, Tags } from "@t/gen/Users"
 import { BG_ALT } from "@shared/COLORS"
 import { paths } from "@shared/PATHS"
-import AvatarImg from "@/shared/ui/components/mui_styled/AvatarImg"
+import AvatarImg from "@/shared/ui/mui_components/AvatarImg"
 import { Link } from "react-router-dom"
 
 function UsersCardInfo({form, children}: {form: Form, children?: ReactNode}) {

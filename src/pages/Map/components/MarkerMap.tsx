@@ -3,6 +3,7 @@ import {Map} from "@2gis/mapgl/types";
 import { PLACEHOLDER_IMG } from "@shared/PUBLIC";
 
 function MarkerMap({map, avatar, sex}: {map: Map, avatar?: string, sex: boolean}) {
+	console.log("МАРКЕР МАП")
 	return (
 		// eslint-disable-next-line
 		<div

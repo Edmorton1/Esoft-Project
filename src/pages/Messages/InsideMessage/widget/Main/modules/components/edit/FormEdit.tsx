@@ -6,16 +6,15 @@ import MicroFile from "@/pages/Messages/InsideMessage/widget/Main/modules/compon
 import AddFiles from "@/pages/Messages/InsideMessage/widget/Main/modules/components/kit/AddFiles";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import MinButton from "@/shared/ui/MinButton";
+import MinButton from "@/shared/ui/mui_components/MinButton";
 import DeleteIcon from '@mui/icons-material/Delete';
-import { sxStyle } from "@/shared/ui/CircleButton";
+import { sxStyle } from "@/shared/ui/mui_components/CircleButton";
 import { createPortal } from "react-dom";
 import CheckIcon from '@mui/icons-material/Check';
 
 import * as section from "@/shared/css/pages/MessagesInside.module.scss"
 
 function FormEdit() {
-
   const ctx = useContext(MessageContext)!
 
   function DeletingFiles() {

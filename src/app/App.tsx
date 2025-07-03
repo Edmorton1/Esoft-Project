@@ -3,7 +3,7 @@ import { LazyAdmin, LazyFourHundredFour, LazyLiked, LazyLogin, LazyMain, LazyMap
 import SocketStore from "@/shared/api/Store-Socket";
 import {Suspense, useEffect} from "react";
 import Initialization from "@/app/Initialization";
-import Header from "@/shared/ui/components/Header/Header";
+import Header from "@/shared/ui/modules/Header/Header";
 import { paths } from "@shared/PATHS";
 import ChangeTheme from "@/app/theme/ChangeTheme";
 import "@/shared/css/App.scss"

@@ -1,28 +1,31 @@
-import {
-	PostsDTOClient,
-	PostsDTOPutClient,
-} from "@/pages/Profile/Posts/validation/Schemas";
+import { PostsDTOClient, PostsDTOPutClient } from "@/pages/Profile/widgets/Posts/validation/Schemas";
 import $api from "@/shared/api/api";
 import { toFormData } from "@/shared/funcs/filefuncs";
+import StoreBasePaginDoc from "@/shared/hooks/usePagination/doc/Store-Base-PaginDoc";
 import { IS_AUTHOR } from "@shared/HEADERS";
 import { serverPaths } from "@shared/PATHS";
 import { Posts, PostsSchema } from "@t/gen/Users";
 import { AxiosResponse } from "axios";
-import { makeAutoObservable } from "mobx";
+import { action, makeObservable, observable, runInAction } from "mobx";
 import { z } from "zod";
 
-class StorePosts {
+class StorePosts extends StoreBasePaginDoc {
 	posts: Posts[] | null = null;
 	canChange: boolean = false;
-
-	stop: boolean = false;
-	cursor: number = 0;
-	history: string[] = [];
 
 	constructor(
 		readonly profileid: number
 	) {
-		makeAutoObservable(this);
+		super()
+		makeObservable(this, {
+			profileid: observable,
+			posts: observable,
+			canChange: observable,
+			lazyLoadPosts: action,
+			post: action,
+			put: action,
+			delete: action,
+		});
 	}
 
 	lazyLoadPosts = (data: AxiosResponse<any, any>) => {
@@ -50,7 +53,7 @@ class StorePosts {
 
 		const { data } = await $api.post(`${serverPaths.postsPost}`, fd);
 		console.log("NEW TOTAL", data);
-		this.posts?.unshift(data);
+		runInAction(() => this.posts?.unshift(data));
 	};
 
 	put = async (dataRaw: PostsDTOPutClient) => {
@@ -62,13 +65,13 @@ class StorePosts {
 		const { data } = await $api.put(`${serverPaths.postsPut}/${dto.id}`, fd);
 		const parsed = PostsSchema.parse(data);
 		const filtred = this.posts?.map(e => (e.id === parsed.id ? parsed : e));
-		if (filtred) this.posts = filtred;
+		if (filtred) runInAction(() => this.posts = filtred);
 		console.log("TOTAL PUT", data);
 	};
 
 	delete = async (post_id: number) => {
 		const filtred = this.posts?.filter(e => e.id !== post_id);
-		if (filtred) this.posts = filtred;
+		if (filtred) runInAction(() => this.posts = filtred);
 
 		const total = await $api.delete(`${serverPaths.postsDelete}/${post_id}`);
 		console.log(total);
