@@ -1,9 +1,9 @@
-import { RegistrationDTOServerSchema } from "@s/infrastructure/endpoints/Auth/validation/Auth.zod";
+import { RegistrationDTOSchema } from "@t/gen/dtoObjects";
 import { FormSchema, UserSchema } from "@t/gen/Users";
 import { checkEmptyString, toCapitalize, zstring } from "@t/shared/zodSnippets";
 import { z } from "zod";
 
-export const RegistrationDTOClientSchemaWithoutRefline = RegistrationDTOServerSchema.extend({
+export const RegistrationDTOClientSchemaWithoutRefline = RegistrationDTOSchema.extend({
   email: zstring.email(),
   confirmPassword: z.string(),
   

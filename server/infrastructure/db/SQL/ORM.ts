@@ -2,13 +2,14 @@ import { tables, Tables, TablesPost } from "@t/gen/types"
 import { cacheEdit, cacheGet } from "@s/infrastructure/redis/cache"
 import db from "@s/infrastructure/db/db"
 import bcrypt from "bcrypt"
-import { checkFirstType, fieldsToArr, getCheckWord } from "@s/infrastructure/db/SQL/utils"
-import { Form } from "@t/gen/Users"
+import { checkFirstType, fieldsToArr, getCheckWord, isLocationType } from "@s/infrastructure/db/SQL/utils"
+import { Form, LocationType } from "@t/gen/Users"
 import { SALT } from "@shared/CONST"
 import { requestToFormManyParams, requestToFormParams, standartToForm } from "@s/infrastructure/db/SQL/SQLform"
 import { inject, injectable } from "inversify"
 import { ILogger } from "@s/helpers/logger/logger.controller"
 import TYPES from "@s/config/containers/types"
+import { Knex } from "knex"
 
 const fieldsKey = (fields?: string) => `${fields ? '--fields: ' + fields : ''}`
 
@@ -33,11 +34,11 @@ export interface IORM {
 
   getManyParams: (params: any[], fields?: string) => Promise<Form[]>;
 
-  post: <T extends tables>(dto: TablesPost[T], table: T, fields?: string) => Promise<Tables[T][]>;
+  post: <T extends tables>(dto: Omit<TablesPost[T], "location"> & (T extends "forms" ? {location?: LocationType | Knex.Raw} : object), table: T, fields?: string) => Promise<Tables[T][]>;
   postArr: <T extends tables>(dto: TablesPost[T][], table: T, removeOld?: number) => Promise<Tables[T][]>;
 
   put: <T extends tables>(
-    dto: Partial<Tables[T]>,
+    dto: Partial<Omit<Tables[T], "location"> & (T extends "forms" ? {location?: Location | Knex.Raw} : object)>,
     id: number | string,
     table: T,
     userid: number,
@@ -58,7 +59,7 @@ class ORM implements IORM {
     private readonly logger: ILogger
   ) {}
   // get = async <T extends tables>(table: T, fields?: string, options?: Ioptions): Promise<Tables[T][]> => {
-  get = async <T extends tables>(table: T, fields?: string): Promise<Tables[T][]> => {
+  get: IORM['get'] = async <T extends tables>(table: T, fields?: string) => {
     this.logger.info("GET", 'fields', fields)
     this.logger.info("get", table, fields)
 
@@ -76,7 +77,7 @@ class ORM implements IORM {
     return checkFirstType(total, table, fields)
   }
   // getById = async <T extends tables>(id: number | string, table: T, fields?: string, options?: Ioptions): Promise<Tables[T][]> => {
-  getById = async <T extends tables>(id: number | string, table: T, fields?: string): Promise<Tables[T][]> => {
+  getById: IORM['getById'] = async <T extends tables>(id: number | string, table: T, fields?: string) => {
     this.logger.info('GET BY ID')
     this.logger.info({table, fields}, "getById")
 
@@ -100,7 +101,7 @@ class ORM implements IORM {
   }
   
   // ПОКА ОПЦИИ К ФОРМЕ НЕ РАБОТАЮТ
-  getByParams = async <T extends tables>(params: Partial<Tables[T]>, table: T, fields?: string, options?: Ioptions): Promise<Tables[T][]> => {
+  getByParams: IORM['getByParams'] = async <T extends tables>(params: Partial<Tables[T]>, table: T, fields?: string, options?: Ioptions) => {
     this.logger.info("GET BY PARAMS")
     this.logger.info("getByParams", params, table, fields)
 
@@ -129,14 +130,14 @@ class ORM implements IORM {
   }
 
   // ПОКА БУДЕТ ТОЛЬКО К ФОРМЕ
-  getManyParams = async (params: any[], fields?: string): Promise<Form[]> => {
+  getManyParams: IORM['getManyParams'] = async (params, fields) => {
     // const parsedFields = fieldsToArr(fields, 'forms')
     const request = await requestToFormManyParams({name: "id", params}, fields)
     
     return request
   }
   
-  post = async <T extends tables>(dto: TablesPost[T], table: T, fields?: string): Promise<Tables[T][]> => {
+  post: IORM['post'] = async (dto, table, fields) => {
     this.logger.info({table, fields, dto})
     
     if (typeof dto === 'object' && "password" in dto && typeof dto.password === "string") {
@@ -144,12 +145,12 @@ class ORM implements IORM {
       // dto.password = hashed as Tables[T][keyof Tables[T]]
       dto.password = hashed
     }
-    if (typeof dto === 'object' && 'location' in dto && typeof dto.location?.lat === 'number' && typeof dto.location?.lng === 'number') {
+
+    if (typeof dto === 'object' && 'location' in dto && isLocationType(dto.location)) {
       const {lng, lat} = dto.location
       const pointWKT = `POINT(${lng} ${lat})`;
       const parsedKnex = db.raw(`ST_GeomFromText(?, 4326)`, [pointWKT])
-      // СЮДА ПОТОМ ДОБАВИТЬ LOCATION PARSER
-      //@ts-ignore
+      // FIXME: СЮДА ПОТОМ ДОБАВИТЬ LOCATION PARSER
       dto.location = parsedKnex
     }
     const parsedFields = fieldsToArr(fields, table)
@@ -165,7 +166,7 @@ class ORM implements IORM {
   }
 
   // ПОКА БУДЕТ ТОЛЬКО НА ТЭГАХ
-  postArr = async <T extends tables>(dto: TablesPost[T][], table: T, removeOld: number = 0): Promise<Tables[T][]> => {
+  postArr: IORM['postArr'] = async (dto, table, removeOld = 0) => {
 
     if (removeOld > 0) {
       await db.delete().from('user_tags').where('id', '=', removeOld)
@@ -179,7 +180,7 @@ class ORM implements IORM {
     return request
   }
 
-  put = async <T extends tables>(dto: Partial<Tables[T]>, id: number | string, table: T, userid: number, fields?: string): Promise<Tables[T][]> => {
+  put: IORM['put'] = async (dto, id, table, userid, fields) => {
     this.logger.info({table, id, dto, method: "PUT"})
 
     const checkWord = getCheckWord(table)
@@ -195,7 +196,7 @@ class ORM implements IORM {
     return request
   }
 
-  delete = async <T extends tables>(id: number | string, table: T, userid: number): Promise<Tables[T][]> => {
+  delete: IORM['delete'] = async (id, table, userid) => {
     // logger.info("delete", id, table)
 
     const checkWord = getCheckWord(table)

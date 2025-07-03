@@ -33,8 +33,9 @@ export const zodParams = z.object({
   name: z.coerce.string().optional(),
 
   location: z.preprocess(val => {
-    //@ts-ignore
-    return lnglatParse(val)
+    if (typeof val === "string") {
+      return lnglatParse(val)
+    }
   }, z.tuple([z.coerce.number(), z.coerce.number()]).optional()),
 
   params: z.preprocess(val => {

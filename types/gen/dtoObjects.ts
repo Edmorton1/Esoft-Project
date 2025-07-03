@@ -42,6 +42,19 @@ export const PostsDTOPutSchema = PostsDTOSchema
     remove_old: z.array(z.string())
   })
 
+export const RegistrationDTOSchema = FormSchema
+  .omit({id: true, last_active: true})
+  .extend({
+  // avatar: ExpressMulterFileSchema.optional(),
+  tags: z.array(TagsSchemaDTO).transform(item => item.map((val: {tag: string}) => ({tag: val.tag.toLowerCase()}))),
+  city: z.string().transform(val => {
+    if (typeof val === 'string') {
+      return val.charAt(0).toUpperCase() + val.slice(1).toLowerCase()
+    } return val
+    })
+  })
+  .merge(UserDTOSchema)
+
 export type MessageDTO = z.infer<typeof MessageDTOSchema>
 export type UserDTO = z.infer<typeof UserDTOSchema>;
 export type PayloadDTO = z.infer<typeof PayloadDTOSchema>;

@@ -1,6 +1,6 @@
 import logger from "@s/helpers/logger/logger";
 import PinoService from "@s/helpers/logger/pino.service";
-import { toSOCl } from "@s/helpers/WebSocket/JSONParsers";
+import { toSOCl } from "@shared/JSONParsers";
 import { WebSocketWidh } from "@s/helpers/WebSocket/socket";
 import ORM from "@s/infrastructure/db/SQL/ORM";
 import { TIMEZONE } from "@shared/CONST";

@@ -9,7 +9,7 @@ import { MessageDTO } from "@t/gen/dtoObjects";
 import FilesService from "@s/infrastructure/services/Files.service";
 import { clientsType } from "@s/helpers/WebSocket/socket";
 import { MsgTypesServer } from "@t/gen/socketTypes";
-import { toSOSe } from "@s/helpers/WebSocket/JSONParsers";
+import { toSOSe } from "@shared/JSONParsers";
 import { MessagePutDTOServer } from "@t/server/DTOServer";
 
 interface MessagesServiceRepo {

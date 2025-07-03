@@ -1,10 +1,12 @@
 import { redisStore } from "@s/infrastructure/redis/redis";
 import { COOKIE_NAME } from "@shared/CONST";
 import session from "express-session";
+import dotenv from "dotenv"
+dotenv.config()
 
 const expressSession = session({
   store: redisStore,
-  secret: process.env.SESSION_SECRET,
+  secret: process.env.SESSION_SECRET!,
   name: COOKIE_NAME,
   resave: false,
   saveUninitialized: true,

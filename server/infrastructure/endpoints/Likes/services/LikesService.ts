@@ -1,4 +1,4 @@
-import { toSOCl } from "@s/helpers/WebSocket/JSONParsers";
+import { toSOCl } from "@shared/JSONParsers";
 import { clientsType } from "@s/helpers/WebSocket/socket";
 import ORM from "@s/infrastructure/db/SQL/ORM";
 import LikesModule from "@s/infrastructure/endpoints/Likes/sql/Likes.module";

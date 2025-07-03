@@ -6,6 +6,7 @@ import ORM from "@s/infrastructure/db/SQL/ORM";
 import { inject, injectable } from "inversify";
 import { ILogger } from "@s/helpers/logger/logger.controller";
 import TYPES from "@s/config/containers/types";
+import SharedService from "@s/infrastructure/services/Shared.service";
 
 interface AuthServiceRepo {
 	registration: (formDTO: Omit<FormDTOServer, 'password' | 'email' | 'tags'>, userDTO: UserDTO, tags: TagsDTO[]) => Promise<{form: Form, user: User}>
@@ -14,6 +15,8 @@ interface AuthServiceRepo {
 @injectable()
 class AuthService implements AuthServiceRepo{
 	constructor(
+		@inject(SharedService)
+		private readonly sharedService: SharedService,
 		@inject(TYPES.LoggerController)
 		private readonly logger: ILogger,
 		@inject(ORM)
@@ -30,16 +33,14 @@ class AuthService implements AuthServiceRepo{
 
 		// logger.info(form, "ФОРМА");``
 
-		let tagsTotal: Tags[] = [];
+		// let tagsTotal: Tags[] = [];
+		const tagsTotal = this.sharedService.uploadTags(user.id, tags, true)
 
-		//@ts-ignore
-		// ПОТОМ ПОМЕНЯТЬ НА TAGS SERVICE
-
-		if (tags.length > 0) {
-			const tagsDB = await this.ORM.postArr(tags, "tags");
-			const tagDBParseToUser = tagsDB.map(e => ({id: form.id, tagid: e.id}));
-			tagsTotal = (await this.ORM.postArr(tagDBParseToUser, "user_tags")).map(e => ({id: e.id, tag: tagsDB.find(tag => tag.id === e.tagid)!.tag}));
-		}
+		// if (tags.length > 0) {
+		// 	const tagsDB = await this.ORM.postArr(tags, "tags");
+		// 	const tagDBParseToUser = tagsDB.map(e => ({id: form.id, tagid: e.id}));
+		// 	tagsTotal = (await this.ORM.postArr(tagDBParseToUser, "user_tags")).map(e => ({id: e.id, tag: tagsDB.find(tag => tag.id === e.tagid)!.tag}));
+		// }
 
 		// const location = parseWKB
 		const formTotal = {...form, tags: tagsTotal};

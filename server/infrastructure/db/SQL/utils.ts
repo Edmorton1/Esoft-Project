@@ -1,11 +1,12 @@
 import db from "@s/infrastructure/db/db";
 import { AllRowsFormShort } from "@s/infrastructure/db/SQL/AllRowsFormWithoutLocation";
 import logger from "@s/helpers/logger/logger";
-import { lnglatType, tables } from "@t/gen/types"
-import { getSchemaByTable } from "@t/shared/sharedTypes"
+import { lnglatType, Tables, tables } from "@t/gen/types"
+import { getSchemaByTable } from "@s/infrastructure/db/SQL/sharedTypes"
 import type { Knex } from "knex";
 import { z } from "zod";
 import crypto from "crypto"
+import { LocationType } from "@t/gen/Users";
 
 type RawString = (string | Knex.Raw<any>)[]
 
@@ -49,13 +50,12 @@ export const fieldsToArr = (fields: string | undefined, table: tables, includeTa
 }
 
 // ПУТСОЙ МАССИВ РАЗРЕШЁН
-export const checkFirstType = <T extends Array<any>>(data: T, table: tables, fields?: string): T => {
+export const checkFirstType = <T extends tables>(data: any, table: T, fields?: string): Tables[T][] => {
   if (data.length > 0) {
     // logger.info({data, table, fields});
     const schema = z.array(getSchemaByTable(table, fields))
     // logger.info({SCHEMA: schema})
     // logger.info({SCHEMA_PARSE: schema.parse(data)})
-    //@ts-ignore
     return schema.parse(data)
   } else {
     return data
@@ -74,10 +74,15 @@ export const getCheckWord = (table: tables) => {
     } else if (table === "likes" || table === "posts") {
       checkWord = "userid"
     } else if (table === "tags") {
-      //@ts-ignore
-      // С ТЕГАМИ ПОТОМ СДЕЛАТЬ ЧТО ИХ МОЖЕТ УДАЛЯТЬ ТОЛКЬО АДМИН
+      // FIXME: С ТЕГАМИ ПОТОМ СДЕЛАТЬ ЧТО ИХ МОЖЕТ УДАЛЯТЬ ТОЛКЬО АДМИН
       checkWord = "id"
     }
 
   return checkWord
+}
+
+export function isLocationType(val: any): val is LocationType {
+  if (typeof val === 'object' && typeof val.lat === 'number' && typeof val.lng === 'number') {
+    return true
+  } return false
 }

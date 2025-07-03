@@ -1,18 +1,18 @@
 import EasyYandexS3 from 'easy-yandex-s3';
-import dotenv from "dotenv"
 import { randomUUID } from 'crypto';
 import { Yandex_Folders } from '@t/gen/types';
 import type { S3 } from 'aws-sdk';
-dotenv.config()
+import { inject, injectable } from 'inversify';
+import ConfigService from '@s/config/services/config.service';
 
-export const s3 = new EasyYandexS3({
-  auth: {
-    accessKeyId: process.env.YANDEX_ID,
-    secretAccessKey: process.env.YANDEX_SECRET,
-  },
-  Bucket: process.env.BUCKET_NAME,
-  debug: false,
-});
+// export const s3 = new EasyYandexS3({
+//   auth: {
+//     accessKeyId: process.env.YANDEX_ID,
+//     secretAccessKey: process.env.YANDEX_SECRET,
+//   },
+//   Bucket: process.env.BUCKET_NAME,
+//   debug: false,
+// });
 
 export interface IYandex {
   getFolder(id: string | number, path: Yandex_Folders): Promise<string[]>;
@@ -22,9 +22,24 @@ export interface IYandex {
 }
 
 
+@injectable()
 class Yandex implements IYandex {
+  s3: EasyYandexS3;
+  constructor (
+    @inject(ConfigService)
+    private readonly configService: ConfigService
+  ) {
+    this.s3 = new EasyYandexS3({
+      auth: {
+        accessKeyId: this.configService.get("YANDEX_ID"),
+        secretAccessKey: this.configService.get("YANDEX_SECRET"),
+      },
+      Bucket: this.configService.get("BUCKET_NAME"),
+      debug: false,
+    });
+  }
   getFolder: IYandex['getFolder'] = async (id, path) => {
-    const request = await s3.GetList(`/${path}/${id}/`)
+    const request = await this.s3.GetList(`/${path}/${id}/`)
     const requestVrap = request === false ? undefined : request
 
     const folder: string[] = requestVrap!.Contents!.map(e => e.Key!)
@@ -33,7 +48,7 @@ class Yandex implements IYandex {
 
   upload: IYandex['upload'] = async (buffer, ext, path) => {
 
-    const load = await s3.Upload(
+    const load = await this.s3.Upload(
       {
         buffer: buffer,
         name: `${randomUUID()}.${ext}`,
@@ -46,7 +61,7 @@ class Yandex implements IYandex {
   deleteFolder: IYandex['deleteFolder'] = async (id, path) => {
     const folder = await this.getFolder(id, path)
     folder.forEach(async e => {
-      await s3.Remove(e)
+      await this.s3.Remove(e)
     })
     return folder
   }
@@ -59,7 +74,7 @@ class Yandex implements IYandex {
     for (const e of folder) {
       if (files?.includes(e)) {
         // logger.info("!FILES", e, folder, files)
-        await s3.Remove(e);
+        await this.s3.Remove(e);
         folder = folder.filter(item => item != e)
       }
     }

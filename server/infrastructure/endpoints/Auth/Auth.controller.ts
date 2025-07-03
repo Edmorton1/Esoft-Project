@@ -11,12 +11,8 @@ import { serverPaths } from "@shared/PATHS";
 import { upload } from "@s/infrastructure/endpoints/multer";
 import HttpContext from "@s/config/express/Http.context";
 import AuthMiddleware from "@s/infrastructure/middlewares/AuthMiddleware";
+import { LoginErrorTypes } from "@t/gen/ErrorTypes";
 // import SessionRedis from "@s/infrastructure/redis/SessionRedis";
-
-export interface LoginErrorTypes {
-  type: "email" | "password",
-  message: string
-}
 
 interface IAuthController {
   registartion(ctx: HttpContext<{form: Form, user: User}>): Promise<void>,

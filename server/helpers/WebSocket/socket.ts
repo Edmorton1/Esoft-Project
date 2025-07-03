@@ -1,6 +1,6 @@
 import logger from "@s/helpers/logger/logger";
 import { StopTimePoint, TimePoint } from "@s/helpers/WebSocket/LastActiveFunc";
-import { frSOSe, toSOCl } from "@s/helpers/WebSocket/JSONParsers";
+import { frSOSe, toSOCl } from "@shared/JSONParsers";
 import WebSocket from "ws";
 
 export interface WebSocketWidh extends WebSocket {

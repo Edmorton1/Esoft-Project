@@ -11,10 +11,10 @@ import { makeAutoObservable, runInAction } from "mobx"
 import { RegistrationDTOClient, StoreUserRegistrationSchema } from "@t/client/RegistrationZOD"
 import { UseFormSetError } from "react-hook-form"
 import axios from "axios"
-import { LoginErrorTypes } from "@s/infrastructure/endpoints/Auth/Auth.controller"
-import { toSOSe } from "@s/helpers/WebSocket/JSONParsers"
+import { toSOSe } from "@shared/JSONParsers"
 import StoreLogin from "@/shared/ui/modals/Login/stores/Store-Login"
 import StorePairs from "@/pages/Pairs/widgets/stores/Store-Pairs"
+import { LoginErrorTypes } from "@t/gen/ErrorTypes"
 
 export interface responseInterface {
   user: User,

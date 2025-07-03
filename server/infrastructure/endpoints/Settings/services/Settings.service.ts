@@ -53,8 +53,6 @@ class SettingsService implements SettingsServiceRepo {
 		const newLocation = location && this.sharedService.parseLocation(location);
 
 		const payload = newLocation ? { ...data, location: newLocation } : data;
-
-		//@ts-ignore
 		const [newProfile] = await this.ORM.put(payload, id, "forms", id);
 		const newTags = await this.sharedService.uploadTags(id, tags, true);
 		return { ...newProfile, tags: newTags };

@@ -5,7 +5,7 @@ import { tables } from "@t/gen/types"
 import { Knex } from "knex"
 
 export const setCache = async <T>(key: string, data: T): Promise<T> => {
-  //@ts-ignore
+  // FIXME: ДОБАВИТЬ КЭШ В БУДУЩЕМ
   // await redisClient.set(key, toJSON(data))
 
   // logger.info(data)
@@ -40,8 +40,7 @@ export const cacheGet = async <T>(key: string, callback: Knex.QueryBuilder<any>)
 
 export const cacheEdit = async (table: tables, request: any, type: 'edit' | 'delete' = 'edit'): Promise<void> => {
   if ((request && request.length > 0 && Object.keys(request).length > 0)) {
-    // ПОТОМ ПОПРАВИТЬ КЭШ
-    //@ts-ignore
+    // FIXME: ДОБАВИТЬ КЭШ В БУДУЩЕМ
     
     // // logger.info('cache ------- ', table, request, type)
     // const searchTerms = Object.entries(request[0]).map(e => e.join('-'));

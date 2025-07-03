@@ -1,0 +1,3 @@
+// FIXME - пометка для будущего фикса вместо //@ts-ignore
+
+grep -r "@ts-ignore" certs config public server shared src tests types

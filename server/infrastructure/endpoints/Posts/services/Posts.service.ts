@@ -45,7 +45,7 @@ class PostsService {
 
 	post: IPostsService["post"] = async (postsDTO) => {
     const {files, ...data} = postsDTO
-    const [request] = await this.ORM.post(data, "posts")
+    const [request] = await this.ORM.post({...data, files: []}, "posts")
     this.logger.info({DLINNA: files.length})
 
     let total = request;

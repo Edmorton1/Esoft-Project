@@ -1,4 +1,4 @@
-import { FormDTO, LikesDTO, MessageDTO, TagsDTO, UserDTO, UserTagsDTO } from "@t/gen/dtoObjects"
+import { FormDTO, LikesDTO, MessageDTO, PostsDTO, TagsDTO, UserDTO, UserTagsDTO } from "@t/gen/dtoObjects"
 import { Form, Likes, Message, Posts, Tags, User, UserTags } from "@t/gen/Users"
 import { UseFormRegister } from "react-hook-form"
 
@@ -21,10 +21,7 @@ export type TablesPost = {
   messages: MessageDTO,
   tags: TagsDTO,
   user_tags: UserTagsDTO,
-
-  // ВРЕМЕННАЯ ЗАГЛУШКА ПОТОМ УБРАТЬ
-  //@ts-ignore
-  posts: any
+  posts: PostsDTO
   // tokens: Token
 }
 
@@ -37,8 +34,6 @@ export interface YandexPost {
   Bucket: string
 }
 
-//@ts-ignore
-//ПЕРЕНЕСТИ ПОТОМ 
 export type lnglatType = [number, number]
 
 export type RegisterNames<T> = T extends UseFormRegister<infer U> ? keyof U : never

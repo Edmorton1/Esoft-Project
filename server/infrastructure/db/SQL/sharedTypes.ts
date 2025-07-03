@@ -43,8 +43,13 @@ export const getSchemaByTable = <T extends keyof typeof schemas>(table: T, field
         }
       }
       return e;
-    //@ts-ignore
-    }).map(e => e.includes('forms.') ? e.split('forms.')[1]: e);
+
+    }).map(e => {
+      if (typeof e === "string") {
+        return e.includes('forms.') ? e.split('forms.')[1]: e
+      }
+      throw new Error("KNEX.RAW ВНТУРИ GET SCHEMA BY TABLE")
+    });
     logger.info({ПАРСЕД_ФИЛДС: parsedFields})
   }
   const picked= fields && Object.fromEntries(parsedFields.map(field => [field, true])) as shemaFields<T>
