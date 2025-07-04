@@ -1,3 +1,3 @@
-const gigaSKUF = "asdasdadsasdsad"
+const asd = "asdsadasdasd"
 
-export default gigaSKUF
+export default asd

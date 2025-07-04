@@ -1,4 +1,4 @@
-import { Form, Likes, Message } from "@t/gen/Users"
+import { Form, Likes, Message } from "@app/types/gen/Users"
 
 export type LikesSendSocketDTO = {
   like: Omit<Likes, "liked_userid">,

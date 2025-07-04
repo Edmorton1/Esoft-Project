@@ -1,4 +1,4 @@
-import { nullToUndefined, zid, zstring } from "@t/shared/zodSnippets";
+import { nullToUndefined, zid, zstring } from "@app/types/shared/zodSnippets";
 import { z } from "zod";
 
 export const TargetTypeSchema = z.enum(["friend", "relation", "chat", "hobby"]);

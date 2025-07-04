@@ -1,2 +1,2 @@
-import "@t/declarations/server/env"
-import "@t/declarations/server/global"
+import "@app/types/declarations/server/env"
+import "@app/types/declarations/server/global"

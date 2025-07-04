@@ -11,10 +11,10 @@ const config: Config = {
 	testPathIgnorePatterns: ["/node_modules/", "/dist/", "/build/"],
 	cacheDirectory: ".jest-cache",
 	moduleNameMapper: {
-		"^@/(.*)$": "<rootDir>/src/$1",
-		"^@s/(.*)$": "<rootDir>/server/$1",
-		"^@shared/(.*)$": "<rootDir>/shared/$1",
-		"^@t/(.*)$": "<rootDir>/types/$1",
+		"^@app/client/(.*)$": "<rootDir>/src/$1",
+		"^@app/server/(.*)$": "<rootDir>/server/$1",
+		"^@app/shared/(.*)$": "<rootDir>/shared/$1",
+		"^@app/types/(.*)$": "<rootDir>/types/$1",
 		"^@test/(.*)$": "<rootDir>/tests/$1",
 	},
 	setupFilesAfterEnv: [

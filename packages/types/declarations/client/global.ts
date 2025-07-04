@@ -1,4 +1,4 @@
-// import "@t/declarations/client/theme"
+// import "@app/types/declarations/client/theme"
 
 declare module "*.scss" {
   const classes: { [key: string]: string };

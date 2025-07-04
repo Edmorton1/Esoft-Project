@@ -1,5 +1,5 @@
-import { FormDTO, LikesDTO, MessageDTO, PostsDTO, TagsDTO, UserDTO, UserTagsDTO } from "@t/gen/dtoObjects"
-import { Form, Likes, Message, Posts, Tags, User, UserTags } from "@t/gen/Users"
+import { FormDTO, LikesDTO, MessageDTO, PostsDTO, TagsDTO, UserDTO, UserTagsDTO } from "@app/types/gen/dtoObjects"
+import { Form, Likes, Message, Posts, Tags, User, UserTags } from "@app/types/gen/Users"
 import { UseFormRegister } from "react-hook-form"
 
 export type Tables = {

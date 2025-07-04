@@ -1,4 +1,4 @@
-import { FormSchema, MessageSchema } from "@t/gen/Users";
+import { FormSchema, MessageSchema } from "@app/types/gen/Users";
 import { z } from "zod";
 
 export const MessageFormSchema = z.object({

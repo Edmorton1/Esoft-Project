@@ -1,5 +1,5 @@
-import { GISKEY } from "@shared/envClient"
-import { LocationDTO } from "@t/gen/dtoObjects";
+import { GISKEY } from "@app/shared/envClient"
+import { LocationDTO } from "@app/types/gen/dtoObjects";
 import axios from "axios"
 import { z } from 'zod';
 

@@ -1,0 +1,17 @@
+@use "@app/client/shared/css/const" as c;
+
+.container {
+  position: relative;
+
+  &__wrapperRow {
+    position: absolute;
+    // left: 0px;
+
+    display: flex;
+    flex-direction: column;
+    width: c.$searchW;
+    gap: c.$lp;
+
+    padding: c.$lp;
+  }
+}

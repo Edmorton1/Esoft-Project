@@ -1,2 +1,2 @@
-import "@t/declarations/client/theme"
-import "@t/declarations/client/global"
+import "@app/types/declarations/client/theme"
+import "@app/types/declarations/client/global"

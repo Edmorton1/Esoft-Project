@@ -1,5 +1,5 @@
-import { toJSON } from "@shared/MAPPERS"
-import { msg, MsgTypesClient, MsgTypesServer, SocketMessageClientInterface, SocketMessageServerInterface } from "@t/gen/socketTypes"
+import { toJSON } from "@app/shared/MAPPERS"
+import { msg, MsgTypesClient, MsgTypesServer, SocketMessageClientInterface, SocketMessageServerInterface } from "@app/types/gen/socketTypes"
 
 export function frSOSe(msg: any): SocketMessageServerInterface {
   return JSON.parse(msg.toString())

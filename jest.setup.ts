@@ -1,4 +1,4 @@
-jest.mock('@s/infrastructure/redis/redis', () => ({
+jest.mock('@app/server/infrastructure/redis/redis', () => ({
   redisClient: {
     connect: jest.fn().mockResolvedValue(undefined),
     on: jest.fn(),
@@ -8,7 +8,7 @@ jest.mock('@s/infrastructure/redis/redis', () => ({
   redisStore: jest.fn(),
 }));
 
-jest.mock('@s/helpers/logger/logger', () => ({
+jest.mock('@app/server/helpers/logger/logger', () => ({
   info: jest.fn(),
   error: jest.fn(),
 }));

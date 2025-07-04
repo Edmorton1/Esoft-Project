@@ -1,0 +1,10 @@
+@use "@app/client/shared/css/const" as c;
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  height: c.$h;
+  overflow: auto;
+}

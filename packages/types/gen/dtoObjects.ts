@@ -1,5 +1,5 @@
-import { FormSchema, LocationSchema, MessageSchema, PostsSchema, TagsSchema, UserSchema, UserTagsSchema } from "@t/gen/Users";
-import { ExpressMulterFileSchema, zid, zstring } from "@t/shared/zodSnippets";
+import { FormSchema, LocationSchema, MessageSchema, PostsSchema, TagsSchema, UserSchema, UserTagsSchema } from "@app/types/gen/Users";
+import { ExpressMulterFileSchema, zid, zstring } from "@app/types/shared/zodSnippets";
 import { boolean, z } from 'zod';
 
 export const UserDTOSchema = UserSchema.pick({email: true, password: true})
