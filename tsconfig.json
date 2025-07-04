@@ -24,15 +24,24 @@
 		// "noUncheckedIndexedAccess": true,
 		// "resolveJsonModule": true,
 		// "types": ["NodeJS"],
+		"skipLibCheck": true,
 		"baseUrl": ".",
-		"paths": {
-			"@/*": ["./src/*"],
-			"@s/*": ["./server/*"],
-			"@shared/*": ["./shared/*"],
-			"@t/*": ["./types/*"],
-			"@test/*": ["./tests/*"]
-		}
+		// "paths": {
+		// 	"@/*": ["./src/*"],
+		// 	"@s/*": ["./server/*"],
+		// 	"@shared/*": ["./shared/*"],
+			// "@t/*": ["./types/*"],
+		// 	"@t/*": ["packages/types/*"],
+		// 	"@test/*": ["./tests/*"]
+		// }
+    "paths": {
+      "@app/types/*": ["./packages/types/*"],
+      "@app/shared/*": ["./packages/shared/*"],
+      "@app/client/*": ["./packages/client/*"],
+      "@app/server/*": ["./packages/server/*"]
+    },
 	},
+	"exclude": ["node_modules", "dist", ".jest-cache"],
 	"ts-node": {
 		"compilerOptions": {
 			"module": "CommonJS"
