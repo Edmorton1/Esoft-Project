@@ -1,9 +1,9 @@
-import {Configuration} from "mini-css-extract-plugin";
-import webpack, {DefinePlugin} from "webpack";
+import { Configuration } from "mini-css-extract-plugin";
+import webpack, { DefinePlugin } from "webpack";
 import HTMLWebpackPlugin from "html-webpack-plugin";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
-import {BuildOptions} from "./types";
-import {BundleAnalyzerPlugin} from "webpack-bundle-analyzer";
+import { BuildOptions } from "./types";
+import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
 import ReactRefreshWebpackPlugin from "@pmmmwh/react-refresh-webpack-plugin";
 import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
 
@@ -12,7 +12,11 @@ function buildPlugins(options: BuildOptions): Configuration["plugins"] {
 	const isProd = options.mode == "production";
 
 	return [
-		new HTMLWebpackPlugin({template: options.paths.html, favicon: options.paths.favicon, title: "Znakomstva"}),
+		new HTMLWebpackPlugin({
+			template: options.paths.html,
+			favicon: options.paths.favicon,
+			title: "Znakomstva",
+		}),
 		isDev && new webpack.ProgressPlugin(),
 		isProd &&
 			new MiniCssExtractPlugin({

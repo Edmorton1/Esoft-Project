@@ -24,12 +24,13 @@ export default (env:envTypes) => {
 			output: path.resolve(__dirname, 'dist'),
 			html: path.resolve(__dirname, 'public', 'index.html'),
 			src: path.resolve(__dirname, 'src'),
-			server: path.resolve(__dirname, 'server'),
-			shared: path.resolve(__dirname, 'shared'),
+			server: path.resolve(__dirname, "..", 'backend'),
+			shared: path.resolve(__dirname, "..", 'shared'),
 			public: path.resolve(__dirname, 'public'),
 			favicon: path.resolve(__dirname, 'public', 'favicon.ico'),
-			types: path.resolve(__dirname, 'types'),
-			test: path.resolve(__dirname, 'tests')
+			types: path.resolve(__dirname, "..", 'types'),
+			// tsconfig: path.resolve(__dirname, "..", "..", "tsconfig.json")
+			// test: path.resolve(__dirname, 'tests')
 		},
 		url: {
 			prefix: "/api",

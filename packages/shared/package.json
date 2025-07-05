@@ -9,7 +9,6 @@
   "author": "",
   "license": "ISC",
   "description": "",
-  "devDependencies": {},
   "dependencies": {
     "@app/types": "1.0.0"
   }

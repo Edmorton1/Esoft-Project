@@ -1,4 +1,4 @@
-import { Form, LocationType } from "@app/types/gen/Users";
+import { Form } from "@app/types/gen/Users";
 import { BooleanField, Datagrid, DateField, DeleteButton, EditButton, FunctionField, ImageField, List, SelectField, TextField } from "react-admin";
 
 function FormList(props: any) {

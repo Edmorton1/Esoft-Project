@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { LocationDTO } from '@app/types/gen/dtoObjects';
 import StoreForm from '@app/client/shared/stores/Store-Form';
-import SharedRequests from '@app/shared/Shared-Requests';
+import SharedRequests from '@app/client/shared/funcs/Shared-Requests';
 
 
 

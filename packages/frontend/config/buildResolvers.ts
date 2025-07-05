@@ -1,16 +1,19 @@
 import {Configuration} from "webpack";
 import {BuildOptions} from "./types";
 
+		// "paths": {
+		// 	"@app/types/*": ["./packages/types/*"],
+		// 	"@app/shared/*": ["./packages/shared/*"],
+		// 	"@app/client/*": ["./packages/frontend/src/*"],
+		// 	"@app/server/*": ["./packages/backend/server/*"]
+		// }
+
 function buildResolvers(options: BuildOptions): Configuration["resolve"] {
 	return {
 		extensions: [".tsx", ".ts", ".js"],
 		alias: {
-			"@": options.paths.src,
-			"@s": options.paths.server,
-			"@shared": options.paths.shared,
-			"@t": options.paths.types,
-			"@test": options.paths.test
-		},
+			"@app/client": options.paths.src
+		}
 	};
 }
 

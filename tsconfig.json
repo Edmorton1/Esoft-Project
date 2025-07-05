@@ -6,7 +6,6 @@
 		"noImplicitAny": true,
 		"module": "ESNext",
 		"target": "ESNext",
-		"jsx": "react-jsx",
 		"allowJs": true,
 		"moduleResolution": "node",
 		"forceConsistentCasingInFileNames": true,
@@ -21,24 +20,15 @@
 
 		"experimentalDecorators": true,
 		"emitDecoratorMetadata": true,
-		// "noUncheckedIndexedAccess": true,
-		// "resolveJsonModule": true,
-		// "types": ["NodeJS"],
 		"skipLibCheck": true,
 		"baseUrl": ".",
-		// "paths": {
-		// 	"@app/client/*": ["./src/*"],
-		// 	"@app/server/*": ["./server/*"],
-		// 	"@app/shared/*": ["./shared/*"],
-		// 	"@app/types/*": ["./types/*"],
-		// 	"@test/*": ["./tests/*"]
-		// }
-    "paths": {
-      "@app/types/*": ["./packages/types/*"],
-      "@app/shared/*": ["./packages/shared/*"],
-      "@app/client/*": ["./packages/frontend/src/*"],
-      "@app/server/*": ["./packages/backend/server/*"]
-    },
+
+		"paths": {
+			"@app/types/*": ["./packages/types/*"],
+			"@app/shared/*": ["./packages/shared/*"],
+			"@app/client/*": ["./packages/frontend/src/*"],
+			"@app/server/*": ["./packages/backend/server/*"]
+		}
 	},
 	"exclude": ["node_modules", "dist", ".jest-cache"],
 	"ts-node": {

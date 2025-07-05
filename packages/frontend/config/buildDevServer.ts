@@ -2,7 +2,7 @@ import {Configuration} from "mini-css-extract-plugin";
 import {BuildOptions} from "./types";
 import fs from 'fs'
 import path from 'path';
-import certs from "certs/certs";
+import certs from "../../../certs/certs";
 
 function buildDevServer(options: BuildOptions): Configuration["devServer"] {
 	const isDev = options.mode == "development";

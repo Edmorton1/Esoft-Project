@@ -2,9 +2,9 @@ import { IYandex } from "@app/server/helpers/yandex";
 import { IORM } from "@app/server/infrastructure/db/SQL/ORM";
 import PostsService from "@app/server/infrastructure/endpoints/Posts/services/Posts.service";
 import { IFilesService } from "@app/server/infrastructure/services/Files.service";
-import ConsoleService from "@app/server/tests/console.service";
 import { PostsDTOPut } from "@app/types/gen/dtoObjects";
 import { Posts } from "@app/types/gen/Users";
+import ConsoleService from "@app/server/helpers/logger/console.service";
 
 type SimplifiedMockDTO = {
   remove_old: string[];

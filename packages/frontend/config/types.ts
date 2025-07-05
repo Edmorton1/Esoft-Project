@@ -8,7 +8,8 @@ export interface buildPaths {
   public: string,
   favicon: string,
   types: string,
-  test: string
+  // tsconfig: string
+  // test: string
 }
 
 export interface buildUrls {

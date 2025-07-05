@@ -1,4 +1,3 @@
-import { serverPaths } from "@app/shared/PATHS";
 import { Datagrid, DateField, DeleteButton, EditButton, List, TextField } from "react-admin";
 
 function UserList(props: any) {
