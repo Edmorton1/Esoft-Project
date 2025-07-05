@@ -2,7 +2,7 @@ import { config, DotenvConfigOutput, DotenvParseOutput } from "dotenv";
 import { inject, injectable } from "inversify";
 import { ILogger } from "@app/server/helpers/logger/logger.controller";
 import TYPES from "@app/server/config/containers/types";
-import { IEnv } from "@app/types/declarations/server/env";
+import { IEnv } from "@app/server/types/declarations/env";
 
 @injectable()
 class ConfigService {

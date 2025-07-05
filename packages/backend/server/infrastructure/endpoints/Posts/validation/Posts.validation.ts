@@ -1,14 +1,14 @@
 import HttpContext from "@app/server/config/express/Http.context";
 import logger from "@app/server/helpers/logger/logger";
+import { PostsDTOPutServer, PostsDTOPutServerSchema, PostsDTOServer, PostsDTOServerSchema } from "@app/server/types/DTOServer";
 import { serverPaths } from "@app/shared/PATHS";
-import { PostsDTO, PostsDTOPut, PostsDTOPutSchema, PostsDTOSchema } from "@app/types/gen/dtoObjects";
 import { zid } from "@app/types/shared/zodSnippets";
 import { z } from "zod";
 
 interface IPostsValidation {
 	get: (ctx: HttpContext) => [number, number?];
-	post: (ctx: HttpContext) => PostsDTO;
-	put: (ctx: HttpContext) => [number, PostsDTOPut];
+	post: (ctx: HttpContext) => PostsDTOServer;
+	put: (ctx: HttpContext) => [number, PostsDTOPutServer];
 	delete: (ctx: HttpContext) => number;
 }
 
@@ -29,7 +29,7 @@ class PostsValidation implements IPostsValidation {
 		const postsDTO = JSON.parse(ctx.body.json);
 		const userid = ctx.session.userid!;
 		// logger.info({ ...postsDTO, userid });
-		const parsed = PostsDTOSchema.parse({ ...postsDTO, files, userid });
+		const parsed = PostsDTOServerSchema.parse({ ...postsDTO, files, userid });
 
 		return parsed;
 	};
@@ -42,7 +42,7 @@ class PostsValidation implements IPostsValidation {
 
     // logger.info({PUT_DTO: { ...dto, files, userid }})
 
-		const parsed = PostsDTOPutSchema.parse({ ...dto, files, userid });
+		const parsed = PostsDTOPutServerSchema.parse({ ...dto, files, userid });
 
     const post_id = zid.parse(ctx.params.post_id)
 

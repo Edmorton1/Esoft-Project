@@ -1,6 +1,6 @@
 import ReactDOM from "react-dom/client";
 import App from "@app/client/app/App";
-import "@app/types/declarations/client/index"
+import "@app/client/types/declarations/index"
 import { StrictMode } from "react";
 
 const domNode = document.getElementById("root")!;

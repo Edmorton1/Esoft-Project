@@ -9,6 +9,7 @@
 		"allowJs": true,
 		"moduleResolution": "node",
 		"forceConsistentCasingInFileNames": true,
+		"jsx": "react-jsx",
 
 		"strict": true,
 		"noImplicitThis": true,

@@ -8,13 +8,7 @@ export const email = 'Некорректный Email'
 export const zid = z.coerce.number().int().positive()
 
 export const zstring = z.string().trim().nonempty()
-export const filelist = z.custom<FileList>(val => val instanceof FileList)
-export const ExpressMulterFileSchema = z.custom<Express.Multer.File>(val => {
-  return val &&
-    typeof val === 'object' &&
-    typeof val.originalname === 'string' &&
-    typeof val.encoding === 'string'
-})
+// export const filelist = z.custom<FileList>(val => val instanceof FileList)
 
 export const checkEmptyString = (val: unknown): val is string => typeof val === 'string' && val.trim() !== ''
 

@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { PasswordSchema } from "@app/client/pages/Settings/widgets/schema/Schemas"
 import { InputMui } from "@app/client/shared/ui/mui_module_components/MuiComponents"
-import { RegisterNames } from "@app/types/gen/types"
 import * as style from "@app/client/shared/css/modules/PasswordModal.module.scss"
 import Typography from "@mui/material/Typography"
 import Button from "@mui/material/Button"
@@ -12,6 +11,7 @@ import Divider from "@mui/material/Divider"
 import Box from "@mui/material/Box"
 import { BG_PAPER } from "@app/shared/COLORS"
 import { useNavigate } from "react-router-dom"
+import { RegisterNames } from "@app/client/types/types"
 
 function PasswordModal() {
   const {register, handleSubmit, formState: {errors}, setError} = useForm({resolver: zodResolver(PasswordSchema)})

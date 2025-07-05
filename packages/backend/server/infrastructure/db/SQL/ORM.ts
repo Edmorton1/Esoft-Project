@@ -1,4 +1,4 @@
-import { tables, Tables, TablesPost } from "@app/types/gen/types"
+import { tables, Tables } from "@app/types/gen/types"
 import { cacheEdit, cacheGet } from "@app/server/infrastructure/redis/cache"
 import db from "@app/server/infrastructure/db/db"
 import bcrypt from "bcrypt"
@@ -10,6 +10,7 @@ import { inject, injectable } from "inversify"
 import { ILogger } from "@app/server/helpers/logger/logger.controller"
 import TYPES from "@app/server/config/containers/types"
 import { Knex } from "knex"
+import { TablesPost } from "@app/server/types/types"
 
 const fieldsKey = (fields?: string) => `${fields ? '--fields: ' + fields : ''}`
 

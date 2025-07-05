@@ -3,6 +3,7 @@
 	"version": "1.0.0",
 	"main": "index.js",
 	"scripts": {
+		"build": "webpack --env mode=development",
 		"dev": "webpack serve --env mode=development port=5000",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},

@@ -3,17 +3,17 @@ import { ILogger } from "@app/server/helpers/logger/logger.controller";
 import Yandex, { IYandex } from "@app/server/helpers/yandex";
 import ORM, { IORM } from "@app/server/infrastructure/db/SQL/ORM";
 import FilesService, { IFilesService } from "@app/server/infrastructure/services/Files.service";
+import { PostsDTOPutServer, PostsDTOServer } from "@app/server/types/DTOServer";
 // import PostsModule from "@app/server/infrastructure/endpoints/Posts/sql/Posts.module";
 import { POSTS_LIMIT } from "@app/shared/CONST";
-import { PostsDTO, PostsDTOPut } from "@app/types/gen/dtoObjects";
 import { Posts } from "@app/types/gen/Users";
 import { inject, injectable } from "inversify";
 import { z } from "zod";
 
 interface IPostsService {
 	get: (userid: number, cursor: number | undefined) => Promise<Posts[]>;
-	post: (postsDTO: PostsDTO) => Promise<Posts>;
-	put: (post_id: number, postsDTO: PostsDTOPut) => Promise<Posts | null>;
+	post: (postsDTO: PostsDTOServer) => Promise<Posts>;
+	put: (post_id: number, postsDTO: PostsDTOPutServer) => Promise<Posts | null>;
 	delete: (post_id: number, userid: number) => Promise<Posts | null>;
 }
 

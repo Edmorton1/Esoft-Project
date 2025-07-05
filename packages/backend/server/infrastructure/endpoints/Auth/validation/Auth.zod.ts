@@ -1,5 +1,5 @@
+import { ExpressMulterFileSchema } from "@app/server/types/zodSnippets"
 import { RegistrationDTOSchema, UserDTOSchema } from "@app/types/gen/dtoObjects"
-import { ExpressMulterFileSchema } from "@app/types/shared/zodSnippets"
 import { z } from "zod"
 
 export const RegistrationDTOServerSchema = RegistrationDTOSchema
