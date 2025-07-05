@@ -25,10 +25,10 @@
 		"baseUrl": ".",
 
 		"paths": {
-			"@app/types/*": ["./packages/types/*"],
-			"@app/shared/*": ["./packages/shared/*"],
+			"@app/types/*": ["./packages/types/src/*"],
+			"@app/shared/*": ["./packages/shared/src/*"],
 			"@app/client/*": ["./packages/frontend/src/*"],
-			"@app/server/*": ["./packages/backend/server/*"]
+			"@app/server/*": ["./packages/backend/src/*"]
 		}
 	},
 	"exclude": ["node_modules", "dist", ".jest-cache"],

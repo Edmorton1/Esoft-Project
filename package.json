@@ -3,14 +3,18 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build": "npm run build --workspace=@app/frontend",
-    "lint": "npx eslint .",
+    "build:front": "npm run build --workspace=@app/frontend",
     "start": "npm run dev --workspace=@app/frontend",
-    "start:railway": "npm run build && ts-node -r tsconfig-paths/register client.ts",
+
+    "build:back": "npm run build --workspace=@app/backend",
     "dev": "npm run dev --workspace=@app/backend",
-    "dev:railway": "ts-node server/index.ts",
-    "typecheck": "tsc --noEmit",
+
     "watch": "npx tsc --noEmit --watch",
+    "lint": "npx eslint .",
+
+
+    "start:railway": "npm run build && ts-node -r tsconfig-paths/register client.ts",
+    "dev:railway": "ts-node server/index.ts",
     "test:integra": "jest tests/integra --runInBand --detectOpenHandles",
     "test:unit": "chcp 65001 && jest tests/unit",
     "test:server": "npm run test --workspace=@app/backend"

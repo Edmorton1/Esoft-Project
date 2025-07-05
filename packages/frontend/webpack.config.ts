@@ -25,10 +25,10 @@ export default (env:envTypes) => {
 			html: path.resolve(__dirname, 'public', 'index.html'),
 			src: path.resolve(__dirname, 'src'),
 			server: path.resolve(__dirname, "..", 'backend'),
-			shared: path.resolve(__dirname, "..", 'shared'),
+			shared: path.resolve(__dirname, "..", 'shared', "src"),
 			public: path.resolve(__dirname, 'public'),
 			favicon: path.resolve(__dirname, 'public', 'favicon.ico'),
-			types: path.resolve(__dirname, "..", 'types'),
+			types: path.resolve(__dirname, "..", 'types', "src"),
 			// tsconfig: path.resolve(__dirname, "..", "..", "tsconfig.json")
 			// test: path.resolve(__dirname, 'tests')
 		},

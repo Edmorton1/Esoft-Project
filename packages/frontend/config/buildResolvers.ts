@@ -12,7 +12,9 @@ function buildResolvers(options: BuildOptions): Configuration["resolve"] {
 	return {
 		extensions: [".tsx", ".ts", ".js"],
 		alias: {
-			"@app/client": options.paths.src
+			"@app/client": options.paths.src,
+			"@app/shared": options.paths.shared,
+			"@app/types": options.paths.types
 		}
 	};
 }
