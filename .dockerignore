@@ -1,0 +1,11 @@
+node_modules
+dist
+
+FIXME.txt
+eslint.config.mjs
+babel.config.js
+architecture.drawio
+.prettierrc
+.prettierignore
+.gitignore
+.gitattributes

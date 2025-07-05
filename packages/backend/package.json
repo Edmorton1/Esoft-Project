@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "chcp 65001 && nodemon -r tsconfig-paths/register index.ts",
+    "dev": "nodemon -r tsconfig-paths/register index.ts",
     "test": "chcp 65001 && jest tests"
   },
   "keywords": [],

@@ -4,10 +4,10 @@ const db = knex({
 	client: "pg",
 	connection: {
 		user: "postgres",
-		password: "stalin",
+		password: "123",
 		host: "localhost",
-		port: 5432,
-		database: "Znakomstva Site",
+		port: 5433,
+		database: "Znakomstva",
 		// database: "Znakomstva TEST",
 	},
 });
