@@ -18,3 +18,4 @@ EXPOSE 80
 CMD ["npm", "run", "dev"]
 # docker build -t znakomstva-back -f Dockerfile.back .
 # docker run --name znakomstva-back -p 3000:80 znakomstva-back
+# node packages/backend/dist/packages/backend/src/index.js

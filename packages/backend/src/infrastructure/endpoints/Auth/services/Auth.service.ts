@@ -1,10 +1,10 @@
 import FilesService from "@app/server/infrastructure/services/Files.service";
 import { FormDTOServer } from "@app/server/infrastructure/endpoints/Auth/validation/Auth.zod";
 import { FormDTO, TagsDTO, UserDTO } from "@app/types/gen/dtoObjects";
-import { Form, FormSchema, Tags, User } from "@app/types/gen/Users";
+import { Form, FormSchema, User } from "@app/types/gen/Users";
 import ORM from "@app/server/infrastructure/db/SQL/ORM";
 import { inject, injectable } from "inversify";
-import { ILogger } from "@app/server/helpers/logger/logger.controller";
+import type { ILogger } from "@app/server/helpers/logger/logger.controller";
 import TYPES from "@app/server/config/containers/types";
 import SharedService from "@app/server/infrastructure/services/Shared.service";
 

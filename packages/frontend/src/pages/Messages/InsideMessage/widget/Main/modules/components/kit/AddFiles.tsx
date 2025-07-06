@@ -41,6 +41,7 @@ function AddFiles({register, onChangeAdd}: propsInterface) {
         <div key={index}>{file.name}</div>
       ));
     }
+    return;
   }
 
   return <>

@@ -1,27 +1,45 @@
 {
 	"compilerOptions": {
+		"allowJs": false,
+		"checkJs": false,
+		"jsx": "react-jsx",
+		"useDefineForClassFields": true,
+		"resolveJsonModule": true,
+
+		"removeComments": true,
+		"importHelpers": true,
+		"importsNotUsedAsValues": "remove",
+		"downlevelIteration": true,
+		"sourceMap": false,
+		"isolatedModules": true,
 		"allowSyntheticDefaultImports": true,
 		"esModuleInterop": true,
-		"outDir": "./dist/",
-		"noImplicitAny": true,
-		"module": "ESNext",
-		"target": "ESNext",
-		"allowJs": true,
-		"moduleResolution": "node",
 		"forceConsistentCasingInFileNames": true,
-		"jsx": "react-jsx",
+		"skipLibCheck": true,
 
 		"strict": true,
-		"noImplicitThis": true,
-		"alwaysStrict": true,
-		"strictNullChecks": true,
-		"strictFunctionTypes": true,
-		"strictBindCallApply": true,
+		// РУГАЕТСЯ ЕСЛИ ПЕРЕМЕННАЯ НЕ ИСПОЛЬЗУЕТСЯ
+		// "noUnusedLocals": true,
+
+		// РУГАЕТСЯ ЕСЛИ НЕТ ЯВНОГО ОПРЕДЕЛЕНИЯ ПАРАМЕТРА ЕСЛИ ОН undefined
+		// "exactOptionalPropertyTypes": true,
+		
+		// РУГАЕТСЯ ЕСЛИ НЕТ ЯВНОГО return
+		"noImplicitReturns": true,
+
 		"noFallthroughCasesInSwitch": true,
+
+		// ВОЗВРАЩАЕТ undefined ИЗ НЕЯВНЫХ КОНСТРУКЦИЙ
+		"noUncheckedIndexedAccess": true,
+		
+		// "noImplicitOverride": true,
+		// "noPropertyAccessFromIndexSignature": true,
+		// "allowUnusedLabels": false,
+		// "allowUnreachableCode": false,
 
 		"experimentalDecorators": true,
 		"emitDecoratorMetadata": true,
-		"skipLibCheck": true,
+		
 		"baseUrl": ".",
 
 		"paths": {

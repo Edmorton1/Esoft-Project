@@ -11,6 +11,7 @@ class AuthMiddleware {
     logger.info("ЛОГИНИЗАЦИЯ ПРОШЛА УСПЕШНО")
 
     next()
+    return;
   }
 
   OnlyAdmin = (req: Request, res: Response, next: NextFunction) => {
@@ -19,6 +20,7 @@ class AuthMiddleware {
     if (!req.session.userid || req.session.role != "admin") return res.sendStatus(403)
 
     next()
+    return;
   }
 }
 

@@ -27,6 +27,7 @@ class MessageOutService {
 			} else if (e.fromid !== id) {
 				return e.fromid;
 			}
+			return;
 		});
 		let forms;
 

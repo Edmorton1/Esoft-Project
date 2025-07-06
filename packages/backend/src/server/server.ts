@@ -1,7 +1,7 @@
 import { inject, injectable } from "inversify";
 import ServerExpress from "@app/server/server/server.express";
 import ConfigService from "@app/server/config/services/config.service";
-import { ILogger } from "@app/server/helpers/logger/logger.controller";
+import type { ILogger } from "@app/server/helpers/logger/logger.controller";
 import TYPES from "@app/server/config/containers/types";
 
 // ЭНДПОЙНТЫ РЕАЛИЗОВЫВАТЬ В КОНТРОЛЛЕРАХ

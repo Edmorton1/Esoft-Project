@@ -7,7 +7,7 @@ import { Form, LocationType } from "@app/types/gen/Users"
 import { SALT } from "@app/shared/CONST"
 import { requestToFormManyParams, requestToFormParams, standartToForm } from "@app/server/infrastructure/db/SQL/SQLform"
 import { inject, injectable } from "inversify"
-import { ILogger } from "@app/server/helpers/logger/logger.controller"
+import type { ILogger } from "@app/server/helpers/logger/logger.controller"
 import TYPES from "@app/server/config/containers/types"
 import { Knex } from "knex"
 import { TablesPost } from "@app/server/types/types"
@@ -39,7 +39,7 @@ export interface IORM {
   postArr: <T extends tables>(dto: TablesPost[T][], table: T, removeOld?: number) => Promise<Tables[T][]>;
 
   put: <T extends tables>(
-    dto: Partial<Omit<Tables[T], "location"> & (T extends "forms" ? {location?: Location | Knex.Raw} : object)>,
+    dto: Partial<Omit<Tables[T], "location"> & (T extends "forms" ? {location?: LocationType | Knex.Raw} : object)>,
     id: number | string,
     table: T,
     userid: number,

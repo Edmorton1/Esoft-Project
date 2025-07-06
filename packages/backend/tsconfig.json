@@ -3,5 +3,17 @@
 
   "compilerOptions": {
 		"outDir": "./dist/",
+    
+    "module": "commonjs",
+    "target": "esnext",
+    "moduleResolution": "node",
+
+
+    // FIXME: ВРЕМЕННО ДОБАВИЛ DOM, ПОТОМ УБРАТЬ
+    "lib": [
+      "ESNext",
+      "DOM"
+    ],
+    "types": ["jest"]
   },
 }

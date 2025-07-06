@@ -23,6 +23,7 @@ export const zodParams = z.object({
         return undefined
       } return result
     }
+    return;
   }, z.array(z.string().trim().nonempty()).optional()),
 
   min_age: z.coerce.number().optional(),
@@ -36,6 +37,7 @@ export const zodParams = z.object({
     if (typeof val === "string") {
       return lnglatParse(val)
     }
+    return;
   }, z.tuple([z.coerce.number(), z.coerce.number()]).optional()),
 
   params: z.preprocess(val => {
