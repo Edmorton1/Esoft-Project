@@ -7,7 +7,9 @@ import StoreTalking from "@app/client/pages/Room/widgets/ModalTalking/store/Stor
 
 class PeerResponder extends BasePeer {
   constructor(
+    //@ts-ignore
     readonly frid: number,
+    //@ts-ignore
     readonly toid: number
   ) {
     super(frid, toid)

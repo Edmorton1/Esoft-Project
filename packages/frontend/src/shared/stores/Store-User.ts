@@ -5,7 +5,7 @@ import storeSocket from "@app/client/shared/api/Store-Socket"
 import StoreLikes from "@app/client/shared/stores/StoreLikes"
 import { User, UserSchema } from "@app/types/gen/Users"
 import { UserDTO } from "@app/types/gen/dtoObjects"
-import { toCl, toJSON } from "@app/shared/MAPPERS"
+import { toJSON } from "@app/shared/MAPPERS"
 import { paths, serverPaths } from "@app/shared/PATHS"
 import { makeAutoObservable, runInAction } from "mobx"
 import { RegistrationDTOClient, StoreUserRegistrationSchema } from "@app/client/types/RegistrationZOD"
@@ -15,10 +15,6 @@ import { toSOSe } from "@app/shared/JSONParsers"
 import StoreLogin from "@app/client/shared/ui/modals/Login/stores/Store-Login"
 import StorePairs from "@app/client/pages/Pairs/widgets/stores/Store-Pairs"
 import { LoginErrorTypes } from "@app/types/gen/ErrorTypes"
-
-export interface responseInterface {
-  user: User,
-}
 
 class StoreUser {
   user: User | null | undefined = undefined
@@ -79,7 +75,7 @@ class StoreUser {
   }
 
   logout = async () => {
-    const request = toCl(await $api.post(serverPaths.logout))
+    await $api.post(serverPaths.logout)
     runInAction(() => {
       this.user = null
       StoreForm.form = null
@@ -103,11 +99,11 @@ class StoreUser {
     if (avatar && typeof avatar === 'object') {
       fd.append('avatar', avatar[0])
     }
-    const request = toCl<responseInterface>((await $api.post(`${serverPaths.registration}`, fd, {
+    const request = (await $api.post(`${serverPaths.registration}`, fd, {
       headers: {
         "Content-Type": "multipart/form-data"
       }
-    })))
+    })).data
 
     const response = StoreUserRegistrationSchema.parse(request)
 

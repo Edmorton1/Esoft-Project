@@ -1,5 +1,3 @@
-import path from "path";
-
 // ts
 // PROCESS CWD D:\JavaScript\Esoft-project\packages\backend
 // CERTS D:\JavaScript\Esoft-project\packages\backend\certs\192.168.1.125.pem
@@ -34,20 +32,3 @@ import path from "path";
 // console.log("PATH CWD |||                      ", path.resolve(process.cwd(), "..", "..", "certs", "192.168.1.125.pem"))
 
 // ПОИСК env
-
-console.log(path.resolve(process.cwd(), ".env"))
-
-import dotenv from "dotenv"
-dotenv.config({path: path.resolve(process.cwd(), ".env")})
-
-import appBindingsContainer from "@app/server/config/containers/container.di";
-import App from "@app/server/server/server";
-import "@app/server/types/declarations/index"
-
-async function bootstrap():Promise<void> {
-	const app = appBindingsContainer.get<App>(App);
-
-	await app.init();
-}
-
-export const boot = bootstrap();

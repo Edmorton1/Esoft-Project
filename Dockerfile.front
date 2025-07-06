@@ -1,23 +1,22 @@
+# Build Stage
 FROM node:20-alpine as build
 
 WORKDIR /app
 
 COPY package*.json ./
-COPY package-lock.json ./
-# COPY packages ./packages
+
 COPY packages/frontend ./packages/frontend
 COPY packages/shared ./packages/shared
 COPY packages/types ./packages/types
 
 RUN npm install
 
-# COPY certs ./certs
-# COPY tsconfig.json .
 COPY . .
 
 RUN npm run build:front
 
-FROM nginx:alpine
+# Production Stage
+FROM nginx:alpine as production
 
 COPY --from=build /app/packages/frontend/dist /usr/share/nginx/html
 

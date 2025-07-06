@@ -26,16 +26,16 @@ export const toJSON = <T>(data: T): string => {
   return JSON.stringify(data)
 }
 
-export const toCl = <T>(response: any): T => {
-  // if (!data.data) {
-  //   return null
-  // }
-  return response.data
-}
+// export const toCl = <T>(response: any): T => {
+//   // if (!data.data) {
+//   //   return null
+//   // }
+//   return response.data
+// }
 
-export function one<T>(data: T[]): T {
-  return data[0]
-}
+// export function one<T>(data: T[]): T {
+//   return data[0]
+// }
 
 export function toArr(data: string | null | undefined) {
   return data?.trim().split(',').map(e => e.trim())

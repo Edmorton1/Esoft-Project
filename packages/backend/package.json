@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "chcp 65001 && nodemon -r tsconfig-paths/register index.ts",
-    "build": "tsc --project tsconfig.json && tsc-alias -p tsconfig.json",
-    "dev:prod": "node ./dist/backend/index.js",
+    "dev": "chcp 65001 && nodemon -r tsconfig-paths/register src/index.ts",
+    "build": "node ./check-env.js && tsc --project tsconfig.prod.json && tsc-alias -p tsconfig.prod.json",
+    "dev:prod": "node ./dist/backend/src/index.js",
+    
     "test": "chcp 65001 && jest tests"
   },
   "keywords": [],

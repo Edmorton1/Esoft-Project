@@ -1,8 +1,7 @@
 import $api from "@app/client/shared/api/api";
 import StoreAlert from "@app/client/shared/ui/Toast/Store-Alert";
-import { Form, FormSchema, Likes } from "@app/types/gen/Users";
-import { toCl } from "@app/shared/MAPPERS";
-import { action, makeAutoObservable, makeObservable, observable, runInAction, toJS } from "mobx";
+import { Form, FormSchema, Likes, LikesSchema } from "@app/types/gen/Users";
+import { action, makeObservable, observable, runInAction, toJS } from "mobx";
 import StoreUser from "@app/client/shared/stores/Store-User";
 import { serverPaths } from "@app/shared/PATHS";
 import { LikesDeleteSocketDTO, LikesSendSocketDTO } from "@app/types/gen/socketTypes";
@@ -32,8 +31,9 @@ class StoreLikes extends StoreBasePaginDoc {
 
   initial = async () => {
     // console.log(StoreForm.form)
-    const sent = toCl<Likes[]>(await $api.get(`${serverPaths.likes}?userid=${StoreUser.user!.id}`))
-    const received = toCl<Likes[]>(await $api.get(`${serverPaths.likes}?liked_userid=${StoreUser.user!.id}`))
+    const sent = z.array(LikesSchema).parse((await $api.get(`${serverPaths.likes}?userid=${StoreUser.user!.id}`)).data)
+    const received = z.array(LikesSchema).parse((await $api.get(`${serverPaths.likes}?liked_userid=${StoreUser.user!.id}`)).data)
+
     runInAction(() => this.likes = {sent, received})
     // console.log('[SNET]', await $api.get(`${serverPaths.likes}?userid=${StoreUser.user!.id}&fields=id, liked_userid`))
     // console.log(toJS(this.likes))
@@ -56,7 +56,7 @@ class StoreLikes extends StoreBasePaginDoc {
   }
 
   like = async (form: Form) => {
-    const request: Likes = toCl(await $api.post(`${serverPaths.likesSend}/${form.id}`))
+    const request = LikesSchema.parse((await $api.post(`${serverPaths.likesSend}/${form.id}`)).data)
     console.log(request)
     runInAction(() => this.likes?.sent.push(request))
     console.log('Like agredd', request)
@@ -75,10 +75,10 @@ class StoreLikes extends StoreBasePaginDoc {
     try {
       const id = this.likes?.sent.find(e => e.liked_userid == form.id)!.id
       console.log(id)
-      const request = toCl(await $api.delete(`${serverPaths.likesDelete}/${id}`))
+      await $api.delete(`${serverPaths.likesDelete}/${id}`)
       console.log(form.id, this.likes?.sent.filter(e => e.id != form.id))
       runInAction(() => this.likes!.sent = this.likes!.sent.filter(e => e.liked_userid != form.id))
-      console.log(request)
+      // console.log(request)
 
       const pairs_ids = StorePairs.pairs?.map(e => e.id)
       if (pairs_ids?.includes(form.id)) {

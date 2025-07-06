@@ -1,9 +1,9 @@
 import { sexType } from "@app/client/shared/hooks/Map/types";
 import $api from "@app/client/shared/api/api";
-import {toCl} from "@app/shared/MAPPERS";
 import {serverPaths} from "@app/shared/PATHS";
-import {Form} from "@app/types/gen/Users";
+import {Form, FormSchema} from "@app/types/gen/Users";
 import {makeAutoObservable} from "mobx";
+import z from "zod";
 
 class StoreMap {
 	sex: sexType = 'all'
@@ -17,7 +17,7 @@ class StoreMap {
 		let total;
 		
 		if (this._rawForms.length === 0) {
-			const request = toCl<Form[]>(await $api.get(`${serverPaths.forms}?fields=id, avatar, sex, location`),);
+			const request = z.array(FormSchema).parse((await $api.get(`${serverPaths.forms}?fields=id, avatar, sex, location`)).data);
 			total = request.filter(e => e.location).map(e => ({...e, location: [e.location!.lng, e.location!.lat]}));
 		} else {
 			total = this._rawForms

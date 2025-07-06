@@ -30,12 +30,15 @@
 		"noFallthroughCasesInSwitch": true,
 
 		// ВОЗВРАЩАЕТ undefined ИЗ НЕЯВНЫХ КОНСТРУКЦИЙ
-		"noUncheckedIndexedAccess": true,
-		
-		// "noImplicitOverride": true,
+		// "noUncheckedIndexedAccess": true,
+
+		"noImplicitOverride": true,
+
+		// РУАГЕТСЯ ЕСЛИ ПИШЕТСЯ ЧЕРЕЗ .asd ВМЕСТО ["asd"]
 		// "noPropertyAccessFromIndexSignature": true,
-		// "allowUnusedLabels": false,
-		// "allowUnreachableCode": false,
+
+		"allowUnusedLabels": false,
+		"allowUnreachableCode": false,
 
 		"experimentalDecorators": true,
 		"emitDecoratorMetadata": true,

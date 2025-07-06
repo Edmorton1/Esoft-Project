@@ -1,9 +1,9 @@
 import $api from "@app/client/shared/api/api";
 import { Form, FormSchema, Tags } from "@app/types/gen/Users";
-import { one, toCl } from "@app/shared/MAPPERS";
 import { serverPaths } from "@app/shared/PATHS";
 import { makeAutoObservable, runInAction } from "mobx";
 import StoreUser from "@app/client/shared/stores/Store-User";
+import z from "zod";
 
 class FormStore {
   form: Form | null | undefined = undefined
@@ -16,7 +16,7 @@ class FormStore {
     console.log("FORM INITAL", StoreUser.user?.id)
     console.log("forms", this.form)
     if (!this.form) {
-      const data = one(toCl<Form[]>(await $api.get(`${serverPaths.forms}/${StoreUser.user!.id}`)))
+      const data = FormSchema.parse((await $api.get(`${serverPaths.forms}/${StoreUser.user!.id}`)).data[0])
       const parsed = FormSchema.parse(data)
       runInAction(() => this.form = parsed)
     }
@@ -33,7 +33,7 @@ class FormStore {
   // }
 
   async getById(id: number): Promise<Form> {
-    const request = one(toCl<Form[]>(await $api.get(`${serverPaths.forms}/${id}`)))
+    const request = FormSchema.parse((await $api.get(`${serverPaths.forms}/${id}`)).data[0])
     return request
   }
 

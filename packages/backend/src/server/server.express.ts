@@ -12,11 +12,8 @@ import ServerRoutes from "@app/server/server/express.routes";
 import helmet from "helmet";
 import { ILogger } from "@app/server/helpers/logger/logger.controller";
 import TYPES from "@app/server/config/containers/types";
-
 import fs from 'fs'
 import path from 'path';
-
-console.log("PATHS", "CERT", path.resolve(process.cwd(), "certs", "192.168.1.125.pem"), "KEY", process.cwd(), "certs", "192.168.1.125-key.pem")
 
 const cert = fs.readFileSync(path.resolve(path.resolve(process.cwd(), "..", "..", "certs", "192.168.1.125.pem")))
 const key = fs.readFileSync(path.resolve(path.resolve(process.cwd(), "..", "..", "certs", "192.168.1.125-key.pem")))

@@ -1,4 +1,5 @@
-FROM node:20-alpine
+# Build Stage
+FROM node:20-alpine AS builder
 
 WORKDIR /app
 
@@ -9,13 +10,42 @@ COPY packages/backend ./packages/backend
 COPY packages/shared ./packages/shared
 COPY packages/types ./packages/types
 
+ENV NODE_ENV=development
+
 RUN npm install
 
 COPY . .
 
+ENV NODE_ENV=production
+
+RUN npm run build:back
+
+# Production Stage
+FROM node:20-alpine AS production
+
+WORKDIR /app
+
+COPY package*.json ./
+COPY packages/backend/package*.json ./packages/backend/
+COPY packages/shared/package*.json ./packages/shared/
+COPY packages/types/package*.json ./packages/types/
+COPY packages/backend ./packages/backend/check-env.js
+COPY ./certs ./certs
+COPY packages/backend/.env ./packages/backend/.env
+
+ENV NODE_ENV=production
+
+RUN npm install --omit=dev
+
+COPY --from=builder /app/packages/backend/dist ./packages/backend/dist
+
 EXPOSE 80
 
-CMD ["npm", "run", "dev"]
+CMD ["npm", "run", "start:back"]
+
 # docker build -t znakomstva-back -f Dockerfile.back .
 # docker run --name znakomstva-back -p 3000:80 znakomstva-back
 # node packages/backend/dist/packages/backend/src/index.js
+# docker run -it --rm -p 3000:80 -v D:/путь/к/certs:/certs znakomstva-back sh
+
+# NODE_ENV=production - ТОЛЬКО С НИМ ВСЁ ЗАПУСКАТЬ
