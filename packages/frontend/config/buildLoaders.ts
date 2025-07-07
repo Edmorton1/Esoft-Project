@@ -11,14 +11,16 @@ function buildLoaders(options: BuildOptions): ModuleOptions["rules"] {
 		{
 			test: /\.module\.s[ac]ss$/i,
 			use: [
-				isProd ? MiniCssExtractPlugin.loader : "style-loader",
+				// isProd ? MiniCssExtractPlugin.loader : "style-loader",
+				"style-loader",
 				{
 					loader: "css-loader",
 					options: {
 						modules: {
-							localIdentName: isProd 
-              ? "[hash:base64]" 
-              : "[path][name]__[local]",
+							// localIdentName: isProd 
+              // ? "[hash:base64]" 
+              // : "[path][name]__[local]",
+							localIdentName: "[path][name]__[local]"
 						},
 					},
 				},
@@ -36,7 +38,8 @@ function buildLoaders(options: BuildOptions): ModuleOptions["rules"] {
 			test: /\.s[ac]ss$/i,
       exclude: /\.module\.s[ac]ss$/i,
 			use: [
-				isProd ? MiniCssExtractPlugin.loader : "style-loader",
+				// isProd ? MiniCssExtractPlugin.loader : "style-loader",
+				"style-loader",
         "css-loader",
 				{
 					loader: "sass-loader",

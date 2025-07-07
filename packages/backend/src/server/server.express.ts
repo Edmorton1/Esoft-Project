@@ -27,8 +27,6 @@ class ServerExpress {
 	constructor(
 		@inject(TYPES.LoggerController)
 		private readonly logger: ILogger,
-		@inject(ConfigService)
-		private readonly configService: ConfigService,
 		@inject(ServerRoutes)
 		private readonly serverRoutes: ServerRoutes,
 	) {

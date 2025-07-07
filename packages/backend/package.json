@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "chcp 65001 && nodemon -r tsconfig-paths/register src/index.ts",
     "build": "node ./check-env.js && tsc --project tsconfig.prod.json && tsc-alias -p tsconfig.prod.json",
-    "dev:prod": "node ./dist/backend/src/index.js",
+    "start": "node ./dist/backend/src/index.js",
     
     "test": "chcp 65001 && jest tests"
   },

@@ -4,9 +4,6 @@ import buildWebpack from './config/buildWebpack';
 import { WebpackConfiguration } from 'webpack-dev-server';
 import { buildMode, buildPlatform } from './config/types';
 
-//@ts-ignore
-//ПОТОМ ПРИДУМАТЬ КАК СЮДА СЕРВЕР ПЕРЕДАТЬ
-
 interface envTypes {
 	mode?: buildMode
 	port?: number,
@@ -34,6 +31,8 @@ export default (env:envTypes) => {
 		},
 		url: {
 			prefix: "/api",
+			//@ts-ignore
+			//ПОТОМ ПРИДУМАТЬ КАК СЮДА СЕРВЕР ПЕРЕДАТЬ
 			server: "https://192.168.1.125:3000"
 		},
 		analyzer: env.analyzer

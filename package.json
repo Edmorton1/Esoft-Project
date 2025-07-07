@@ -5,10 +5,11 @@
   "scripts": {
     "dev:front": "npm run dev --workspace=@app/frontend",
     "build:front": "npm run build --workspace=@app/frontend",
+    "start:front": "npm run start --workspace=@app/frontend",
 
     "dev:back": "npm run dev --workspace=@app/backend",
     "build:back": "npm run build --workspace=@app/backend",
-    "start:back": "npm run dev:prod --workspace=@app/backend",
+    "start:back": "npm run start --workspace=@app/backend",
 
     "watch": "npx tsc --noEmit --watch",
     "lint": "npx eslint .",

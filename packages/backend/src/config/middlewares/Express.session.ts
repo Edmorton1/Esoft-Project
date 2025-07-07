@@ -9,10 +9,12 @@ const expressSession = session({
   secret: process.env.SESSION_SECRET!,
   name: COOKIE_NAME,
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false,
   cookie: {
-    secure: false,
-    maxAge: 1000 * 60 * 60 * 600
+    secure: true,
+    maxAge: 1000 * 60 * 60 * 600,
+    httpOnly: true,
+    sameSite: "none"
   },
   // rolling: true
 })
