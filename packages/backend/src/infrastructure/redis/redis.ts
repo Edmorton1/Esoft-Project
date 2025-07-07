@@ -1,10 +1,11 @@
-import logger from "@app/server/helpers/logger/logger"
 import {RedisStore} from "connect-redis"
 import { createClient } from "redis"
 
+const redisHost = process.env.REDIS_HOST || "127.0.0.1"
+
 export const redisClient = createClient({
   socket: {
-    host: "127.0.0.1",
+    host: redisHost,
     port: 6379,
     connectTimeout: 15000
   }

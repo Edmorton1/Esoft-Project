@@ -1,20 +1,54 @@
 services:
-  backend:
-    #TODO
   frontend:
-    #TODO
+    image: znakomstva-front:latest
+    build:
+      context: ./
+      dockerfile: Dockerfile.front
+    ports:
+      - "5000:80"
+  backend:
+    image: znakomstva-back:latest
+    build:
+      context: ./
+      dockerfile: Dockerfile.back
+    depends_on:
+      pg:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      REDIS_HOST: redis
+      PG_HOST: pg
+      PG_PORT: 5432
+    ports:
+      - "3000:3000"
   pg:
-    # ПОТОМ ПЕРЕНЕСТИ ПЕРЕМЕННЫЕ В env
     image: postgis/postgis:17-3.4
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_DB: ${POSTGRES_DB}
     healthcheck:
-      test: ["CMD-SHELL", "arg"]
-      interval: 1m30s
-      timeout: 30s
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
       retries: 5
-      start_period: 30s
+    volumes:
+      - pg-data:/var/lib/postgresql/data
   redis:
-    #TODO
+    image: redis:latest
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+volumes:
+  pg-data:
+    external: true
+    name: 6e879ce868b6ed8b4523bc0621a86ef9492dc9eccd9fbe911e4614e7ebd011a3
+  redis-data:
+    external: true
+    name: 6c0be30400d05a3c31b9c8b8c97fe5ce1c1c579486efb3678f51c2415a20cc96
+
+# apk add curl

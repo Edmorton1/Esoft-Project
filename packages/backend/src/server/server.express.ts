@@ -14,6 +14,7 @@ import { ILogger } from "@app/server/helpers/logger/logger.controller";
 import TYPES from "@app/server/config/containers/types";
 import fs from 'fs'
 import path from 'path';
+// import http, { Server } from "http";
 
 const cert = fs.readFileSync(path.resolve(path.resolve(process.cwd(), "..", "..", "certs", "192.168.1.125.pem")))
 const key = fs.readFileSync(path.resolve(path.resolve(process.cwd(), "..", "..", "certs", "192.168.1.125-key.pem")))
@@ -40,8 +41,14 @@ class ServerExpress {
 		this.app.use(
 			cors({
 				origin: [
-					this.configService.get("URL_SERVER"),
-					this.configService.get("URL_CLIENT"),
+					"http://localhost:5000",
+					"https://localhost:5000",
+					"http://192.168.1.125:5000",
+					"https://192.168.1.125:5000",
+					"http://127.0.0.1:5000",
+					"https://127.0.0.1:5000",
+					"http://0.0.0.0:5000",
+					"https://0.0.0.0:5000"
 				],
 				credentials: true,
 			}),
@@ -65,10 +72,10 @@ class ServerExpress {
 		this.app.use(expressError);
 	};
 
-	init = async (basePath: string, port: number) => {
+	init = async (port: number) => {
 		this.configureApp();
 
-		this.server.listen(port);
+		this.server.listen(port, "0.0.0.0");
 	};
 
 	close = () => {
