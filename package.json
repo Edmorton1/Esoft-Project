@@ -13,11 +13,9 @@
 
     "watch": "npx tsc --noEmit --watch",
     "lint": "npx eslint .",
-    
-    "start:railway": "npm run build && ts-node -r tsconfig-paths/register client.ts",
-    "dev:railway": "ts-node server/index.ts",
+
     "test:integra": "jest tests/integra --runInBand --detectOpenHandles",
-    "test:unit": "chcp 65001 && jest tests/unit",
+    "test:front": "npm run test --workspace=@app/frontend",
     "test:server": "npm run test --workspace=@app/backend"
   },
   "author": "",

@@ -10,7 +10,7 @@ import LastActive from "@app/client/shared/ui/mui_module_components/LastActive";
 import { Link } from "react-router-dom";
 import StoreRoom from "@app/client/pages/Room/WebRTC/Store-Room";
 import StoreUser from "@app/client/shared/stores/Store-User";
-import Button from "@mui/material/Button";
+import DeleteIcon from '@mui/icons-material/Delete';
 import StoreLikes from "@app/client/shared/stores/StoreLikes";
 import UnderTypo from "@app/client/shared/ui/mui_components/UnderTypo";
 import { Form } from "@app/types/gen/Users";
@@ -44,9 +44,10 @@ function PairCardWidget({ data }: { data: Form }) {
 								<PhoneIcon />
 								Позвонить
 							</Subtitle>
-							<Button variant="contained" onClick={handleDelete}>
+							<Subtitle onClick={handleDelete}>
+								<DeleteIcon />
 								Удалить
-							</Button>
+							</Subtitle>
 						</div>
 					</>
 				}

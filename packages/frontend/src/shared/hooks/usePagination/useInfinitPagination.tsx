@@ -1,4 +1,5 @@
 import $api from "@app/client/shared/api/api"
+import { AxiosResponse } from "axios"
 import { useEffect, useState } from "react"
 
 // interface propsInterface {
@@ -6,7 +7,7 @@ import { useEffect, useState } from "react"
 //   url: string
 // }
 
-function useInfinitPagination(ref: React.RefObject<HTMLElement | null>, url: string, firstRender: boolean, callback: (data: any) => void, limit: number) {
+function useInfinitPagination(ref: React.RefObject<HTMLElement | null>, url: string, firstRender: boolean, callback: (data: AxiosResponse) => void) {
   const [stop, setStop] = useState(false)
   const [fetching, setFetching] = useState(false)
 
@@ -19,29 +20,29 @@ function useInfinitPagination(ref: React.RefObject<HTMLElement | null>, url: str
     // console.log('scrollTop', target.scrollTop)
   }
 
-  useEffect(() => {
-    const checkAndFetchMore = () => {
-      if (!ref.current) return;
-      // console.log("CHECK ZAPROS", store.stop)
+  // useEffect(() => {
+  //   const checkAndFetchMore = () => {
+  //     if (!ref.current) return;
+  //     // console.log("CHECK ZAPROS", store.stop)
       
-      const windowHeight = ref.current.clientHeight;
-      const docHeight = ref.current.scrollHeight;
+  //     const windowHeight = ref.current.clientHeight;
+  //     const docHeight = ref.current.scrollHeight;
 
-      console.log("windowHeight", windowHeight, "docHeight", docHeight);
+  //     console.log("windowHeight", windowHeight, "docHeight", docHeight);
 
-      if (stop || docHeight > windowHeight) {
-        clearInterval(interval)
-      } else if (document.documentElement.scrollHeight <= window.innerHeight) {
-        setFetching(true);
-      }
-    };
+  //     if (stop || docHeight > windowHeight) {
+  //       clearInterval(interval)
+  //     } else if (document.documentElement.scrollHeight <= window.innerHeight) {
+  //       setFetching(true);
+  //     }
+  //   };
 
-    const interval = setInterval(() => checkAndFetchMore(), 300);
+  //   const interval = setInterval(() => checkAndFetchMore(), 300);
     
-    return () => window.clearInterval(interval)
-    // checkAndFetchMore();
+  //   return () => window.clearInterval(interval)
+  //   // checkAndFetchMore();
 
-  }, [stop])
+  // }, [stop])
 
   useEffect(() => {
     console.log("ЮРЛ ДОЛЖЕН ПОМЕНЯТЬСЯ", url)
@@ -100,24 +101,24 @@ function useInfinitPagination(ref: React.RefObject<HTMLElement | null>, url: str
       }
     }
 
-    files.forEach(file => {
-      const loaded = ((file instanceof HTMLImageElement && file.complete) || ((file instanceof HTMLVideoElement || file instanceof HTMLAudioElement) && file.readyState >= 2))
-      fallback
-      if (loaded) {
-        onImageLoad()
-      } else {
-        file.addEventListener('loadeddata', onImageLoad)
-        file.addEventListener('error', onImageLoad)
-      }
-    })
+    // files.forEach(file => {
+    //   const loaded = ((file instanceof HTMLImageElement && file.complete) || ((file instanceof HTMLVideoElement || file instanceof HTMLAudioElement) && file.readyState >= 2))
+    //   fallback
+    //   if (loaded) {
+    //     onImageLoad()
+    //   } else {
+    //     file.addEventListener('loadeddata', onImageLoad)
+    //     file.addEventListener('error', onImageLoad)
+    //   }
+    // })
 
     console.log(loaded, total)
-    return () => {
-      files.forEach(img => {
-        img.removeEventListener('loadeddata', onImageLoad),
-        img.removeEventListener('error', onImageLoad)
-      })
-    }
+    // return () => {
+    //   files.forEach(img => {
+    //     img.removeEventListener('loadeddata', onImageLoad),
+    //     img.removeEventListener('error', onImageLoad)
+    //   })
+    // }
   }, [ref.current])
 
   return scrollHandle

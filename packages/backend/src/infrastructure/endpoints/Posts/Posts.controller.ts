@@ -56,7 +56,7 @@ class PostsController extends BaseController implements IPostsController {
 
     const total = await this.postsService.get(userid, cursor)
 
-		ctx.set("Access-Control-Expose-Headers", "is-author");
+		// ctx.set("Access-Control-Expose-Headers", "is-author");
     ctx.set(IS_AUTHOR, userid === ctx.session.userid ? "true" : "false")
 		
     ctx.json(total)

@@ -9,6 +9,7 @@ import { upload } from "@app/server/infrastructure/endpoints/multer";
 import AuthMiddleware from "@app/server/infrastructure/middlewares/AuthMiddleware";
 import HttpContext from "@app/server/config/express/Http.context";
 import SharedValidate from "@app/server/infrastructure/middlewares/SharedValidate";
+import { IS_MATCH } from "@app/shared/HEADERS";
 
 interface IMessageController {
   getMessage: (ctx: HttpContext<{messages: Message[]} | {messages: Message[], form: Form}>) => Promise<void>
@@ -58,8 +59,9 @@ class MessagesController extends BaseController implements IMessageController {
 
     logger.info({frid, toid, cursor})
 
-    const total = await this.messageService.getMessage(frid, toid, cursor)
+    const [total, is_match] = await this.messageService.getMessage(frid, toid, cursor)
 
+    ctx.set(IS_MATCH, String(is_match))
     ctx.json(total)
   }
 

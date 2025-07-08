@@ -40,7 +40,7 @@ function MainHead({toid}: {toid: number}) {
           <LastActive last_active={StoreMessages.form?.last_active} />
         </Box>
 
-        <MinButton color="plombir" onClick={handlerCallClick}><CallIcon sx={sxStyle} /></MinButton>
+        {StoreMessages.is_match && <MinButton color="plombir" onClick={handlerCallClick}><CallIcon sx={sxStyle} /></MinButton>}
       </Box>
       }
     />

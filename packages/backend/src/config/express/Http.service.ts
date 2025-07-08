@@ -33,6 +33,7 @@ class HttpServiceExpress implements IHttpService {
 	clearCookie: IHttpService["clearCookie"] = name => this.res.clearCookie(name);
 
 	set: IHttpService['set'] = (field, value) => {
+		this.res.set("Access-Control-Expose-Headers", field)
 		this.res.set(field, value)
 	}
 	

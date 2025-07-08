@@ -21,7 +21,7 @@ function Messages() {
     <section className={style.section}>
       <MainHead toid={toid} />
       <MessageWidget toid={toid} />
-      <SentHead toid={toid}/>
+      {Store.is_match && <SentHead toid={toid}/>}
       {/* <button onClick={() => console.log(StoreMessages.cursor)}>Курсор</button> */}
     </section>
   </MessagesContext.Provider>

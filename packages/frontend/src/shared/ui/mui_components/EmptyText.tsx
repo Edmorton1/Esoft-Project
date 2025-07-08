@@ -8,8 +8,15 @@ export const emptyFlex = (uslovie: number | undefined) => {
   return uslovie ? undefined : {justifyContent: "center"}
 }
 
-function EmptyText() {
-  return <Typography style={{textAlign: "center"}} color="text.secondary">Похоже, что здесь пока ничего нет</Typography>
+type Tinfo = "empty" | "match"
+
+function EmptyText({infoType}: {infoType?: Tinfo}) {
+  let text = "Похоже, что здесь пока ничего нет"
+  if (infoType === "match") {
+    text = "Вы не можете писать и звонить этому пользователю, пока не понравитесь ему"
+  }
+
+  return <Typography style={{textAlign: "center"}} color="text.secondary">{text}</Typography>
 }
 
 export default EmptyText

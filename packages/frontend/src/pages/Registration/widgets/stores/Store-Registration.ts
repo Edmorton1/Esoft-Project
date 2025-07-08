@@ -1,51 +1,60 @@
-import { GISKEY } from "@app/shared/envClient"
-import $api from "@app/client/shared/api/api"
-import StoreAlert from "@app/client/shared/ui/Toast/Store-Alert"
-import { serverPaths } from "@app/shared/PATHS"
-import { LocationDTO } from "@app/types/gen/dtoObjects"
-import axios from "axios"
-import { makeAutoObservable } from "mobx"
+import $api from "@app/client/shared/api/api";
+import StoreAlert from "@app/client/shared/ui/Toast/Store-Alert";
+import { serverPaths } from "@app/shared/PATHS";
+import { LocationDTO } from "@app/types/gen/dtoObjects";
+import { makeAutoObservable } from "mobx";
+import SharedRequests from "@app/client/shared/funcs/Shared-Requests";
 
 class StoreRegistration {
-  defaultCoords: null | LocationDTO = null;
-  coords: null | LocationDTO = null
+	defaultCoords: null | LocationDTO = null;
+	coords: null | LocationDTO = null;
 
-  constructor() {
-    makeAutoObservable(this)
+	constructor() {
+		makeAutoObservable(this);
+	}
+
+	setDefaultCoords = (coords: LocationDTO) => {
+		this.defaultCoords = coords;
+	};
+
+	// setCoords = (coords: number[]) => {
+	// 	const [lng, lat] = coords;
+	// 	console.log("ДЕФОЛТ КООРДС", this.defaultCoords);
+
+	// 	axios
+	// 		.get(
+	// 			`https://catalog.api.2gis.com/3.0/items/geocode?lat=${lat}&lon=${lng}&fields=items.point&key=${GISKEY}`,
+	// 		)
+	// 		.then(data => {
+	// 			const places = data.data.result.items;
+	// 			if (places.length) {
+	// 				console.log(places[0].full_name.split(",")[0].trim());
+	// 				this.coords = { city: places[0].full_name.split(",")[0].trim(), lng, lat };
+	// 				return;
+	// 			}
+	// 			console.log(places[0].full_name);
+	// 			this.coords = { city: "asasdasdas", lng, lat };
+	// 		})
+
+	// 		// ЗДЕСЬ НАДО УСТАНОВИТЬ КООРДИНАТЫ И СБРОСИТЬ ГОРОД
+	// 		.catch(err => {
+	// 			console.log("ERROR");
+	// 			StoreAlert.mapError("Нельзя поставить координаты здесь", "error.main");
+	// 		});
+	// 	// axios.get(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`).then(data => {
+	// };
+  setCoords = async (coords: number[]) => {
+    const location = await SharedRequests.cityByCoords(coords)
+    this.coords = location
+    if (location.city === "") {
+      StoreAlert.mapError("Нельзя поставить координаты здесь", "error.main");
+    }
   }
 
-  setDefaultCoords = (coords: LocationDTO) => {
-    this.defaultCoords = coords
-  }
-
-  setCoords = (coords: number[]) => {
-    const [lng, lat] = coords
-    console.log("ДЕФОЛТ КООРДС", this.defaultCoords)
-
-      axios.get(`https://catalog.api.2gis.com/3.0/items/geocode?lat=${lat}&lon=${lng}&fields=items.point&key=${GISKEY}`)
-        .then(data => {
-          const places = data.data.result.items
-          if (places.length) {
-            console.log(places[0].full_name.split(',')[0].trim())
-            this.coords = {city: places[0].full_name.split(',')[0].trim(), lng, lat}
-            return;
-          }
-          console.log(places[0].full_name)
-          this.coords = {city: "asasdasdas", lng, lat}
-        })
-        
-        // ЗДЕСЬ НАДО УСТАНОВИТЬ КООРДИНАТЫ И СБРОСИТЬ ГОРОД
-        .catch(err => {
-          console.log("ERROR")
-          StoreAlert.mapError("Нельзя поставить координаты здесь", "error.main")
-        });
-    // axios.get(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`).then(data => {
-  }
-
-  async emailIsFree(email: string) {
-    const {data} = await $api.get(`${serverPaths.checkEmail}/${email}`)
-    return data
-  }
+	async emailIsFree(email: string) {
+		const { data } = await $api.get(`${serverPaths.checkEmail}/${email}`);
+		return data;
+	}
 }
 
-export default new StoreRegistration
+export default new StoreRegistration();

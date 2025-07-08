@@ -13,7 +13,7 @@ import { toSOSe } from "@app/shared/JSONParsers";
 import { MessagePutDTOServer } from "@app/server/types/DTOServer";
 
 interface MessagesServiceRepo {
-  getMessage(fromId: number, toId: number, cursor?: number): Promise<{messages: Message[]} | {messages: Message[], form: Form}>,
+  getMessage(fromId: number, toId: number, cursor?: number): Promise<[{messages: Message[]} | {messages: Message[], form: Form}, boolean]>,
   sendMessage(message: MessageDTO, files: Express.Multer.File[], userid: number): Promise<Message | null>,
   editMessage(id: number, userid: number, data: MessagePutDTOServer): Promise<Message | null>,
   deleteMessage(id: number, userid: number): Promise<Message | null>
@@ -29,7 +29,7 @@ class MessagesService implements MessagesServiceRepo {
     @inject(ORM)
     private readonly ORM: ORM,
     @inject(MessagesSQL)
-    private readonly serviceMessages: MessagesSQL,
+    private readonly messagesSQL: MessagesSQL,
     @inject(Yandex)
     private readonly yandex: Yandex,
     @inject(FilesService)
@@ -44,21 +44,22 @@ class MessagesService implements MessagesServiceRepo {
     }
 
     getMessage: MessagesServiceRepo['getMessage'] = async (frid, toid, cursor) => {
+      const is_match = await this.messagesSQL.checkMatch(frid, toid)
+
+      this.logger.info({frid, toid, cursor, is_match})
   
-      this.logger.info({frid, toid, cursor})
-  
-      const messages = await this.serviceMessages.getMessage(frid, toid, cursor)
+      const messages = await this.messagesSQL.getMessage(frid, toid, cursor)
       
       // if (!messages.length) return res.sendStatus(404)
   
       const [form] = await this.ORM.getById(toid, 'forms')
   
       const total = cursor ? {messages} : {messages, form}
-      return total
+      return [total, is_match]
     }
   
     sendMessage: MessagesServiceRepo['sendMessage'] = async (message, files, userid) => {
-      const is_match = await this.serviceMessages.checkMatch(userid, message.toid)
+      const is_match = await this.messagesSQL.checkMatch(userid, message.toid)
 
       console.log("IS MATCH", is_match)
       if (!is_match) return null;
@@ -81,7 +82,7 @@ class MessagesService implements MessagesServiceRepo {
         [total] = await this.ORM.put({text: data.text}, id, 'messages', userid)
         if (!total) {return null;}
 
-        const is_match = await this.serviceMessages.checkMatch(userid, total.toid)
+        const is_match = await this.messagesSQL.checkMatch(userid, total.toid)
         if (!is_match) return null
   
       } else {
@@ -104,7 +105,7 @@ class MessagesService implements MessagesServiceRepo {
   
       if (!data) return null
 
-      const is_match = await this.serviceMessages.checkMatch(userid, data.toid)
+      const is_match = await this.messagesSQL.checkMatch(userid, data.toid)
       if (!is_match) return null
   
       await this.yandex.deleteFolder(id, "messages")

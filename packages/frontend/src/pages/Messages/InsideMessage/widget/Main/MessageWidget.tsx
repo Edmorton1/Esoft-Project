@@ -3,7 +3,6 @@ import MessageHead from "./modules/MessageHead"
 import { observer } from "mobx-react-lite"
 import { serverPaths } from "@app/shared/PATHS"
 import useInfinitPagination from "@app/client/shared/hooks/usePagination/useInfinitPagination"
-import { MESSAGE_ON_PAGE } from "@app/shared/CONST"
 import * as style from "@app/client/shared/css/pages/MessagesInside.module.scss"
 import Box from "@mui/material/Box"
 import { MessagesContext } from "@app/client/pages/Messages/InsideMessage/Messages"
@@ -19,14 +18,14 @@ function MessageWidget({toid}: {toid: number}) {
   
   console.log(`ссылка ${serverPaths.getMessage}/${toid}?cursor=${StoreMessages.cursor}`)
 
-  const scrollHandle = useInfinitPagination(ref, `${serverPaths.getMessage}/${toid}?cursor=${StoreMessages.cursor}`, StoreMessages.cursor === null, (data) => StoreMessages.get(data.data), MESSAGE_ON_PAGE)
+  const scrollHandle = useInfinitPagination(ref, `${serverPaths.getMessage}/${toid}?cursor=${StoreMessages.cursor}`, StoreMessages.cursor === null, StoreMessages.get)
 
   return <Box ref={ref} className={style.section__widget} component="section" bgcolor={BG_THIRD} onScroll={scrollHandle} sx={emptyGrid(StoreMessages.messages?.length)}>
     {StoreMessages.messages?.length
       ? StoreMessages.messages?.map(msg => (
         <MessageHead key={msg.id} msg={msg} editing={editMessage === msg.id} setEditMessage={setEditMessage}/>
       ))
-      : <EmptyText />
+      : <EmptyText infoType={StoreMessages.is_match ? "empty" : "match"} />
     }
     
   </Box>

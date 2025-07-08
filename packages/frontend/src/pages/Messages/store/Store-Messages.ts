@@ -1,18 +1,23 @@
 import $api from "@app/client/shared/api/api"
-import { action, makeAutoObservable, runInAction, toJS } from "mobx"
-import { Form, Message } from "@app/types/gen/Users"
+import { makeAutoObservable, runInAction, toJS } from "mobx"
+import { Form, FormSchema, Message, MessageSchema } from "@app/types/gen/Users"
 import { toJSON } from "@app/shared/MAPPERS"
 import StoreUser from "@app/client/shared/stores/Store-User"
 import { serverPaths } from "@app/shared/PATHS"
 import { toFormData } from "@app/client/shared/funcs/filefuncs"
 import { MessageDTOClient, MessagePutDTOClient, MessagePutDTOClientSchema } from "@app/client/types/DTOClient"
 import { FILES_LIMIT, FILES_LIMIT_MESSAGE } from "@app/shared/CONST"
+import z from "zod"
+import { AxiosResponse } from "axios"
+import { IS_MATCH } from "@app/shared/HEADERS"
+import { nullToUndefined } from "@app/types/shared/zodSnippets"
 
 class StoreMessages {
 
   messages: Message[] | null = null
   form: Form | null = null
   cursor: number | null = null
+  is_match: boolean = false
 
   constructor(
     readonly toid: number
@@ -27,18 +32,26 @@ class StoreMessages {
     } return false;
   }
 
-  get = async (data: {messages: Message[], form: Form}) => {
+  get = async (data: AxiosResponse) => {
+    // {messages: Message[], form: Form}
+    const is_match = data.headers[IS_MATCH] === "true"
+    console.log("IS_MATCH", is_match)
+    runInAction(() => this.is_match = is_match)
+    const {messages, form} = z.object({
+      messages: z.array(MessageSchema),
+      form: z.preprocess(nullToUndefined, FormSchema)
+    }).parse(data.data)
     console.log("ГЕТ МЕССАДЖ")
 
     runInAction(() => {
       if (this.messages !== null) {
-        this.messages.unshift(...data.messages)
+        this.messages.unshift(...messages)
       } else {
-        this.messages = data.messages
-        this.form = data.form
+        this.messages = messages
+        this.form = form
       }
-      console.log("THIS CURSOR NEW ", data.messages, this.cursor)
-      this.cursor = data.messages[0]?.id
+      console.log("THIS CURSOR NEW ", messages, this.cursor)
+      this.cursor = messages[0]?.id
     })
     
     console.log(this.messages, this.form)
