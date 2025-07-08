@@ -11,7 +11,6 @@ import {observer} from "mobx-react-lite";
 import CallIcon from "@mui/icons-material/Call";
 import CallEndIcon from "@mui/icons-material/CallEnd";
 import CircleButton, {sxStyle} from "@app/client/shared/ui/mui_components/CircleButton";
-
 import * as styles from "@app/client/shared/css/modules/ModalCall.module.scss";
 
 function ModalCall() {
@@ -28,7 +27,7 @@ function ModalCall() {
 		<>
 			<Dialog open={StoreCall.isOpen} onClose={handleClose} id={MODAL_CALL}>
 				<div className={styles.main}>
-					<DialogTitle>{StoreCall.anotherForm?.name} звонит вам</DialogTitle>
+					<DialogTitle fontSize={30} >{StoreCall.anotherForm?.name} звонит вам</DialogTitle>
 					{/* <DialogContent>
           Алло братан возьми трубу
         </DialogContent> */}

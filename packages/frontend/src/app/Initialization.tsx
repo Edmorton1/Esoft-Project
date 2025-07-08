@@ -33,7 +33,7 @@ function Initialization() {
     <ModalFile />
     <LoginModal />
     <PasswordModal />
-    <CallLine />
+    {/* <CallLine /> */}
     <ThrowError />
     <ModalExit />
   </>

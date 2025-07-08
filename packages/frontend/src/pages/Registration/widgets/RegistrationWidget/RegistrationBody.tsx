@@ -28,7 +28,7 @@ function RegistrationBody({onSubmit}: propsInterface) {
   const tags: TagsDTO[] = useWatch({name: 'tags'})
 
   return <form onSubmit={onSubmit} className={style.form}>
-  <button onClick={() => console.log(errors)}>errors</button>
+  {/* <button onClick={() => console.log(errors)}>errors</button> */}
   {/* <div>Добро пожаловать: {StoreUser.user?.email}</div>
   <button onClick={() => console.log(errors)}>errors</button>
   <button onClick={() => console.log(toJS(StoreRegistration.defaultCoords), toJS(StoreRegistration.coords))}>LOG</button> */}

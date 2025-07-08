@@ -17,7 +17,7 @@ class StorePairs {
 
 		console.log({ data });
 
-		this.pairs = data;
+		runInAction(() => this.pairs = data);
 	};
 
 	unshinft = (form: Form) => {

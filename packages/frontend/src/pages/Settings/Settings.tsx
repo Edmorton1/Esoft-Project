@@ -1,16 +1,15 @@
-import AccountSettings from "@app/client/pages/Settings/widgets/Account/AccountSettings"
-import ProfileSettings from "@app/client/pages/Settings/widgets/Profile/ProfileSettings"
-import Typography from "@mui/material/Typography"
-import * as style from "@app/client/shared/css/pages/Settings.module.scss"
+import SettingsWidget from "@app/client/pages/Settings/widgets/SettingsWidget"
+import StoreUser from "@app/client/shared/stores/Store-User"
+import EmptyText from "@app/client/shared/ui/mui_components/EmptyText"
+import { observer } from "mobx-react-lite"
 
 function Settings() {
 
-  return <div className={style.container}>
-    <Typography variant="h4">Настройки аккаунта</Typography>
-    <AccountSettings />
-    <Typography variant="h4">Настройки профиля</Typography>
-    <ProfileSettings/>
-  </div>
+  if (!StoreUser.user) {
+    return <EmptyText infoType="no-authorize" />
+  }
+
+  return <SettingsWidget />
 }
 
-export default Settings
+export default observer(Settings)

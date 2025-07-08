@@ -37,7 +37,7 @@ function FormEdit() {
 			<MinButton variant="contained" color="error" onClick={ctx.deleteClick}><DeleteIcon sx={sxStyle} /></MinButton>
 			<MinButton onClick={ctx.submitClick} variant="contained" sx={{height: "100%"}}><CheckIcon sx={sxStyle} /></MinButton>
 		</div>
-	</Paper>, document.getElementsByClassName(section.section)[0])
+	</Paper>, document.getElementsByClassName(section.section__widget)[0])
 }
 
 export default FormEdit;

@@ -10,6 +10,7 @@ import "@app/client/shared/css/App.scss"
 import "@app/client/shared/css/modules/LocalRemoteVideo.scss"
 import { ErrorBoundary } from "react-error-boundary";
 import Fallback from "@app/client/errors/Fallback";
+import CallLine from "@app/client/pages/Room/widgets/CallLine/CallLine";
 
 // ДЛЯ АССИНХРОННЫХ ОПЕРАЦИЙ ИСПОЛЬЗОВАТЬ suspense
 
@@ -38,10 +39,10 @@ function App() {
 							<Route path={paths.liked} element={<LazyLiked />} />
 							<Route path={paths.pairs} element={<LazyPairs />} />
 							
-							<Route path={paths.room} element={<LazyRoom />} />
+							{/* <Route path={paths.room} element={<LazyRoom />} /> */}
 							<Route path="*" element={<LazyFourHundredFour />} />
 
-							<Route path={paths.test} element={<LazyTest />} />
+							{/* <Route path={paths.test} element={<LazyTest />} /> */}
 						</Route>
 						
 						<Route path={`${paths.admin}/*`} element={<LazyAdmin />} />
@@ -49,6 +50,7 @@ function App() {
 
 					</Routes>
 				</Suspense>
+				<CallLine />
 		</ErrorBoundary>
 		</BrowserRouter>
 		</ChangeTheme>

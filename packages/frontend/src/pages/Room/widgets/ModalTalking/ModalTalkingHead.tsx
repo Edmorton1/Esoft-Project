@@ -31,8 +31,8 @@ function ModalTalkingHead() {
 			if (noVideos) {
 				setManyVideos("none");
 			} else if (twoVideos) {
-				localVideo.style.width = "50%";
-				localVideo.style.height = "50%";
+				localVideo.style.width = "35%";
+				localVideo.style.height = "35%";
 				localVideo.style.zIndex = "1";
 
 				setManyVideos("two");

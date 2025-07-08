@@ -81,10 +81,10 @@ return (
       <Typography>Пользователи</Typography>
     </NavButton>
 
-    <NavButton to={paths.map}>
+    {StoreUser.user && <NavButton to={paths.map}>
       <MapIcon />
       <Typography>Карта</Typography>
-    </NavButton>
+    </NavButton>}
 
     {StoreUser.user && <NavButton to={paths.settings}>
       <SettingsIcon />

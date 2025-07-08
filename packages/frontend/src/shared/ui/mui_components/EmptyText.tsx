@@ -8,16 +8,16 @@ export const emptyFlex = (uslovie: number | undefined) => {
   return uslovie ? undefined : {justifyContent: "center"}
 }
 
-// type Tinfo = "empty" | "match"
+type Tinfo = "empty" | "no-authorize"
 // {infoType}: {infoType?: Tinfo}
 
-function EmptyText() {
-  const text = "Похоже, что здесь пока ничего нет"
-  // if (infoType === "match") {
-  //   text = "Вы не можете писать и звонить этому пользователю, пока не понравитесь ему"
-  // }
+function EmptyText({infoType}: {infoType?: Tinfo}) {
+  let text = "Похоже, что здесь пока ничего нет"
+  if (infoType === "no-authorize") {
+    text = "Эта страница доступна только авторизованным пользователям"
+  }
 
-  return <Typography style={{textAlign: "center"}} color="text.secondary">{text}</Typography>
+  return <Typography sx={{textAlign: "center", margin: "auto 0"}} color="text.secondary">{text}</Typography>
 }
 
 export default EmptyText
