@@ -36,17 +36,19 @@ class StoreMessages {
     // {messages: Message[], form: Form}
     const is_match = data.headers[IS_MATCH] === "true"
     console.log("IS_MATCH", is_match)
+    console.log("DATA DATAQ", data.data)
+
     runInAction(() => this.is_match = is_match)
     const {messages, form} = z.object({
       messages: z.array(MessageSchema),
-      form: z.preprocess(nullToUndefined, FormSchema)
+      form: z.preprocess(nullToUndefined, FormSchema.optional())
     }).parse(data.data)
     console.log("ГЕТ МЕССАДЖ")
 
     runInAction(() => {
       if (this.messages !== null) {
         this.messages.unshift(...messages)
-      } else {
+      } else if (form) {
         this.messages = messages
         this.form = form
       }

@@ -5,12 +5,12 @@ import * as style from "@app/client/shared/css/pages/Settings.module.scss"
 
 function Settings() {
 
-  return <section className={style.container}>
+  return <div className={style.container}>
     <Typography variant="h4">Настройки аккаунта</Typography>
     <AccountSettings />
     <Typography variant="h4">Настройки профиля</Typography>
     <ProfileSettings/>
-  </section>
+  </div>
 }
 
 export default Settings

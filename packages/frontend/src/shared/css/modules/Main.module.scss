@@ -1,18 +1,43 @@
 @use "@app/client/shared/css/const" as c;
 
 .main {
-  position: relative;
-  // display: flex;
-  // flex-direction: column;
-  // align-items: flex-start;
-  // gap: c.$g;
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 10px;
 
-  // max-width: c.$w;
   width: c.$w;
-  // justify-self: center;
-  margin: 0 auto; 
+  // margin: 0 auto; 
   margin-top: c.$hh;
-  padding: c.$p;
-  border-radius: 32px;
-  // margin-left: 350px;
+  margin-right: c.$sb;
+  justify-self: center;
+
+  &__slidebar {
+    position: sticky;
+
+    top: c.$hh;
+    display: flex;
+    flex-direction: column;
+    width: c.$sb;
+    padding: 16px;
+    gap: 5px;
+    border-radius: 25px;
+    z-index: 1;
+    height: max-content;
+  }
+
+  &__content {
+    padding: c.$p;
+    border-radius: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    min-height: c.$h;
+  }
+}
+
+@media screen and (max-width: #{c.$w + c.$sb}) {
+  .main {
+    margin: 0 auto;
+    margin-top: c.$hh;
+  }
 }

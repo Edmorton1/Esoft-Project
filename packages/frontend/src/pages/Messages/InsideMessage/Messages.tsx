@@ -8,6 +8,7 @@ import MainHead from "@app/client/pages/Messages/InsideMessage/widget/Head/MainH
 import StoreMessagesManager from "@app/client/pages/Messages/store/Store-Messages-Manager"
 import StoreMessages from "@app/client/pages/Messages/store/Store-Messages"
 import { createContext } from "react"
+import Subtitle from "@app/client/shared/ui/mui_components/Subtitles"
 
 export const MessagesContext = createContext<StoreMessages | null>(null)
 
@@ -18,12 +19,15 @@ function Messages() {
   const Store = StoreMessagesManager.getOrCreateStore(toid)
   
   return <MessagesContext.Provider value={Store}>
-    <section className={style.section}>
+    <>
       <MainHead toid={toid} />
       <MessageWidget toid={toid} />
-      {Store.is_match && <SentHead toid={toid}/>}
+      {Store.is_match 
+        ? <SentHead toid={toid}/>
+        : <Subtitle className={style.section__form} >Вы не можете писать и звонить этому пользователю, пока не понравитесь ему</Subtitle>
+      }
       {/* <button onClick={() => console.log(StoreMessages.cursor)}>Курсор</button> */}
-    </section>
+    </>
   </MessagesContext.Provider>
 }
 

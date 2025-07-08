@@ -10,7 +10,7 @@ import Button from "@mui/material/Button";
 import { NavLink } from "react-router-dom";
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import SettingsIcon from '@mui/icons-material/Settings';
-import * as style from "@app/client/shared/css/modules/SidebarNav.module.scss"
+import * as style from "@app/client/shared/css/modules/Main.module.scss"
 import Box from "@mui/material/Box";
 import { BG_PAPER } from "@app/shared/COLORS";
 import StoreUser from "@app/client/shared/stores/Store-User";
@@ -43,7 +43,7 @@ function SidebarNav() {
 	);
 
 return (
-  <Box className={style.main} bgcolor={BG_PAPER}>
+  <Box component={"aside"} className={style.main__slidebar} bgcolor={BG_PAPER}>
     {StoreUser.user ? (
       <NavButton to={`${paths.profile}/${StoreUser.user.id}`}>
         <HomeIcon />

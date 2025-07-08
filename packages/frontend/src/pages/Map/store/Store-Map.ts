@@ -5,9 +5,13 @@ import {Form, FormSchema} from "@app/types/gen/Users";
 import {makeAutoObservable} from "mobx";
 import z from "zod";
 
+const fields = {id: true, avatar: true, sex: true, location: true} as const
+const localFormSchema = FormSchema.pick(fields)
+type LocalForm = z.infer<typeof localFormSchema>
+
 class StoreMap {
 	sex: sexType = 'all'
-	private _rawForms: (Omit<Form, 'location'> & {location: number[]})[] = []
+	private _rawForms: (Omit<LocalForm, 'location'> & {location: number[]})[] = []
 
 	constructor() {
 		makeAutoObservable(this);
@@ -17,8 +21,9 @@ class StoreMap {
 		let total;
 		
 		if (this._rawForms.length === 0) {
-			const request = z.array(FormSchema).parse((await $api.get(`${serverPaths.forms}?fields=id, avatar, sex, location`)).data);
-			total = request.filter(e => e.location).map(e => ({...e, location: [e.location!.lng, e.location!.lat]}));
+			const req = (await $api.get(`${serverPaths.forms}?fields=id, avatar, sex, location`)).data
+			const parsed = z.array(localFormSchema).parse(req);
+			total = parsed.filter(e => e.location).map(e => ({...e, location: [e.location!.lng, e.location!.lat]}));
 		} else {
 			total = this._rawForms
 		}

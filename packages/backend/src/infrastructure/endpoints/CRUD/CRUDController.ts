@@ -58,15 +58,16 @@ class CRUDController extends BaseController {
 	}
 
 	get = async (ctx: HttpContext) => {
-		const { fields_raw, ...params } = ctx.query;
+		const { fields, ...params } = ctx.query;
 		delete ctx.query.fields;
-    const fields = z.coerce.string().optional().parse(fields_raw)
+    const fields_parsed = z.coerce.string().optional().parse(fields)
+		logger.info({JUST_CRUD_GET: fields})
 
 		if (Object.keys(ctx.query).length > 0) {
 			logger.info({ REQ_QUERY: ctx.query });
-			return ctx.json(await this.ORM.getByParams(params, this.table, fields));
+			return ctx.json(await this.ORM.getByParams(params, this.table, fields_parsed));
 		}
-		ctx.json(await this.ORM.get(this.table, fields));
+		ctx.json(await this.ORM.get(this.table, fields_parsed));
 	};
 
 	getById = async (ctx: HttpContext) => {

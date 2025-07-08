@@ -51,7 +51,7 @@ function useClusterer(
 		});
 
 		clusterer.on("click", e => {
-			console.log(e.target);
+			console.log("click on cluster", e.target);
 			if (!Array.isArray(e.target.data)) {
 				popupContainer.hidden = true;
 				const id = e.target.data.payload.id;

@@ -1,6 +1,6 @@
 import { lnglatType } from "@app/types/gen/types";
 import { Form } from "@app/types/gen/Users";
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, toJS } from "mobx";
 
 type requestType = {
   forms: Form[],
@@ -8,18 +8,22 @@ type requestType = {
   geolocation: lnglatType
 }
 
+// {page: number, form: Form[]}
+
 class StoreUsers {
-  users: Form[] | null = null
+  users = new Map<number, Form[]>()
   pagesCount: number | null = null
   
   constructor() {
     makeAutoObservable(this)
   }
 
-  initial = (data: requestType) => {
+  initial = (data: requestType, page: number) => {
     console.log(data)
-    this.users = data.forms
+    this.users.set(page, data.forms)
     this.pagesCount = data.count
+
+    console.log("users", toJS(this.users))
   }
 }
 

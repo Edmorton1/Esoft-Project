@@ -9,6 +9,7 @@ $mw: 250px;
 	&__widget {
 		// height: 80%;
 		// height: 90%;
+		// min-height: 650px;
 		height: calc(#{c.$h} - 90px);
 		overflow-y: auto;
 
@@ -53,5 +54,8 @@ $mw: 250px;
 		border-radius: 32px !important;
 		padding: 8px;
 		align-items: center;
+		min-height: 79px;
+		justify-content: center;
+		text-align: center;
 	}
 }

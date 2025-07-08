@@ -69,6 +69,7 @@ class ORM implements IORM {
     let query = db(table).select(fieldsToArr(fields, table));
 
     if (table === 'forms') {
+      this.logger.info({JUST_GET_FORM: table, fields})
       query = standartToForm(fields)
     }
 
@@ -87,7 +88,6 @@ class ORM implements IORM {
     let query = db(table).select(fieldsToArr(fields, table)).where('id', '=', id);
     
     if (table === 'forms') {
-
       this.logger.info("[FORMS]: ЗАПРОС К ФОРМЕ")
       const params = {id: Number(id)}
 

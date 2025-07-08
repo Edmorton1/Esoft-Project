@@ -12,10 +12,8 @@ import LoginIcon from '@mui/icons-material/Login';
 import Avatar from "@mui/material/Avatar"
 import StoreLogin from "@app/client/shared/ui/modals/Login/stores/Store-Login"
 import { observer } from "mobx-react-lite"
-import { toJS } from "mobx"
 import * as main from "@app/client/shared/css/modules/Main.module.scss"
 import { BG_ALT } from "@app/shared/COLORS"
-import StorePostsManager from "@app/client/pages/Profile/stores/Store-Posts-Manager"
 import SidebarNav from "@app/client/shared/ui/modules/SidebarNav/SidebarNav"
 import SearchHeader from "@app/client/shared/ui/modules/Header/components/SearchHeader"
 
@@ -59,14 +57,16 @@ function Header() {
         <NavButton to={paths.room}>ROOM</NavButton>
         <button onClick={() => StoreGlobal.sendInfo('asadas', 'blue')}>Инфо</button> */}
         {/* <button onClick={() => console.log({ВСЕ_ЛАЙКИ: toJS(StoreLikes.likes), ЛАЙКЕД: toJS(StoreLikes.liked), ПАРЫ: toJS(StorePairs.pairs)})}>ЛАЙКИ ВСЯ ИНФА</button> */}
-        <button onClick={() => console.log(toJS(StorePostsManager))}>Стор постов</button>
+        {/* <button onClick={() => console.log(toJS(StorePostsManager))}>Стор постов</button> */}
         </Toolbar>
       </AppBar>
     
-      <Box component={"main"} className={main.main} sx={{backgroundColor: BG_ALT}}>
+      <main className={main.main}>
         <SidebarNav />
-        <Outlet />
-      </Box>
+        <Box component={"section"} sx={{backgroundColor: BG_ALT}} className={main.main__content}>
+          <Outlet />
+        </Box>
+      </main>
     </>
 }
 

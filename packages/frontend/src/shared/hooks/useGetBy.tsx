@@ -4,8 +4,9 @@ import { tables, Tables } from "@app/types/gen/types"
 import { useEffect, useState } from "react"
 
 interface optionsInterface {
-    returnOne?: boolean,
-    callback?: (data: any) => void,
+  returnOne?: boolean,
+  callback?: (data: any) => void,
+  cached?: boolean
 }
 
 function useGetBy<T extends tables>(fullUrl: string, options?: optionsInterface & {returnOne?: false}): Tables[T][] | null
@@ -18,6 +19,7 @@ function useGetBy<T extends tables>(fullUrl: string, options?: optionsInterface)
 
   useEffect(() => {
     if (fullUrl.includes('undefined')) return;
+    if (options?.cached) return;
     
     const fetchData = async () => {
     const response = await $api.get(params ? `${url}?${params}` : `${url}`)

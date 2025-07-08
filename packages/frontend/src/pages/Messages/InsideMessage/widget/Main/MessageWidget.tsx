@@ -25,7 +25,7 @@ function MessageWidget({toid}: {toid: number}) {
       ? StoreMessages.messages?.map(msg => (
         <MessageHead key={msg.id} msg={msg} editing={editMessage === msg.id} setEditMessage={setEditMessage}/>
       ))
-      : <EmptyText infoType={StoreMessages.is_match ? "empty" : "match"} />
+      : <EmptyText />
     }
     
   </Box>
