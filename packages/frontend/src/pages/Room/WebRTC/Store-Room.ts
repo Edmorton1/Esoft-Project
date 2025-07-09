@@ -4,10 +4,9 @@ import PeerResponder from "@app/client/pages/Room/WebRTC/logic/PeerResponder"
 import VideoControl from "@app/client/pages/Room/WebRTC/controllers/VideoControl"
 import StoreSocket from "@app/client/shared/api/Store-Socket"
 import { LOCAL_VIDEO, REMOTE_VIDEO } from "@app/shared/CONST"
-import { toJSON } from "@app/shared/MAPPERS"
 import { makeAutoObservable } from "mobx"
-import StoreTalking from "@app/client/pages/Room/widgets/ModalTalking/store/Store-Talking"
-import StoreCall from "@app/client/pages/Room/widgets/ModalCall/store/Store-Call"
+import StoreTalking from "@app/client/pages/Room/modules/ModalTalking/store/Store-Talking"
+import StoreCall from "@app/client/pages/Room/modules/ModalCall/store/Store-Call"
 import { SocketMessageServerInterface } from "@app/types/gen/socketTypes"
 
 class StoreRoom {
@@ -69,7 +68,7 @@ class StoreRoom {
 
   cancel = () => {
     StoreCall.closeModal()
-    StoreSocket.socket?.send(toJSON<SocketMessageServerInterface>({type: "cancel", data: this.Peer!.frid!}))
+    StoreSocket.socket?.send(JSON.stringify({type: "cancel", data: this.Peer!.frid!} satisfies SocketMessageServerInterface))
     this.cleaning()
     StoreTalking.closeTimer()
   }
@@ -97,8 +96,8 @@ class StoreRoom {
         track.enabled = true;
       });
       this.videoEnabled = true
-      el ? unHideEl(el) :  VideoControl.createLocalVideo(this.Peer!.stream!)
-      this.Peer?.dataChanel?.send(toJSON<dataChannelTypes>({type: "enablingVideo", data: true}))
+      if (el) {unHideEl(el)} else  VideoControl.createLocalVideo(this.Peer!.stream!)
+      this.Peer?.dataChanel?.send(JSON.stringify({type: "enablingVideo", data: true} satisfies dataChannelTypes))
     } else {
       const el = document.getElementById(REMOTE_VIDEO)
       unHideEl(el)
@@ -114,7 +113,7 @@ class StoreRoom {
       });
       this.videoEnabled = false
       hideEl(el)
-      this.Peer?.dataChanel?.send(toJSON<dataChannelTypes>({type: "enablingVideo", data: false}))
+      this.Peer?.dataChanel?.send(JSON.stringify({type: "enablingVideo", data: false} satisfies dataChannelTypes))
     } else {
       const el = document.getElementById(REMOTE_VIDEO)
       hideEl(el)

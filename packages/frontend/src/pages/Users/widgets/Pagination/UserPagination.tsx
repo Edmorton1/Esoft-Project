@@ -1,7 +1,6 @@
 import StoreUsers from "@app/client/pages/Users/widgets/store/Store-Users"
 import useUpdateParams from "@app/client/shared/hooks/useChangeParams"
 import Pagination from "@mui/material/Pagination"
-import { CARDS_ON_PAGE } from "@app/shared/CONST"
 import { observer } from "mobx-react-lite"
 // import { useState } from "react"
 

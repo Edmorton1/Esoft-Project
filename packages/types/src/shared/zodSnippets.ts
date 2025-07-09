@@ -27,7 +27,7 @@ export const nullToUndefined = (val: unknown): unknown => {
   if (typeof val === 'object' && val !== null) {
     const entries = Object.entries(val);
     const cleaned = entries.map(([key, value]) => [key, nullToUndefined(value)]);
-    const allUndefined = cleaned.every(([_, v]) => v === undefined);
+    const allUndefined = cleaned.every(([, v]) => v === undefined);
     return allUndefined ? undefined : Object.fromEntries(cleaned);
   }
 

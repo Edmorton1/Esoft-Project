@@ -4,8 +4,8 @@ import { frSOCl } from "@app/shared/JSONParsers";
 import { makeAutoObservable, runInAction } from "mobx";
 import StoreRoom from "@app/client/pages/Room/WebRTC/Store-Room";
 import { FormSchema } from "@app/types/gen/Users";
-import StoreCall from "@app/client/pages/Room/widgets/ModalCall/store/Store-Call";
-import StoreTalking from "@app/client/pages/Room/widgets/ModalTalking/store/Store-Talking";
+import StoreCall from "@app/client/pages/Room/modules/ModalCall/store/Store-Call";
+import StoreTalking from "@app/client/pages/Room/modules/ModalTalking/store/Store-Talking";
 import StoreForm from "@app/client/shared/stores/Store-Form";
 import StoreMessagesManager from "@app/client/pages/Messages/store/Store-Messages-Manager";
 import { assertPeerCaller } from "@app/client/types/TypeGuards";
@@ -36,7 +36,7 @@ class SocketStore {
   connection = async () => {
     this.socket = runInAction(() => new WebSocket(URL_SERVER_WS))
 
-    this.socket.onopen = (msg) => {
+    this.socket.onopen = () => {
       console.log('КЛИЕНТ ПОДКЛЮЧИЛСЯ')
     }
     this.socket.onmessage = (msg) => {

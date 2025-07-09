@@ -4,7 +4,6 @@ import * as style from "@app/client/shared/css/modules/FormEdit.module.scss"
 import Paper from "@mui/material/Paper";
 import MicroFile from "@app/client/pages/Messages/InsideMessage/widget/Main/modules/components/edit/MicroFile";
 import AddFiles from "@app/client/pages/Messages/InsideMessage/widget/Main/modules/components/kit/AddFiles";
-import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import MinButton from "@app/client/shared/ui/mui_components/MinButton";
 import DeleteIcon from '@mui/icons-material/Delete';

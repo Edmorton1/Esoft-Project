@@ -1,7 +1,6 @@
 import { Message } from "@app/types/gen/Users"
-import { createContext, memo, useCallback, useContext, useEffect, useState } from "react"
+import { createContext, useCallback, useContext, useEffect, useState } from "react"
 import MessageBody from "./MessageBody"
-import StoreMessages from "../../../../store/Store-Messages"
 import { MessageFiles } from "@app/client/types/DTOClient"
 import { observer } from "mobx-react-lite"
 import { MessagesContext } from "@app/client/pages/Messages/InsideMessage/Messages"

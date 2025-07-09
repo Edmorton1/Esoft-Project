@@ -1,9 +1,9 @@
-import Clock from "@app/client/pages/Room/widgets/ModalTalking/components/Clock";
-import StoreCall from "@app/client/pages/Room/widgets/ModalCall/store/Store-Call";
+import Clock from "@app/client/pages/Room/modules/ModalTalking/components/Clock";
+import StoreCall from "@app/client/pages/Room/modules/ModalCall/store/Store-Call";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import * as styles from "@app/client/shared/css/modules/ModalTalking.module.scss";
-import { manyVideosTypes } from "@app/client/pages/Room/widgets/ModalTalking/ModalTalkingHead";
+import { manyVideosTypes } from "@app/client/pages/Room/modules/ModalTalking/ModalTalkingHead";
 import { PLACEHOLDER_IMG } from "@app/shared/PUBLIC";
 
 function Info({manyVideos}: {manyVideos: manyVideosTypes}) {

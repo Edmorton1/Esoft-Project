@@ -1,8 +1,7 @@
-import StoreTalking from "@app/client/pages/Room/widgets/ModalTalking/store/Store-Talking"
-import Button from "@mui/material/Button"
+import StoreTalking from "@app/client/pages/Room/modules/ModalTalking/store/Store-Talking"
 import Typography from "@mui/material/Typography"
 import { observer } from "mobx-react-lite"
-import { memo, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 
 const Clock = () => {
   const [seconds, setSeconds] = useState(0)

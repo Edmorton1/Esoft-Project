@@ -1,9 +1,9 @@
-import StoreTalking from "@app/client/pages/Room/widgets/ModalTalking/store/Store-Talking";
+import StoreTalking from "@app/client/pages/Room/modules/ModalTalking/store/Store-Talking";
 import {LOCAL_VIDEO, MODAL_TALKING, REMOTE_VIDEO} from "@app/shared/CONST";
 import {observer} from "mobx-react-lite";
 import {useEffect, useRef, useState} from "react";
 import useDebounceCallback from "@app/client/shared/hooks/useDebounceCallback";
-import ModalTalkingBody from "@app/client/pages/Room/widgets/ModalTalking/ModalTalkingBody";
+import ModalTalkingBody from "@app/client/pages/Room/modules/ModalTalking/ModalTalkingBody";
 
 export type manyVideosTypes = "none" | "one" | "two"
 
@@ -78,7 +78,7 @@ function ModalTalkingHead() {
 		setShowInterface(true);
 
 		debounce(() => {
-			manyVideos !== "none" && setShowInterface(false);
+			if (manyVideos !== "none") setShowInterface(false);
 			console.log("2 сек прошло");
 		});
 	};

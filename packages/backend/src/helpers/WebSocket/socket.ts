@@ -1,5 +1,6 @@
+import mainCont from "@app/server/config/containers/container.di";
 import logger from "@app/server/helpers/logger/logger";
-import { StopTimePoint, TimePoint } from "@app/server/helpers/WebSocket/LastActiveFunc";
+import LastActiveFuncs from "@app/server/helpers/WebSocket/LastActiveFunc";
 import { frSOSe, toSOCl } from "@app/shared/JSONParsers";
 import WebSocket from "ws";
 
@@ -16,18 +17,21 @@ function createWebSocketServer(server: any) {
 
   wss.on('connection', (wsClient: WebSocketWidh) => {
     logger.info('WEB SOCKET WORK')
+    const lastActiveFuncs = mainCont.get(LastActiveFuncs)
     // clients.set(-1, [wsClient])
 
     // ws.send('ПРИВЕТ С СЕРВЕРА')
     
     wsClient.on('message', msg => {
       const {data, type} = frSOSe(msg)
+      console.log("CONTAINTER", mainCont)
+
       switch (type) {
         case "userid":
           wsClient.id = data
           clients.set(data, wsClient)
           logger.info({ZASHOL: data})
-          TimePoint(wsClient, data)
+          lastActiveFuncs.TimePoint(wsClient, data)
           break
         
         case "offer":
@@ -47,7 +51,7 @@ function createWebSocketServer(server: any) {
         
     })
     wsClient.on('close', () => {
-      StopTimePoint(wsClient.id)
+      lastActiveFuncs.StopTimePoint(wsClient.id)
       clients.delete(wsClient.id)
       logger.info('КЛИЕНТ ЗАКРЫЛСЯ')
     })

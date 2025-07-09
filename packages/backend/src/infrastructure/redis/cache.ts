@@ -1,6 +1,5 @@
 import { redisClient } from "@app/server/infrastructure/redis/redis"
 import logger from "@app/server/helpers/logger/logger"
-import { frJSON, toJSON } from "@app/shared/MAPPERS"
 import { tables } from "@app/types/gen/types"
 import { Knex } from "knex"
 
@@ -16,7 +15,7 @@ export const setCache = async <T>(key: string, data: T): Promise<T> => {
 export const getCahce = async <T>(key: string): Promise<T | undefined> => {
   const raw = await redisClient.get(key)
   if (typeof raw === 'string') {
-    return frJSON<T>(raw)
+    return JSON.parse(raw)
   } return undefined
 }
 

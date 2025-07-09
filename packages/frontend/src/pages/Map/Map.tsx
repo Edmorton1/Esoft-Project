@@ -5,7 +5,6 @@ import useMap from "@app/client/shared/hooks/Map/useMap";
 import useClusterer from "@app/client/pages/Map/hooks/useClusterer";
 import useMapCustomization from "@app/client/pages/Map/hooks/useMapCustomization";
 import Title from "@app/client/shared/ui/mui_components/Ttile";
-import StoreForm from "@app/client/shared/stores/Store-Form";
 import Typography from "@mui/material/Typography";
 import StoreUser from "@app/client/shared/stores/Store-User";
 

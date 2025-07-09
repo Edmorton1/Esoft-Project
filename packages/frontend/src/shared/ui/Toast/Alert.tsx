@@ -20,7 +20,7 @@ function Alert() {
         const infoEl = <Typography variant='h6'>{data.text}</Typography>
 
         return (
-          <Toast key={data.id} nodeRef={nodeRefs.current[data.id]} usl={data.visible} id={String(data.id)}>
+          <Toast key={data.id} ref={nodeRefs.current[data.id]} usl={data.visible} id={String(data.id)}>
             <Box component={"aside"} ref={nodeRefs.current[data.id]} className={style.toast} bgcolor={data.color ?? "primary.main"} sx={{top: `${(i + 1) * 47}px`, }}>
               {data.url
                 ? <Link to={data.url}>

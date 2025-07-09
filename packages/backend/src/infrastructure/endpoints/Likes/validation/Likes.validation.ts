@@ -7,11 +7,11 @@ import { XLNGLAT } from "@app/shared/HEADERS";
 import { lnglatParse } from "@app/server/infrastructure/endpoints/Likes/validation/Headers.parser";
 import { lnglatType } from "@app/types/gen/types";
 
-const lngLatValidate = z.preprocess(val => {
-  if (Number.isNaN(Number(val))) {
-    return undefined
-  } return Number(val)
-}, z.number().optional())
+// const lngLatValidate = z.preprocess(val => {
+//   if (Number.isNaN(Number(val))) {
+//     return undefined
+//   } return Number(val)
+// }, z.number().optional())
 
 
 class LikesValidation {

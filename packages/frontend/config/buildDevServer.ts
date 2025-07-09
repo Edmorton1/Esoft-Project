@@ -11,8 +11,8 @@ import certs from "../../../certs/certs";
 // const key = fs.readFileSync(path.resolve(process.cwd(), "..", "..", "certs", "192.168.1.125-key.pem"), "utf-8")
 
 function buildDevServer(options: BuildOptions): Configuration["devServer"] {
-	const isDev = options.mode == "development";
-	const isProd = options.mode == "production";
+	// const isDev = options.mode == "development";
+	// const isProd = options.mode == "production";
 
 	return {
 		// static: {

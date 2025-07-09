@@ -19,7 +19,7 @@
 
 		"strict": true,
 		// РУГАЕТСЯ ЕСЛИ ПЕРЕМЕННАЯ НЕ ИСПОЛЬЗУЕТСЯ
-		// "noUnusedLocals": true,
+		"noUnusedLocals": true,
 
 		// РУГАЕТСЯ ЕСЛИ НЕТ ЯВНОГО ОПРЕДЕЛЕНИЯ ПАРАМЕТРА ЕСЛИ ОН undefined
 		// "exactOptionalPropertyTypes": true,

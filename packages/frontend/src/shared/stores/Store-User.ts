@@ -5,7 +5,6 @@ import storeSocket from "@app/client/shared/api/Store-Socket"
 import StoreLikes from "@app/client/shared/stores/StoreLikes"
 import { User, UserSchema } from "@app/types/gen/Users"
 import { UserDTO } from "@app/types/gen/dtoObjects"
-import { toJSON } from "@app/shared/MAPPERS"
 import { paths, serverPaths } from "@app/shared/PATHS"
 import { makeAutoObservable, runInAction } from "mobx"
 import { RegistrationDTOClient, StoreUserRegistrationSchema } from "@app/client/types/RegistrationZOD"
@@ -15,6 +14,7 @@ import { toSOSe } from "@app/shared/JSONParsers"
 import StoreLogin from "@app/client/shared/ui/modals/Login/stores/Store-Login"
 import StorePairs from "@app/client/pages/Pairs/widgets/stores/Store-Pairs"
 import { LoginErrorTypes } from "@app/types/gen/ErrorTypes"
+import { NavigateFunction } from "react-router-dom"
 
 class StoreUser {
   user: User | null | undefined = undefined
@@ -45,7 +45,7 @@ class StoreUser {
     }
   }
   
-  login = (data: UserDTO, setError: UseFormSetError<UserDTO>, navigate: Function, reset: Function) => {
+  login = (data: UserDTO, setError: UseFormSetError<UserDTO>, navigate: NavigateFunction, reset: () => void) => {
     // try {
       $api.post(`${serverPaths.login}`, data)
         .then(data => UserSchema.parse(data.data))
@@ -95,7 +95,7 @@ class StoreUser {
   registration = async (user: RegistrationDTOClient) => {
     const {avatar, ...body} = user
     const fd = new FormData()
-    fd.append('json', toJSON(body))
+    fd.append('json', JSON.stringify(body))
     if (avatar && typeof avatar === 'object') {
       fd.append('avatar', avatar[0])
     }

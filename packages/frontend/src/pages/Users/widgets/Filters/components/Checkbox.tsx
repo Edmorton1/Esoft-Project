@@ -1,5 +1,4 @@
 import useUpdateParams from "@app/client/shared/hooks/useChangeParams"
-import Radio from "@mui/material/Radio"
 import Checkbox from "@mui/material/Checkbox"
 
 interface propsInterface {

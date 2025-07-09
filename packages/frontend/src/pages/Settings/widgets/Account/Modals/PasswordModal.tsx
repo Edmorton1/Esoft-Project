@@ -7,7 +7,6 @@ import { InputMui } from "@app/client/shared/ui/mui_module_components/MuiCompone
 import * as style from "@app/client/shared/css/modules/PasswordModal.module.scss"
 import Typography from "@mui/material/Typography"
 import Button from "@mui/material/Button"
-import Divider from "@mui/material/Divider"
 import Box from "@mui/material/Box"
 import { BG_PAPER } from "@app/shared/COLORS"
 import { useNavigate } from "react-router-dom"

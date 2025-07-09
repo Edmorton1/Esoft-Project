@@ -1,10 +1,11 @@
-import db from "@app/server/infrastructure/db/db"
+// import db from "@app/server/infrastructure/db/db"
 import { MESSAGE_ON_PAGE } from "@app/shared/CONST"
 import { Message, MessageSchema } from "@app/types/gen/Users"
 import { z } from "zod"
 import { inject, injectable } from "inversify"
 import { ILogger } from "@app/server/helpers/logger/logger.controller"
 import TYPES from "@app/server/config/containers/types"
+import { DBType } from "@app/server/infrastructure/db/db"
 
 interface MessagesSQLRepo {
   getMessage: (frid: number, toid: number, cursor?: number) => Promise<Message[]>
@@ -16,12 +17,14 @@ class MessagesSQL implements MessagesSQLRepo {
   constructor (
     @inject(TYPES.LoggerController)
     private readonly logger: ILogger,
+    @inject(TYPES.DataBase)
+    private readonly db: DBType
   ) {}
   getMessage: MessagesSQLRepo['getMessage'] = async (frid, toid, cursor) => {
 
-    let subquery = db('messages')
+    let subquery = this.db('messages')
       .select(
-        db.raw(`CASE WHEN fromid = ? THEN true ELSE false END as isAuthor`, [frid]),
+        this.db.raw(`CASE WHEN fromid = ? THEN true ELSE false END as isAuthor`, [frid]),
         '*'
       )
       .where(builder => {
@@ -35,7 +38,7 @@ class MessagesSQL implements MessagesSQLRepo {
       subquery = subquery.where('id', '<', cursor)
     }
  
-    const query = db.select('*').from(subquery).orderBy('id', 'asc')
+    const query = this.db.select('*').from(subquery).orderBy('id', 'asc')
     
     this.logger.info({SQL: query.toSQL().toNative()})
     
@@ -49,8 +52,8 @@ class MessagesSQL implements MessagesSQLRepo {
   }
 
   checkMatch: MessagesSQLRepo['checkMatch'] = async (userid, liked_userid) => {
-    const query = db("likes")
-      .select(db.raw(`COUNT(*) = 2 AS is_match`))
+    const query = this.db("likes")
+      .select(this.db.raw(`COUNT(*) = 2 AS is_match`))
       .where(qb => 
         qb.where("userid", "=", userid).andWhere("liked_userid", "=", liked_userid)
         .orWhere("userid", "=", liked_userid).andWhere("liked_userid", "=", userid)

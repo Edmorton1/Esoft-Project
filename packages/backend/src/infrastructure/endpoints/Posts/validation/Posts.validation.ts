@@ -3,7 +3,6 @@ import logger from "@app/server/helpers/logger/logger";
 import { PostsDTOPutServer, PostsDTOPutServerSchema, PostsDTOServer, PostsDTOServerSchema } from "@app/server/types/DTOServer";
 import { serverPaths } from "@app/shared/PATHS";
 import { zid } from "@app/types/shared/zodSnippets";
-import { z } from "zod";
 
 interface IPostsValidation {
 	get: (ctx: HttpContext) => [number, number?];

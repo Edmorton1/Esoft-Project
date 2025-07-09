@@ -31,9 +31,9 @@ function FileComponent({fileLink, children, mode = "full"}: propsInterface) {
 	}
 
 	return <>
-		{gues === "img" && <img onClick={handleOpen} src={fileLink} alt="" />}
-		{gues === "audio" && <audio src={fileLink} controls />}
-		{gues === "video" && <video onClick={handleOpen} src={fileLink} />}
+		{gues === "img" && <Box component={"img"} onClick={handleOpen} src={fileLink} />}
+		{gues === "audio" && <audio src={fileLink} controls><track kind="captions" /></audio>}
+		{gues === "video" && <video onClick={handleOpen} src={fileLink}><track kind="captions" /></video>}
 	</>
   
 	

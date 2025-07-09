@@ -27,7 +27,7 @@ const schemas = {
 } as const
 
 type shemaFields<T extends keyof Tables> = Partial<{[K in keyof Tables[T]]: true}>
-type TableKeys<T extends keyof Tables> = keyof Tables[T]
+// type TableKeys<T extends keyof Tables> = keyof Tables[T]
 
 export const getSchemaByTable = <T extends keyof typeof schemas>(table: T, fields?: string): typeof schemas[T] => {
 

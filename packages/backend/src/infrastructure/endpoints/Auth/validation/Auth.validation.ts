@@ -1,7 +1,6 @@
 import { FormDTOServer, RegistrationDTOServerSchema } from "@app/server/infrastructure/endpoints/Auth/validation/Auth.zod";
 import logger from "@app/server/helpers/logger/logger";
 import { TagsDTO, UserDTO, UserDTOSchema } from "@app/types/gen/dtoObjects";
-import { Request } from "express";
 import { z } from "zod";
 import HttpContext from "@app/server/config/express/Http.context";
 

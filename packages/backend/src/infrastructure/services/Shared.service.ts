@@ -1,4 +1,3 @@
-import db from "@app/server/infrastructure/db/db";
 import { TagsDTO } from "@app/types/gen/dtoObjects"
 import { LocationType, Tags } from "@app/types/gen/Users";
 import { Knex } from "knex";
@@ -6,6 +5,7 @@ import { inject, injectable } from "inversify";
 import ORM from "@app/server/infrastructure/db/SQL/ORM";
 import { ILogger } from "@app/server/helpers/logger/logger.controller";
 import TYPES from "@app/server/config/containers/types";
+import { DBType } from "@app/server/infrastructure/db/db";
 
 @injectable()
 class SharedService {
@@ -13,7 +13,9 @@ class SharedService {
     @inject(TYPES.LoggerController)
     private readonly logger: ILogger,
     @inject(ORM)
-    private readonly ORM: ORM
+    private readonly ORM: ORM,
+    @inject(TYPES.DataBase)
+    private readonly db: DBType
   ) {}
   uploadTags = async (id: number, tags?: TagsDTO[], removeOld: boolean = false): Promise<Tags[] | undefined> => {
     if (tags && tags.length > 0) {
@@ -31,7 +33,7 @@ class SharedService {
   parseLocation = (location: LocationType): Knex.Raw<any> => {
     const {lng, lat} = location
     const pointWKT = `POINT(${lng} ${lat})`;
-    const parsedKnex = db.raw(`ST_GeomFromText(?, 4326)`, [pointWKT])
+    const parsedKnex = this.db.raw(`ST_GeomFromText(?, 4326)`, [pointWKT])
     return parsedKnex
   }
 }

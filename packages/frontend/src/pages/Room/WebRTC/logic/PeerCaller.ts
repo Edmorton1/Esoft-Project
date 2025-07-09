@@ -6,10 +6,8 @@ import StoreForm from "@app/client/shared/stores/Store-Form";
 
 class PeerCaller extends BasePeer {
   constructor(
-    //@ts-ignore
-    readonly frid: number,
-    //@ts-ignore
-    readonly toid: number
+    override readonly frid: number,
+    override readonly toid: number
   ) {
     super(frid, toid)
 

@@ -1,6 +1,6 @@
 import TYPES from "@app/server/config/containers/types";
 import { ILogger } from "@app/server/helpers/logger/logger.controller";
-import db from "@app/server/infrastructure/db/db";
+import { DBType } from "@app/server/infrastructure/db/db";
 import { Message, MessageSchema } from "@app/types/gen/Users";
 import { inject, injectable } from "inversify";
 import { z } from "zod";
@@ -14,17 +14,19 @@ class MessagesOutModule implements MessagesOutModuleRepo {
   constructor (
     @inject(TYPES.LoggerController)
     private readonly logger: ILogger,
+    @inject(TYPES.DataBase)
+    private readonly db: DBType
   ) {}
   getAllLastMessages: MessagesOutModuleRepo['getAllLastMessages'] = async (id) => {
-    const whenThenRaw = db.raw(`
+    const whenThenRaw = this.db.raw(`
       CASE 
         WHEN fromid = ? THEN toid
         ELSE fromid
       END
     `, [id]);
 
-    const query = db
-      .select(db.raw(`DISTINCT ON (${whenThenRaw}) *`))
+    const query = this.db
+      .select(this.db.raw(`DISTINCT ON (${whenThenRaw}) *`))
       .from('messages')
       .where('toid', id).orWhere('fromid', id)
       .orderByRaw(`${whenThenRaw}, id DESC`);

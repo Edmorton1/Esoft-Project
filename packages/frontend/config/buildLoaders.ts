@@ -1,11 +1,10 @@
 import {ModuleOptions} from "webpack";
-import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import {BuildOptions} from "./types";
 import {buildBabelLoader} from "./buildBabelLoader";
 
 function buildLoaders(options: BuildOptions): ModuleOptions["rules"] {
-	const isDev = options.mode == "development";
-	const isProd = options.mode == "production";
+	// const isDev = options.mode == "development";
+	// const isProd = options.mode == "production";
 
 	return [
 		{

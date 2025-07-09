@@ -4,7 +4,7 @@ import HttpServiceExpress from "@app/server/config/express/Http.service";
 import { NextFunction, Request, Response } from "express";
 
 export const asyncHandle =
-	(fn: Function) => (req: Request, res: Response, next: NextFunction) => {
+	(fn: any) => (req: Request, res: Response, next: NextFunction) => {
 		Promise.resolve(fn(req, res, next)).catch(err => next(err));
 	};
 

@@ -32,14 +32,17 @@ import PostsController from "@app/server/infrastructure/endpoints/Posts/Posts.co
 import PostsService from "@app/server/infrastructure/endpoints/Posts/services/Posts.service";
 import LoggerController, { ILogger } from "@app/server/helpers/logger/logger.controller";
 import PinoService from "@app/server/helpers/logger/pino.service";
+import db, { DBType } from "@app/server/infrastructure/db/db";
+import LastActiveFuncs from "@app/server/helpers/WebSocket/LastActiveFunc";
 // import PostsModule from "@app/server/infrastructure/endpoints/Posts/sql/Posts.module";
 // import LikesValidation from "@app/server/infrastructure/endpoints/Likes/validation/Likes.validation";
 
 export const tablesArr: tables[] = ['users', 'forms', 'likes', 'messages', 'tags', 'user_tags', "posts"]
 
-const appBindingsModule = new ContainerModule(({bind}) => {
+export const serviceBind = new ContainerModule(({bind}) => {
   bind<PinoService>(PinoService).toSelf()
   bind<ILogger>(TYPES.LoggerController).to(LoggerController)
+  bind<DBType>(TYPES.DataBase).toConstantValue(db)
 
   bind<ORM>(ORM).toSelf()
   bind<SharedService>(SharedService).toSelf()
@@ -63,7 +66,6 @@ const appBindingsModule = new ContainerModule(({bind}) => {
   bind<MessagesService>(MessagesService).toSelf()
 
   bind<PostsService>(PostsService).toSelf()
-  // bind<PostsModule>(PostsModule).toSelf()
 
   bind<ServerRoutes>(ServerRoutes).toSelf()
   bind<ServerExpress>(ServerExpress).toSelf()
@@ -73,38 +75,41 @@ const appBindingsModule = new ContainerModule(({bind}) => {
 
 // -------------------------------------------------------------------------
 
-const controllerBindingsContainer = new Container()
-controllerBindingsContainer.load(appBindingsModule)
+const mainCont = new Container()
+mainCont.load(serviceBind)
 
-controllerBindingsContainer.bind<LikesController>(TYPES.Controllers.Likes).to(LikesController)
+mainCont.bind<LikesController>(TYPES.Controllers.Likes).to(LikesController)
 
-controllerBindingsContainer.bind<AuthController>(TYPES.Controllers.Auth).to(AuthController)
-controllerBindingsContainer.bind<ExtendedSearchController>(TYPES.Controllers.ExtendedSearch).to(ExtendedSearchController)
+mainCont.bind<AuthController>(TYPES.Controllers.Auth).to(AuthController)
+mainCont.bind<ExtendedSearchController>(TYPES.Controllers.ExtendedSearch).to(ExtendedSearchController)
 
-controllerBindingsContainer.bind<FormController>(TYPES.Controllers.Form).to(FormController)
+mainCont.bind<FormController>(TYPES.Controllers.Form).to(FormController)
 
-controllerBindingsContainer.bind<SettingsController>(TYPES.Controllers.Settings).to(SettingsController)
+mainCont.bind<SettingsController>(TYPES.Controllers.Settings).to(SettingsController)
 
-controllerBindingsContainer.bind<MessagesController>(TYPES.Controllers.Messages).to(MessagesController)
+mainCont.bind<MessagesController>(TYPES.Controllers.Messages).to(MessagesController)
 
-controllerBindingsContainer.bind<MessagesOutController>(TYPES.Controllers.MessagesOut).to(MessagesOutController)
+mainCont.bind<MessagesOutController>(TYPES.Controllers.MessagesOut).to(MessagesOutController)
 
-controllerBindingsContainer.bind<PostsController>(TYPES.Controllers.Posts).to(PostsController)
+mainCont.bind<PostsController>(TYPES.Controllers.Posts).to(PostsController)
 
-controllerBindingsContainer.bind<Factory<CRUDController>>(TYPES.CRUD.Factory).toFactory(context => {
+mainCont.bind<Factory<CRUDController>>(TYPES.CRUD.Factory).toFactory(context => {
   return (table: tables) => {
     const orm = context.get<ORM>(ORM)
     return new CRUDController(table, orm)
   }
 })
 
-const factory = controllerBindingsContainer.get<(table: tables) => CRUDController>(TYPES.CRUD.Factory)
+const factory = mainCont.get<(table: tables) => CRUDController>(TYPES.CRUD.Factory)
 tablesArr.forEach((table) => {
   const sym = TYPES.CRUD.Controllers[table]
-  controllerBindingsContainer.bind<CRUDController>(sym).toConstantValue(factory(table))
+  mainCont.bind<CRUDController>(sym).toConstantValue(factory(table))
 })
 
-export default controllerBindingsContainer
+// УТИЛИТЫ СИНГЛТОНЫ
+mainCont.bind<LastActiveFuncs>(LastActiveFuncs).toSelf()
+
+export default mainCont
 
 // ПЕРВЫЙ ПОДХОД
 

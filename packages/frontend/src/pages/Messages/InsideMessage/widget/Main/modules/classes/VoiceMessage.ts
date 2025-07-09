@@ -1,7 +1,5 @@
-import StoreMessages from "@app/client/pages/Messages/store/Store-Messages";
 import StoreMessagesManager from "@app/client/pages/Messages/store/Store-Messages-Manager";
 import { fileToFileList } from "@app/client/shared/funcs/filefuncs";
-import StoreForm from "@app/client/shared/stores/Store-Form";
 import { blobToFile } from "@app/shared/MAPPERS";
 
 class VoiceMessage {
@@ -39,7 +37,7 @@ class VoiceMessage {
       // URL.revokeObjectURL(url)
     }
 
-    this.mediaRecorder.onstart = e => {
+    this.mediaRecorder.onstart = () => {
       const audio = document.createElement('audio')
       audio.id = 'local-audio'
       audio.srcObject = this.stream

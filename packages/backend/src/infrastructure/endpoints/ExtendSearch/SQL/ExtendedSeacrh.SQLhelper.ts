@@ -1,9 +1,8 @@
 import TYPES from "@app/server/config/containers/types";
 import { ILogger } from "@app/server/helpers/logger/logger.controller";
-import db from "@app/server/infrastructure/db/db";
-import {paramsType, tagsTypes} from "@app/server/infrastructure/endpoints/ExtendSearch/validation/ExtendedSearch.schemas";
+import { DBType } from "@app/server/infrastructure/db/db";
+import {tagsTypes} from "@app/server/infrastructure/endpoints/ExtendSearch/validation/ExtendedSearch.schemas";
 import { inject, injectable } from "inversify";
-import {Knex} from "knex";
 
 interface ExtendedSeacrhSQLhelperRepo {
   getUserTags: (tags: string[]) => Promise<tagsTypes>,
@@ -16,6 +15,8 @@ class ExtendedSeacrhSQLhelper implements ExtendedSeacrhSQLhelperRepo {
   constructor (
     @inject(TYPES.LoggerController)
     private readonly logger: ILogger,
+    @inject(TYPES.DataBase)
+    private readonly db: DBType
   ) {}
 	getUserTags: ExtendedSeacrhSQLhelperRepo['getUserTags'] = async (tags) => {
 		this.logger.info("GET USER TAGS");
@@ -41,7 +42,7 @@ class ExtendedSeacrhSQLhelper implements ExtendedSeacrhSQLhelperRepo {
     GROUP BY groups;
     `;
 
-		const request = db.raw(sql, [...tags]);
+		const request = this.db.raw(sql, [...tags]);
 
 		this.logger.info({toNativeUserTags: request.toSQL().toNative()});
 

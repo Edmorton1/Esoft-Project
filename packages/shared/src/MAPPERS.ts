@@ -3,28 +3,28 @@
 //     return entity.rows
 // }
 
-export function toSQL(domainModel: any) {
-  if (typeof domainModel == "string" || typeof domainModel == "object") {
-    return `'${domainModel}'`
-  } else if (typeof domainModel == "undefined") {
-    return 'IS NULL'
-  } 
-  return domainModel
-}
+// export function toSQL(domainModel: any) {
+//   if (typeof domainModel == "string" || typeof domainModel == "object") {
+//     return `'${domainModel}'`
+//   } else if (typeof domainModel == "undefined") {
+//     return 'IS NULL'
+//   } 
+//   return domainModel
+// }
 
 // export const frJSON = <T>(data: string): T | undefined => {
 //   return JSON.parse(data.toString())
 // }
 
-export const frJSON = <T>(data: string): T => {
-  // console.log('frJSON', data)
-  // logger.info({data})
-  return JSON.parse(data.toString())
-}
+// export const frJSON = <T>(data: string): T => {
+//   // console.log('frJSON', data)
+//   // logger.info({data})
+//   return JSON.parse(data.toString())
+// }
 
-export const toJSON = <T>(data: T): string => {
-  return JSON.stringify(data)
-}
+// export const toJSON = <T>(data: T): string => {
+//   return JSON.stringify(data)
+// }
 
 // export const toCl = <T>(response: any): T => {
 //   // if (!data.data) {

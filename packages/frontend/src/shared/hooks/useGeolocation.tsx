@@ -32,7 +32,7 @@ function useGeolocation(callback?: (location: LocationDTO) => void): LocationDTO
           try {
             const parsed = await SharedRequests.cityByCoords([lng, lat])
             setCity(parsed);
-            callback && callback(parsed)
+            if (callback) callback(parsed)
             
           } catch (error) {
             console.error("Ошибка при запросе геоданных:", error);

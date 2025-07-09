@@ -1,6 +1,6 @@
 import $api from "@app/client/shared/api/api";
 import StoreAlert from "@app/client/shared/ui/Toast/Store-Alert";
-import { Form, FormSchema, Likes, LikesSchema } from "@app/types/gen/Users";
+import { Form, FormSchema, LikesSchema } from "@app/types/gen/Users";
 import { action, makeObservable, observable, runInAction, toJS } from "mobx";
 import StoreUser from "@app/client/shared/stores/Store-User";
 import { serverPaths } from "@app/shared/PATHS";
@@ -95,7 +95,7 @@ class StoreLikes extends StoreBasePaginDoc {
   socketGetDelete = async (data: LikesDeleteSocketDTO) => {
     const {userid, name} = data
     
-    const like = this.likes?.received.find(e => e.userid == userid)
+    // const like = this.likes?.received.find(e => e.userid == userid)
     // console.log("УДАЛЁННЫЙ ЛАЙК", toJS(this.likes), userid, like)
 
     const received = this.likes?.received.filter(e => e.userid != userid)

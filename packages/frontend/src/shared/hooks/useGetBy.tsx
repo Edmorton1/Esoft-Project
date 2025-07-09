@@ -28,7 +28,7 @@ function useGetBy<T extends tables>(fullUrl: string, options?: optionsInterface)
 
     const result = options?.returnOne ? request[0] : request
     setValue(result)
-    options?.callback && options?.callback(result)
+    if (options?.callback) options?.callback(result)
     return result
     }
 

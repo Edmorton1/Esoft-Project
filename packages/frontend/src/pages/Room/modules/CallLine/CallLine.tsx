@@ -1,9 +1,9 @@
 import StoreRoom from "@app/client/pages/Room/WebRTC/Store-Room"
 import { observer } from "mobx-react-lite"
 import * as style from "@app/client/shared/css/components/CallLine.module.scss"
-import Clock from "@app/client/pages/Room/widgets/ModalTalking/components/Clock"
-import StoreCall from "@app/client/pages/Room/widgets/ModalCall/store/Store-Call"
-import StoreTalking from "@app/client/pages/Room/widgets/ModalTalking/store/Store-Talking"
+import Clock from "@app/client/pages/Room/modules/ModalTalking/components/Clock"
+import StoreCall from "@app/client/pages/Room/modules/ModalCall/store/Store-Call"
+import StoreTalking from "@app/client/pages/Room/modules/ModalTalking/store/Store-Talking"
 
 function CallLine() {
   console.log(style)

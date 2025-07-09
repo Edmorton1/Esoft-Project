@@ -45,7 +45,11 @@ console.log("РЕРЕНДЕР ИНФИНИТ ПАГ", url, store, callback, orde
             }
           store.setStop()
         } else {
-          order === "desc" ? store.setCursor(res.data[res.data.length - 1][cursorField]) : store.setCursor(res.data[0][cursorField])
+          if (order === "desc") {
+            store.setCursor(res.data[res.data.length - 1][cursorField])
+          } else {
+            store.setCursor(res.data[0][cursorField])
+          }
           callback(res)
         }
         setFetching(false)

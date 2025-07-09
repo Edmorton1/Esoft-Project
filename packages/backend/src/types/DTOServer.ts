@@ -1,6 +1,6 @@
 import { ExpressMulterFileSchema } from "@app/server/types/zodSnippets";
 import { PostsDTOBaseSchema } from "@app/types/gen/dtoObjects";
-import { MessageSchema, PostsSchema } from "@app/types/gen/Users";
+import { MessageSchema } from "@app/types/gen/Users";
 import z from "zod"
 
 export const MessageDTOServerSchema = MessageSchema.pick({fromid: true, toid: true, text: true}).extend({

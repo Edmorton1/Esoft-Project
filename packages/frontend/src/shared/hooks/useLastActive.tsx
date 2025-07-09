@@ -13,7 +13,7 @@ function useLastActive(last_active?: string) {
     const cached = cache.get(last_active)
 
     // console.log("СКОЛЬКО ВРЕМЕНИ ДО ОЧИСТКИ КЕША", cached?.after, cached?.label)
-    cached && setTimeout(() => {cache.delete(last_active); console.log("ОЧИСТКА КЕША ДО ОЧИСТКИ БЫЛО", cached.after, cached.label)}, cached?.after)
+    if (cached) setTimeout(() => {cache.delete(last_active); console.log("ОЧИСТКА КЕША ДО ОЧИСТКИ БЫЛО", cached.after, cached.label)}, cached?.after)
 
     if (cached) return setLabel(cached.label);
 

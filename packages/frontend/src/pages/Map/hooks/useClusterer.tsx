@@ -22,12 +22,12 @@ function useClusterer(
 
 		setClustererState(clusterer);
 
-		createMarkers(map).then(markers => clusterer.load(markers));
+		createMarkers().then(markers => clusterer.load(markers));
 
 		const disposer = reaction(
 			() => StoreMap.sex,
 			async () => {
-				const markers = await createMarkers(map);
+				const markers = await createMarkers();
 				clusterer.load(markers);
 			},
 		);

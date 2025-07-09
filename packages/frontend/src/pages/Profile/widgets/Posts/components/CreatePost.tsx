@@ -13,7 +13,6 @@ function CreatePost() {
 	const {
 		register,
 		handleSubmit,
-		formState: { errors },
 	} = useForm({ resolver: zodResolver(PostsDTOClientSchema), defaultValues: {userid: StoreUser.user?.id} });
 
 	const store = usePostsStore()

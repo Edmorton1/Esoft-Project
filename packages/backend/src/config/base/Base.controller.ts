@@ -1,4 +1,3 @@
-import logger from "@app/server/helpers/logger/logger";
 import HttpContext from "@app/server/config/express/Http.context";
 import { adaptController } from "@app/server/adapters/Express.adapter";
 import { Router } from "express";

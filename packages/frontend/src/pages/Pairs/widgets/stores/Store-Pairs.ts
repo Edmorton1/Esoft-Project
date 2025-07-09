@@ -1,5 +1,4 @@
 import $api from "@app/client/shared/api/api";
-import StoreLikes from "@app/client/shared/stores/StoreLikes";
 import { serverPaths } from "@app/shared/PATHS";
 import { Form } from "@app/types/gen/Users";
 import { makeAutoObservable, runInAction } from "mobx";

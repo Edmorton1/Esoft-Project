@@ -8,11 +8,11 @@ import HttpContext from "@app/server/config/express/Http.context";
 import AuthMiddleware from "@app/server/infrastructure/middlewares/AuthMiddleware";
 import { z } from "zod";
 
-const publicEndpoints = [
-  "/forms",
-  "/forms/:id",
-  "/likes"
-]
+// const publicEndpoints = [
+//   "/forms",
+//   "/forms/:id",
+//   "/likes"
+// ]
 
 @injectable()
 class CRUDController extends BaseController {

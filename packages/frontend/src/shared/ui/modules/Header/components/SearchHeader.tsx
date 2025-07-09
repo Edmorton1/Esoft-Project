@@ -31,7 +31,7 @@ function SearchHeader() {
 
   const handleFocus = () => {StoreSearchForm.disableHide()}
   const handleBlur = (e: React.FocusEvent<HTMLElement, Element>) => {
-    !e.currentTarget.contains(e.relatedTarget) && StoreSearchForm.enableHide()
+    if (!e.currentTarget.contains(e.relatedTarget)) StoreSearchForm.enableHide()
   }
 
   return <section className={style.container} onFocusCapture={handleFocus} onBlurCapture={handleBlur}>

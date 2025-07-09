@@ -43,7 +43,11 @@ const useUpdateParams = (): returTypes => {
 			console.log("REMOVE")
 			// console.log(newParams.get(key) === value)
 			const inParams = newParams.get(key) === value
-			inParams ? newParams.delete(key) : newParams.set(key, String(value));
+			if (inParams) {
+				newParams.delete(key)
+			} else {
+				newParams.set(key, String(value))
+			};
 		}
 		if (!remove && !add) {
 			console.log("ADD REMOVE")

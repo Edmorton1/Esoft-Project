@@ -4,7 +4,6 @@ import Avatar from "@mui/material/Avatar"
 import Box from "@mui/material/Box"
 import CardHeader from "@mui/material/CardHeader"
 import Divider from "@mui/material/Divider"
-import Typography from "@mui/material/Typography"
 import { observer } from "mobx-react-lite"
 import CallIcon from '@mui/icons-material/Call';
 import MinButton from "@app/client/shared/ui/mui_components/MinButton"

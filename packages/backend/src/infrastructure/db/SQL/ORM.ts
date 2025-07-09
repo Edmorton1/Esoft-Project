@@ -1,6 +1,6 @@
 import { tables, Tables } from "@app/types/gen/types"
 import { cacheSet, cacheGet } from "@app/server/infrastructure/redis/cache"
-import db from "@app/server/infrastructure/db/db"
+import { DBType } from "@app/server/infrastructure/db/db"
 import bcrypt from "bcrypt"
 import { checkFirstType, fieldsToArr, getCheckWord, isLocationType } from "@app/server/infrastructure/db/SQL/utils"
 import { Form, LocationType } from "@app/types/gen/Users"
@@ -57,7 +57,9 @@ export interface IORM {
 class ORM implements IORM {
   constructor (
     @inject(TYPES.LoggerController)
-    private readonly logger: ILogger
+    private readonly logger: ILogger,
+    @inject(TYPES.DataBase)
+    private readonly db: DBType
   ) {}
   // get = async <T extends tables>(table: T, fields?: string, options?: Ioptions): Promise<Tables[T][]> => {
   get: IORM['get'] = async <T extends tables>(table: T, fields?: string) => {
@@ -66,7 +68,7 @@ class ORM implements IORM {
 
     const key = `${table}${fieldsKey(fields)}`
     
-    let query = db(table).select(fieldsToArr(fields, table));
+    let query = this.db(table).select(fieldsToArr(fields, table));
 
     if (table === 'forms') {
       this.logger.info({JUST_GET_FORM: table, fields})
@@ -85,7 +87,7 @@ class ORM implements IORM {
 
     const key = `${table}-id-${id}${fieldsKey(fields)}`
 
-    let query = db(table).select(fieldsToArr(fields, table)).where('id', '=', id);
+    let query = this.db(table).select(fieldsToArr(fields, table)).where('id', '=', id);
     
     if (table === 'forms') {
       this.logger.info("[FORMS]: ЗАПРОС К ФОРМЕ")
@@ -110,7 +112,7 @@ class ORM implements IORM {
 
     this.logger.info(params, 'params')
 
-    let query = db(table).select(fieldsToArr(fields, table)).where(params);
+    let query = this.db(table).select(fieldsToArr(fields, table)).where(params);
 
     if (table === 'forms') {
       query = requestToFormParams(params, fields)
@@ -150,13 +152,13 @@ class ORM implements IORM {
     if (typeof dto === 'object' && 'location' in dto && isLocationType(dto.location)) {
       const {lng, lat} = dto.location
       const pointWKT = `POINT(${lng} ${lat})`;
-      const parsedKnex = db.raw(`ST_GeomFromText(?, 4326)`, [pointWKT])
+      const parsedKnex = this.db.raw(`ST_GeomFromText(?, 4326)`, [pointWKT])
       // FIXME: СЮДА ПОТОМ ДОБАВИТЬ LOCATION PARSER
       dto.location = parsedKnex
     }
     const parsedFields = fieldsToArr(fields, table)
 
-    const request = await db(table).insert(dto).returning(parsedFields)
+    const request = await this.db(table).insert(dto).returning(parsedFields)
     
     // logger.info({request, parsedFields})
 
@@ -170,10 +172,10 @@ class ORM implements IORM {
   postArr: IORM['postArr'] = async (dto, table, removeOld = 0) => {
 
     if (removeOld > 0) {
-      await db.delete().from('user_tags').where('id', '=', removeOld)
+      await this.db.delete().from('user_tags').where('id', '=', removeOld)
     }
 
-    const request = await db(table).insert(dto).onConflict(Object.keys(dto[0])).merge().returning("*")
+    const request = await this.db(table).insert(dto).onConflict(Object.keys(dto[0])).merge().returning("*")
     // ПОТОМ ПРОВЕРИТЬ КЭШИ
 
     cacheSet(table, request, "edit")
@@ -188,7 +190,7 @@ class ORM implements IORM {
 
     const parsedFields = fieldsToArr(fields, table)
 
-    const request = await db(table).where("id", '=', id).andWhere(checkWord, "=", userid).update(dto).returning(parsedFields)
+    const request = await this.db(table).where("id", '=', id).andWhere(checkWord, "=", userid).update(dto).returning(parsedFields)
     this.logger.info({request})
 
     cacheSet(table, request, "edit")
@@ -202,7 +204,7 @@ class ORM implements IORM {
 
     const checkWord = getCheckWord(table)
     
-    const query = db(table).where("id", "=", id).andWhere(checkWord, "=", userid).delete().returning("*")
+    const query = this.db(table).where("id", "=", id).andWhere(checkWord, "=", userid).delete().returning("*")
     this.logger.info({DELETE_QUERY: query.toSQL().toNative()})
     const request = await query
     

@@ -2,7 +2,6 @@ import { convertToResolution, guesType } from "@app/client/pages/Messages/Inside
 import BaseModal from "@app/client/shared/ui/modals/BaseModal/BaseModal";
 import StoreModalFile from "@app/client/shared/ui/modals/Files/StoreModalFile";
 import Box from "@mui/material/Box";
-import Modal from "@mui/material/Modal";
 import { observer } from "mobx-react-lite";
 // import * as styles from "@app/client/shared/css/pages/MessagesInside.module.scss"
 

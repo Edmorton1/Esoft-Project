@@ -1,6 +1,5 @@
 import logger from "@app/server/helpers/logger/logger"
 import HttpContext from "@app/server/config/express/Http.context"
-import { frJSON } from "@app/shared/MAPPERS"
 import { MessageDTO } from "@app/types/gen/dtoObjects"
 import { zstrnum } from "@app/types/gen/Schemas"
 import { MessageDTOServerSchema, MessagePutDTOServer, MessagePutDTOServerSchema } from "@app/server/types/DTOServer"
@@ -10,7 +9,7 @@ class MessagesValidation {
   sendMessage = (ctx: HttpContext): [MessageDTO, Express.Multer.File[]] => {
     logger.info({PRED_MESSAGE: ctx})
     const toid = z.coerce.number().parse(ctx.params.toid)
-    const data = MessageDTOServerSchema.parse({...frJSON(ctx.body.json)!, files: ctx.files, fromid: ctx.session.userid, toid})
+    const data = MessageDTOServerSchema.parse({...JSON.parse(ctx.body.json)!, files: ctx.files, fromid: ctx.session.userid, toid})
     const { files, ...message } = data
 
     logger.info({SEND_MESSAGE: files, message})
@@ -21,7 +20,7 @@ class MessagesValidation {
 
     const id = z.coerce.number().parse(ctx.params.id)
     const userid = ctx.session.userid!
-    const data = MessagePutDTOServerSchema.parse({...frJSON(ctx.body.json)!, files: ctx.files, fromid: ctx.session.userid})
+    const data = MessagePutDTOServerSchema.parse({...JSON.parse(ctx.body.json)!, files: ctx.files, fromid: ctx.session.userid})
 
     // if (data.fromid !== req.session.userid) return res.sendStatus(403)
 

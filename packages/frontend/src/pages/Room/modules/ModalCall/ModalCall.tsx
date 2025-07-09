@@ -1,6 +1,6 @@
 import PeerResponder from "@app/client/pages/Room/WebRTC/logic/PeerResponder";
 import StoreRoom from "@app/client/pages/Room/WebRTC/Store-Room";
-import StoreCall from "@app/client/pages/Room/widgets/ModalCall/store/Store-Call";
+import StoreCall from "@app/client/pages/Room/modules/ModalCall/store/Store-Call";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogTitle from "@mui/material/DialogTitle";

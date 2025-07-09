@@ -7,8 +7,8 @@ import { z } from "zod";
 function TwinRange() {
   const [params] = useUpdateParams()
 
-	const [minAgeParam, setMinAgeParam] = useDebounceParams("min_age");
-  const [maxAgeParam, setMaxAgeParam] = useDebounceParams("max_age"); 
+	const [, setMinAgeParam] = useDebounceParams("min_age");
+  const [, setMaxAgeParam] = useDebounceParams("max_age"); 
 
 	const [value, setValue] = useState<[number, number]>([Number(params.min_age) || 18, Number(params.max_age) || 122]);
 

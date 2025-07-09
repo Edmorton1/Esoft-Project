@@ -3,8 +3,8 @@ import ServerExpress from "@app/server/server/server.express";
 import ConfigService from "@app/server/config/services/config.service";
 import type { ILogger } from "@app/server/helpers/logger/logger.controller";
 import TYPES from "@app/server/config/containers/types";
-import db from "@app/server/infrastructure/db/db";
 import { redisClient } from "@app/server/infrastructure/redis/redis";
+import { DBType } from "@app/server/infrastructure/db/db";
 
 // ЭНДПОЙНТЫ РЕАЛИЗОВЫВАТЬ В КОНТРОЛЛЕРАХ
 
@@ -28,6 +28,8 @@ class App implements IServer {
 		private readonly configService: ConfigService,
 		@inject(ServerExpress)
 		private readonly framework: ServerExpress,
+		@inject(TYPES.DataBase)
+		private readonly db: DBType
 	) {
 		this.basePath = this.configService.get("URL_SERVER");
     this.port = Number(this.configService.get("PORT")) || 3000
@@ -38,7 +40,7 @@ class App implements IServer {
 		this.framework.init(this.port);
 
 		try {
-			const req = await db.raw("SELECT 1")
+			const req = await this.db.raw("SELECT 1")
 			this.logger.info({PG_IS_WORK: req.rows})
 		} catch (err) {
 			this.logger.error({PG_NOT_WORK: err})

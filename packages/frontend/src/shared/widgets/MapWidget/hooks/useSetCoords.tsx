@@ -13,7 +13,7 @@ function useSetCoords(mapgl: mapDTO[0], map: mapDTO[1], callback: LocationCallba
 
     const marker = createRoots(<MarkerReg />)
 
-    const user = new mapgl.HtmlMarker(map, {
+    new mapgl.HtmlMarker(map, {
       coordinates: coords ? [coords.lng, coords.lat] : [37.6175, 55.7520],
       html: marker,
       anchor: [24, 44]
@@ -26,7 +26,9 @@ function useSetCoords(mapgl: mapDTO[0], map: mapDTO[1], callback: LocationCallba
         .then(data => console.log(data.data.result))
         .catch(e => console.log("ERROR", e.lnglat))
 
-      callback(e.lngLat), new mapgl.HtmlMarker(map, {
+      callback(e.lngLat);
+      
+      new mapgl.HtmlMarker(map, {
       coordinates: e.lngLat,
       html: marker,
       anchor: [24, 44]

@@ -7,6 +7,7 @@ import {serverPaths} from "@app/shared/PATHS";
 import { URL_CLIENT } from "@app/shared/URLS";
 import {action, makeObservable} from "mobx";
 import {UseFormSetError} from "react-hook-form";
+import { NavigateFunction } from "react-router-dom";
 
 // export async function AvatarHandle(): Promise<string> {
 
@@ -22,7 +23,7 @@ class StoreSettings extends StoreBaseModal {
 		});
 	}
 
-	comparePassword = async (oldPass: string, newPass: string, setError: UseFormSetError<PasswordType>, navigate: Function) => {
+	comparePassword = async (oldPass: string, newPass: string, setError: UseFormSetError<PasswordType>, navigate: NavigateFunction) => {
 		try {
 			const request = await $api.post(serverPaths.passwordCompare, {old: oldPass, new: newPass});
 

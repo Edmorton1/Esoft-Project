@@ -5,7 +5,7 @@ import LikesModule from "@app/server/infrastructure/endpoints/Likes/sql/Likes.mo
 import TYPES from "@app/server/config/containers/types";
 import { LikesDTO } from "@app/types/gen/dtoObjects";
 import { lnglatType } from "@app/types/gen/types";
-import { Form, FormSchema, Likes } from "@app/types/gen/Users";
+import { Form, Likes } from "@app/types/gen/Users";
 import { inject, injectable } from "inversify";
 import { z } from "zod";
 import { ILogger } from "@app/server/helpers/logger/logger.controller";

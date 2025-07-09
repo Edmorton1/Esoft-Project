@@ -3,7 +3,6 @@ import {observer} from "mobx-react-lite";
 import MaleIcon from "@mui/icons-material/Male";
 import FemaleIcon from "@mui/icons-material/Female";
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
-import Button from "@mui/material/Button";
 import MapButton, { sxStyleMap } from "@app/client/shared/hooks/Map/MapButton";
 
 function SexButton() {

@@ -2,7 +2,6 @@ import {useEffect} from "react";
 import {LocationDTO} from "@app/types/gen/dtoObjects";
 import {mapDTO} from "@app/client/shared/hooks/Map/types";
 import {createRoots} from "@app/client/shared/hooks/Map/createRoot";
-import ResetZoomButton from "@app/client/shared/hooks/Map/ResetZoomButton";
 import SexButton from "@app/client/pages/Map/components/SexButton";
 
 function useMapCustomization(

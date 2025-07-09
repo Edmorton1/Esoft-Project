@@ -1,7 +1,6 @@
 import $api from "@app/client/shared/api/api"
 import { makeAutoObservable, runInAction, toJS } from "mobx"
 import { Form, FormSchema, Message, MessageSchema } from "@app/types/gen/Users"
-import { toJSON } from "@app/shared/MAPPERS"
 import StoreUser from "@app/client/shared/stores/Store-User"
 import { serverPaths } from "@app/shared/PATHS"
 import { toFormData } from "@app/client/shared/funcs/filefuncs"
@@ -66,10 +65,10 @@ class StoreMessages {
     const formdata = data.files ? await toFormData(data.files) : new FormData
     console.log(data)
 
-    formdata.append('json', toJSON(data))
+    formdata.append('json', JSON.stringify(data))
 
     console.log(formdata.get('files'), formdata.get('json'))
-    const request = await $api.post(`${serverPaths.sendMessage}/${toid}`, formdata, {
+    await $api.post(`${serverPaths.sendMessage}/${toid}`, formdata, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
@@ -100,7 +99,7 @@ class StoreMessages {
     delete cleanData.files
       
     const fd = await toFormData(newFiles)
-    fd.append('json', toJSON(cleanData))
+    fd.append('json', JSON.stringify(cleanData))
 
     console.log(data)
     

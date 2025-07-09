@@ -15,7 +15,7 @@ const mockFileService: Partial<jest.Mocked<IFilesService>> = {
 	uploadFiles: jest
 		.fn()
 		.mockImplementation((post_id: number, data: Express.Multer.File[]) =>
-			data.map(e => `NewFile-${String(Math.round(Math.random() * 100))}`),
+			data.map(() => `NewFile-${String(Math.round(Math.random() * 100))}`),
 		),
 };
 

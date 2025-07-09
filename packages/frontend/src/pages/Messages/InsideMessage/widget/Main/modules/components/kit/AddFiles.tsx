@@ -26,7 +26,7 @@ function AddFiles({register, onChangeAdd}: propsInterface) {
       return;
     }
   
-    onChangeAdd && onChangeAdd(e)
+    if (onChangeAdd) onChangeAdd(e)
     
     fileRef.current!.files = target
 

@@ -1,4 +1,3 @@
-import db from "@app/server/infrastructure/db/db"
 import { queryType, tagsTypes } from "@app/server/infrastructure/endpoints/ExtendSearch/validation/ExtendedSearch.schemas"
 import ExtendedSeacrhSQLhelper from "@app/server/infrastructure/endpoints/ExtendSearch/SQL/ExtendedSeacrh.SQLhelper"
 import { CARDS_ON_PAGE } from "@app/shared/CONST"
@@ -7,6 +6,7 @@ import { inject, injectable } from "inversify"
 import { Form } from "@app/types/gen/Users"
 import { ILogger } from "@app/server/helpers/logger/logger.controller"
 import TYPES from "@app/server/config/containers/types"
+import { DBType } from "@app/server/infrastructure/db/db"
 
 type propsType = Omit<queryType, 'tags'> & {tags: tagsTypes}
 
@@ -20,14 +20,16 @@ class ExtendedSearchModule implements ExtendedSearchRepo{
     @inject(TYPES.LoggerController)
     private readonly logger: ILogger,
     @inject(ExtendedSeacrhSQLhelper)
-    private readonly ExtendedSeacrhSQLhelper: ExtendedSeacrhSQLhelper
+    private readonly ExtendedSeacrhSQLhelper: ExtendedSeacrhSQLhelper,
+    @inject(TYPES.DataBase)
+    private readonly db: DBType
   ) {}
 
   private buildLocation = (location: propsType['location']) => {
     // LOCATION
     let distanceRaw;
     if (location) {
-      distanceRaw = db.raw(`
+      distanceRaw = this.db.raw(`
         ST_Distance(
           location::geography,
           ST_SetSRID(ST_MakePoint(?, ?), 4326)::geography
@@ -36,7 +38,7 @@ class ExtendedSearchModule implements ExtendedSearchRepo{
     }
     let selectDistance;
     if (distanceRaw) {
-      selectDistance = db.raw(`ROUND((${distanceRaw.toQuery()})::numeric, 2) AS distance`);
+      selectDistance = this.db.raw(`ROUND((${distanceRaw.toQuery()})::numeric, 2) AS distance`);
     }
     
     return [distanceRaw, selectDistance]
@@ -45,7 +47,7 @@ class ExtendedSearchModule implements ExtendedSearchRepo{
   private buildParams = (params: propsType['params']): Knex.Raw<any> | undefined => {
     if (params) {
       const filtered = Object.entries(params)
-        .filter(([key, value]) => value !== undefined && value !== '');
+        .filter(([, value]) => value !== undefined && value !== '');
 
       const values = filtered.map(([key, value]) => key === "city" ? `%${value}%` : value);
       const entries = filtered.map(([key, value]) => {
@@ -66,7 +68,7 @@ class ExtendedSearchModule implements ExtendedSearchRepo{
       });
 
       if (united_cond) {
-        return db.raw(united_cond, values);
+        return this.db.raw(united_cond, values);
       }
     }
 
@@ -83,7 +85,7 @@ class ExtendedSearchModule implements ExtendedSearchRepo{
     // if (params) conditions.push(toSQLWhere(params, false)) 
 
     //INAME
-    if (name) conditions.push(db.raw(`name ILIKE '%${name}%'`))
+    if (name) conditions.push(this.db.raw(`name ILIKE '%${name}%'`))
 
     // AGE
     const ageMin = min_age && `forms.age >= ${min_age}`
@@ -100,7 +102,7 @@ class ExtendedSearchModule implements ExtendedSearchRepo{
     // MAX DISTANCE
     let havingMaxDistance;
     if (distanceRaw && max_distance) {
-      havingMaxDistance = db.raw(`(${distanceRaw.toQuery()}) <= ?`, [max_distance]);
+      havingMaxDistance = this.db.raw(`(${distanceRaw.toQuery()}) <= ?`, [max_distance]);
       conditions.push(havingMaxDistance);
     }
     
@@ -108,7 +110,7 @@ class ExtendedSearchModule implements ExtendedSearchRepo{
   }
 
   private buildQuery = (havingClause: string) => {
-    const query = db('forms')
+    const query = this.db('forms')
       .leftJoin('user_tags', 'user_tags.id', 'forms.id')
       .leftJoin('tags', 'user_tags.tagid', 'tags.id')
       .groupBy('forms.id')
@@ -135,7 +137,7 @@ class ExtendedSearchModule implements ExtendedSearchRepo{
     // ФОРМИРОВАНИЕ SELECT
     const baseSelect = [
       'forms.*',
-      db.raw(`json_agg(json_build_object('id', tags.id, 'tag', tags.tag)) AS tags`)
+      this.db.raw(`json_agg(json_build_object('id', tags.id, 'tag', tags.tag)) AS tags`)
     ]
     if (selectDistance) {
       baseSelect.push(selectDistance)
@@ -153,7 +155,7 @@ class ExtendedSearchModule implements ExtendedSearchRepo{
     const subquery = this.buildQuery(havingClause)
       .select("forms.id")
         
-    const pagesCount = db
+    const pagesCount = this.db
       .count('* as count')
       .from(subquery.as('filtered_forms'));
 

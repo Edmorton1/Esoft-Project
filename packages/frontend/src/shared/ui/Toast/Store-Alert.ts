@@ -1,10 +1,6 @@
 import { paths } from "@app/shared/PATHS";
 import { makeAutoObservable, runInAction } from "mobx";
 
-export function SendEvent(text: string) {
-  
-}
-
 type colorType = "warning.main" | "error.main" | "primary.main" | "success.main"
 
 

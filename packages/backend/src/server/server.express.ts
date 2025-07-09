@@ -1,5 +1,4 @@
 import { createWebSocketServer } from "@app/server/helpers/WebSocket/socket";
-import ConfigService from "@app/server/config/services/config.service";
 import express, { Express, json } from "express";
 import https, { Server } from "https";
 import { inject, injectable } from "inversify";

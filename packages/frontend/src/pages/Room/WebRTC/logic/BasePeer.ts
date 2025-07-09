@@ -70,8 +70,8 @@ abstract class BasePeer {
     console.log('[CHECK STREAM TRACKS]', stream.getTracks().map(t => t.kind))
     this.stream = stream
 
-    videoAllowed && StoreRoom.enableVideo(true)
-    audioAllowed && StoreRoom.enableAudio()
+    if (videoAllowed) StoreRoom.enableVideo(true)
+    if (audioAllowed) StoreRoom.enableAudio()
     console.log("[ENABLE STREAMS]: УСТАНОВЛЕН!!!")
   }
 }

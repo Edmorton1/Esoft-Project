@@ -78,7 +78,7 @@ function useInfinitPagination(ref: React.RefObject<HTMLElement | null>, url: str
       ...ref.current.querySelectorAll('video'),
       ...ref.current.querySelectorAll('audio'),
     ];
-    let loaded = 0
+    const loaded = 0
     const total = files.length
 
     const tryScroll = () => {
@@ -87,19 +87,19 @@ function useInfinitPagination(ref: React.RefObject<HTMLElement | null>, url: str
       })
     }
 
-    const fallback = setTimeout(() => {
+    setTimeout(() => {
       console.log("ТРАЙ СКРОЛЛ")
       tryScroll()
     }, 1000)
 
-    const onImageLoad = () => {
-      loaded++
-      console.log("ЛОАДЕД ПЛЮС", loaded)
-      if (loaded === total) {
-        console.log("ЛОАДЕД === ТОТАЛ")
-        tryScroll()
-      }
-    }
+    // const onImageLoad = () => {
+    //   loaded++
+    //   console.log("ЛОАДЕД ПЛЮС", loaded)
+    //   if (loaded === total) {
+    //     console.log("ЛОАДЕД === ТОТАЛ")
+    //     tryScroll()
+    //   }
+    // }
 
     // files.forEach(file => {
     //   const loaded = ((file instanceof HTMLImageElement && file.complete) || ((file instanceof HTMLVideoElement || file instanceof HTMLAudioElement) && file.readyState >= 2))

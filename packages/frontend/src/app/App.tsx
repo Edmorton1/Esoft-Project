@@ -1,5 +1,5 @@
 import {BrowserRouter, Routes, Route} from "react-router";
-import { LazyAdmin, LazyFourHundredFour, LazyLiked, LazyLogin, LazyMain, LazyMap, LazyMessage, LazyMessages, LazyPairs, LazyProfile, LazyRegistration, LazyRoom, LazySettings, LazyTest, LazyUsers } from "@app/client/app/index.lazy";
+import { LazyAdmin, LazyFourHundredFour, LazyLiked, LazyLogin, LazyMain, LazyMap, LazyMessage, LazyMessages, LazyPairs, LazyProfile, LazyRegistration, LazySettings, LazyUsers } from "@app/client/app/index.lazy";
 import SocketStore from "@app/client/shared/api/Store-Socket";
 import {Suspense, useEffect} from "react";
 import Initialization from "@app/client/app/Initialization";
@@ -10,7 +10,7 @@ import "@app/client/shared/css/App.scss"
 import "@app/client/shared/css/modules/LocalRemoteVideo.scss"
 import { ErrorBoundary } from "react-error-boundary";
 import Fallback from "@app/client/errors/Fallback";
-import CallLine from "@app/client/pages/Room/widgets/CallLine/CallLine";
+import CallLine from "@app/client/pages/Room/modules/CallLine/CallLine";
 
 // ДЛЯ АССИНХРОННЫХ ОПЕРАЦИЙ ИСПОЛЬЗОВАТЬ suspense
 

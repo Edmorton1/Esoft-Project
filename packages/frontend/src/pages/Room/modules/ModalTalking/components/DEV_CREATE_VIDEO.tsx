@@ -5,11 +5,11 @@ function DEV_CREATE_VIDEO() {
 	const devEnableVideo = (url: string) => {
 		const unHideEl = (el: HTMLElement | null) => el && (el.style.display = "");
 		const el = document.getElementById(url);
-		el
-			? unHideEl(el)
-			: url === REMOTE_VIDEO
-				? VideoControl.createRemoteVideo(new MediaStream())
-				: VideoControl.createLocalVideo(new MediaStream());
+		if (el) {
+			unHideEl(el)
+		} else if (url === REMOTE_VIDEO) {
+			VideoControl.createRemoteVideo(new MediaStream())
+		} else VideoControl.createLocalVideo(new MediaStream());
 	};
 
 	const devDisableVideo = (url: string) => {

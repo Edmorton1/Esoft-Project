@@ -1,4 +1,3 @@
-import db from "@app/server/infrastructure/db/db";
 import {requestToFormManyParams, standartToForm} from "@app/server/infrastructure/db/SQL/SQLform";
 import { fieldsToArr } from "@app/server/infrastructure/db/SQL/utils";
 import { LIKES_ON_PAGE } from "@app/shared/CONST";
@@ -7,6 +6,7 @@ import { Knex } from "knex";
 import { inject, injectable } from "inversify";
 import { ILogger } from "@app/server/helpers/logger/logger.controller";
 import TYPES from "@app/server/config/containers/types";
+import { DBType } from "@app/server/infrastructure/db/db";
 
 interface LikesModuleRepo {
 	getLikedIds: (userid: number) => Knex.QueryBuilder<any>;
@@ -25,6 +25,8 @@ class LikesModule implements LikesModuleRepo {
 	constructor(
 		@inject(TYPES.LoggerController)
 		private readonly logger: ILogger,
+		@inject(TYPES.DataBase)
+		private readonly db: DBType
 	) {}
 	getLikedIds = (userid: number) => {
 		// SELECT json_agg(likes.userid) as forms FROM likes
@@ -33,8 +35,8 @@ class LikesModule implements LikesModuleRepo {
 		// 	AND likes.liked_userid = likes2.userid
 		// WHERE likes.liked_userid = 16
 		// 	AND likes2.id is NULL
-		const query = db(`likes`)
-			.select(db.raw(`json_agg(likes.userid)`))
+		const query = this.db(`likes`)
+			.select(this.db.raw(`json_agg(likes.userid)`))
 			.from(`likes`)
 			.leftJoin("likes as likes2", function () {
 				this.on("likes.userid", "=", "likes2.liked_userid");
@@ -73,12 +75,13 @@ class LikesModule implements LikesModuleRepo {
 		// const fields = 'id, name sex, avatar, age, description, target, city, tags, location'
 
 		const totalFields = fieldsToArr(undefined, "forms", true, lnglat);
-		totalFields.push(db.raw("MAX(likes.id) as cursor"))
+		totalFields.push(this.db.raw("MAX(likes.id) as cursor"))
 		const query = requestToFormManyParams({
 			name: name as string,
 			params: ids,
 		})
-			.leftJoin("likes", function() {
+			const db = this.db;
+			db.leftJoin("likes", function() {
 				this.on("likes.userid", "forms.id")
 				.andOn("likes.liked_userid", "=", db.raw("?", [userid]))
 			})
@@ -98,7 +101,7 @@ class LikesModule implements LikesModuleRepo {
 
 	getPairs: LikesModuleRepo["getPairs"] = id => {
 		const baseQuery = standartToForm();
-		const query = db("likes")
+		const query = this.db("likes")
 			.select("forms.*")
 			.leftJoin(baseQuery.as("forms"), "forms.id", "likes.liked_userid")
 			.leftJoin("likes as likes2", function () {

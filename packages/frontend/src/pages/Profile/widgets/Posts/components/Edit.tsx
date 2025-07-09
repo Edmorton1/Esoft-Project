@@ -1,6 +1,5 @@
 import AddFiles from "@app/client/pages/Messages/InsideMessage/widget/Main/modules/components/kit/AddFiles";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { Posts } from "@app/types/gen/Users";
@@ -17,7 +16,7 @@ interface propsInterface {
 }
 
 function Edit({ post, EditToZero: handleSuccess }: propsInterface) {
-  const {register, handleSubmit, formState: {errors}, setValue, control } = useForm({resolver: zodResolver(PostsDTOPutClientSchema), defaultValues: {text: post.text, userid: post.userid, remove_old: [], id: post.id}})
+  const {register, handleSubmit, setValue, control } = useForm({resolver: zodResolver(PostsDTOPutClientSchema), defaultValues: {text: post.text, userid: post.userid, remove_old: [], id: post.id}})
 
   const remove_old = useWatch({name: "remove_old", control})
   const store = usePostsStore()

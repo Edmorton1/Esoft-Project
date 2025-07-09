@@ -1,16 +1,14 @@
 import BasePeer from "@app/client/pages/Room/WebRTC/logic/BasePeer";
-import StoreCall from "@app/client/pages/Room/widgets/ModalCall/store/Store-Call";
+import StoreCall from "@app/client/pages/Room/modules/ModalCall/store/Store-Call";
 import StoreSocket from "@app/client/shared/api/Store-Socket";
 import { toSOSe } from "@app/shared/JSONParsers";
 import StoreForm from "@app/client/shared/stores/Store-Form";
-import StoreTalking from "@app/client/pages/Room/widgets/ModalTalking/store/Store-Talking";
+import StoreTalking from "@app/client/pages/Room/modules/ModalTalking/store/Store-Talking";
 
 class PeerResponder extends BasePeer {
   constructor(
-    //@ts-ignore
-    readonly frid: number,
-    //@ts-ignore
-    readonly toid: number
+    override readonly frid: number,
+    override readonly toid: number
   ) {
     super(frid, toid)
 

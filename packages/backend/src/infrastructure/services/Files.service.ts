@@ -33,9 +33,9 @@ class FilesService implements IFilesService {
 	uploadFiles: IFilesService['uploadFiles'] = async (id, files, path) => {
 		const buffers = CompressService.toBuffer(files);
 		return await Promise.all(
-			buffers.map(async (e, i) => {
-				// FIXME: ДОБАВИТЬ СТРОГУЮ ПРОВЕРКУ НА РАЗРЕШЕНИЕ
+			buffers.map(async (e) => {
 				const [newBuffer, ext] = await CompressService.compress(e);
+				console.log("РАЗРЕШЕНИЕ ФАЙЛА", ext)
 				const load = await this.Yandex.upload(
 					newBuffer,
 					ext,

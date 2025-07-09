@@ -31,8 +31,7 @@ export default (env:envTypes) => {
 		},
 		url: {
 			prefix: "/api",
-			//@ts-ignore
-			//ПОТОМ ПРИДУМАТЬ КАК СЮДА СЕРВЕР ПЕРЕДАТЬ
+			// FIXME: ПОТОМ ПРИДУМАТЬ КАК СЮДА СЕРВЕР ПЕРЕДАТЬ
 			server: "https://192.168.1.125:3000"
 		},
 		analyzer: env.analyzer

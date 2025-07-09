@@ -2,13 +2,12 @@ import { createRoots } from "@app/client/shared/hooks/Map/createRoot";
 import StoreMap from "@app/client/pages/Map/store/Store-Map";
 import { InputMarker } from "@2gis/mapgl-clusterer";
 import MarkerMap from "@app/client/pages/Map/components/MarkerMap";
-import { Map } from "@2gis/mapgl/types";
 
-const createMarkers = async (map: Map) => {
+const createMarkers = async () => {
 	const forms = await StoreMap.getForms();
 
 	const markers: InputMarker[] = forms.map(e => {
-		const container = createRoots(<MarkerMap map={map} avatar={e.avatar} sex={e.sex} />);
+		const container = createRoots(<MarkerMap avatar={e.avatar} sex={e.sex} />);
 
 		return {
 			type: "html",

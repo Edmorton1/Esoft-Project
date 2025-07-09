@@ -1,7 +1,7 @@
 import { sexType } from "@app/client/shared/hooks/Map/types";
 import $api from "@app/client/shared/api/api";
 import {serverPaths} from "@app/shared/PATHS";
-import {Form, FormSchema} from "@app/types/gen/Users";
+import {FormSchema} from "@app/types/gen/Users";
 import {makeAutoObservable} from "mobx";
 import z from "zod";
 

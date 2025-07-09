@@ -30,11 +30,12 @@ function FileToCardMedia({ fileLink }: propsInterface) {
 			)}
 			{gues === "audio" && (
 				<audio
-					// component={gues}
 					src={fileLink}
 					controls
 					className={style["form__cardContent--cardMedia"]}
-				/>
+				>
+					<track kind="captions" />
+				</audio>
 			)}
 			{gues === "video" && (
 				<CardMedia

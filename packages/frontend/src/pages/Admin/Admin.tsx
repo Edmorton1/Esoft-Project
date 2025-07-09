@@ -11,7 +11,7 @@ import FormList from "@app/client/pages/Admin/components/FormList"
 
 
 const provider: DataProvider = {
-  getList: async (resource, params) => {
+  getList: async (resource) => {
     const {data} = await $api.get(`${URL_SERVER}${PREFIX}/${resource}`)
     return {
       data,

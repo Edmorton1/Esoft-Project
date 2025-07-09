@@ -1,12 +1,12 @@
-import StoreTalking from "@app/client/pages/Room/widgets/ModalTalking/store/Store-Talking";
+import StoreTalking from "@app/client/pages/Room/modules/ModalTalking/store/Store-Talking";
 import Box from "@mui/material/Box";
 import Fade from "@mui/material/Fade";
 import Modal from "@mui/material/Modal";
 import { MODAL_TALKING } from "@app/shared/CONST";
 import * as styles from "@app/client/shared/css/modules/ModalTalking.module.scss"
-import ThreeButtons from "@app/client/pages/Room/widgets/ModalTalking/components/ThreeButtons";
-import { manyVideosTypes } from "@app/client/pages/Room/widgets/ModalTalking/ModalTalkingHead";
-import Info from "@app/client/pages/Room/widgets/ModalTalking/components/Info";
+import ThreeButtons from "@app/client/pages/Room/modules/ModalTalking/components/ThreeButtons";
+import { manyVideosTypes } from "@app/client/pages/Room/modules/ModalTalking/ModalTalkingHead";
+import Info from "@app/client/pages/Room/modules/ModalTalking/components/Info";
 import { observer } from "mobx-react-lite";
 
 interface propsInterface {

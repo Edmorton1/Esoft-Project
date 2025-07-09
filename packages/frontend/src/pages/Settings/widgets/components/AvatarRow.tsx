@@ -11,7 +11,7 @@ function AvatarRow({sx}: {sx: object}) {
   const onChange = () => {
     const file = fileRef.current?.files![0]
     console.log("FILE,", file)
-    file && StoreSettings.uploadAvatar(file)
+    if (file) StoreSettings.uploadAvatar(file)
   }
   
   const onClick = () => {

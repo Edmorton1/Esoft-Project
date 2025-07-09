@@ -8,7 +8,6 @@ import { PostsDTOPutServer, PostsDTOServer } from "@app/server/types/DTOServer";
 import { POSTS_LIMIT } from "@app/shared/CONST";
 import { Posts } from "@app/types/gen/Users";
 import { inject, injectable } from "inversify";
-import { z } from "zod";
 
 interface IPostsService {
 	get: (userid: number, cursor: number | undefined) => Promise<Posts[]>;

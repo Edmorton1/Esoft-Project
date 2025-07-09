@@ -5,7 +5,7 @@ import StoreRoom from "@app/client/pages/Room/WebRTC/Store-Room";
 
 const setupPeerConnection = (peerConnection: RTCPeerConnection) => {
 	console.log("SETUP PEER CONNECTION")
-	peerConnection.onicecandidate = e =>
+	peerConnection.onicecandidate = () =>
 		console.log(
 			"icecandidate",
 			JSON.stringify(peerConnection.localDescription),
