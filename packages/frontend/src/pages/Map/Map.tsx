@@ -15,7 +15,7 @@ function MapPage() {
 
 	const [mapgl, map] = useMap(containerRef, coords);
 	useMapCustomization(map, coords, mapgl)
-	const clusterer = useClusterer(mapgl, map);
+	useClusterer(mapgl, map);
 
 	if (!StoreUser.user) {
 		return <>

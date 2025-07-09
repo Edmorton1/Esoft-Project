@@ -38,7 +38,8 @@ export const cacheGet = async <T>(key: string, callback: Knex.QueryBuilder<any>)
   return result
 }
 
-export const cacheEdit = async (table: tables, request: any, type: 'edit' | 'delete' = 'edit'): Promise<void> => {
+// export const cacheSet = async (table: tables, request: Knex.QueryBuilder<any>, type: 'edit' | 'delete'): Promise<void> => {
+export const cacheSet = async (table: tables, request: any, type: 'edit' | 'delete'): Promise<void> => {
   if ((request && request.length > 0 && Object.keys(request).length > 0)) {
     // FIXME: ДОБАВИТЬ КЭШ В БУДУЩЕМ
     

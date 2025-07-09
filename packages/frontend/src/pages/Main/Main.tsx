@@ -10,7 +10,7 @@ function Main() {
 
 	useEffect(() => {
 		if (StoreUser.user) {
-			navigate("/profile/16")
+			navigate(`/profile/${StoreUser.user.id}`)
 		}
 	}, [])
 

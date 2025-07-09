@@ -1,5 +1,5 @@
 import { tables, Tables } from "@app/types/gen/types"
-import { cacheEdit, cacheGet } from "@app/server/infrastructure/redis/cache"
+import { cacheSet, cacheGet } from "@app/server/infrastructure/redis/cache"
 import db from "@app/server/infrastructure/db/db"
 import bcrypt from "bcrypt"
 import { checkFirstType, fieldsToArr, getCheckWord, isLocationType } from "@app/server/infrastructure/db/SQL/utils"
@@ -160,7 +160,7 @@ class ORM implements IORM {
     
     // logger.info({request, parsedFields})
 
-    cacheEdit(table, request)
+    cacheSet(table, request, "edit")
     checkFirstType(request, table, fields)
 
     return request
@@ -176,7 +176,7 @@ class ORM implements IORM {
     const request = await db(table).insert(dto).onConflict(Object.keys(dto[0])).merge().returning("*")
     // ПОТОМ ПРОВЕРИТЬ КЭШИ
 
-    cacheEdit(table, request)
+    cacheSet(table, request, "edit")
 
     return request
   }
@@ -191,7 +191,7 @@ class ORM implements IORM {
     const request = await db(table).where("id", '=', id).andWhere(checkWord, "=", userid).update(dto).returning(parsedFields)
     this.logger.info({request})
 
-    cacheEdit(table, request)
+    cacheSet(table, request, "edit")
     checkFirstType(request, table, fields)
 
     return request
@@ -206,7 +206,7 @@ class ORM implements IORM {
     this.logger.info({DELETE_QUERY: query.toSQL().toNative()})
     const request = await query
     
-    cacheEdit(table, request, 'delete')
+    cacheSet(table, request, 'delete')
     return request
   }
 }

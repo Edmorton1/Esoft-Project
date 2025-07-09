@@ -7,7 +7,7 @@ import Title from "@app/client/shared/ui/mui_components/Ttile";
 import EmptyText, { emptyFlex } from "@app/client/shared/ui/mui_components/EmptyText";
 import UserCardModule from "@app/client/pages/Liked/widgets/modules/UserCardModule";
 
-function Liked() {
+function LikedWidget() {
   useInfinitPaginationDoc(
     {
       main: serverPaths.likesGet,
@@ -42,5 +42,5 @@ function Liked() {
   );
 }
 
-export default observer(Liked);
+export default observer(LikedWidget);
 // style={emptyStyle(StoreLikes.liked?.length)}
