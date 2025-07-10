@@ -8,6 +8,7 @@ import { promises, unlink, writeFile } from "fs";
 import { PassThrough, Readable } from "stream";
 import { randomUUID } from "crypto";
 import { fileTypeFromBuffer } from "file-type";
+import { HttpError } from "@app/shared/CONST";
 // import logger from "@app/server/logger";
 
 ffmpeg.setFfmpegPath(ffmpegPath!);
@@ -117,7 +118,7 @@ class CompressService {
     else if (mime.includes('video')) {
       return [await this.videoCompress(buffer, ext), 'mp4']
     }
-    throw new Error('Неизвестное разрешение')
+    throw new HttpError(415, "Неизвестный формат файла")
   }
 }
 

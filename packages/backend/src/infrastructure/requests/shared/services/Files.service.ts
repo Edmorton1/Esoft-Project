@@ -6,8 +6,12 @@ import TYPES from "@app/server/config/containers/types";
 import CompressService from "@app/server/infrastructure/requests/shared/services/Compress.service";
 
 export interface IFilesService {
-  uploadAvatar(avatar: Express.Multer.File): Promise<string>;
-  uploadFiles(id: number | string, files: Express.Multer.File[], path: Yandex_Folders): Promise<string[]>;
+	uploadAvatar(avatar: Express.Multer.File): Promise<string>;
+	uploadFiles(
+		id: number | string,
+		files: Express.Multer.File[],
+		path: Yandex_Folders,
+	): Promise<string[]>;
 }
 
 @injectable()
@@ -18,7 +22,7 @@ class FilesService implements IFilesService {
 		@inject(Yandex)
 		private readonly Yandex: Yandex,
 	) {}
-	uploadAvatar: IFilesService['uploadAvatar'] = async (avatar) => {
+	uploadAvatar: IFilesService["uploadAvatar"] = async avatar => {
 		const buffer = avatar.buffer;
 		const compress = await CompressService.imageCompress(buffer);
 
@@ -30,19 +34,19 @@ class FilesService implements IFilesService {
 		return yandex!.Location;
 	};
 
-	uploadFiles: IFilesService['uploadFiles'] = async (id, files, path) => {
+	uploadFiles: IFilesService["uploadFiles"] = async (id, files, path) => {
 		const buffers = CompressService.toBuffer(files);
 		return await Promise.all(
-			buffers.map(async (e) => {
-				const [newBuffer, ext] = await CompressService.compress(e);
-				console.log("РАЗРЕШЕНИЕ ФАЙЛА", ext)
-				const load = await this.Yandex.upload(
-					newBuffer,
-					ext,
-					`/${path}/${id}/`,
-				);
-				// logger.info(load.Location)
-				return load!.Location;
+			buffers.map(async e => {
+				try {
+					const [newBuffer, ext] = await CompressService.compress(e);
+					console.log("РАЗРЕШЕНИЕ ФАЙЛА", ext);
+					const load = await this.Yandex.upload(newBuffer, ext, `/${path}/${id}/`);
+					// logger.info(load.Location)
+					return load!.Location;
+				} catch (err) {
+					return Promise.reject(err);
+				}
 			}),
 		);
 	};

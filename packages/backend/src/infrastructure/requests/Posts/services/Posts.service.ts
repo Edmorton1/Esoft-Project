@@ -4,7 +4,6 @@ import { ILogger } from "@app/server/infrastructure/helpers/logger/logger.contro
 import Yandex, { IYandex } from "@app/server/infrastructure/helpers/yandex";
 import FilesService, { IFilesService } from "@app/server/infrastructure/requests/shared/services/Files.service";
 import { PostsDTOPutServer, PostsDTOServer } from "@app/server/types/DTOServer";
-// import PostsModule from "@app/server/infrastructure/endpoints/Posts/sql/Posts.module";
 import { POSTS_LIMIT } from "@app/shared/CONST";
 import { Posts } from "@app/types/gen/Users";
 import { inject, injectable } from "inversify";
@@ -75,8 +74,12 @@ class PostsService {
     // const updateFiles = JSON.stringify(old_data.files.sort()) !== JSON.stringify(files)
 
     if (files.length) {
-      yandexFiles = await this.filesService.uploadFiles(post_id, files, "posts")
-      yandexFiles.push(...cleanded_old_data)
+      try {
+        yandexFiles = await this.filesService.uploadFiles(post_id, files, "posts")
+        yandexFiles.push(...cleanded_old_data)
+      } catch(err) {
+        return Promise.reject(err)
+      }
     } else {
       yandexFiles = cleanded_old_data
     }

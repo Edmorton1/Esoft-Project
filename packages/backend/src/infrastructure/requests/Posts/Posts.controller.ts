@@ -6,6 +6,9 @@ import AuthMiddleware from "@app/server/infrastructure/requests/shared/middlewar
 import { serverPaths } from "@app/shared/PATHS";
 import { inject, injectable } from "inversify";
 import { upload } from "@app/server/infrastructure/requests/shared/multer";
+// import { HttpError } from "@app/shared/CONST";
+// import TYPES from "@app/server/config/containers/types";
+// import { ILogger } from "@app/server/infrastructure/helpers/logger/logger.controller";
 
 interface IPostsController {
 	get: (ctx: HttpContext) => Promise<void>;
@@ -19,6 +22,8 @@ class PostsController extends BaseController implements IPostsController {
 	constructor(
     @inject(PostsService)
 		private readonly postsService: PostsService,
+		// @inject(TYPES.LoggerController)
+		// private readonly logger: ILogger
 	) {
 		super();
 
@@ -61,13 +66,11 @@ class PostsController extends BaseController implements IPostsController {
     ctx.json(total)
   };
 
-  // ПОТОМУ ЗДЕСЬ ТОЖЕ ПОМЕНЯТЬ НА ФОРМ ДАТУ
 	post: IPostsController["post"] = async ctx => {
-    const postsDTO = PostsValidation.post(ctx)
-    // logger.info(postsDTO)
-    const total = await this.postsService.post(postsDTO)
-
-    ctx.json(total)
+		const postsDTO = PostsValidation.post(ctx)
+		// logger.info(postsDTO)
+		const total = await this.postsService.post(postsDTO)
+		ctx.json(total)
   };
 
 	put: IPostsController["put"] = async ctx => {
