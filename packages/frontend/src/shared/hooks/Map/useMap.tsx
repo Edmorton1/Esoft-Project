@@ -1,4 +1,3 @@
-import {GISKEY} from "@app/shared/envClient";
 import {load} from "@2gis/mapgl";
 import {useEffect, useState} from "react";
 import {LocationDTO} from "@app/types/gen/dtoObjects";
@@ -19,7 +18,7 @@ function useMap(containerRef: React.RefObject<HTMLDivElement | null>, coords: Lo
 			const map = new mapgl.Map(containerRef.current!, {
 				center: [coords.lng, coords.lat],
 				zoom: STANDART_ZOOM,
-				key: GISKEY,
+				key: _GISKEY,
 				disableZoomOnScroll: false,
 			});
 			setMap(map);

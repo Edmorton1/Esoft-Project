@@ -1,7 +1,5 @@
 export const CARDS_ON_PAGE = 4
 
-export const YANDEX_BUTTON_ID = "yandex-button"
-
 export const REMOTE_VIDEO = 'remote-video'
 export const REMOTE_AUDIO = 'remote-audio'
 

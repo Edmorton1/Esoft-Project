@@ -11,10 +11,12 @@ const expressSession = session({
   resave: false,
   saveUninitialized: false,
   cookie: {
-    secure: true,
+    // БЫЛО true
+    secure: false,
     maxAge: 1000 * 60 * 60 * 600,
     httpOnly: true,
-    sameSite: "none"
+    // БЫЛО none
+    sameSite: "lax"
   },
   // rolling: true
 })

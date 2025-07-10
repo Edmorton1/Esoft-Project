@@ -24,7 +24,7 @@ function buildPlugins(options: BuildOptions): Configuration["plugins"] {
 			}),
 		options.analyzer && new BundleAnalyzerPlugin(),
 		new DefinePlugin({
-			__PLATFORM__: JSON.stringify(options.platform),
+			_GISKEY: JSON.stringify(options.dotenv.GISKEY),
 		}),
 		isDev && new ReactRefreshWebpackPlugin(),
 		new ForkTsCheckerWebpackPlugin({

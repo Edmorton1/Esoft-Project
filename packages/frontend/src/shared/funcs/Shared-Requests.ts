@@ -1,4 +1,3 @@
-import { GISKEY } from "@app/shared/envClient";
 import { LocationDTO } from "@app/types/gen/dtoObjects";
 import axios from "axios";
 import { z } from "zod";
@@ -35,7 +34,7 @@ class SharedRequest {
 		const [lng, lat] = lnglat;
     try {
       console.log("ЛНГЛАТ", lnglat);
-      const {data} = await axios.get(`https://catalog.api.2gis.com/3.0/items/geocode?lat=${lat}&lon=${lng}&fields=items.point&key=${GISKEY}`)
+      const {data} = await axios.get(`https://catalog.api.2gis.com/3.0/items/geocode?lat=${lat}&lon=${lng}&fields=items.point&key=${_GISKEY}`)
       console.log("ДАТА ОТ ЗАПРОСА", data);
 
       if (data.meta.code !== 200) {return {city: "", lng, lat}}

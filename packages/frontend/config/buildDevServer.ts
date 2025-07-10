@@ -1,6 +1,6 @@
 import {Configuration} from "mini-css-extract-plugin";
 import {BuildOptions} from "./types";
-import certs from "../../../certs/certs";
+// import certs from "../../../certs/certs";
 
 // console.log(path.resolve(process.cwd(), "..", "..", "certs", "192.168.1.125.pem"))
 // console.log(fs.readFileSync(path.resolve(process.cwd(), "..", "..", "certs", "192.168.1.125.pem"), "utf-8"))
@@ -26,13 +26,16 @@ function buildDevServer(options: BuildOptions): Configuration["devServer"] {
 		historyApiFallback: true,
 		static: options.paths.public,
 		allowedHosts: "all",
-		server: {
-			type: "https",
-			options: {
-     	  key: certs.key,
-      	cert: certs.cert,
-			}
-		},
+
+		// ПОДКЛЮЧЕНИЕ СЕРТФИИКАТОВ
+		// server: {
+		// 	type: "https",
+		// 	options: {
+    //  	  key: certs.key,
+    //   	cert: certs.cert,
+		// 	}
+		// },
+		
 		proxy: [
 			{
 				context: [options.url.prefix],

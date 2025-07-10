@@ -6,7 +6,6 @@
     "dev": "chcp 65001 && nodemon -r tsconfig-paths/register src/index.ts",
     "build": "node ./check-env.js && tsc --project tsconfig.prod.json && tsc-alias -p tsconfig.prod.json",
     "start": "node ./dist/backend/src/index.js",
-    
     "test": "chcp 65001 && jest tests"
   },
   "keywords": [],
@@ -35,7 +34,6 @@
     "connect-redis": "^9.0.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
-    "dotenv": "^16.4.7",
     "easy-yandex-s3": "^2.0.0",
     "express": "^5.1.0",
     "express-session": "^1.18.1",

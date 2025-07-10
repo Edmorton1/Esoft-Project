@@ -1,13 +1,15 @@
+import dotenv from "dotenv"
+dotenv.config()
+
 import path from 'path';
 import 'webpack-dev-server';
 import buildWebpack from './config/buildWebpack';
 import { WebpackConfiguration } from 'webpack-dev-server';
-import { buildMode, buildPlatform } from './config/types';
+import { buildMode } from './config/types';
 
 interface envTypes {
 	mode?: buildMode
 	port?: number,
-	platform?: buildPlatform,
 	analyzer?: boolean
 }
 
@@ -15,7 +17,11 @@ export default (env:envTypes) => {
 	const config: WebpackConfiguration = buildWebpack({
 		port: env.port || 5000,
 		mode: env.mode || 'development',
-		platform: env.platform || 'desktop',
+
+		dotenv: {
+			GISKEY: process.env.GISKEY!
+		},
+
 		paths: {
 			entry: path.resolve(__dirname, 'src', 'index.tsx'),
 			output: path.resolve(__dirname, 'dist'),

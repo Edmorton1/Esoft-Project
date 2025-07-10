@@ -1,3 +1,5 @@
+import { IEnv } from "@app/client/types/declarations/env";
+
 export interface buildPaths {
   entry: string;
   output: string;
@@ -19,13 +21,12 @@ export interface buildUrls {
 
 export type buildMode = "production" | "development";
 
-export type buildPlatform = "monile" | "desktop";
-
 export interface BuildOptions {
   port: number;
   paths: buildPaths;
   mode: buildMode;
-  platform: buildPlatform;
   url: buildUrls
   analyzer?: boolean;
+
+  dotenv: IEnv
 }

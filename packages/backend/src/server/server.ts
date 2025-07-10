@@ -5,6 +5,7 @@ import type { ILogger } from "@app/server/infrastructure/helpers/logger/logger.c
 import TYPES from "@app/server/config/containers/types";
 import { DBType } from "@app/server/infrastructure/helpers/databases/postgres/config/db";
 import { redisClient } from "@app/server/infrastructure/helpers/databases/redis/redis";
+import {URL_CLIENT, URL_SERVER} from "@app/shared/URLS"
 
 // ЭНДПОЙНТЫ РЕАЛИЗОВЫВАТЬ В КОНТРОЛЛЕРАХ
 
@@ -31,12 +32,12 @@ class App implements IServer {
 		@inject(TYPES.DataBase)
 		private readonly db: DBType
 	) {
-		this.basePath = this.configService.get("URL_SERVER");
+		this.basePath = URL_SERVER;
     this.port = Number(this.configService.get("PORT")) || 3000
 	}
 
 	init = async () => {
-		this.logger.info(`СЕВРЕВ ЗАПУЩЕН НА ${this.configService.get("URL_SERVER")} САЙТ НА ${this.configService.get("URL_CLIENT")}`);
+		this.logger.info(`СЕВРЕВ ЗАПУЩЕН НА ${URL_SERVER} САЙТ НА ${URL_CLIENT}`);
 		this.framework.init(this.port);
 
 		try {

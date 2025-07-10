@@ -3,26 +3,26 @@ import HttpContext from "@app/server/config/express/Http.context";
 import { serverPaths } from "@app/shared/PATHS";
 import { injectable } from "inversify";
 
-interface IYandexController {
+interface IGoogleController {
   getToken: (ctx: HttpContext) => Promise<void>
 }
 
 @injectable()
-class YandexController extends BaseController implements IYandexController {
+class GoogleController extends BaseController implements IGoogleController {
   constructor () {
     super()
     this.bindRoutes([
       {
-        path: serverPaths.yandexGetToken,
+        path: serverPaths.googleGetToken,
         method: "get",
         handle: this.getToken
       }
     ])
   }
 
-  getToken: IYandexController['getToken'] = async (ctx) => {
+  getToken: IGoogleController['getToken'] = async (ctx) => {
     ctx.json(ctx)
   }
 }
 
-export default YandexController
+export default GoogleController

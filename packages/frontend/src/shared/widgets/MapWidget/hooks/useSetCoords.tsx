@@ -5,7 +5,6 @@ import { useEffect } from "react";
 import { LocationCallback } from "@app/client/pages/Settings/widgets/Profile/ProfileSettings";
 import { LocationDTO } from "@app/types/gen/dtoObjects";
 import axios from "axios";
-import { GISKEY } from "@app/shared/envClient";
 
 function useSetCoords(mapgl: mapDTO[0], map: mapDTO[1], callback: LocationCallback, coords?: LocationDTO | null) {
   useEffect(() => {
@@ -22,7 +21,7 @@ function useSetCoords(mapgl: mapDTO[0], map: mapDTO[1], callback: LocationCallba
     map.on('click', async (e) => {
       
       console.log(e.lngLat)
-      axios.get(`https://catalog.api.2gis.com/3.0/items/geocode?lat=${e.lngLat[1]}&lon=${e.lngLat[0]}&fields=items.point&key=${GISKEY}`)
+      axios.get(`https://catalog.api.2gis.com/3.0/items/geocode?lat=${e.lngLat[1]}&lon=${e.lngLat[0]}&fields=items.point&key=${_GISKEY}`)
         .then(data => console.log(data.data.result))
         .catch(e => console.log("ERROR", e.lnglat))
 
