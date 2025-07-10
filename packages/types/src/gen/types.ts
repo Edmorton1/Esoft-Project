@@ -24,3 +24,13 @@ export interface YandexPost {
 export type lnglatType = [number, number]
 
 export type Yandex_Folders = "messages" | "posts"
+
+export const tablesArr: tables[] = [
+  "users",
+  "forms",
+  "likes",
+  "messages",
+  "tags",
+  "user_tags",
+  "posts",
+];
