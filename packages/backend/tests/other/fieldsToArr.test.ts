@@ -1,4 +1,5 @@
-import { fieldsToArr } from "@app/server/infrastructure/db/SQL/utils";
+import mainCont from "@app/server/config/containers/container.di";
+import Utils from "@app/server/infrastructure/helpers/databases/postgres/utils";
 import { assertKnex } from "@app/types/gen/TypeGuardsNode";
 import { tables } from "@app/types/gen/types";
 
@@ -33,8 +34,9 @@ const cases: {name: string, input: [string, tables], includeTags: boolean, resul
 ]
 
 describe('[UNIT]: fieldsToArr', () => {
+  const utils = mainCont.get(Utils)
   test.each(cases)('$name', ({name, input, includeTags, result}) => {
-    const total = fieldsToArr(input[0], input[1], includeTags)
+    const total = utils.fieldsToArr(input[0], input[1], includeTags)
     console.log(total)
 
     total.forEach((e, i) => {

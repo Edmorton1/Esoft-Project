@@ -1,4 +1,4 @@
-import { redisStore } from "@app/server/infrastructure/redis/redis";
+import { redisStore } from "@app/server/infrastructure/helpers/databases/redis/redis";
 import { COOKIE_NAME } from "@app/shared/CONST";
 import session from "express-session";
 

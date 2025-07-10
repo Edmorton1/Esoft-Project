@@ -6,15 +6,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { UserDTO, UserDTOSchema } from "@app/types/gen/dtoObjects";
 import { observer } from "mobx-react-lite";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
 
 function Login() {
-  const { register, handleSubmit, setError, formState: {errors}, reset } = useForm<UserDTO>({resolver: zodResolver(UserDTOSchema)});
-
-  const navigate = useNavigate()
+  const { register, handleSubmit, setError, formState: {errors} } = useForm<UserDTO>({resolver: zodResolver(UserDTOSchema)});
 
   const handleLogin = (data: UserDTO) => {
-    StoreUser.login(data, setError, navigate, reset)
+    StoreUser.login(data, setError)
     // reset()
   }
 

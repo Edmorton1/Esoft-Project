@@ -1,5 +1,5 @@
 import HttpContext from "@app/server/config/express/Http.context";
-import { adaptController } from "@app/server/adapters/Express.adapter";
+import { adaptController } from "@app/server/config/adapters/Express.adapter";
 import { Router } from "express";
 
 export interface IControllerRoute {

@@ -1,14 +1,14 @@
-import AuthController from "@app/server/infrastructure/endpoints/Auth/Auth.controller";
-import ExtendedSearchController from "@app/server/infrastructure/endpoints/ExtendSearch/ExtendedSearch.controller";
-import FormController from "@app/server/infrastructure/endpoints/Form/Form.controller";
-import SettingsController from "@app/server/infrastructure/endpoints/Settings/Settings.controller";
-import MessagesOutController from "@app/server/infrastructure/endpoints/MessageOutside/MessagesOut.controller";
-import MessagesController from "@app/server/infrastructure/endpoints/Messages/Messages.controller";
-import PostsController from "@app/server/infrastructure/endpoints/Posts/Posts.controller";
-import LikesController from "@app/server/infrastructure/endpoints/Likes/Likes.controller";
+import AuthController from "@app/server/infrastructure/requests/Auth/Auth.controller";
+import ExtendedSearchController from "@app/server/infrastructure/requests/ExtendSearch/ExtendedSearch.controller";
+import FormController from "@app/server/infrastructure/requests/Form/Form.controller";
+import SettingsController from "@app/server/infrastructure/requests/Settings/Settings.controller";
+import MessagesOutController from "@app/server/infrastructure/requests/MessageOutside/MessagesOut.controller";
+import MessagesController from "@app/server/infrastructure/requests/Messages/Messages.controller";
+import PostsController from "@app/server/infrastructure/requests/Posts/Posts.controller";
+import LikesController from "@app/server/infrastructure/requests/Likes/Likes.controller";
 import { ContainerModule, Factory } from "inversify";
-import CRUDController from "@app/server/infrastructure/endpoints/CRUD/CRUDController";
-import ORM from "@app/server/infrastructure/db/SQL/ORM";
+import CRUDController from "@app/server/infrastructure/requests/CRUD/CRUDController";
+import ORM from "@app/server/infrastructure/helpers/databases/postgres/ORM";
 import TYPES from "@app/server/config/containers/types";
 import { tables } from "@app/types/gen/types";
 

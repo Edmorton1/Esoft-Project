@@ -1,10 +1,10 @@
 import { inject, injectable } from "inversify";
 import ServerExpress from "@app/server/server/server.express";
 import ConfigService from "@app/server/config/services/config.service";
-import type { ILogger } from "@app/server/helpers/logger/logger.controller";
+import type { ILogger } from "@app/server/infrastructure/helpers/logger/logger.controller";
 import TYPES from "@app/server/config/containers/types";
-import { redisClient } from "@app/server/infrastructure/redis/redis";
-import { DBType } from "@app/server/infrastructure/db/db";
+import { DBType } from "@app/server/infrastructure/helpers/databases/postgres/config/db";
+import { redisClient } from "@app/server/infrastructure/helpers/databases/redis/redis";
 
 // ЭНДПОЙНТЫ РЕАЛИЗОВЫВАТЬ В КОНТРОЛЛЕРАХ
 

@@ -7,6 +7,7 @@ import usePostsStore from "@app/client/pages/Profile/widgets/Posts/hooks/usePost
 import CreatePost from "@app/client/pages/Profile/widgets/Posts/components/CreatePost";
 import Edit from "@app/client/pages/Profile/widgets/Posts/components/Edit";
 import Post from "@app/client/pages/Profile/widgets/Posts/components/Post";
+import StoreUser from "@app/client/shared/stores/Store-User";
 
 function PostsHead() {
 	const [edit, setEdit] = useState(0)
@@ -31,7 +32,7 @@ function PostsHead() {
 
 	return (
 		<section className={style.form}>
-			{store.canChange && <CreatePost />}
+			{StoreUser.user?.id === store.profileid && <CreatePost />}
 			{store.posts?.map(e => {
         const handleDelete = () => store.delete(e.id)
 				const handleEdit = () => setEdit(e.id)

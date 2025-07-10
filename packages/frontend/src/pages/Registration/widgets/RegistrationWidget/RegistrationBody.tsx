@@ -2,7 +2,6 @@ import { useFormContext, useWatch } from "react-hook-form";
 import FormHelperText from "@mui/material/FormHelperText";
 import StoreRegistration from "@app/client/pages/Registration/widgets/stores/Store-Registration";
 import { observer } from "mobx-react-lite";
-import Typography from "@mui/material/Typography";
 import { InputMui, InputNumberMui, RadioGroupMui, SelectMui, TagsChips, TextAreaMui } from "@app/client/shared/ui/mui_module_components/MuiComponents";
 import MenuItem from "@mui/material/MenuItem";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -82,8 +81,8 @@ function RegistrationBody({onSubmit}: propsInterface) {
           <InputMui error={errors.city} id="city" text="Город" register={register} disabled={!!StoreRegistration.coords?.city} />
         </Box>
 
-        <Typography variant="h4" color="warning" textAlign={"center"}>ВНИМАНИЕ! ЕСЛИ ВЫ УКАЖЕТЕ ГЕОЛОКАЦИЮ ЕЁ БУДУТ ВИДЕТЬ ВСЕ, КТО ЗАЙДЁТ НА САЙТ!</Typography>
-        <MapWidget height="1000px" width="100%" callback={(data) => StoreRegistration.setCoords(data)} />
+        {/* <Typography variant="h4" color="warning" textAlign={"center"}>ВНИМАНИЕ! ЕСЛИ ВЫ УКАЖЕТЕ ГЕОЛОКАЦИЮ ЕЁ БУДУТ ВИДЕТЬ ВСЕ, КТО ЗАЙДЁТ НА САЙТ!</Typography> */}
+        <MapWidget height="500px" width="100%" callback={(data) => StoreRegistration.setCoords(data)} />
         <Button variant="contained" type="submit">Готво</Button>
         
     </Paper>

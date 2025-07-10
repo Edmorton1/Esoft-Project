@@ -1,13 +1,14 @@
-import { clients, clientsType } from "@app/server/helpers/WebSocket/socket";
-import FilesService from "@app/server/infrastructure/services/Files.service";
-import Yandex from "@app/server/helpers/yandex";
-import SharedService from "@app/server/infrastructure/services/Shared.service";
-import LoggerController, { ILogger } from "@app/server/helpers/logger/logger.controller";
-import PinoService from "@app/server/helpers/logger/pino.service";
-import db, { DBType } from "@app/server/infrastructure/db/db";
+import { clients, clientsType } from "@app/server/infrastructure/helpers/WebSocket/socket";
+import Yandex from "@app/server/infrastructure/helpers/yandex";
+import LoggerController, { ILogger } from "@app/server/infrastructure/helpers/logger/logger.controller";
+import PinoService from "@app/server/infrastructure/helpers/logger/pino.service";
+import db, { DBType } from "@app/server/infrastructure/helpers/databases/postgres/config/db";
 import { ContainerModule } from "inversify";
 import TYPES from "@app/server/config/containers/types";
-import ORM from "@app/server/infrastructure/db/SQL/ORM";
+import ORM from "@app/server/infrastructure/helpers/databases/postgres/ORM";
+import SharedService from "@app/server/infrastructure/requests/shared/services/Shared.service";
+import FilesService from "@app/server/infrastructure/requests/shared/services/Files.service";
+import SQLForm from "@app/server/infrastructure/helpers/databases/postgres/SQLform";
 
 const utilityBindings = new ContainerModule(({bind}) => {
   bind<PinoService>(PinoService).toSelf()
@@ -18,6 +19,7 @@ const utilityBindings = new ContainerModule(({bind}) => {
   bind<Yandex>(Yandex).toSelf()
   bind<FilesService>(FilesService).toSelf()
   bind<clientsType>(TYPES.clients).toConstantValue(clients)
+  bind<SQLForm>(SQLForm).toSelf();
 })
 
 export default utilityBindings

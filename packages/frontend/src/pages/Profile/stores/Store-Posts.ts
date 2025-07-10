@@ -2,7 +2,6 @@ import { PostsDTOClient, PostsDTOPutClient } from "@app/client/pages/Profile/wid
 import $api from "@app/client/shared/api/api";
 import { toFormData } from "@app/client/shared/funcs/filefuncs";
 import StoreBasePaginDoc from "@app/client/shared/hooks/usePagination/doc/Store-Base-PaginDoc";
-import { IS_AUTHOR } from "@app/shared/HEADERS";
 import { serverPaths } from "@app/shared/PATHS";
 import { Posts, PostsSchema } from "@app/types/gen/Users";
 import { AxiosResponse } from "axios";
@@ -10,8 +9,7 @@ import { action, makeObservable, observable, runInAction } from "mobx";
 import { z } from "zod";
 
 class StorePosts extends StoreBasePaginDoc {
-	posts: Posts[] | null = null;
-	canChange: boolean = false;
+	posts: Posts[] = [];
 
 	constructor(
 		readonly profileid: number
@@ -20,7 +18,6 @@ class StorePosts extends StoreBasePaginDoc {
 		makeObservable(this, {
 			profileid: observable,
 			posts: observable,
-			canChange: observable,
 			lazyLoadPosts: action,
 			post: action,
 			put: action,
@@ -31,17 +28,12 @@ class StorePosts extends StoreBasePaginDoc {
 	lazyLoadPosts = (data: AxiosResponse<any, any>) => {
 		// this.canChange = data.headers[IS_AUTHOR]
 
-		console.log("HEADERS", data.headers[IS_AUTHOR] === "true");
+		// console.log("HEADERS", data.headers[IS_AUTHOR] === "true");
 
 		const parsed = z.array(PostsSchema).parse(data.data);
 		console.log("POSTS", parsed);
 
-		if (this.posts !== null) {
-			this.posts.push(...parsed);
-		} else {
-			this.canChange = data.headers[IS_AUTHOR] === "true";
-			this.posts = parsed;
-		}
+		this.posts.push(...parsed);
 		// this.cursor = parsed[parsed.length - 1].id;
 	};
 

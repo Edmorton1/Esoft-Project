@@ -1,3 +1,5 @@
+// ПОТОМ ПОФИКСИТЬ ЗДЕСЬ ИМПОРТЫ, СЕЙЧАС ОНИ НЕ РАБОТАЮТ ИЗ-ЗА ПАПКИ HELPERS
+
 jest.mock('@app/server/infrastructure/redis/redis', () => ({
   redisClient: {
     connect: jest.fn().mockResolvedValue(undefined),

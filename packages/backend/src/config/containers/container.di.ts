@@ -5,7 +5,7 @@ import serviceBindings from "@app/server/config/containers/modules/services.di";
 import appBindings from "@app/server/config/containers/modules/app.di";
 import controllerBindings from "@app/server/config/containers/modules/controllers.di";
 import { tables, tablesArr } from "@app/types/gen/types";
-import CRUDController from "@app/server/infrastructure/endpoints/CRUD/CRUDController";
+import CRUDController from "@app/server/infrastructure/requests/CRUD/CRUDController";
 import TYPES from "@app/server/config/containers/types";
 import singleBindings from "@app/server/config/containers/modules/single.di";
 

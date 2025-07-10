@@ -1,4 +1,4 @@
-import { createWebSocketServer } from "@app/server/helpers/WebSocket/socket";
+import { createWebSocketServer } from "@app/server/infrastructure/helpers/WebSocket/socket";
 import express, { Express, json } from "express";
 import https, { Server } from "https";
 import { inject, injectable } from "inversify";
@@ -9,7 +9,7 @@ import expressSession from "@app/server/config/middlewares/Express.session";
 import expressError from "@app/server/config/middlewares/Express.error";
 import ServerRoutes from "@app/server/server/express.routes";
 import helmet from "helmet";
-import { ILogger } from "@app/server/helpers/logger/logger.controller";
+import { ILogger } from "@app/server/infrastructure/helpers/logger/logger.controller";
 import TYPES from "@app/server/config/containers/types";
 import fs from 'fs'
 import path from 'path';

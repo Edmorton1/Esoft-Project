@@ -1,10 +1,10 @@
-import { IYandex } from "@app/server/helpers/yandex";
-import { IORM } from "@app/server/infrastructure/db/SQL/ORM";
-import PostsService from "@app/server/infrastructure/endpoints/Posts/services/Posts.service";
-import { IFilesService } from "@app/server/infrastructure/services/Files.service";
+import { IYandex } from "@app/server/infrastructure/helpers/yandex";
+import PostsService from "@app/server/infrastructure/requests/Posts/services/Posts.service";
 import { Posts } from "@app/types/gen/Users";
-import ConsoleService from "@app/server/helpers/logger/console.service";
+import ConsoleService from "@app/server/infrastructure/helpers/logger/console.service";
 import { PostsDTOPutServer } from "@app/server/types/DTOServer";
+import { IFilesService } from "@app/server/infrastructure/requests/shared/services/Files.service";
+import { IORM } from "@app/server/infrastructure/helpers/databases/postgres/ORM";
 
 type SimplifiedMockDTO = {
   remove_old: string[];

@@ -8,13 +8,10 @@ import CardHeader from "@mui/material/CardHeader";
 import Typography from "@mui/material/Typography";
 import { Posts } from "@app/types/gen/Users";
 import * as style from "@app/client/shared/css/modules/CreatePost.module.scss"
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import IconButton from "@mui/material/IconButton";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import { useRef, useState } from "react";
 import usePostsStore from "@app/client/pages/Profile/widgets/Posts/hooks/usePostsStore";
 import { observer } from "mobx-react-lite";
+import StoreUser from "@app/client/shared/stores/Store-User";
+import PostMenu from "@app/client/pages/Profile/widgets/Posts/components/PostMenu";
 
 interface propsInterface {
 	post: Posts;
@@ -23,12 +20,6 @@ interface propsInterface {
 }
 
 function Post({ post, handleEdit, handleDelete }: propsInterface) {
-	const [menu, setMenu] = useState(false)
-	const menuRef = useRef<HTMLButtonElement>(null)
-
-	const onOpenMenu = () => setMenu(true)
-	const onCloseMenu = () => setMenu(false)
-	
 	const store = usePostsStore()
 	
 
@@ -41,16 +32,8 @@ function Post({ post, handleEdit, handleDelete }: propsInterface) {
 					{StoreProfile.profile?.name}
 				</>}
 				subheader={<Subtitle>{new Date(post.created_at).toLocaleString()}</Subtitle>}
-				action={store.canChange &&
-					<>
-					<IconButton ref={menuRef} onClick={onOpenMenu}>
-						<MoreVertIcon />
-					</IconButton>
-					<Menu open={menu} onClose={onCloseMenu} anchorEl={menuRef.current}>
-							<MenuItem onClick={handleEdit}>Изменить</MenuItem>
-							<MenuItem onClick={handleDelete}>Удалить</MenuItem>
-					</Menu>
-					</>
+				action={StoreUser.user?.id === store.profileid &&
+					<PostMenu handleDelete={handleDelete} handleEdit={handleEdit} />
 				}
 			/>
 			<CardContent>

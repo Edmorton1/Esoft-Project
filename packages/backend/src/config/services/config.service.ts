@@ -1,6 +1,6 @@
 import { config, DotenvConfigOutput, DotenvParseOutput } from "dotenv";
 import { inject, injectable } from "inversify";
-import type { ILogger } from "@app/server/helpers/logger/logger.controller";
+import type { ILogger } from "@app/server/infrastructure/helpers/logger/logger.controller";
 import TYPES from "@app/server/config/containers/types";
 import { IEnv } from "@app/server/types/declarations/env";
 

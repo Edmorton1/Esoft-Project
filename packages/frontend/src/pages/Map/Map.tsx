@@ -25,7 +25,7 @@ function MapPage() {
 
 	return <>
 		<Title>Карта всех пользователей</Title>
-		<MapWrapper height="78vh" width="100%" ref={containerRef} />
+		<MapWrapper height="75vh" width="100%" ref={containerRef} />
 	</>
 }
 

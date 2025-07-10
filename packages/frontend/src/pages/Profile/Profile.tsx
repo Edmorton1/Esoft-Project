@@ -26,13 +26,3 @@ function Profile() {
 }
 
 export default observer(Profile)
-
-  // return <section>
-  //   <div>{last_active}</div>
-    // <div>{StoreProfile.profile.id === StoreForm.form?.id ? 'Ващ аккаунт' : "Не ваш"}</div>
-  //   <Link to={"/settings"}>Настройки</Link>
-  //   {StoreProfile.profile?.id}
-  //   {/* <input type="file" onChange={AvatarOnChange} />; */}
-  //   <img src={StoreProfile.profile.avatar!} alt="" />
-  //   {/* <button onClick={() => console.log(toJS(StoreProfile.profile))}>asd</button> */}
-  // </section>
