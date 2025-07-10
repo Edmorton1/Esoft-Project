@@ -79,9 +79,9 @@ class PostsController extends BaseController implements IPostsController {
     
     const total = await this.postsService.put(id, postsDTO)
 
-    if (total === null) {
-      ctx.sendStatus(403)
-    }
+    // if (total === null) {
+    //   ctx.sendStatus(403)
+    // }
 
     ctx.json(total)
   };
@@ -89,11 +89,6 @@ class PostsController extends BaseController implements IPostsController {
 	delete: IPostsController["delete"] = async ctx => {
     const post_id = PostsValidation.delete(ctx)
     const total = await this.postsService.delete(post_id, ctx.session.userid!)
-
-    if (total === null) {
-      ctx.sendStatus(403)
-      return;
-    }
     ctx.json(total)
   };
 }

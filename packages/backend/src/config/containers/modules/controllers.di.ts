@@ -11,6 +11,7 @@ import CRUDController from "@app/server/infrastructure/requests/CRUD/CRUDControl
 import ORM from "@app/server/infrastructure/helpers/databases/postgres/ORM";
 import TYPES from "@app/server/config/containers/types";
 import { tables } from "@app/types/gen/types";
+import YandexController from "@app/server/infrastructure/requests/Yandex/Yandex.controller";
 
 const controllerBindings = new ContainerModule(({ bind }) => {
 	bind<LikesController>(TYPES.Controllers.Likes).to(LikesController);
@@ -21,6 +22,7 @@ const controllerBindings = new ContainerModule(({ bind }) => {
 	bind<MessagesController>(TYPES.Controllers.Messages).to(MessagesController);
 	bind<MessagesOutController>(TYPES.Controllers.MessagesOut).to(MessagesOutController);
 	bind<PostsController>(TYPES.Controllers.Posts).to(PostsController);
+	bind<YandexController>(TYPES.Controllers.Yandex).to(YandexController)
 
 	bind<Factory<CRUDController>>(TYPES.CRUD.Factory).toFactory(context => {
 		return (table: tables) => {

@@ -118,7 +118,7 @@ class CompressService {
     else if (mime.includes('video')) {
       return [await this.videoCompress(buffer, ext), 'mp4']
     }
-    throw new HttpError(415, "Неизвестный формат файла")
+    throw new HttpError(415)
   }
 }
 

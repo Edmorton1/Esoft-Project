@@ -17,4 +17,7 @@ export interface IEnv {
 	BUCKET_URL: string;
 
 	SESSION_SECRET: string;
-};
+
+	YANDEX_CLIENT_ID: string;
+	YANDEX_CLIENT_SECRET: string;
+}

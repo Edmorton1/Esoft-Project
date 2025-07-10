@@ -27,7 +27,8 @@ const TYPES = {
 		Settings: Symbol.for("controllers-settings"),
 		Messages: Symbol.for("controllers-messages"),
 		MessagesOut: Symbol.for("controllers-messages_out"),
-		Posts: Symbol.for("controllers-posts")
+		Posts: Symbol.for("controllers-posts"),
+		Yandex: Symbol.for("controllers-yandex")
 	},
 };
 

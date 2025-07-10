@@ -1,5 +1,6 @@
+//@ts-expect-error
 // eslint-disable-next-line
-import { PaletteOptions, Palette } from "@mui/material/styles";
+import type { PaletteOptions, Palette } from "@mui/material/styles";
 
 declare module "@mui/material/styles" {
   interface Palette {

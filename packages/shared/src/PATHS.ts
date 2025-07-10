@@ -64,6 +64,8 @@ export const serverPaths = {
   postsPost: "/postsPost",
   postsPut: "/postsPut",
   postsDelete: "/postsDelete",
+
+  yandexGetToken: "/yandexGetToken"
 } as const
 
 // export type serverPathsTypes = keyof typeof serverPaths

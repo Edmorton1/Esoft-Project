@@ -70,7 +70,6 @@ class MessagesController extends BaseController implements IMessageController {
     if (message.fromid !== ctx.session.userid) {ctx.sendStatus(403); return;}
 
     const total = await this.messageService.sendMessage(message, files, ctx.session.userid!)
-    if (total === null) {ctx.sendStatus(403); return}
 
     ctx.json(total)
   }

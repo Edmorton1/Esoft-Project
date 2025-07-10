@@ -4,15 +4,15 @@ import { ILogger } from "@app/server/infrastructure/helpers/logger/logger.contro
 import Yandex, { IYandex } from "@app/server/infrastructure/helpers/yandex";
 import FilesService, { IFilesService } from "@app/server/infrastructure/requests/shared/services/Files.service";
 import { PostsDTOPutServer, PostsDTOServer } from "@app/server/types/DTOServer";
-import { POSTS_LIMIT } from "@app/shared/CONST";
+import { HttpError, POSTS_LIMIT } from "@app/shared/CONST";
 import { Posts } from "@app/types/gen/Users";
 import { inject, injectable } from "inversify";
 
 interface IPostsService {
 	get: (userid: number, cursor: number | undefined) => Promise<Posts[]>;
 	post: (postsDTO: PostsDTOServer) => Promise<Posts>;
-	put: (post_id: number, postsDTO: PostsDTOPutServer) => Promise<Posts | null>;
-	delete: (post_id: number, userid: number) => Promise<Posts | null>;
+	put: (post_id: number, postsDTO: PostsDTOPutServer) => Promise<Posts>;
+	delete: (post_id: number, userid: number) => Promise<Posts>;
 }
 
 @injectable()
@@ -62,7 +62,7 @@ class PostsService {
 
     this.logger.info({DATA_IN_DB_OLD: old_data})
 
-    if (old_data.id === data.userid) return null
+    if (old_data.id === data.userid) throw new HttpError(403)
 
     let yandexFiles;
 
@@ -70,16 +70,12 @@ class PostsService {
 
     this.logger.info({cleanded_old_data})
     
-    if (files.length + cleanded_old_data.length > 3) throw new Error("Нельзя загрузить больше 3-х файлов")
+    if (files.length + cleanded_old_data.length > 3) throw new HttpError(400, "Нельзя загрузить больше 3-х файлов")
     // const updateFiles = JSON.stringify(old_data.files.sort()) !== JSON.stringify(files)
 
     if (files.length) {
-      try {
         yandexFiles = await this.filesService.uploadFiles(post_id, files, "posts")
         yandexFiles.push(...cleanded_old_data)
-      } catch(err) {
-        return Promise.reject(err)
-      }
     } else {
       yandexFiles = cleanded_old_data
     }
@@ -89,7 +85,7 @@ class PostsService {
     this.logger.info({RESULT: total[0]})
 
     if (!total.length) {
-      return null
+      throw new HttpError(403)
     }
 
     return total[0]
@@ -100,7 +96,7 @@ class PostsService {
     const deleted = await this.ORM.delete(post_id, "posts", userid)
 
     if (!deleted.length) {
-      return null
+      throw new HttpError(403)
     }
 
     return deleted[0]

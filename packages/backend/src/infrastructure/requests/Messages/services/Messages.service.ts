@@ -11,12 +11,13 @@ import { MsgTypesServer } from "@app/types/gen/socketTypes";
 import { toSOSe } from "@app/shared/JSONParsers";
 import { MessagePutDTOServer } from "@app/server/types/DTOServer";
 import FilesService from "@app/server/infrastructure/requests/shared/services/Files.service";
+import { HttpError } from "@app/shared/CONST";
 
 interface MessagesServiceRepo {
   getMessage(fromId: number, toId: number, cursor?: number): Promise<[{messages: Message[]} | {messages: Message[], form: Form}, boolean]>,
-  sendMessage(message: MessageDTO, files: Express.Multer.File[], userid: number): Promise<Message | null>,
-  editMessage(id: number, userid: number, data: MessagePutDTOServer): Promise<Message | null>,
-  deleteMessage(id: number, userid: number): Promise<Message | null>
+  sendMessage(message: MessageDTO, files: Express.Multer.File[], userid: number): Promise<Message>,
+  editMessage(id: number, userid: number, data: MessagePutDTOServer): Promise<Message>,
+  deleteMessage(id: number, userid: number): Promise<Message>
 }
 
 @injectable()
@@ -62,7 +63,7 @@ class MessagesService implements MessagesServiceRepo {
       const is_match = await this.messagesSQL.checkMatch(userid, message.toid)
 
       console.log("IS MATCH", is_match)
-      if (!is_match) return null;
+      if (!is_match) throw new HttpError(403);
 
       const request: Omit<Message, 'files'> = (await this.ORM.post(message, 'messages'))[0]
   
@@ -80,10 +81,10 @@ class MessagesService implements MessagesServiceRepo {
       this.logger.info({data: [data.text], id: id})
       if (data.files.length === 0 && data.deleted.length === 0) {
         [total] = await this.ORM.put({text: data.text}, id, 'messages', userid)
-        if (!total) {return null;}
+        if (!total) throw new HttpError(403)
 
         const is_match = await this.messagesSQL.checkMatch(userid, total.toid)
-        if (!is_match) return null
+        if (!is_match) throw new HttpError(403)
   
       } else {
         this.logger.info({id: id, data: data.deleted})
@@ -103,10 +104,10 @@ class MessagesService implements MessagesServiceRepo {
       const [data] = await this.ORM.delete(id, 'messages', userid)
       this.logger.info({DATA_FORM: data})
   
-      if (!data) return null
+      if (!data) throw new HttpError(403)
 
       const is_match = await this.messagesSQL.checkMatch(userid, data.toid)
-      if (!is_match) return null
+      if (!is_match) throw new HttpError(403)
   
       await this.yandex.deleteFolder(id, "messages")
       this.logger.info({frid: data.fromid, toid: data.toid, id})

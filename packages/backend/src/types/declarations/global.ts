@@ -8,3 +8,4 @@ declare module "express-session" {
     role: UserRoleType
   }
 }
+

@@ -76,11 +76,6 @@ class LikesController extends BaseController implements ILikesController {
 
 		const data = await this.likesService.sendDelete(id, userid);
 
-		if (!data) {
-			ctx.sendStatus(403);
-			return;
-		}
-
 		ctx.json(data);
 	};
 

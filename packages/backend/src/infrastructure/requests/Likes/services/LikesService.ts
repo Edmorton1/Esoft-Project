@@ -10,10 +10,11 @@ import { inject, injectable } from "inversify";
 import { z } from "zod";
 import { ILogger } from "@app/server/infrastructure/helpers/logger/logger.controller";
 import { FormWithCursorSchema } from "@app/server/infrastructure/requests/Likes/services/Schemas";
+import { HttpError } from "@app/shared/CONST";
 
 interface LikesServiceRepo {
   sendLike: (likesDTO: LikesDTO) => Promise<Likes>;
-  sendDelete: (id: number, userid: number) => Promise<Likes | null>;
+  sendDelete: (id: number, userid: number) => Promise<Likes>;
 	likesGet: (userid: number, lnglat?: lnglatType, cursor?: number) => Promise<Form[]>;
   rejectLike: (userid: number, liked_userid: number) => Promise<boolean>
 }
@@ -48,7 +49,7 @@ class LikesService implements LikesServiceRepo {
 		const [data] = await this.ORM.delete(id, "likes", userid);
 
 		if (!data) {
-			return null;
+			throw new HttpError(403);
 		}
 
 		const clientTo = this.clients.get(data.liked_userid);

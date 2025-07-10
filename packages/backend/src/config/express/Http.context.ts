@@ -53,6 +53,10 @@ class HttpContext<T = any> implements IHttpContext<T> {
 	headers: IHttpContext['headers'] = (name) => {
 		return this.service.headers(name);
 	};
+
+	send: IHttpContext['send'] = (status, message) => {
+		return this.service.send(status, message)
+	}
 }
 
 export default HttpContext;

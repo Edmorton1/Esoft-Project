@@ -40,6 +40,10 @@ class HttpServiceExpress implements IHttpService {
 	headers: IHttpService['headers'] = (name: string) => {
 		return this.req.headers[name]
 	}
+
+	send: IHttpService['send'] = (status, message) => {
+		return this.res.send(message).status(status)
+	}
 }
 
 export default HttpServiceExpress;

@@ -17,8 +17,12 @@ export const adaptController =
 		
 		.catch(err => {
 			if (err instanceof HttpError) {
-					logger.error({ОШИБКА: err.message})
+				logger.error({ОШИБКА: err.message})
+				if (err.message) {
+					ctx.send(err.code, err.message)
+				} else {
 					ctx.sendStatus(err.code)
+				}
 			} else next(err);
 		});
 	};

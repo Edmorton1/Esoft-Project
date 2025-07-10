@@ -1,4 +1,4 @@
-import LoginBody from "@app/client/shared/ui/modals/Login/components/LoginBody";
+import LoginBody from "@app/client/shared/ui/modals/Login/modules/LoginBody";
 import StoreLogin from "@app/client/shared/ui/modals/Login/stores/Store-Login";
 import StoreUser from "@app/client/shared/stores/Store-User";
 import BaseModal from "@app/client/shared/ui/modals/BaseModal/BaseModal";

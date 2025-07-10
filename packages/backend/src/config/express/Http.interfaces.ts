@@ -20,6 +20,7 @@ export interface IHttpContext<T = any> {
 	clearCookie: (name: string) => void;
 	set: (field: string, value: string) => void
 	headers: (name: string) => string | string[] | undefined
+	send: (status: number, message: string) => void
 }
 
 export interface IHttpService {
@@ -37,4 +38,5 @@ export interface IHttpService {
 	clearCookie: (name: string) => void;
 	set: (field: string, value: string) => void
 	headers: (name: string) => string | string[] | undefined
+	send: (status: number, message: string) => void
 }
