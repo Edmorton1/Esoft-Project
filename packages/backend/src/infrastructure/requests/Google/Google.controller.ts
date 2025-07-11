@@ -3,39 +3,39 @@ import TYPES from "@app/server/config/containers/types";
 import HttpContext from "@app/server/config/express/Http.context";
 import ConfigService from "@app/server/config/services/config.service";
 import { ILogger } from "@app/server/infrastructure/helpers/logger/logger.controller";
-// import GoogleService from "@app/server/infrastructure/requests/Google/service/Google.service";
-// import GoogleValidation from "@app/server/infrastructure/requests/Google/validation/Google.validation";
-import { serverPaths } from "@app/shared/PATHS";
+import GoogleService from "@app/server/infrastructure/requests/Google/service/Google.service";
+import { paths, serverPaths } from "@app/shared/PATHS";
 import { google } from "googleapis";
-// import { URL_CLIENT } from "@app/shared/URLS";
 import { inject, injectable } from "inversify";
 import crypto from "crypto";
-import { URL_SERVER } from "@app/shared/URLS";
+import { URL_CLIENT, URL_SERVER } from "@app/shared/URLS";
 import { PREFIX } from "@app/shared/CONST";
-import url from "url"
+import url from "url";
 import { OAuth2Client } from "google-auth-library";
+import { GoogleDataSchema, redirectPropsType } from "@app/types/gen/Schemas";
+import { GOOGLE_TEMP_COOKIE } from "@app/shared/HEADERS";
 
 interface IGoogleController {
 	getAuthUrl: (ctx: HttpContext) => Promise<void>;
 	getToken: (ctx: HttpContext) => Promise<void>;
-  // getInfo: (ctx: HttpContext) => Promise<void>;
+	validateGoogleCookie: (ctx: HttpContext) => Promise<void>;
 }
 
 @injectable()
 class GoogleController extends BaseController implements IGoogleController {
-  // GoogleController.oauth2Client: OAuth2Client
-  private readonly oauth2Client: OAuth2Client;
+	// GoogleController.oauth2Client: OAuth2Client
+	private readonly oauth2Client: OAuth2Client;
 	constructor(
 		@inject(TYPES.LoggerController)
 		private readonly logger: ILogger,
-		// @inject(GoogleService)
-		// private readonly googleService: GoogleService,
+		@inject(GoogleService)
+		private readonly googleService: GoogleService,
 		@inject(ConfigService)
 		private readonly configService: ConfigService,
 	) {
 		super();
 
-    this.oauth2Client = new google.auth.OAuth2(
+		this.oauth2Client = new google.auth.OAuth2(
 			this.configService.get("GOOGLE_CLIENT_ID"),
 			this.configService.get("GOOGLE_CLIENT_SECRET"),
 			URL_SERVER + PREFIX + serverPaths.googleGetToken,
@@ -43,67 +43,110 @@ class GoogleController extends BaseController implements IGoogleController {
 
 		this.bindRoutes([
 			{
+				path: serverPaths.validateGoogleCookie,
+				method: "get",
+				handle: this.validateGoogleCookie
+			},
+			{
 				path: serverPaths.googleGetToken,
 				method: "get",
 				handle: this.getToken,
 			},
-      {
-        path: serverPaths.googleGetAuthUrl,
-        method: "get",
-        handle: this.getAuthUrl
-      }
+			{
+				path: serverPaths.googleGetAuthUrl,
+				method: "get",
+				handle: this.getAuthUrl,
+			},
 		]);
 	}
-  
-  private getInfo = async () => {
-    const oauth2 = google.oauth2({version: "v2", auth: this.oauth2Client})
-    const {data} = await oauth2.userinfo.get()
-    const {email, name, gender, picture} = data
-    this.logger.info({email, name, gender, picture})
-  }
+
+	private getInfo = async (google_id: string): Promise<redirectPropsType> => {
+		const oauth2 = google.oauth2({ version: "v2", auth: this.oauth2Client });
+		const { data } = await oauth2.userinfo.get();
+		this.logger.info({data_user_google: data})
+    const parsed = GoogleDataSchema.parse({...data, name: data.given_name, sex: data.gender, google_id})
+		// this.logger.info({email, name, gender, picture})
+		return parsed;
+	};
+
+	validateGoogleCookie: IGoogleController['validateGoogleCookie'] = async (ctx) => {
+		const googleCookie = ctx.service.req.cookies[GOOGLE_TEMP_COOKIE]
+		if (!googleCookie) {
+			throw new Error("Нет Google Cookie")
+		}
+		this.logger.info({GOOGLE_COOKIE: googleCookie})
+		ctx.send(200, googleCookie)
+	}
 
 	getAuthUrl: IGoogleController["getAuthUrl"] = async ctx => {
 		const scope = ["email", "openid", "profile"];
 		const state = crypto.randomBytes(32).toString();
 		ctx.session.state = state;
 
-    const authorizationUrl = this.oauth2Client.generateAuthUrl({
-      access_type: "offline",
-      scope,
-      state,
-      include_granted_scopes: true,
-      prompt: "consent",
-      response_type: "code"      
-    })
+		const authorizationUrl = this.oauth2Client.generateAuthUrl({
+			access_type: "offline",
+			scope,
+			state,
+			include_granted_scopes: true,
+			prompt: "consent",
+			response_type: "code",
+		});
 
-    ctx.json({url: authorizationUrl})
+		ctx.json({ url: authorizationUrl });
 	};
 
 	getToken: IGoogleController["getToken"] = async ctx => {
-		// const params = GoogleValidation.getToken(ctx);
-		// const total = this.googleService.getToken(params);
+		const q = url.parse(ctx.url, true).query;
+		if (q.error) {
+			this.logger.error(q.error);
+		} else if (q.state !== ctx.session.state) {
+			console.log("State mismatch. Possible CSRF attack");
+			ctx.end("State mismatch. Possible CSRF attack");
+		} else {
+			const code = Array.isArray(q.code) ? q.code[0] : q.code;
+			if (!code) throw new Error("Missing authorization code");
 
-    const q = url.parse(ctx.url, true).query
-    if (q.error) {
-      this.logger.error(q.error)
-    } else if (q.state !== ctx.session.state) {
-      console.log('State mismatch. Possible CSRF attack');
-      ctx.end('State mismatch. Possible CSRF attack')
-    } else {
-      const code = Array.isArray(q.code) ? q.code[0] : q.code
-      if (!code) throw new Error("Missing authorization code")
-      
-      const { tokens } = await this.oauth2Client.getToken(code)
-      this.oauth2Client.setCredentials(tokens)
-      
-      this.getInfo()
+			const { tokens } = await this.oauth2Client.getToken(code);
+			this.oauth2Client.setCredentials(tokens);
+			
+			
+			const ticket = await this.oauth2Client.verifyIdToken({
+				idToken: tokens.id_token!,
+				audience: this.configService.get("GOOGLE_CLIENT_ID")
+			})
 
-      // ПОКА ЧТО ЗАПРАШИВАЮ ТОЛЬКО ПОЧТУ ПОЭТОМУ scopes ЕСЛИ ЧТО ПРОВРИТЬ ЗДЕСЬ
-      this.logger.info({ТОКЕНЫ: tokens})
-    }
+			const google_id = ticket.getPayload()?.sub
+			this.logger.info({ГУГЛ_АЙДИ: google_id})
 
-		ctx.json(ctx.body);
-		// ctx.redirect(URL_CLIENT)
+			if (!google_id) {
+				throw new Error("Нет GoogleID")
+			}
+
+			const userInfo = await this.getInfo(google_id);
+			let userid;
+			if (userInfo.email && google_id) {
+				userid = await this.googleService.is_authorize(userInfo.email, google_id);
+			}
+
+			if (userid) {
+				ctx.session.userid = userid;
+				ctx.session.role = "user";
+
+				ctx.redirect(URL_CLIENT + paths.profile + `/${userid}`);
+			} else {
+        ctx.service.res.cookie(GOOGLE_TEMP_COOKIE, JSON.stringify(userInfo), {
+          // FIXME: КОГДА БУДЕТ HTTPS ИСПРАВИТЬ
+          secure: false,
+          httpOnly: true,
+          sameSite: "lax",
+          maxAge: 5 * 60 * 1000 * 60
+        })
+				ctx.redirect(URL_CLIENT + paths.registration);
+			}
+
+			// ПОКА ЧТО ЗАПРАШИВАЮ ТОЛЬКО ПОЧТУ ПОЭТОМУ scopes ЕСЛИ ЧТО ПРОВРИТЬ ЗДЕСЬ
+			this.logger.info({ ТОКЕНЫ: tokens });
+		}
 	};
 }
 

@@ -15,6 +15,14 @@ function Registration() {
   const methods = useForm({resolver: zodResolver(RegistrationDTOClientSchema), defaultValues: {tags: []}});
 
   useEffect(() => {
+    console.log("ПЕРЕЗАПИСЫВАЕМ КУКИСЫ", StoreRegistration.cookie)
+    methods.reset({
+      tags: [],
+      ...StoreRegistration.cookie
+    })
+  }, [StoreRegistration.cookie])
+
+  useEffect(() => {
     if (StoreRegistration.defaultCoords?.city) {
       methods.setValue("city", StoreRegistration.defaultCoords.city)
     }

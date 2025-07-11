@@ -1,12 +1,6 @@
 import { UserRoleType } from "@app/types/gen/Users";
 import { Session, SessionData } from "express-session";
 
-//@ts-expect-error
-// ПОТОМ УБРАТЬ
-export interface NodeFile {
-	buffer: Buffer<ArrayBufferLike>;
-}
-
 export interface SessionDataResolved {
 	userid?: number;
 	role?: UserRoleType;
@@ -19,8 +13,8 @@ export interface IHttpContext<T = any> {
 	query: any;
 	session: Session & Partial<SessionData> & SessionDataResolved;
 	url: string;
-	file?: NodeFile;
-	files?: NodeFile[];
+	file?: Express.Multer.File;
+	files?: Express.Multer.File[];
 
 	json: (data: T) => void;
 	sendStatus: (code: number) => void;
@@ -39,8 +33,8 @@ export interface IHttpService {
 	getParams: () => any;
 	getQuery: () => any;
 	getSession: () => any;
-	getFile: () => NodeFile | undefined;
-	getFiles: () => NodeFile[] | undefined;
+	getFile: () => Express.Multer.File | undefined;
+	getFiles: () => Express.Multer.File[] | undefined;
 	getUrl: () => string;
 
 	json: <T>(data: T) => void;

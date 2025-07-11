@@ -55,10 +55,7 @@ class StoreUser {
 		await storeSocket.socket!.send(toSOSe("userid", this.user!.id));
 	};
 
-	login = (
-		data: UserDTO,
-		setError: UseFormSetError<UserDTO>,
-	) => {
+	login = (data: UserDTO, setError: UseFormSetError<UserDTO>) => {
 		// try {
 		$api
 			.post(`${serverPaths.login}`, data)
@@ -66,7 +63,7 @@ class StoreUser {
 			.then(user => runInAction(() => (this.user = user)))
 			.then(() => this.initial())
 			.then(() => StoreLogin.closeModal())
-			.then(() => window.location.href = `${paths.profile}/${this.user?.id}`)
+			.then(() => (window.location.href = `${paths.profile}/${this.user?.id}`))
 			// .then(() => reset())
 
 			.catch(err => {
@@ -90,8 +87,7 @@ class StoreUser {
 
 	logout = async () => {
 		await $api.post(serverPaths.logout);
-    window.location.href = "/"
-		
+		window.location.href = "/";
 	};
 
 	initial = () => {
@@ -120,7 +116,7 @@ class StoreUser {
 
 		const form = StoreUserRegistrationSchema.parse(request);
 
-		window.location.href = `${paths.profile}/${form.user.id}`
+		window.location.href = `${paths.profile}/${form.user.id}`;
 
 		// console.log(request);
 

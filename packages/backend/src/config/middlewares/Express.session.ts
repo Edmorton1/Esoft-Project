@@ -11,6 +11,7 @@ const expressSession = session({
   resave: false,
   saveUninitialized: false,
   cookie: {
+    // FIXME: КОГДА БУДЕТ HTTPS ИСПРАВИТЬ
     // БЫЛО true
     secure: false,
     maxAge: 1000 * 60 * 60 * 600,

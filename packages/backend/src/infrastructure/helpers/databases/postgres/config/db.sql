@@ -5,12 +5,13 @@ CREATE TYPE role_type AS ENUM ('user', 'admin');
 -- CREATE TYPE private_type AS ENUM ('all', 'liked', 'none');
 
 CREATE TYPE target_type AS ENUM('friend', 'relation', 'chat', 'hobby');
-
+-- ALTER TABLE users ADD COLUMN google_id VARCHAR(21) UNIQUE
 CREATE TABLE users (
 	id SERIAL PRIMARY KEY,
 	email VARCHAR(256) UNIQUE NOT NULL,
 	password VARCHAR(256) NOT NULL,
 	role role_type DEFAULT 'user' NOT NULL,
+	google_id VARCHAR(21) UNIQUE,
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 

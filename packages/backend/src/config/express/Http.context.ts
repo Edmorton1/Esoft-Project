@@ -30,7 +30,7 @@ class HttpContext<T = any> implements IHttpContext<T> {
 
 	get url() {
 		return this.service.getUrl();
-	};
+	}
 
 	json: IHttpContext<T>["json"] = data => {
 		this.service.json<T>(data);

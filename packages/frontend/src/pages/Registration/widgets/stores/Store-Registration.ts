@@ -4,52 +4,37 @@ import { serverPaths } from "@app/shared/PATHS";
 import { LocationDTO } from "@app/types/gen/dtoObjects";
 import { makeAutoObservable } from "mobx";
 import SharedRequests from "@app/client/shared/funcs/Shared-Requests";
+import { Form } from "@app/types/gen/Users";
+import { GoogleDataSchema } from "@app/types/gen/Schemas";
 
 class StoreRegistration {
 	defaultCoords: null | LocationDTO = null;
 	coords: null | LocationDTO = null;
+	cookie: Partial<Form> | object = {}
 
 	constructor() {
 		makeAutoObservable(this);
+	}
+
+	// googleCookie = async (): Promise<Partial<Form>> => {
+	googleCookie = async () => {
+		const {data} = await $api.get(serverPaths.validateGoogleCookie)
+		const parsed = GoogleDataSchema.parse(data)
+		console.log("КУКА ИЗ ЗАПРОСА", parsed)
+		this.cookie = parsed
 	}
 
 	setDefaultCoords = (coords: LocationDTO) => {
 		this.defaultCoords = coords;
 	};
 
-	// setCoords = (coords: number[]) => {
-	// 	const [lng, lat] = coords;
-	// 	console.log("ДЕФОЛТ КООРДС", this.defaultCoords);
-
-	// 	axios
-	// 		.get(
-	// 			`https://catalog.api.2gis.com/3.0/items/geocode?lat=${lat}&lon=${lng}&fields=items.point&key=${GISKEY}`,
-	// 		)
-	// 		.then(data => {
-	// 			const places = data.data.result.items;
-	// 			if (places.length) {
-	// 				console.log(places[0].full_name.split(",")[0].trim());
-	// 				this.coords = { city: places[0].full_name.split(",")[0].trim(), lng, lat };
-	// 				return;
-	// 			}
-	// 			console.log(places[0].full_name);
-	// 			this.coords = { city: "asasdasdas", lng, lat };
-	// 		})
-
-	// 		// ЗДЕСЬ НАДО УСТАНОВИТЬ КООРДИНАТЫ И СБРОСИТЬ ГОРОД
-	// 		.catch(err => {
-	// 			console.log("ERROR");
-	// 			StoreAlert.mapError("Нельзя поставить координаты здесь", "error.main");
-	// 		});
-	// 	// axios.get(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`).then(data => {
-	// };
-  setCoords = async (coords: number[]) => {
-    const location = await SharedRequests.cityByCoords(coords)
-    this.coords = location
-    if (location.city === "") {
-      StoreAlert.mapError("Нельзя поставить координаты здесь", "error.main");
-    }
-  }
+	setCoords = async (coords: number[]) => {
+		const location = await SharedRequests.cityByCoords(coords);
+		this.coords = location;
+		if (location.city === "") {
+			StoreAlert.mapError("Нельзя поставить координаты здесь", "error.main");
+		}
+	};
 
 	async emailIsFree(email: string) {
 		const { data } = await $api.get(`${serverPaths.checkEmail}/${email}`);

@@ -1,4 +1,4 @@
-import { IHttpService, NodeFile } from "@app/server/config/express/Http.interfaces";
+import { IHttpService } from "@app/server/config/express/Http.interfaces";
 import { Request, Response, NextFunction } from "express";
 
 class HttpServiceExpress implements IHttpService {
@@ -18,7 +18,7 @@ class HttpServiceExpress implements IHttpService {
 
 	getFile = () => this.req.file;
 
-	getFiles = () => this.req.files as NodeFile[] | undefined;
+	getFiles = () => this.req.files as Express.Multer.File[] | undefined;
 
 	json: IHttpService["json"] = data => this.res.json(data);
 

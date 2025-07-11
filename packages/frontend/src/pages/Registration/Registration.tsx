@@ -6,6 +6,7 @@ import { LocationDTO } from "@app/types/gen/dtoObjects"
 function Registration() {
   
   useGeolocation((data: LocationDTO) => {console.log(data, 'set data'); StoreRegistration.setDefaultCoords(data)})
+  StoreRegistration.googleCookie()
 
   return <>
     <RegistrationHead/>
