@@ -54,3 +54,4 @@ volumes:
     name: 6c0be30400d05a3c31b9c8b8c97fe5ce1c1c579486efb3678f51c2415a20cc96
 
 # apk add curl
+# docker-compose up -d

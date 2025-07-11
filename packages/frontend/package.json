@@ -6,7 +6,6 @@
 		"build": "webpack --env mode=production",
 		"dev": "webpack serve --env mode=development port=5000",
 		"start": "webpack serve --env mode=production port=5000",
-
 		"test": "jest ./tests"
 	},
 	"keywords": [],

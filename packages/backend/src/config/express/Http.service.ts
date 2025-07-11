@@ -3,9 +3,9 @@ import { Request, Response, NextFunction } from "express";
 
 class HttpServiceExpress implements IHttpService {
 	constructor(
-		private readonly req: Request,
-		private readonly res: Response,
-		private readonly nextFu: NextFunction,
+		readonly req: Request,
+		readonly res: Response,
+		readonly nextFu: NextFunction,
 	) {}
 
 	getBody = () => this.req.body;
@@ -32,17 +32,29 @@ class HttpServiceExpress implements IHttpService {
 
 	clearCookie: IHttpService["clearCookie"] = name => this.res.clearCookie(name);
 
-	set: IHttpService['set'] = (field, value) => {
-		this.res.set("Access-Control-Expose-Headers", field)
-		this.res.set(field, value)
-	}
-	
-	headers: IHttpService['headers'] = (name: string) => {
-		return this.req.headers[name]
+	set: IHttpService["set"] = (field, value) => {
+		this.res.set("Access-Control-Expose-Headers", field);
+		this.res.set(field, value);
+	};
+
+	headers: IHttpService["headers"] = name => {
+		return this.req.headers[name];
+	};
+
+	send: IHttpService["send"] = (status, message) => {
+		return this.res.send(message).status(status);
+	};
+
+	redirect: IHttpService["redirect"] = url => {
+		return this.res.redirect(url);
+	};
+
+	getUrl: IHttpService['getUrl'] = () => {
+		return this.req.url
 	}
 
-	send: IHttpService['send'] = (status, message) => {
-		return this.res.send(message).status(status)
+	end: IHttpService['end'] = message => {
+		return this.res.end(message)
 	}
 }
 

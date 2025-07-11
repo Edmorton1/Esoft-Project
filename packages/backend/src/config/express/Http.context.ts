@@ -2,7 +2,7 @@ import { IHttpContext } from "@app/server/config/express/Http.interfaces";
 import HttpServiceExpress from "@app/server/config/express/Http.service";
 
 class HttpContext<T = any> implements IHttpContext<T> {
-	constructor(private readonly service: HttpServiceExpress) {}
+	constructor(readonly service: HttpServiceExpress) {}
 
 	get body() {
 		return this.service.getBody();
@@ -28,6 +28,10 @@ class HttpContext<T = any> implements IHttpContext<T> {
 		return this.service.getFiles();
 	}
 
+	get url() {
+		return this.service.getUrl();
+	};
+
 	json: IHttpContext<T>["json"] = data => {
 		this.service.json<T>(data);
 	};
@@ -50,13 +54,21 @@ class HttpContext<T = any> implements IHttpContext<T> {
 		this.service.set(field, value);
 	};
 
-	headers: IHttpContext['headers'] = (name) => {
+	headers: IHttpContext["headers"] = name => {
 		return this.service.headers(name);
 	};
 
-	send: IHttpContext['send'] = (status, message) => {
-		return this.service.send(status, message)
-	}
+	send: IHttpContext["send"] = (status, message) => {
+		return this.service.send(status, message);
+	};
+
+	redirect: IHttpContext["redirect"] = url => {
+		return this.service.redirect(url);
+	};
+
+	end: IHttpContext["end"] = message => {
+		return this.service.end(message);
+	};
 }
 
 export default HttpContext;

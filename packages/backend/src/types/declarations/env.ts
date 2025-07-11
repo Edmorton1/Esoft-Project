@@ -18,6 +18,9 @@ export interface IEnv {
 
 	SESSION_SECRET: string;
 
+	GOOGLE_CLIENT_ID: string;
+	GOOGLE_CLIENT_SECRET: string;
+
 	// YANDEX_CLIENT_ID: string;
 	// YANDEX_CLIENT_SECRET: string;
 }

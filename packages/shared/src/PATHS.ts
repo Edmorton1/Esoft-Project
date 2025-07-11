@@ -65,7 +65,8 @@ export const serverPaths = {
   postsPut: "/postsPut",
   postsDelete: "/postsDelete",
 
-  googleGetToken: "/googleGetToken"
+  googleGetToken: "/googleGetToken",
+  googleGetAuthUrl: "/getAuthUrl"
 } as const
 
 // export type serverPathsTypes = keyof typeof serverPaths

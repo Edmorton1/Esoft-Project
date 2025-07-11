@@ -1,11 +1,8 @@
 import "express-session"
 import "express";
-import { UserRoleType } from "@app/types/gen/Users";
+import { SessionDataResolved } from "@app/server/config/express/Http.interfaces";
 
 declare module "express-session" {
-  interface SessionData {
-    userid: number,
-    role: UserRoleType
-  }
+  interface SessionData extends SessionDataResolved {}
 }
 

@@ -5,6 +5,7 @@ import LikesService from "@app/server/infrastructure/requests/Likes/services/Lik
 import MessageOutService from "@app/server/infrastructure/requests/MessageOutside/service/MessageOut.service";
 import PostsService from "@app/server/infrastructure/requests/Posts/services/Posts.service";
 import { ContainerModule } from "inversify";
+import GoogleService from "@app/server/infrastructure/requests/Google/service/Google.service";
 
 const serviceBindings = new ContainerModule(({ bind }) => {
 	bind<LikesService>(LikesService).toSelf();
@@ -13,6 +14,7 @@ const serviceBindings = new ContainerModule(({ bind }) => {
 	bind<MessageOutService>(MessageOutService).toSelf();
 	bind<MessagesService>(MessagesService).toSelf();
 	bind<PostsService>(PostsService).toSelf();
+	bind<GoogleService>(GoogleService).toSelf();
 });
 
 export default serviceBindings;
