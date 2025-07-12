@@ -10,6 +10,7 @@ import LastActive from "@app/client/shared/ui/mui_module_components/LastActive";
 import usePostsStore from "@app/client/pages/Profile/widgets/Posts/hooks/usePostsStore";
 import Avatar from "@mui/material/Avatar";
 import StoreUser from "@app/client/shared/stores/Store-User";
+import { observer } from "mobx-react-lite";
 
 // ПОТОМ СДЕЛАТЬ С ИНФОРМАЦИЕЙ КАК МОДАЛКУ
 function UserInfo() {
@@ -18,6 +19,8 @@ function UserInfo() {
 	console.log("filtredTags", profile)
 	const store = usePostsStore()
 	const wh = "300px"
+
+	// console.log("АЙДИШНИКИ", StoreUser.user?.id, store.profileid, StoreUser.user?.id === store.profileid)
 
 	if (!profile) return null;
 
@@ -51,7 +54,7 @@ function UserInfo() {
 						</Typography>
 					)}
 
-					{profile.distance && StoreUser.user?.id === store.profileid && <Typography>
+					{profile.distance && StoreUser.user?.id !== store.profileid && <Typography>
 						<strong>Дистанция:</strong> {profile.distance} км
 					</Typography>}
 
@@ -73,4 +76,4 @@ function UserInfo() {
 	);
 }
 
-export default UserInfo;
+export default observer(UserInfo);

@@ -1,17 +1,28 @@
-import StoreGoogle from "@app/client/pages/Main/store/Store-Google";
-import { observer } from "mobx-react-lite";
+import * as style from "@app/client/shared/css/pages/Main/Main.module.scss";
+import Information from "@app/client/pages/Main/modules/information/Information";
+import Wallpaper from "@app/client/pages/Main/modules/wallpaper/Wallpaper";
+import StoreUser from "@app/client/shared/stores/Store-User";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+
+// console.log("GISKEY", _GISKEY)
 
 function Main() {
-	console.log("GOOGLE ID", _GOOGLE_CLIENT_ID);
+  const navigate = useNavigate()
 
-	const handleClick = () => StoreGoogle.enterWithGoogle();
+  useEffect(() => {
+    if (StoreUser.user) {
+      navigate(`/profile/${StoreUser.user.id}`)
+    }
+  }, [])
 
-	return (
-		// <button onClick={() => StoreError.FourtyFour()}>asdasd</button>
-		<main>
-			<button onClick={handleClick}>Зарегаться в гугл</button>
-		</main>
-	);
+  return (
+    // <button onClick={() => StoreError.FourtyFour()}>asdasd</button>
+    <main className={style.container}>
+      <Wallpaper />
+      <Information />
+    </main>
+  );
 }
 
-export default observer(Main);
+export default Main;

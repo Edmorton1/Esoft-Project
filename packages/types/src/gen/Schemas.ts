@@ -14,11 +14,13 @@ export const GoogleDataSchema = z.object({
 	// given_name: z.preprocess(nullToUndefined, z.string().optional()),
 	// gender: z.preprocess(nullToUndefined, z.string().optional()),
 	name: z.preprocess(nullToUndefined, z.string().optional()),
-	sex: z.preprocess(nullToUndefined, z.string().optional()),
+	// sex: z.preprocess(nullToUndefined, z.string().optional()),
 	google_id: z.string()
 	// picture: z.preprocess(nullToUndefined, z.string().optional()),
 });
 
+export const GoogleDataSchemaWithoutGoogl_id = GoogleDataSchema.omit({google_id: true})
+export type gmailName = z.infer<typeof GoogleDataSchemaWithoutGoogl_id>
 export type redirectPropsType = z.infer<typeof GoogleDataSchema>
 
 // const nullToArr = <T extends z.ZodTypeAny>(schema: T) => z.preprocess(val => {

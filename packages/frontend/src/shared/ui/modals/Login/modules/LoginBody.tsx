@@ -10,6 +10,7 @@ import Button from "@mui/material/Button";
 import { paths } from "@app/shared/PATHS";
 import { Link } from "react-router-dom";
 import StoreLogin from "@app/client/shared/ui/modals/Login/stores/Store-Login";
+import GoogleButton from "@app/client/shared/ui/modals/Login/components/GoogleButton";
 
 function LoginBody({onSubmit, register, errors}: {onSubmit: () => void, register: UseFormRegister<UserDTO>, errors: FieldErrors<UserDTO>}) {
   // const buttonVariant = 'outlined'
@@ -24,6 +25,7 @@ function LoginBody({onSubmit, register, errors}: {onSubmit: () => void, register
         </InputMui>
         <Button type="submit" variant="contained">Войти</Button>
       </form>
+      <GoogleButton />
       <Link to={paths.registration}><Button variant="contained" onClick={StoreLogin.closeModal}>Регистрация</Button></Link>
     </Paper>
 }

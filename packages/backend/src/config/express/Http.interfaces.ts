@@ -4,6 +4,7 @@ import { Session, SessionData } from "express-session";
 export interface SessionDataResolved {
 	userid?: number;
 	role?: UserRoleType;
+	is_google_user?: boolean
 	state?: string;
 }
 

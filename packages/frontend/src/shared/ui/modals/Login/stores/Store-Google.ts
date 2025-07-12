@@ -6,6 +6,7 @@ class StoreGoogle {
     const {data} = await $api.get(serverPaths.googleGetAuthUrl)
     console.log("AUTH URL", data)
     window.location.href = data.url
+    // return data.url
   }
 }
 

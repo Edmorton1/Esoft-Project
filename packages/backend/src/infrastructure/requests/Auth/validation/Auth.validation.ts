@@ -6,16 +6,20 @@ import HttpContext from "@app/server/config/express/Http.context";
 import { GOOGLE_TEMP_COOKIE } from "@app/shared/HEADERS";
 import { GoogleDataSchema } from "@app/types/gen/Schemas";
 
+type UserDTOwithGoogle = UserDTO & {google_id?: string}
+
 class AuthValidation {
-  registration = (ctx: HttpContext): [UserDTO, Omit<FormDTOServer, 'tags' | 'email' | 'password'>, TagsDTO[]] => {
+  registration = (ctx: HttpContext): [UserDTOwithGoogle, Omit<FormDTOServer, 'tags' | 'email' | 'password'>, TagsDTO[]] => {
     logger.info({dataRow: JSON.parse(ctx.body.json)}, "Грязные")
     const cookie = ctx.service.req.cookies[GOOGLE_TEMP_COOKIE]
     logger.info({КУКА_ВНУТРИ_ВАЛИДАЦИИ: cookie})
     let parsedCookie
     try {
       parsedCookie = GoogleDataSchema.parse(JSON.parse(cookie))
+      ctx.session.is_google_user = true
     } catch {
       parsedCookie = undefined
+      ctx.session.is_google_user = false
     }
   
     // logger.info(req.file)
@@ -26,7 +30,7 @@ class AuthValidation {
     if (data.password !== null && data.google_id) throw new Error("Если Google id, то password должен быть null")
       
     const {email, password, google_id, tags, ...formDTO} = data
-    const userDTO: UserDTO = {email, password, google_id}
+    const userDTO: UserDTOwithGoogle = {email, password, google_id}
 
     return [userDTO, formDTO, tags]
   }

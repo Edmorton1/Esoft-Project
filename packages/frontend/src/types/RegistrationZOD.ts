@@ -25,7 +25,7 @@ export const RegistrationDTOClientSchemaWithoutRefline = RegistrationDTOSchema.e
     if (checkEmptyString(val)) return val.trim()
     return undefined
   }, z.string().optional())
-})
+}).merge(UserSchema.pick({google_id: true}))
 
 export const RegistrationDTOClientSchema = RegistrationDTOClientSchemaWithoutRefline.refine(data => data.password === data.confirmPassword, {message: "Пароли не совпадают", path: ['confirmPassword']});
 

@@ -13,10 +13,10 @@ function AccountSettings() {
     <div>
       <Typography>Почта: {StoreUser.user?.email}</Typography>
     </div>
-    <div style={{display: "flex", alignItems: "center"}}>
+    {!StoreUser.is_google_user && <div style={{display: "flex", alignItems: "center"}}>
       <Typography>Пароль: </Typography>
       <IconButton onClick={() => StoreSettings.openModal()}>{<EditSquareIcon/>}</IconButton>
-    </div>
+    </div>}
   </Paper>
 }
 

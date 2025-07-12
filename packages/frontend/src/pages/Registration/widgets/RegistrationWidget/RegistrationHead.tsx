@@ -8,12 +8,10 @@ import StoreRegistration from "@app/client/pages/Registration/widgets/stores/Sto
 import StoreUser from "@app/client/shared/stores/Store-User";
 import { LocationDTO } from "@app/types/gen/dtoObjects";
 
-// type ExtractFieldErrorType<E> = E extends FieldErrors<infer T> ? T : never
-
 function Registration() {
-  // const { register, handleSubmit, setValue, setError, watch, formState: {errors}, control } = useForm({resolver: zodResolver(RegistrationDTOClientSchema), defaultValues: {tags: []}});
   const methods = useForm({resolver: zodResolver(RegistrationDTOClientSchema), defaultValues: {tags: []}});
 
+  // РАБОТА С COOKIES
   useEffect(() => {
     console.log("ПЕРЕЗАПИСЫВАЕМ КУКИСЫ", StoreRegistration.cookie)
     const password = StoreRegistration.cookie?.email ? null : ""
@@ -25,12 +23,14 @@ function Registration() {
     })
   }, [StoreRegistration.cookie])
 
+  // ОБНОВЛЕНИЕ КООРДИНАТ
   useEffect(() => {
     if (StoreRegistration.defaultCoords?.city) {
       methods.setValue("city", StoreRegistration.defaultCoords.city)
     }
   }, [StoreRegistration.defaultCoords])
 
+  // ОБНОВЛЕНИЕ КООРДИНАТ
   useEffect(() => {
     if (StoreRegistration.coords?.city) {
       methods.setValue("city", StoreRegistration.coords.city)
@@ -47,8 +47,6 @@ function Registration() {
       })
       return;
     }
-
-    console.log("ПРИНЯЛ ФОРМУ1")
 
     const location: Omit<LocationDTO, 'city'> | undefined = StoreRegistration.coords ? {lng: StoreRegistration.coords.lng, lat: StoreRegistration.coords.lat} : undefined
     const form: RegistrationDTOClient = {...data, location}

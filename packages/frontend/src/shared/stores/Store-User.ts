@@ -17,9 +17,11 @@ import { toSOSe } from "@app/shared/JSONParsers";
 import StoreLogin from "@app/client/shared/ui/modals/Login/stores/Store-Login";
 import StorePairs from "@app/client/pages/Pairs/widgets/stores/Store-Pairs";
 import { LoginErrorTypes } from "@app/types/gen/ErrorTypes";
+import { IS_GOOGLE_USER } from "@app/shared/HEADERS";
 
 class StoreUser {
 	user: User | null | undefined = undefined;
+	is_google_user: boolean = false;
 
 	constructor() {
 		makeAutoObservable(this);
@@ -90,13 +92,16 @@ class StoreUser {
 		window.location.href = "/";
 	};
 
-	initial = () => {
-		$api
-			.get(serverPaths.initial)
-			.then(data => runInAction(() => (this.user = data.data)))
-			.then(() => this.loadModules())
-
-			.catch(err => console.log(err));
+	initial = async () => {
+		try {
+			const request = await $api.get(serverPaths.initial);
+			runInAction(() => (this.user = request.data));
+			this.is_google_user = request.headers[IS_GOOGLE_USER] === "true"
+			this.loadModules();
+			console.log("ИС ГУГЛ ЮЗЕР", this.is_google_user)
+		} catch (err) {
+			console.log(err);
+		}
 	};
 
 	registration = async (user: RegistrationDTOClient) => {

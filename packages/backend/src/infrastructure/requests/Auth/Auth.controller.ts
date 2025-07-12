@@ -12,6 +12,8 @@ import { upload } from "@app/server/infrastructure/requests/shared/multer";
 import HttpContext from "@app/server/config/express/Http.context";
 import AuthMiddleware from "@app/server/infrastructure/requests/shared/middlewares/AuthMiddleware";
 import { LoginErrorTypes } from "@app/types/gen/ErrorTypes";
+import { GOOGLE_TEMP_COOKIE } from "@app/shared/HEADERS";
+import { IS_GOOGLE_USER } from "../../../../../shared/src/HEADERS";
 // import SessionRedis from "@app/server/infrastructure/redis/SessionRedis";
 
 interface IAuthController {
@@ -70,6 +72,8 @@ class AuthController extends BaseController implements IAuthController {
     ctx.session.userid = total.user.id
     ctx.session.role = total.user.role
 
+    ctx.clearCookie(GOOGLE_TEMP_COOKIE)
+
     ctx.json(total)
   }
 
@@ -107,6 +111,8 @@ class AuthController extends BaseController implements IAuthController {
 
     ctx.session.userid = user.id
     ctx.session.role = user.role
+    ctx.session.is_google_user = false
+
     logger.info({SESSION: ctx.session})
     ctx.json(user)
   }
@@ -122,6 +128,7 @@ class AuthController extends BaseController implements IAuthController {
     if (!userid) {ctx.sendStatus(401); return}
 
     const [user] = await this.ORM.getById(userid, "users")
+    ctx.set(IS_GOOGLE_USER, String(ctx.session.is_google_user))
     ctx.json(user)
   }
 }

@@ -6,8 +6,8 @@ $gp: 10px;
 	display: flex;
 	flex-direction: column;
 	gap: $gp;
-	height: c.$h;
 	overflow: auto;
+	height: c.$hw;
 
 	&__actions {
 		gap: 10px;

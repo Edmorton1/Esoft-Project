@@ -45,7 +45,7 @@ class GoogleController extends BaseController implements IGoogleController {
 			{
 				path: serverPaths.validateGoogleCookie,
 				method: "get",
-				handle: this.validateGoogleCookie
+				handle: this.validateGoogleCookie,
 			},
 			{
 				path: serverPaths.googleGetToken,
@@ -60,30 +60,49 @@ class GoogleController extends BaseController implements IGoogleController {
 		]);
 	}
 
+	private getGoogleId = async (id_token: string) => {
+		const ticket = await this.oauth2Client.verifyIdToken({
+			idToken: id_token,
+			audience: this.configService.get("GOOGLE_CLIENT_ID"),
+		});
+		const google_id = ticket.getPayload()?.sub;
+		this.logger.info({ ГУГЛ_АЙДИ: google_id });
+		if (!google_id) {
+			throw new Error("Нет GoogleID");
+		}
+		return google_id;
+	};
+
 	private getInfo = async (google_id: string): Promise<redirectPropsType> => {
 		const oauth2 = google.oauth2({ version: "v2", auth: this.oauth2Client });
 		const { data } = await oauth2.userinfo.get();
-		this.logger.info({data_user_google: data})
-		if (!data.email) throw new Error("НЕТУ GMAIL")
-    const parsed = GoogleDataSchema.parse({...data, name: data.given_name, sex: data.gender, google_id})
+		this.logger.info({ data_user_google: data });
+		if (!data.email) throw new Error("НЕТУ GMAIL");
+		const parsed = GoogleDataSchema.parse({
+			...data,
+			name: data.given_name,
+			sex: data.gender,
+			google_id,
+		});
 		// this.logger.info({email, name, gender, picture})
 		return parsed;
 	};
 
-	validateGoogleCookie: IGoogleController['validateGoogleCookie'] = async (ctx) => {
-		const googleCookie = ctx.service.req.cookies[GOOGLE_TEMP_COOKIE]
-		this.logger.info({NOT_GOOGLE_COOKIE: googleCookie})
+	validateGoogleCookie: IGoogleController["validateGoogleCookie"] = async ctx => {
+		const googleCookie = ctx.service.req.cookies[GOOGLE_TEMP_COOKIE];
+		this.logger.info({ NOT_GOOGLE_COOKIE: googleCookie });
 		if (!googleCookie) {
-			ctx.json({googleCookie: null})
+			ctx.json({ googleCookie: null });
 			return;
 		}
-		this.logger.info({GOOGLE_COOKIE: googleCookie})
+		this.logger.info({ GOOGLE_COOKIE: googleCookie });
 		try {
-			ctx.json(JSON.parse(googleCookie))
+			const {google_id, ...data} = GoogleDataSchema.parse(JSON.parse(googleCookie))
+			ctx.json({googleCookie: data});
 		} catch {
-			ctx.json({googleCookie: null})
+			ctx.json({ googleCookie: null });
 		}
-	}
+	};
 
 	getAuthUrl: IGoogleController["getAuthUrl"] = async ctx => {
 		const scope = ["email", "openid", "profile"];
@@ -107,7 +126,7 @@ class GoogleController extends BaseController implements IGoogleController {
 		if (q.error) {
 			this.logger.error(q.error);
 		} else if (q.state !== ctx.session.state) {
-			console.log("State mismatch. Possible CSRF attack");
+			this.logger.error("State mismatch. Possible CSRF attack");
 			ctx.end("State mismatch. Possible CSRF attack");
 		} else {
 			const code = Array.isArray(q.code) ? q.code[0] : q.code;
@@ -115,19 +134,9 @@ class GoogleController extends BaseController implements IGoogleController {
 
 			const { tokens } = await this.oauth2Client.getToken(code);
 			this.oauth2Client.setCredentials(tokens);
-			
-			
-			const ticket = await this.oauth2Client.verifyIdToken({
-				idToken: tokens.id_token!,
-				audience: this.configService.get("GOOGLE_CLIENT_ID")
-			})
 
-			const google_id = ticket.getPayload()?.sub
-			this.logger.info({ГУГЛ_АЙДИ: google_id})
-
-			if (!google_id) {
-				throw new Error("Нет GoogleID")
-			}
+			if (!tokens.id_token) throw new Error("Нет token id");
+			const google_id = await this.getGoogleId(tokens.id_token);
 
 			const userInfo = await this.getInfo(google_id);
 			const userid = await this.googleService.is_authorize(userInfo.email, google_id);
@@ -135,16 +144,20 @@ class GoogleController extends BaseController implements IGoogleController {
 			if (userid) {
 				ctx.session.userid = userid;
 				ctx.session.role = "user";
+				ctx.session.state = undefined;
+				ctx.session.is_google_user = true
 
 				ctx.redirect(URL_CLIENT + paths.profile + `/${userid}`);
 			} else {
-        ctx.service.res.cookie(GOOGLE_TEMP_COOKIE, JSON.stringify(userInfo), {
-          // FIXME: КОГДА БУДЕТ HTTPS ИСПРАВИТЬ
-          secure: false,
-          httpOnly: true,
-          sameSite: "lax",
-          maxAge: 5 * 60 * 1000 * 60
-        })
+				ctx.session.state = undefined;
+				
+				ctx.service.res.cookie(GOOGLE_TEMP_COOKIE, JSON.stringify(userInfo), {
+					// FIXME: КОГДА БУДЕТ HTTPS ИСПРАВИТЬ
+					secure: false,
+					httpOnly: true,
+					sameSite: "lax",
+					maxAge: 5 * 60 * 1000,
+				});
 				ctx.redirect(URL_CLIENT + paths.registration);
 			}
 
