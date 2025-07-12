@@ -80,12 +80,14 @@ class LikesModule implements LikesModuleRepo {
 
 		const totalFields = this.utils.fieldsToArr(undefined, "forms", true, lnglat);
 		totalFields.push(this.db.raw("MAX(likes.id) as cursor"))
+
+		const db = this.db
+		
 		const query = this.sqlForm.requestToFormManyParams({
 			name: name as string,
 			params: ids,
 		})
-			const db = this.db;
-			db.leftJoin("likes", function() {
+			.leftJoin("likes", function() {
 				this.on("likes.userid", "forms.id")
 				.andOn("likes.liked_userid", "=", db.raw("?", [userid]))
 			})

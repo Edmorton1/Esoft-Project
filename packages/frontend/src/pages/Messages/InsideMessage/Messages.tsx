@@ -26,7 +26,7 @@ function Messages() {
 				<SentHead toid={toid} />
 			) : (
 				<Subtitle className={style.section__form}>
-					Вы не можете писать и звонить этому пользователю, пока не понравитесь ему
+					Вы не можете писать и звонить пользователю, пока не понравитесь ему
 				</Subtitle>
 			)}
 			{/* <button onClick={() => console.log(StoreMessages.cursor)}>Курсор</button> */}

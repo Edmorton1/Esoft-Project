@@ -72,7 +72,7 @@ function ProfileSettings() {
         </Paper>
       </Box>
 
-      <MapWidget height="500px" width="100%" callback={handleLocation} />
+      <MapWidget height="500px" width="100%" callback={handleLocation} showCoordsMarker={true} />
 
       <Button type="submit" variant="contained">Сохранить профиль</Button>
     </Paper>

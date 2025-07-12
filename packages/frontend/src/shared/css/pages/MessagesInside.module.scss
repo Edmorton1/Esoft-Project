@@ -10,7 +10,7 @@ $mw: 250px;
 		// height: 80%;
 		// height: 90%;
 		// min-height: 650px;
-		height: calc(#{c.$h} - 14.5vh);
+		height: calc(#{c.$h} - 25vh);
 		overflow-y: auto;
 
 		&--files {

@@ -7,13 +7,14 @@ import GoogleService from "@app/server/infrastructure/requests/Google/service/Go
 import { paths, serverPaths } from "@app/shared/PATHS";
 import { google } from "googleapis";
 import { inject, injectable } from "inversify";
-import crypto from "crypto";
 import { URL_CLIENT, URL_SERVER } from "@app/shared/URLS";
 import { PREFIX } from "@app/shared/CONST";
 import url from "url";
 import { OAuth2Client } from "google-auth-library";
 import { GoogleDataSchema, redirectPropsType } from "@app/types/gen/Schemas";
 import { GOOGLE_TEMP_COOKIE } from "@app/shared/HEADERS";
+import CryptoService from "@app/server/infrastructure/requests/shared/services/Crypto.service";
+import crypto from "crypto"
 
 interface IGoogleController {
 	getAuthUrl: (ctx: HttpContext) => Promise<void>;
@@ -32,6 +33,9 @@ class GoogleController extends BaseController implements IGoogleController {
 		private readonly googleService: GoogleService,
 		@inject(ConfigService)
 		private readonly configService: ConfigService,
+		// КУКИ ЕНКРИП
+		@inject(CryptoService)
+		private readonly cookieEncrypt: CryptoService
 	) {
 		super();
 
@@ -57,7 +61,22 @@ class GoogleController extends BaseController implements IGoogleController {
 				method: "get",
 				handle: this.getAuthUrl,
 			},
+			// ПОТОМ УБРАТЬ
+			{
+				path: "/encrypt",
+				method: "get",
+				handle: this.test
+			}
 		]);
+	}
+
+	// ПОТОМ УБРАТЬ
+	test = async (ctx: HttpContext) => {
+		const encrypt = this.cookieEncrypt.encrypt("super secret")
+		const decrypt = this.cookieEncrypt.decrypt(encrypt)
+		const random_32_bit = crypto.randomBytes(32).toString("hex")
+		this.logger.info({random_32_bit})
+		ctx.json({encrypt, decrypt, random_32_bit})
 	}
 
 	private getGoogleId = async (id_token: string) => {
@@ -97,7 +116,8 @@ class GoogleController extends BaseController implements IGoogleController {
 		}
 		this.logger.info({ GOOGLE_COOKIE: googleCookie });
 		try {
-			const {google_id, ...data} = GoogleDataSchema.parse(JSON.parse(googleCookie))
+			const decrypt_cookie = this.cookieEncrypt.decrypt(googleCookie)
+			const {google_id, ...data} = GoogleDataSchema.parse(decrypt_cookie)
 			ctx.json({googleCookie: data});
 		} catch {
 			ctx.json({ googleCookie: null });
@@ -151,7 +171,9 @@ class GoogleController extends BaseController implements IGoogleController {
 			} else {
 				ctx.session.state = undefined;
 				
-				ctx.service.res.cookie(GOOGLE_TEMP_COOKIE, JSON.stringify(userInfo), {
+				const encrypt_userInfo = this.cookieEncrypt.encrypt(userInfo)
+				
+				ctx.service.res.cookie(GOOGLE_TEMP_COOKIE, encrypt_userInfo, {
 					// FIXME: КОГДА БУДЕТ HTTPS ИСПРАВИТЬ
 					secure: false,
 					httpOnly: true,

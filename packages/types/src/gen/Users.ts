@@ -88,7 +88,7 @@ export const FormSchema = z.object({
 export const PostsSchema = z.object({
 	id: zid,
 	userid: zid,
-	text: z.string().max(4096),
+	text: z.string().trim().nonempty().max(4096),
 	files: z.array(z.string()).max(3),
 	created_at: zISOString,
 });

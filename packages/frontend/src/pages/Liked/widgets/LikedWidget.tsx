@@ -24,7 +24,7 @@ function LikedWidget() {
     "desc",
     "cursor"
   );
-
+  
   return (
     <>
       <Title>Вы понравились этим пользователям</Title>

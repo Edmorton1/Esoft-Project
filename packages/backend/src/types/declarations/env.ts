@@ -7,8 +7,8 @@ export interface IEnv {
 	// URL_CLIENT: string;
 	// URL_CLIENT_WS: string;
 
-	ACCESS_PRIVATE_KEY: string;
-	REFRESH_PRIVATE_KEY: string;
+	// ACCESS_PRIVATE_KEY: string;
+	// REFRESH_PRIVATE_KEY: string;
 
 	YANDEX_ID: string;
 	YANDEX_SECRET: string;
@@ -17,6 +17,8 @@ export interface IEnv {
 	BUCKET_URL: string;
 
 	SESSION_SECRET: string;
+
+	COOKIE_SECRET: string;
 
 	GOOGLE_CLIENT_ID: string;
 	GOOGLE_CLIENT_SECRET: string;

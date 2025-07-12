@@ -12,7 +12,7 @@ class MessagesValidation {
     const data = MessageDTOServerSchema.parse({...JSON.parse(ctx.body.json)!, files: ctx.files, fromid: ctx.session.userid, toid})
     const { files, ...message } = data
 
-    logger.info({SEND_MESSAGE: files, message})
+    logger.info({SEND_MESSAGE: files.length, message})
     return [message, files]
   };
 

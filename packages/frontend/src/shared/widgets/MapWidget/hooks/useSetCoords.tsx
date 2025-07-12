@@ -6,17 +6,18 @@ import { LocationCallback } from "@app/client/pages/Settings/widgets/Profile/Pro
 import { LocationDTO } from "@app/types/gen/dtoObjects";
 import axios from "axios";
 
-function useSetCoords(mapgl: mapDTO[0], map: mapDTO[1], callback: LocationCallback, coords?: LocationDTO | null) {
+function useSetCoords(mapgl: mapDTO[0], map: mapDTO[1], callback: LocationCallback, coords: LocationDTO | null, showCoordsMarker: boolean) {
   useEffect(() => {
     if (!mapgl || !map) return;
 
     const marker = createRoots(<MarkerReg />)
 
-    new mapgl.HtmlMarker(map, {
+    if (showCoordsMarker) {
+      new mapgl.HtmlMarker(map, {
       coordinates: coords ? [coords.lng, coords.lat] : [37.6175, 55.7520],
       html: marker,
       anchor: [24, 44]
-    })
+    })}
 
     map.on('click', async (e) => {
       

@@ -8,15 +8,16 @@ import { LocationCallback } from "@app/client/pages/Settings/widgets/Profile/Pro
 interface propsInterface {
   callback: LocationCallback,
   width: string,
-  height: string
+  height: string,
+  showCoordsMarker: boolean
 }
 
-function MapWidget({callback, width, height}: propsInterface) {
+function MapWidget({callback, width, height, showCoordsMarker}: propsInterface) {
   const containerRef = useRef(null)
 	const coords = useGeolocation();
 
   const [mapgl, map] = useMap(containerRef, coords)
-  useSetCoords(mapgl, map, (data) => callback(data), coords)
+  useSetCoords(mapgl, map, (data) => callback(data), coords, showCoordsMarker)
 
 
   return <MapWrapper width={width} height={height} ref={containerRef} />

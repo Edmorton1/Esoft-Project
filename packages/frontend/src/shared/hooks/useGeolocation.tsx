@@ -9,20 +9,17 @@ function useGeolocation(callback?: (location: LocationDTO) => void): LocationDTO
   const [city, setCity] = useState<LocationDTO | null>(null);
   
   const SET_DEFAULT = () => {
-    let standart;
-    console.log("USE LOCATION", StoreForm.form?.location, StoreForm.form?.city)
-    if (StoreForm.form?.location && StoreForm.form?.city) {
-      standart = {...StoreForm.form.location, city: StoreForm.form.city}
-    } else {
-      standart = {lng: 37.6175, lat: 55.7520, city: "Москва"}
-    }
+    const standart = {lng: 37.6175, lat: 55.7520, city: "Москва"};
     setCity(standart)
     console.log({lng: 37.6175, lat: 55.7520, city: "Москва"})
     // callback && callback(standart)
   }
 
   useEffect(() => {
-    if ("geolocation" in navigator) {
+    if (StoreForm.form?.location && StoreForm.form.location.lng && StoreForm.form.location.lat) {
+      const data = {...StoreForm.form.location, city: StoreForm.form.city}
+      setCity(data)
+    } else if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
         async (position) => {
           const lat = position.coords.latitude;

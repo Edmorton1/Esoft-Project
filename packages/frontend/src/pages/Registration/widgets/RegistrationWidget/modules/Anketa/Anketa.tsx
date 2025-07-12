@@ -63,7 +63,7 @@ function Anketa() {
 		</Box>
 
 		{/* <Typography variant="h4" color="warning" textAlign={"center"}>ВНИМАНИЕ! ЕСЛИ ВЫ УКАЖЕТЕ ГЕОЛОКАЦИЮ ЕЁ БУДУТ ВИДЕТЬ ВСЕ, КТО ЗАЙДЁТ НА САЙТ!</Typography> */}
-		<MapWidget height="500px" width="100%" callback={data => StoreRegistration.setCoords(data)} />
+		<MapWidget height="500px" width="100%" callback={data => StoreRegistration.setCoords(data)} showCoordsMarker={false} />
 		<Button variant="contained" type="submit">
 			Готво
 		</Button>
