@@ -4,13 +4,12 @@ import { serverPaths } from "@app/shared/PATHS";
 import { LocationDTO } from "@app/types/gen/dtoObjects";
 import { makeAutoObservable } from "mobx";
 import SharedRequests from "@app/client/shared/funcs/Shared-Requests";
-import { Form } from "@app/types/gen/Users";
-import { GoogleDataSchema } from "@app/types/gen/Schemas";
+import { GoogleDataSchema, redirectPropsType } from "@app/types/gen/Schemas";
 
 class StoreRegistration {
 	defaultCoords: null | LocationDTO = null;
 	coords: null | LocationDTO = null;
-	cookie: Partial<Form> | object = {}
+	cookie: redirectPropsType | null = null
 
 	constructor() {
 		makeAutoObservable(this);
@@ -19,9 +18,12 @@ class StoreRegistration {
 	// googleCookie = async (): Promise<Partial<Form>> => {
 	googleCookie = async () => {
 		const {data} = await $api.get(serverPaths.validateGoogleCookie)
-		const parsed = GoogleDataSchema.parse(data)
-		console.log("КУКА ИЗ ЗАПРОСА", parsed)
-		this.cookie = parsed
+		const parsed = GoogleDataSchema.safeParse(data)
+		console.log("КУКА ИЗ ЗАПРОСА", data, parsed)
+		if (parsed.success) {
+			return this.cookie = parsed.data
+		}
+		return this.cookie = null
 	}
 
 	setDefaultCoords = (coords: LocationDTO) => {

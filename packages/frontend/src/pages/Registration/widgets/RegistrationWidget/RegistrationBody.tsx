@@ -25,14 +25,15 @@ function RegistrationBody({onSubmit}: propsInterface) {
   const [input, setInput] = useState('')
 
   const tags: TagsDTO[] = useWatch({name: 'tags'})
+  const disableGoogle = typeof StoreRegistration.cookie?.email === "string"
 
   return <form onSubmit={onSubmit} className={style.form}>
-  {/* <button onClick={() => console.log(errors)}>errors</button> */}
+  <button onClick={() => console.log(errors)}>errors</button>
   {/* <div>Добро пожаловать: {StoreUser.user?.email}</div>
   <button onClick={() => console.log(errors)}>errors</button>
   <button onClick={() => console.log(toJS(StoreRegistration.defaultCoords), toJS(StoreRegistration.coords))}>LOG</button> */}
   {/* <button onClick={() => StoreRegistration.setDefaultCoords({city: "asdasd", lng: 123, lat: 123})}>sadasd</button> */}
-  <section>
+  {!disableGoogle && <section>
     <Title>Регистрация</Title>
 
     <Paper className={style.form__paper}>
@@ -44,7 +45,7 @@ function RegistrationBody({onSubmit}: propsInterface) {
 
         <InputMui type="password" error={errors.confirmPassword} id="confirmPassword" register={register} text="Повторите пароль" />
     </Paper>
-  </section>
+  </section>}
 
   <section>
     <Title>Анкета</Title>

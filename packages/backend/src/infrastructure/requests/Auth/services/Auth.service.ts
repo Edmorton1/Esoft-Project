@@ -1,4 +1,4 @@
-import { FormDTOServer } from "@app/server/infrastructure/requests/Auth/validation/Auth.zod";
+import { FormDTOServer } from "@app/server/types/Auth.zod";
 import { FormDTO, TagsDTO, UserDTO } from "@app/types/gen/dtoObjects";
 import { Form, FormSchema, User } from "@app/types/gen/Users";
 import ORM from "@app/server/infrastructure/helpers/databases/postgres/ORM";
@@ -26,6 +26,7 @@ class AuthService implements AuthServiceRepo{
 	) {}
 	
 	registration: AuthServiceRepo['registration'] = async (formDTO, userDTO, tags) => {
+		this.logger.info({ЮЗЕР_ДТО: userDTO})
 		const [user] = await this.ORM.post(userDTO, "users");
 		const avatar = formDTO.avatar && (await this.UploadFileService.uploadAvatar(formDTO.avatar));
 		const formPost: FormDTO = {...formDTO, avatar, id: user.id};

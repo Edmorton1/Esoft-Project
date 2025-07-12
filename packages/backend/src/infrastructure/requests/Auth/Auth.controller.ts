@@ -95,6 +95,7 @@ class AuthController extends BaseController implements IAuthController {
       return;
     }
 
+    if (dto.password === null || user.password === null) throw new Error("Password не моежт быть null")
     const passwordValidate =  await bcrypt.compare(dto.password, user.password)
     if (!passwordValidate) {
       logger.info({user, STATUS: "НЕВЕРНЫЙ ПАРОЛЬ"})

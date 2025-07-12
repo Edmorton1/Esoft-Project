@@ -15,7 +15,8 @@ const ProfileSchemaWithoutTransform = RegistrationDTOClientSchemaWithoutRefline.
   email: true,
   password: true,
   confirmPassword: true,
-  avatar: true
+  avatar: true,
+  google_id: true
 }).extend({
   avatar: z.any()
 }).partial()

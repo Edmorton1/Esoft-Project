@@ -34,8 +34,8 @@ class SettingsService implements SettingsServiceRepo {
 		oldPass,
 		newPass,
 	) => {
-		const bdPass = (await this.ORM.getById(id, "users", "password"))[0]
-			.password;
+		const bdPass = (await this.ORM.getById(id, "users", "password"))[0].password;
+		if (bdPass === null) throw new Error("Password не может быть null")
 		this.logger.info({ bdPass });
 		const rightPass = await bcrypt.compare(oldPass, bdPass);
 		this.logger.info({ password: rightPass });

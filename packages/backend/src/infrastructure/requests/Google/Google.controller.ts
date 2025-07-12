@@ -64,6 +64,7 @@ class GoogleController extends BaseController implements IGoogleController {
 		const oauth2 = google.oauth2({ version: "v2", auth: this.oauth2Client });
 		const { data } = await oauth2.userinfo.get();
 		this.logger.info({data_user_google: data})
+		if (!data.email) throw new Error("НЕТУ GMAIL")
     const parsed = GoogleDataSchema.parse({...data, name: data.given_name, sex: data.gender, google_id})
 		// this.logger.info({email, name, gender, picture})
 		return parsed;
@@ -71,11 +72,17 @@ class GoogleController extends BaseController implements IGoogleController {
 
 	validateGoogleCookie: IGoogleController['validateGoogleCookie'] = async (ctx) => {
 		const googleCookie = ctx.service.req.cookies[GOOGLE_TEMP_COOKIE]
+		this.logger.info({NOT_GOOGLE_COOKIE: googleCookie})
 		if (!googleCookie) {
-			throw new Error("Нет Google Cookie")
+			ctx.json({googleCookie: null})
+			return;
 		}
 		this.logger.info({GOOGLE_COOKIE: googleCookie})
-		ctx.send(200, googleCookie)
+		try {
+			ctx.json(JSON.parse(googleCookie))
+		} catch {
+			ctx.json({googleCookie: null})
+		}
 	}
 
 	getAuthUrl: IGoogleController["getAuthUrl"] = async ctx => {
@@ -123,10 +130,7 @@ class GoogleController extends BaseController implements IGoogleController {
 			}
 
 			const userInfo = await this.getInfo(google_id);
-			let userid;
-			if (userInfo.email && google_id) {
-				userid = await this.googleService.is_authorize(userInfo.email, google_id);
-			}
+			const userid = await this.googleService.is_authorize(userInfo.email, google_id);
 
 			if (userid) {
 				ctx.session.userid = userid;

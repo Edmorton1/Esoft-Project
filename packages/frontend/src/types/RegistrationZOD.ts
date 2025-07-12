@@ -5,7 +5,7 @@ import { z } from "zod";
 
 export const RegistrationDTOClientSchemaWithoutRefline = RegistrationDTOSchema.extend({
   email: zstring.email(),
-  confirmPassword: z.string(),
+  confirmPassword: z.string().nullable(),
   
   name: z.string().trim().nonempty().min(2).transform(val => toCapitalize(val)),
   
@@ -18,20 +18,6 @@ export const RegistrationDTOClientSchemaWithoutRefline = RegistrationDTOSchema.e
       return false
     } return val
   }, z.boolean()),
-
-  // tags: z.preprocess(val => {
-  //   if (checkEmptyString(val)) {
-  //     const tags = val.split(',').map(e => e.trim().toLowerCase()).filter(e => e !== '' && e)
-  //     return Array.from(new Set(tags)).map(e => ({tag: e}))
-  //   }
-  //   return []
-  // }, z.array(TagsSchemaDTO)),
-
-  // tags: z.preprocess(val => {
-  //   if (Array.isArray(val) && val.every(e => typeof e === 'string')) {
-  //     return val.map(e => e.trim().toLowerCase())
-  //   } return val
-  // }, z.array(TagsSchemaDTO)),
 
   city: z.string().trim().nonempty("Город обязателен").transform(toCapitalize),
 

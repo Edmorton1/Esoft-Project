@@ -16,8 +16,11 @@ function Registration() {
 
   useEffect(() => {
     console.log("ПЕРЕЗАПИСЫВАЕМ КУКИСЫ", StoreRegistration.cookie)
+    const password = StoreRegistration.cookie?.email ? null : ""
     methods.reset({
       tags: [],
+      password,
+      confirmPassword: password,
       ...StoreRegistration.cookie
     })
   }, [StoreRegistration.cookie])

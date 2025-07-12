@@ -19,6 +19,7 @@ function PasswordModal() {
 
   const onSubmit = async (data: any) => {
     const parse = PasswordSchema.parse(data)
+    if (parse.pass === null || parse.new === null) throw Error("Пароль не может быть null")
     console.log(parse)
     StoreSettings.comparePassword(parse.pass, parse.new, setError, navigate)
   }

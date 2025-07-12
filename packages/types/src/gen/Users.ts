@@ -11,7 +11,7 @@ export const LocationSchema = z.object({
 	lat: z.number(),
 });
 
-export const PasswordZOD = z.string().nonempty();
+export const PasswordZOD = z.string().nonempty().nullable();
 
 export const UserSchema = z.object({
 	id: zid,
@@ -20,7 +20,7 @@ export const UserSchema = z.object({
 	// password: z.string().nonempty().min(6),
 	password: PasswordZOD,
 	role: UserRoleSchema,
-	google_id: z.string().max(21),
+	google_id: z.preprocess(nullToUndefined, z.string().max(21).optional()),
 	created_at: zISOString,
 });
 

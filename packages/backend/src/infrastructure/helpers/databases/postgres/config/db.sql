@@ -9,11 +9,15 @@ CREATE TYPE target_type AS ENUM('friend', 'relation', 'chat', 'hobby');
 CREATE TABLE users (
 	id SERIAL PRIMARY KEY,
 	email VARCHAR(256) UNIQUE NOT NULL,
-	password VARCHAR(256) NOT NULL,
+	password VARCHAR(256),
 	role role_type DEFAULT 'user' NOT NULL,
 	google_id VARCHAR(21) UNIQUE,
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
+
+ADD CONSTRAINT auth_method_check
+CHECK ((google_id IS NOT NULL AND password IS NULL)
+OR (google_id IS NULL AND password IS NOT NULL));
 
 CREATE TABLE forms (
 	id INT PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE NOT NULL,

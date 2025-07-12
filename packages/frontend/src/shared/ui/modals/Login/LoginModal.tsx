@@ -3,12 +3,13 @@ import StoreLogin from "@app/client/shared/ui/modals/Login/stores/Store-Login";
 import StoreUser from "@app/client/shared/stores/Store-User";
 import BaseModal from "@app/client/shared/ui/modals/BaseModal/BaseModal";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { UserDTO, UserDTOSchema } from "@app/types/gen/dtoObjects";
+import { UserDTO } from "@app/types/gen/dtoObjects";
 import { observer } from "mobx-react-lite";
 import { useForm } from "react-hook-form";
+import { UserSchema } from "@app/types/gen/Users";
 
 function Login() {
-  const { register, handleSubmit, setError, formState: {errors} } = useForm<UserDTO>({resolver: zodResolver(UserDTOSchema)});
+  const { register, handleSubmit, setError, formState: {errors} } = useForm<UserDTO>({resolver: zodResolver(UserSchema.pick({email: true, password: true}))});
 
   const handleLogin = (data: UserDTO) => {
     StoreUser.login(data, setError)

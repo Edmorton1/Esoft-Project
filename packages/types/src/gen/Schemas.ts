@@ -10,7 +10,7 @@ export const MessageFormSchema = z.object({
 export const zstrnum = z.coerce.number()
 
 export const GoogleDataSchema = z.object({
-	email: z.preprocess(nullToUndefined, z.string().optional()),
+	email: z.string(),
 	// given_name: z.preprocess(nullToUndefined, z.string().optional()),
 	// gender: z.preprocess(nullToUndefined, z.string().optional()),
 	name: z.preprocess(nullToUndefined, z.string().optional()),

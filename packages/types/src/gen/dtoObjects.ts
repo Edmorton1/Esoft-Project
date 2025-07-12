@@ -2,7 +2,7 @@ import { FormSchema, LocationSchema, MessageSchema, PostsSchema, TagsSchema, Use
 import { zid, zstring } from "@app/types/shared/zodSnippets";
 import { z } from 'zod';
 
-export const UserDTOSchema = UserSchema.pick({email: true, password: true})
+export const UserDTOSchema = UserSchema.pick({email: true, password: true, google_id: true})
 
 export const PayloadDTOSchema = UserSchema.pick({id: true, role: true});
 
