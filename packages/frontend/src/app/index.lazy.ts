@@ -10,7 +10,6 @@ export const LazySettings = lazy(() => import('@app/client/pages/Settings/Settin
 export const LazyMap = lazy(() => import('@app/client/pages/Map/Map'))
 export const LazyLiked = lazy(() => import("@app/client/pages/Liked/Liked"))
 export const LazyMessage = lazy(() => import("@app/client/pages/Messages/outsideMessage/Message"))
-export const LazyAdmin = lazy(() => import("@app/client/pages/Admin/Admin"))
 export const LazyPairs = lazy(() => import("@app/client/pages/Pairs/Pairs"))
 
 export const LazyFourHundredFour = lazy(() => import('@app/client/shared/Errors/404'))

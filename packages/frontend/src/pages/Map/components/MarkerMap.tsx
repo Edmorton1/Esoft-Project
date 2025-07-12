@@ -6,7 +6,7 @@ function MarkerMap({avatar, sex}: {avatar?: string, sex: boolean}) {
 	return (
 		<div
 			style={{borderColor: sex ? '#4287f5' : 'pink'}}
-			className={style.map__marker}>
+			className={style.marker}>
 			<img src={avatar || PLACEHOLDER_IMG} alt="" />
 		</div>
 	);

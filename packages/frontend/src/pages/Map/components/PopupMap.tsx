@@ -12,13 +12,13 @@ function PopupMap({ id }: { id: number }) {
 	const form = useGetBy<"forms">(`${serverPaths.forms}/${id}`, {returnOne: true,});
 
 	return (
-		<Card className={styles.map__popup}>
+		<Card className={styles.popup}>
 			<a
 				href={`${paths.profile}/${id}`}
 				target="_blank"
 				rel="noopener noreferrer">
 				<CardHeader
-					className={styles.map__popup_header}
+					className={styles.popup_header}
 					title={
 						<Typography variant="h6" sx={{ fontWeight: 600 }}>
 							{form?.name}
@@ -27,7 +27,7 @@ function PopupMap({ id }: { id: number }) {
 				/>
 			</a>
 
-			<CardContent className={styles.map__popup_content}>
+			<CardContent className={styles.popup_content}>
 				<Typography variant="body2" color="text.secondary">
 					Возраст: <strong>{form?.age}</strong>
 				</Typography>

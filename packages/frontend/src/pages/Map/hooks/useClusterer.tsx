@@ -46,7 +46,7 @@ function useClusterer(
 		const popup = new mapgl.HtmlMarker(map, {
 			coordinates: [0, 0],
 			html: popupContainer,
-			anchor: [80, 145],
+			anchor: [100, 185],
 			zIndex: 1,
 		});
 

@@ -1,51 +1,42 @@
-@use "@app/client/shared/css/const" as c;
+.marker {
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	border: 2px solid blue;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+	transition: all 0.3s;
 
-.map {
-  padding: c.$ig;
-  // background-color: red;
+	// pointer-events: all !important;
+	img {
+		width: 100%;
+		height: 100%;
+		border-radius: 50%;
+	}
 
-  &__marker {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    border: 2px solid blue;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    transition: all 0.3s;
-
-    // pointer-events: all !important;
-   img {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-   }
-
-    &:hover {
-      border: 2px solid red !important;
-    }
-  }
-  
-  &__popup {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 200px;
-    height: 145px;
-
-    box-shadow: 3px 3px 3px 3px rgb(0, 0, 0, 0.3) !important;
-    border-radius: 10px !important;
-
-    &_header {
-      padding: 0px !important;
-    }
-
-    &_content {
-      padding: 5px !important;
-    }
-  }
+	&:hover {
+		border: 2px solid red !important;
+	}
 }
 
+.popup {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	width: 200px;
+	height: 145px;
 
+	box-shadow: 3px 3px 3px 3px rgb(0, 0, 0, 0.3) !important;
+	border-radius: 10px !important;
+
+	&_header {
+		padding: 0px !important;
+	}
+
+	&_content {
+		padding: 5px !important;
+	}
+}

@@ -13,11 +13,13 @@ function CreatePost() {
 	const {
 		register,
 		handleSubmit,
+		reset,
 	} = useForm({ resolver: zodResolver(PostsDTOClientSchema), defaultValues: {userid: StoreUser.user?.id} });
 
 	const store = usePostsStore()
 
 	const onSubmit = handleSubmit(data => {
+		reset()
 		store.post(data)
 	});
 

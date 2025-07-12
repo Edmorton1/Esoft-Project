@@ -15,6 +15,7 @@ const createMarkers = async () => {
 			html: container,
 			preventMapInteractions: false,
 			payload: { id: e.id },
+			anchor: [20, 40]
 		};
 	});
 

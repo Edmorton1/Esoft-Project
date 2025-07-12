@@ -56,7 +56,6 @@
 		"mobx-react-lite": "^4.1.0",
 		"ra-data-simple-rest": "^5.9.0",
 		"react": "^19.0.0",
-		"react-admin": "^5.8.4",
 		"react-dom": "^19.0.0",
 		"react-error-boundary": "^5.0.0",
 		"react-hook-form": "^7.55.0",
