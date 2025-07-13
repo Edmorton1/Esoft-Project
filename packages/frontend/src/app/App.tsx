@@ -11,6 +11,7 @@ import "@app/client/shared/css/modules/LocalRemoteVideo.scss"
 import { ErrorBoundary } from "react-error-boundary";
 import Fallback from "@app/client/errors/Fallback";
 import CallLine from "@app/client/pages/Room/modules/CallLine/CallLine";
+import Test from "@app/client/Test/Test";
 
 // ДЛЯ АССИНХРОННЫХ ОПЕРАЦИЙ ИСПОЛЬЗОВАТЬ suspense
 
@@ -43,6 +44,7 @@ function App() {
 							<Route path="*" element={<LazyFourHundredFour />} />
 
 							{/* <Route path={paths.test} element={<LazyTest />} /> */}
+							<Route path="/test" element={<Test />} />
 						</Route>
 						
 						<Route index element={<LazyMain />} />

@@ -36,7 +36,7 @@ class StoreRegistration {
 		const location = await SharedRequests.cityByCoords(coords);
 		this.coords = location;
 		if (location.city === "") {
-			StoreAlert.mapError("Нельзя поставить координаты здесь", "error.main");
+			StoreAlert.errorInfo("Нельзя поставить координаты здесь");
 		}
 	};
 

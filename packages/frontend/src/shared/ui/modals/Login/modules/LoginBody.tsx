@@ -24,9 +24,9 @@ function LoginBody({onSubmit, register, errors}: {onSubmit: () => void, register
         <InputMui text={"Пароль"} id="password" type="password" error={errors.password} register={register}>
         </InputMui>
         <Button type="submit" variant="contained">Войти</Button>
+        <GoogleButton />
+        <Link to={paths.registration} style={{width: "100%"}}><Button fullWidth variant="contained" onClick={StoreLogin.closeModal}>Регистрация</Button></Link>
       </form>
-      <GoogleButton />
-      <Link to={paths.registration}><Button variant="contained" onClick={StoreLogin.closeModal}>Регистрация</Button></Link>
     </Paper>
 }
 

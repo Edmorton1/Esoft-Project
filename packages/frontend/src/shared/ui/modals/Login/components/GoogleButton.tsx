@@ -3,15 +3,15 @@ import Button from "@mui/material/Button";
 import { observer } from "mobx-react-lite";
 import GoogleIcon from '@mui/icons-material/Google';
 
-function Main() {
+function GoogleButton() {
 
 	const handleClick = () => {
 		StoreGoogle.enterWithGoogle()
 	}
 
-	return <Button onClick={handleClick} variant="contained" startIcon={<GoogleIcon />}>
+	return <Button onClick={handleClick} variant="outlined" color="plombir" startIcon={<GoogleIcon />} fullWidth>
 		Войти через Google
 	</Button>
 }
 
-export default observer(Main);
+export default observer(GoogleButton);

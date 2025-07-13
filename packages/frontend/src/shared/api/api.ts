@@ -3,6 +3,7 @@ import axios, { AxiosError } from "axios";
 import {PREFIX} from "@app/shared/CONST";
 import StoreForm from "@app/client/shared/stores/Store-Form";
 import { XLNGLAT } from "@app/shared/HEADERS";
+import StoreAlert from "@app/client/shared/ui/Toast/Store-Alert";
 
 const $api = axios.create({
 	baseURL: URL_SERVER + PREFIX,
@@ -24,6 +25,9 @@ $api.interceptors.response.use(
 	res => res,
 	(err: AxiosError) => {
 		console.error(err)
+		if (err.status === 500) {
+			StoreAlert.errorInfo("Произошла неизвесная ошибка!")
+		}
 		return Promise.reject(err)
   },
 );

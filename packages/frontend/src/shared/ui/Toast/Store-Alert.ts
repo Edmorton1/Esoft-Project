@@ -23,10 +23,9 @@ class StoreAlert {
     this.addAlert(text, color, `/${paths.profile}/${userid}`)
   }
 
-  mapError(text: string, color: colorType) {
+  errorInfo(text: string) {
     // const id = this.getId()
-    this.addAlert(text, color, undefined)
-
+    this.addAlert(text, "error.main", undefined)
   }
 }
 
