@@ -9,12 +9,12 @@ import Utils from "@app/server/infrastructure/helpers/databases/postgres/utils";
 
 @injectable()
 class SQLForm {
-  constructor (
-    @inject(TYPES.DataBase)
-    private readonly db: DBType,
-    @inject(Utils)
-    private readonly utils: Utils
-  ) {}
+	constructor(
+		@inject(TYPES.DataBase)
+		private readonly db: DBType,
+		@inject(Utils)
+		private readonly utils: Utils,
+	) {}
 	standartToForm = (fields?: string, lnglat?: lnglatType) => {
 		let query = this.db("forms");
 		logger.info({ sql: query.toSQL().toNative() }, "toNative1");
