@@ -19,7 +19,7 @@ class StorePairs {
 		runInAction(() => this.pairs = data);
 	};
 
-	unshinft = (form: Form) => {
+	unshift = (form: Form) => {
 		runInAction(() => this.pairs.unshift(form))
 	}
 

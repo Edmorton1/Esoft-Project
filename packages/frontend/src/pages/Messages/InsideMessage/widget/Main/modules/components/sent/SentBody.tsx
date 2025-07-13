@@ -28,7 +28,7 @@ function SentBody({onSubmit, register, toid}: {onSubmit: SubmitHandler<any>, reg
 
   const onStopRead = () => {mediaInstance?.stop(); setMediaInstance(null); setRecord(false)}
 
-  return <Paper component="form" onSubmit={onSubmit} className={style.section__form}>
+  return <Paper component="form" onSubmit={onSubmit} className={style.form}>
 
     <AddFiles register={register("files")} />
     

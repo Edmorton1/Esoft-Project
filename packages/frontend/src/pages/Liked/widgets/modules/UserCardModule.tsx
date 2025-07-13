@@ -1,5 +1,5 @@
 import UsersCardInfo from "@app/client/shared/ui/components/UsersCardInfo"
-import StoreLikes from "@app/client/shared/stores/StoreLikes"
+import StoreLikes from "@app/client/shared/stores/Likes/StoreLikes"
 import * as style from "@app/client/shared/css/pages/Liked.module.scss"
 import Button from "@mui/material/Button"
 import Paper from "@mui/material/Paper"

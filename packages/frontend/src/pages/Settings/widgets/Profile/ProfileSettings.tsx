@@ -1,6 +1,5 @@
 import EditRow from "@app/client/pages/Settings/widgets/components/EditRow"
 import { ProfileSchema } from "@app/client/pages/Settings/widgets/schema/Schemas"
-import StoreUser from "@app/client/shared/stores/Store-User"
 import { zodResolver } from "@hookform/resolvers/zod"
 import Button from "@mui/material/Button"
 import { FormProvider, useForm } from "react-hook-form"
@@ -37,7 +36,7 @@ function ProfileSettings() {
 
   const submit = (data: any) => {
     console.log(data)
-    StoreSettings.updateForm(StoreUser.user!.id, data)
+    StoreSettings.updateForm(data)
   }
 
   const handleLocation = async (data: Parameters<LocationCallback>[0]) => {
@@ -72,7 +71,7 @@ function ProfileSettings() {
         </Paper>
       </Box>
 
-      <MapWidget height="500px" width="100%" callback={handleLocation} showCoordsMarker={true} />
+      <MapWidget height="500px" width="100%" callback={handleLocation} showCoordsMarker={!!StoreForm.form?.location?.lng && !!StoreForm.form?.location?.lat} />
 
       <Button type="submit" variant="contained">Сохранить профиль</Button>
     </Paper>

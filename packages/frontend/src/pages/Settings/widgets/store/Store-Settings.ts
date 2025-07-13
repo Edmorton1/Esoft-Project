@@ -7,13 +7,15 @@ import {serverPaths} from "@app/shared/PATHS";
 import { URL_CLIENT } from "@app/shared/URLS";
 import {action, makeObservable} from "mobx";
 import {UseFormSetError} from "react-hook-form";
-import { NavigateFunction } from "react-router-dom";
+import BroadCast from "@app/client/shared/stores/BroadCast";
 
 // export async function AvatarHandle(): Promise<string> {
 
 // }
 
 class StoreSettings extends StoreBaseModal {
+	channel: BroadCast<"updateForm"> = new BroadCast("store-setting")
+
 	constructor() {
 		super();
 		makeObservable(this, {
@@ -21,17 +23,19 @@ class StoreSettings extends StoreBaseModal {
 			updateForm: action,
 			uploadAvatar: action
 		});
+
+		this.channel.register({
+			updateForm: () => window.location.replace(URL_CLIENT)
+		})
 	}
 
-	comparePassword = async (oldPass: string, newPass: string, setError: UseFormSetError<PasswordType>, navigate: NavigateFunction) => {
+	comparePassword = async (oldPass: string, newPass: string, setError: UseFormSetError<PasswordType>) => {
 		try {
 			const request = await $api.post(serverPaths.passwordCompare, {old: oldPass, new: newPass});
 
 			if (request.status === 200) {
 				console.log("Пароль верный");
         await StoreUser.logout()
-				this.closeModal()
-        navigate("/")
 			}
 		} catch (error: any) {
 			console.log("ОШИБКА")
@@ -41,8 +45,11 @@ class StoreSettings extends StoreBaseModal {
 		}
 	};
 
-	updateForm = async (id: number, data: ProfileType) => {
+	updateForm = async (data: ProfileType) => {
 		const request = await $api.put(serverPaths.profilePut, data)
+
+		this.channel.startFunction("updateForm")
+
 		window.location.replace(URL_CLIENT)
 		console.log('ФОРМА ПОМЕНЯНА', request)
 	}

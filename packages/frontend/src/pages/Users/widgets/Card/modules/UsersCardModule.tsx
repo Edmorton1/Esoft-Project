@@ -1,7 +1,7 @@
 import UsersCardInfo from "@app/client/shared/ui/components/UsersCardInfo"
 import { UsersContext } from "@app/client/pages/Users/widgets/Card/UsersCardWidget"
 import StoreForm from "@app/client/shared/stores/Store-Form"
-import StoreLikes from "@app/client/shared/stores/StoreLikes"
+import StoreLikes from "@app/client/shared/stores/Likes/StoreLikes"
 import { useContext } from "react"
 import Button from "@mui/material/Button"
 import { observer } from "mobx-react-lite"

@@ -1,7 +1,7 @@
 import $api from "@app/client/shared/api/api";
 import StoreForm from "@app/client/shared/stores/Store-Form";
 import storeSocket from "@app/client/shared/api/Store-Socket";
-import StoreLikes from "@app/client/shared/stores/StoreLikes";
+import StoreLikes from "@app/client/shared/stores/Likes/StoreLikes";
 import { User, UserSchema } from "@app/types/gen/Users";
 import { UserDTO } from "@app/types/gen/dtoObjects";
 import { paths, serverPaths } from "@app/shared/PATHS";
@@ -18,6 +18,7 @@ import StorePairs from "@app/client/pages/Pairs/widgets/stores/Store-Pairs";
 import { LoginErrorTypes } from "@app/types/gen/ErrorTypes";
 import { IS_GOOGLE_USER } from "@app/shared/HEADERS";
 import BroadCast from "@app/client/shared/stores/BroadCast";
+import { URL_CLIENT } from "@app/shared/URLS";
 
 // interface BroadcastChannelEmitter extends BroadcastChannel {
 // 	event: {
@@ -28,14 +29,16 @@ import BroadCast from "@app/client/shared/stores/BroadCast";
 class StoreUser {
 	user: User | null | undefined = undefined;
 	is_google_user: boolean = false;
-	channel: BroadCast<"initial" | "logout"> = new BroadCast("store-user");
+	private channel: BroadCast<"initial" | "logout"> = new BroadCast("store-user");
 
 	constructor() {
 		makeAutoObservable(this);
 
 		this.channel.register({
 			initial: this.initial,
-			logout: () => {window.location.href = "/"}
+			logout: () => {
+				window.location.href = "/";
+			},
 		});
 	}
 
@@ -57,10 +60,9 @@ class StoreUser {
 			this.initial();
 			StoreLogin.closeModal();
 
-			this.channel.startFuncion("initial");
+			this.channel.startFunction("initial");
 
 			window.location.href = `${paths.profile}/${this.user?.id}`;
-
 		} catch (err) {
 			if (axios.isAxiosError(err)) {
 				const status = err.status;
@@ -83,17 +85,21 @@ class StoreUser {
 	logout = async () => {
 		await $api.post(serverPaths.logout);
 
-		this.channel.startFuncion("logout")
+		this.channel.startFunction("logout");
 
 		window.location.href = "/";
 	};
 
 	initial = async () => {
 		try {
+			console.log("INITIAL", window.location.href)
 			const request = await $api.get(serverPaths.initial);
 			runInAction(() => (this.user = request.data));
 			this.is_google_user = request.headers[IS_GOOGLE_USER] === "true";
 			this.loadModules();
+
+			if (window.location.href === URL_CLIENT + "/") window.location.href = `${paths.profile}/${this.user?.id}`;
+
 			console.log("ИС ГУГЛ ЮЗЕР", this.is_google_user);
 		} catch (err) {
 			console.log(err);
@@ -117,7 +123,7 @@ class StoreUser {
 
 		const form = StoreUserRegistrationSchema.parse(request);
 
-		this.channel.startFuncion("initial")
+		this.channel.startFunction("initial");
 		window.location.href = `${paths.profile}/${form.user.id}`;
 
 		// console.log(request);

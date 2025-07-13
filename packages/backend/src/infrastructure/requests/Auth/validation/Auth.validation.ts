@@ -5,17 +5,22 @@ import { z } from "zod";
 import HttpContext from "@app/server/config/express/Http.context";
 import { GOOGLE_TEMP_COOKIE } from "@app/shared/HEADERS";
 import { GoogleDataSchema } from "@app/types/gen/Schemas";
+import mainCont from "@app/server/config/containers/container.di";
+import CryptoService from "@app/server/infrastructure/requests/shared/services/Crypto.service";
 
 type UserDTOwithGoogle = UserDTO & {google_id?: string}
 
 class AuthValidation {
   registration = (ctx: HttpContext): [UserDTOwithGoogle, Omit<FormDTOServer, 'tags' | 'email' | 'password'>, TagsDTO[]] => {
+    const cryptoService = mainCont.get(CryptoService)
+
     logger.info({dataRow: JSON.parse(ctx.body.json)}, "Грязные")
     const cookie = ctx.service.req.cookies[GOOGLE_TEMP_COOKIE]
     logger.info({КУКА_ВНУТРИ_ВАЛИДАЦИИ: cookie})
     let parsedCookie
     try {
-      parsedCookie = GoogleDataSchema.parse(JSON.parse(cookie))
+      const decrypt = cryptoService.decrypt(cookie)
+      parsedCookie = GoogleDataSchema.parse(decrypt)
       ctx.session.is_google_user = true
     } catch {
       parsedCookie = undefined
@@ -23,7 +28,7 @@ class AuthValidation {
     }
   
     // logger.info(req.file)
-
+    console.log("GOOGLE ID ID", parsedCookie?.google_id)
     const data = RegistrationDTOServerSchema.parse({...JSON.parse(ctx.body.json), avatar: ctx.file, google_id: parsedCookie?.google_id})
     // const asd = ctx.file
     logger.info({До_Загрузки: data})

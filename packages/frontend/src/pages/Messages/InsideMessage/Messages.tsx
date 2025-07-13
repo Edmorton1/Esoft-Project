@@ -25,7 +25,7 @@ function Messages() {
 			{Store.is_match ? (
 				<SentHead toid={toid} />
 			) : (
-				<Subtitle className={style.section__form}>
+				<Subtitle className={style.form}>
 					Вы не можете писать и звонить пользователю, пока не понравитесь ему
 				</Subtitle>
 			)}

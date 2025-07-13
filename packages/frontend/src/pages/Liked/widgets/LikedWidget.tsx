@@ -1,4 +1,4 @@
-import StoreLikes from "@app/client/shared/stores/StoreLikes";
+import StoreLikes from "@app/client/shared/stores/Likes/StoreLikes";
 import { serverPaths } from "@app/shared/PATHS";
 import * as style from "@app/client/shared/css/pages/Liked.module.scss";
 import { observer } from "mobx-react-lite";

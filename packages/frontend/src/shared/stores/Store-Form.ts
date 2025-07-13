@@ -3,12 +3,18 @@ import { Form, FormSchema } from "@app/types/gen/Users";
 import { serverPaths } from "@app/shared/PATHS";
 import { makeAutoObservable, runInAction } from "mobx";
 import StoreUser from "@app/client/shared/stores/Store-User";
+import BroadCast from "@app/client/shared/stores/BroadCast";
 
 class FormStore {
   form: Form | null | undefined = undefined
+  channel: BroadCast<"setAvatar"> = new BroadCast("store-form")
 
   constructor() {
     makeAutoObservable(this)
+
+    this.channel.register({
+      setAvatar: (avatar: string) => {if (this.form) this.form.avatar = avatar}
+    })
   }
 
   initial = async () => {
@@ -42,6 +48,7 @@ class FormStore {
 
   setAvatar = (avatar: string) => {
     this.form!.avatar = avatar
+    this.channel.startFunction("setAvatar", [avatar])
   }
 
   setLastActive = (last_active: string) => {

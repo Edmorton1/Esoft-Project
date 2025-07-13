@@ -20,7 +20,7 @@ function MessageWidget({toid}: {toid: number}) {
 
   const scrollHandle = useInfinitPagination(ref, `${serverPaths.getMessage}/${toid}?cursor=${StoreMessages.cursor}`, StoreMessages.cursor === null, StoreMessages.get)
 
-  return <Box ref={ref} className={style.section__widget} component="section" bgcolor={BG_THIRD} onScroll={scrollHandle} sx={emptyGrid(StoreMessages.messages?.length)}>
+  return <Box ref={ref} className={style.widget} component="section" bgcolor={BG_THIRD} onScroll={scrollHandle} sx={emptyGrid(StoreMessages.messages?.length)}>
     {StoreMessages.messages?.length
       ? StoreMessages.messages?.map(msg => (
         <MessageHead key={msg.id} msg={msg} editing={editMessage === msg.id} setEditMessage={setEditMessage}/>

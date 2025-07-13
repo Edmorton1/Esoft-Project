@@ -7,14 +7,14 @@ import CardHeader from "@mui/material/CardHeader";
 import Divider from "@mui/material/Divider";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-import { PLACEHOLDER_IMG } from "@app/shared/PUBLIC";
 import { Message } from "@app/types/gen/Users"
-import { memo, useContext } from "react";
+import { useContext } from "react";
 import * as style from "@app/client/shared/css/pages/MessagesInside.module.scss"
 import { MessagesContext } from "@app/client/pages/Messages/InsideMessage/Messages";
 import { paths } from "@app/shared/PATHS";
 import { Link } from "react-router-dom";
 import UnderTypo from "@app/client/shared/ui/mui_components/UnderTypo";
+import { observer } from "mobx-react-lite";
 
 interface propsInterface {
   editing: boolean,
@@ -33,7 +33,7 @@ function MessageBody({editing, msg, changeClick}: propsInterface) {
   return <Paper component={"article"} onClick={changeClick} elevation={editing ? 1 : 0} sx={{width: "100%", bgcolor: editing ? "background.paper" : "transparent"}}>
     <Divider></Divider>
     <CardHeader
-      avatar={<Link to={url}><Avatar src={isAuthor ? StoreForm.form?.avatar ?? PLACEHOLDER_IMG : StoreMessages.form?.avatar ?? PLACEHOLDER_IMG} /></Link>}
+      avatar={<Link to={url}><Avatar src={isAuthor ? StoreForm.form?.avatar : StoreMessages.form?.avatar} /></Link>}
       title={<Link to={url}><UnderTypo variant="subtitle1" color="primary">{isAuthor ? StoreForm.form?.name : StoreMessages.form?.name}</UnderTypo></Link>}
       // subheader={<div style={{display: "flex", justifyContent: "space-between"}}>
       subheader={<div>
@@ -42,13 +42,13 @@ function MessageBody({editing, msg, changeClick}: propsInterface) {
         {editing && <FormEdit />}
       </div>}
       />
-    {msg.files && msg.files?.length > 0 && <CardContent className={style['section__widget--files']}>
+    {msg.files && msg.files?.length > 0 && <CardContent className={style.widget__files}>
       {msg.files.map(link => <FileComponent key={link} fileLink={link} />)}
     </CardContent>}
   </Paper>
 }
 
-export default memo(MessageBody)
+export default observer(MessageBody)
 
       // {msg.fromid === StoreForm.form?.id && !editing && <>
       //   <button onClick={changeClick}>Изменить</button>

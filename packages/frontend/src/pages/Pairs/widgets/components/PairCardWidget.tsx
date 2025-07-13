@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 import StoreRoom from "@app/client/pages/Room/WebRTC/Store-Room";
 import StoreUser from "@app/client/shared/stores/Store-User";
 import DeleteIcon from '@mui/icons-material/Delete';
-import StoreLikes from "@app/client/shared/stores/StoreLikes";
+import StoreLikes from "@app/client/shared/stores/Likes/StoreLikes";
 import UnderTypo from "@app/client/shared/ui/mui_components/UnderTypo";
 import { Form } from "@app/types/gen/Users";
 

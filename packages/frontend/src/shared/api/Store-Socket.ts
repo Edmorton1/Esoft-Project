@@ -1,4 +1,4 @@
-import StoreLikes from "@app/client/shared/stores/StoreLikes";
+import StoreLikes from "@app/client/shared/stores/Likes/StoreLikes";
 import { URL_SERVER_WS } from "@app/shared/URLS";
 import { frSOCl } from "@app/shared/JSONParsers";
 import { makeAutoObservable, runInAction } from "mobx";
@@ -64,7 +64,7 @@ class SocketStore {
           break
         case "rejectLike":
           console.log("REJECT LIKE AGREED", data)
-          StoreLikes.sockerRejectGet(data)
+          StoreLikes.socketRejectGet(data)
           break
 
         case "offer": {

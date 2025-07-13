@@ -1,7 +1,7 @@
 import { MessageFormType } from "@app/types/gen/Schemas"
 import { makeAutoObservable } from "mobx"
 
-class StoreMessage {
+class StoreMessagesOutside {
   constructor() {
     makeAutoObservable(this)
   }
@@ -14,4 +14,4 @@ class StoreMessage {
   }
 }
 
-export default new StoreMessage
+export default new StoreMessagesOutside

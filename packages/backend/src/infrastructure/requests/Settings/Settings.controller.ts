@@ -7,14 +7,18 @@ import BaseController from "@app/server/config/base/Base.controller";
 import { serverPaths } from "@app/shared/PATHS";
 import AuthMiddleware from "@app/server/infrastructure/requests/shared/middlewares/AuthMiddleware";
 import { upload } from "@app/server/infrastructure/requests/shared/multer";
+import TYPES from "@app/server/config/containers/types";
+import { ILogger } from "@app/server/infrastructure/helpers/logger/logger.controller";
 
 @injectable()
 class SettingsController extends BaseController {
 	constructor(
 		@inject(SettingsService)
 		private readonly SettingsService: SettingsService,
+		@inject(TYPES.LoggerController)
+		private readonly logger: ILogger,
 	) {
-		super()
+		super();
 		this.bindRoutes([
 			{
 				path: serverPaths.passwordCompare,
@@ -34,29 +38,28 @@ class SettingsController extends BaseController {
 				middlewares: [upload.single("avatar"), AuthMiddleware.OnlyAuth],
 				handle: this.postAvatar,
 			},
-		])
+		]);
 	}
 
 	passwordCompare = async (ctx: HttpContext) => {
 		const [oldPass, newPass] = SettingsValidation.password(ctx);
 		const id = ctx.session.userid!;
 
-		const data = await this.SettingsService.passwordCompare(id, oldPass, newPass)
+		const data = await this.SettingsService.passwordCompare(id, oldPass, newPass);
 
 		if (!data) {
-			ctx.sendStatus(400)
+			ctx.sendStatus(400);
 			return;
 		}
 
-		ctx.sendStatus(200)
-
+		ctx.sendStatus(200);
 	};
 
 	profilePut = async (ctx: HttpContext) => {
 		const profile = SettingsValidation.profile(ctx);
 		const id = ctx.session.userid!;
 
-		const request = await this.SettingsService.profilePut(id, profile)
+		const request = await this.SettingsService.profilePut(id, profile);
 
 		ctx.json(request);
 	};
@@ -65,7 +68,8 @@ class SettingsController extends BaseController {
 		const id = z.coerce.number().parse(ctx.session.userid);
 		const buffer = ctx.file!.buffer;
 
-		const location = this.SettingsService.postAvatar(id, buffer);
+		const location = await this.SettingsService.postAvatar(id, buffer);
+		this.logger.info({SETTINGS_AVATAR: location});
 
 		ctx.json(location);
 	};

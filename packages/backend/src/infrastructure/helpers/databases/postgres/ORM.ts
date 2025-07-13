@@ -139,7 +139,7 @@ class ORM implements IORM {
   // ПОКА БУДЕТ ТОЛЬКО К ФОРМЕ
   getManyParams: IORM['getManyParams'] = async (params, fields) => {
     // const parsedFields = fieldsToArr(fields, 'forms')
-    const request = await this.sqlForm.requestToFormManyParams({name: "id", params}, fields)
+    const request = await this.sqlForm.requestToFormManyParams({name: "id", params}, fields).orderBy('id')
     
     return request
   }

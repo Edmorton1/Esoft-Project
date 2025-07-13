@@ -9,19 +9,17 @@ import Typography from "@mui/material/Typography"
 import Button from "@mui/material/Button"
 import Box from "@mui/material/Box"
 import { BG_PAPER } from "@app/shared/COLORS"
-import { useNavigate } from "react-router-dom"
 import { RegisterNames } from "@app/client/types/types"
 
 function PasswordModal() {
   const {register, handleSubmit, formState: {errors}, setError} = useForm({resolver: zodResolver(PasswordSchema)})
   type RegType = RegisterNames<typeof register>
-  const navigate = useNavigate()
 
   const onSubmit = async (data: any) => {
     const parse = PasswordSchema.parse(data)
     if (parse.pass === null || parse.new === null) throw Error("Пароль не может быть null")
     console.log(parse)
-    StoreSettings.comparePassword(parse.pass, parse.new, setError, navigate)
+    StoreSettings.comparePassword(parse.pass, parse.new, setError)
   }
 
   return <BaseModal Store={StoreSettings}>
