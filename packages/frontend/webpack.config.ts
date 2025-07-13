@@ -39,7 +39,7 @@ export default (env: envTypes) => {
 		url: {
 			prefix: "/api",
 			// FIXME: ПОТОМ ПРИДУМАТЬ КАК СЮДА СЕРВЕР ПЕРЕДАТЬ
-			server: "https://192.168.1.125:3000",
+			server: "http://192.168.1.125:3000",
 		},
 		analyzer: env.analyzer,
 	});

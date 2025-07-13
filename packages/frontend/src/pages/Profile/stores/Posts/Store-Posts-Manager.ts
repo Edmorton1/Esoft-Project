@@ -1,4 +1,4 @@
-import StorePosts from "@app/client/pages/Profile/stores/Store-Posts";
+import StorePosts from "@app/client/pages/Profile/stores/Posts/Store-Posts";
 import { makeAutoObservable } from "mobx";
 
 class StorePostsManager {

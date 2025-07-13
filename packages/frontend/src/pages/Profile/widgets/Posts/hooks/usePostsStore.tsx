@@ -1,4 +1,4 @@
-import StorePostsManager from "@app/client/pages/Profile/stores/Store-Posts-Manager";
+import StorePostsManager from "@app/client/pages/Profile/stores/Posts/Store-Posts-Manager";
 import { useParams } from "react-router-dom";
 import { z } from "zod";
 

@@ -62,7 +62,7 @@ class StoreUser {
 
 			this.channel.startFunction("initial");
 
-			window.location.href = `${paths.profile}/${this.user?.id}`;
+			// window.location.href = `${paths.profile}/${this.user?.id}`;
 		} catch (err) {
 			if (axios.isAxiosError(err)) {
 				const status = err.status;

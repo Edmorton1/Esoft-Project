@@ -1,20 +1,25 @@
-import { PostsDTOClient, PostsDTOPutClient } from "@app/client/pages/Profile/widgets/Posts/validation/Schemas";
+import StorePostsLogic from "@app/client/pages/Profile/stores/Posts/Store-Posts.logic";
+import {
+	PostsDTOClient,
+	PostsDTOPutClient,
+} from "@app/client/pages/Profile/widgets/Posts/validation/Schemas";
 import $api from "@app/client/shared/api/api";
 import { toFormData } from "@app/client/shared/funcs/filefuncs";
 import StoreBasePaginDoc from "@app/client/shared/hooks/usePagination/doc/Store-Base-PaginDoc";
+import BroadCast from "@app/client/shared/stores/BroadCast";
 import { serverPaths } from "@app/shared/PATHS";
 import { Posts, PostsSchema } from "@app/types/gen/Users";
 import { AxiosResponse } from "axios";
-import { action, makeObservable, observable, runInAction } from "mobx";
+import { action, makeObservable, observable } from "mobx";
 import { z } from "zod";
 
 class StorePosts extends StoreBasePaginDoc {
 	posts: Posts[] = [];
+	private logic: StorePostsLogic;
+	private channel: BroadCast<"post" | "changePosts"> = new BroadCast("store-posts");
 
-	constructor(
-		readonly profileid: number
-	) {
-		super()
+	constructor(readonly profileid: number) {
+		super();
 		makeObservable(this, {
 			profileid: observable,
 			posts: observable,
@@ -22,6 +27,13 @@ class StorePosts extends StoreBasePaginDoc {
 			post: action,
 			put: action,
 			delete: action,
+		});
+
+		this.logic = new StorePostsLogic(this);
+
+		this.channel.register({
+			post: this.logic.post,
+			changePosts: this.logic.changePosts,
 		});
 	}
 
@@ -45,7 +57,8 @@ class StorePosts extends StoreBasePaginDoc {
 
 		const { data } = await $api.post(`${serverPaths.postsPost}`, fd);
 		console.log("NEW TOTAL", data);
-		runInAction(() => this.posts?.unshift(data));
+		this.logic.post(data)
+		this.channel.startFunction("post", [data])
 	};
 
 	put = async (dataRaw: PostsDTOPutClient) => {
@@ -57,13 +70,17 @@ class StorePosts extends StoreBasePaginDoc {
 		const { data } = await $api.put(`${serverPaths.postsPut}/${dto.id}`, fd);
 		const parsed = PostsSchema.parse(data);
 		const filtred = this.posts?.map(e => (e.id === parsed.id ? parsed : e));
-		if (filtred) runInAction(() => this.posts = filtred);
+
+		this.logic.changePosts(filtred)
+		this.channel.startFunction("changePosts", [filtred])
+
 		console.log("TOTAL PUT", data);
 	};
 
 	delete = async (post_id: number) => {
 		const filtred = this.posts?.filter(e => e.id !== post_id);
-		if (filtred) runInAction(() => this.posts = filtred);
+		this.logic.changePosts(filtred)
+		this.channel.startFunction("changePosts", [filtred])
 
 		const total = await $api.delete(`${serverPaths.postsDelete}/${post_id}`);
 		console.log(total);

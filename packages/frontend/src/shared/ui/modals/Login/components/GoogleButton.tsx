@@ -9,7 +9,7 @@ function GoogleButton() {
 		StoreGoogle.enterWithGoogle()
 	}
 
-	return <Button onClick={handleClick} variant="outlined" color="plombir" startIcon={<GoogleIcon />} fullWidth>
+	return <Button onClick={handleClick} variant="outlined" color="inherit" startIcon={<GoogleIcon />} fullWidth>
 		Войти через Google
 	</Button>
 }
