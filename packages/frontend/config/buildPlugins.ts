@@ -26,7 +26,9 @@ function buildPlugins(options: BuildOptions): Configuration["plugins"] {
 		options.analyzer && new BundleAnalyzerPlugin(),
 		new DefinePlugin({
 			_GISKEY: JSON.stringify(options.dotenv.GISKEY),
-			_GOOGLE_CLIENT_ID: JSON.stringify(options.dotenv.GOOGLE_CLIENT_ID),
+			_URL_CLIENT: JSON.stringify(options.dotenv.URL_CLIENT),
+			_URL_SERVER: JSON.stringify(options.dotenv.URL_SERVER),
+			_URL_SERVER_WS: JSON.stringify(options.dotenv.URL_SERVER_WS)
 		}),
 		isDev && new ReactRefreshWebpackPlugin(),
 		new ForkTsCheckerWebpackPlugin({

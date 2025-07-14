@@ -6,9 +6,10 @@ import { sxStyle } from "@app/client/shared/ui/mui_components/CircleButton";
 import SendIcon from '@mui/icons-material/Send';
 import Paper from "@mui/material/Paper";
 import AddFiles from "@app/client/pages/Messages/InsideMessage/widget/Main/modules/components/kit/AddFiles";
-import MinButton from "@app/client/shared/ui/mui_components/MinButton";
+import MinButton, { MinButtonStyle } from "@app/client/shared/ui/mui_components/MinButton";
 import VoiceMessage from "@app/client/pages/Messages/InsideMessage/widget/Main/modules/classes/VoiceMessage";
 import { useState } from "react";
+import TimeoutButton from "@app/client/shared/ui/mui_components/TimeoutButton";
 
 function SentBody({onSubmit, register, toid}: {onSubmit: SubmitHandler<any>, register: UseFormRegister<any>, toid: number}) {
   const [mediaInstance, setMediaInstance] = useState<VoiceMessage | null>(null)
@@ -35,7 +36,7 @@ function SentBody({onSubmit, register, toid}: {onSubmit: SubmitHandler<any>, reg
     <TextField {...register('text')} label={"Сообщение"} variant="outlined" sx={{flex: 1}} />
 
     <MinButton variant="outlined" color={record ? 'primary' : 'inherit'} onClick={record ? onStopRead : onStartRead}><MicIcon sx={sxStyle} /></MinButton>
-    <MinButton disabled={record} variant="outlined" color="primary" type="submit"><SendIcon sx={sxStyle} /></MinButton>
+    <TimeoutButton sx={MinButtonStyle} disabled={record} variant="outlined" color="primary" type="submit"><SendIcon sx={sxStyle} /></TimeoutButton>
 
   </Paper>
 }

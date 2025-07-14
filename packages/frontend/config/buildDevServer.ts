@@ -22,7 +22,7 @@ function buildDevServer(options: BuildOptions): Configuration["devServer"] {
 		// open: true,
 		hot: true,
 		// compress: true,
-		port: options.port ?? "5000",
+		port: options.port,
 		historyApiFallback: true,
 		static: options.paths.public,
 		allowedHosts: "all",

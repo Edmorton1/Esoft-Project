@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "chcp 65001 && nodemon -r tsconfig-paths/register src/index.ts",
+    "dev": "set HOST=localhost:3000&& set PROTOCOL=http&& nodemon -r tsconfig-paths/register src/index.ts",
     "build": "node ./check-env.js && tsc --project tsconfig.prod.json && tsc-alias -p tsconfig.prod.json",
     "start": "node ./dist/backend/src/index.js",
     "test": "chcp 65001 && jest tests"

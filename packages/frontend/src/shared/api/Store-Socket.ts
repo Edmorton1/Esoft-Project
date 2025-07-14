@@ -1,5 +1,4 @@
 import StoreLikes from "@app/client/shared/stores/Likes/StoreLikes";
-import { URL_SERVER_WS } from "@app/shared/URLS";
 import { frSOCl } from "@app/shared/JSONParsers";
 import { makeAutoObservable, runInAction } from "mobx";
 import StoreRoom from "@app/client/pages/Room/WebRTC/Store-Room";
@@ -34,7 +33,8 @@ class SocketStore {
   }
   
   connection = async () => {
-    this.socket = runInAction(() => new WebSocket(URL_SERVER_WS))
+    console.log(_URL_SERVER_WS)
+    this.socket = runInAction(() => new WebSocket(_URL_SERVER_WS))
 
     this.socket.onopen = () => {
       console.log('КЛИЕНТ ПОДКЛЮЧИЛСЯ')

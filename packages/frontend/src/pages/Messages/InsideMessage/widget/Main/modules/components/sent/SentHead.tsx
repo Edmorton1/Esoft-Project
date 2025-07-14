@@ -14,7 +14,7 @@ function SentHead({toid}: {toid: number}) {
   const handleSend = (data: any) => {
     const parsed = MessageDTOClientSchema.parse(data)
     StoreMessages.send(parsed, toid)
-    reset({files: undefined})
+    reset()
   }
 
   return <SentBody onSubmit={handleSubmit((data) => handleSend({...data, toid: toid, fromid: StoreForm.form!.id!}))} register={register} toid={toid} />

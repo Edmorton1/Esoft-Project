@@ -7,7 +7,6 @@ import GoogleService from "@app/server/infrastructure/requests/Google/service/Go
 import { paths, serverPaths } from "@app/shared/PATHS";
 import { google } from "googleapis";
 import { inject, injectable } from "inversify";
-import { URL_CLIENT, URL_SERVER } from "@app/shared/URLS";
 import { PREFIX } from "@app/shared/CONST";
 import url from "url";
 import { OAuth2Client } from "google-auth-library";
@@ -42,7 +41,7 @@ class GoogleController extends BaseController implements IGoogleController {
 		this.oauth2Client = new google.auth.OAuth2(
 			this.configService.get("GOOGLE_CLIENT_ID"),
 			this.configService.get("GOOGLE_CLIENT_SECRET"),
-			URL_SERVER + PREFIX + serverPaths.googleGetToken,
+			this.configService.get("URL_SERVER") + PREFIX + serverPaths.googleGetToken,
 		);
 
 		this.bindRoutes([
@@ -167,7 +166,7 @@ class GoogleController extends BaseController implements IGoogleController {
 				ctx.session.state = undefined;
 				ctx.session.is_google_user = true
 
-				ctx.redirect(URL_CLIENT + paths.profile + `/${userid}`);
+				ctx.redirect(this.configService.get("URL_CLIENT") + paths.profile + `/${userid}`);
 			} else {
 				ctx.session.state = undefined;
 				
@@ -180,7 +179,7 @@ class GoogleController extends BaseController implements IGoogleController {
 					sameSite: "lax",
 					maxAge: 5 * 60 * 1000,
 				});
-				ctx.redirect(URL_CLIENT + paths.registration);
+				ctx.redirect(this.configService.get("URL_CLIENT") + paths.registration);
 			}
 
 			// ПОКА ЧТО ЗАПРАШИВАЮ ТОЛЬКО ПОЧТУ ПОЭТОМУ scopes ЕСЛИ ЧТО ПРОВРИТЬ ЗДЕСЬ

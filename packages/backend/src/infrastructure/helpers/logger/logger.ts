@@ -1,6 +1,7 @@
 import pino, { LoggerOptions } from "pino";
 import PinoHttp from "pino-http";
 
+console.log(process.env.HOST, process.env.PROTOCOL)
 const isProd = process.env.NODE_ENV === "production";
 
 const config: LoggerOptions  = isProd

@@ -18,6 +18,11 @@ COPY . .
 
 ENV NODE_ENV=production
 
+# ПЕРЕМЕННЫЕ СОЗДАНИЯ ССЛЫКИ
+ENV HOST=6eee24668725.ngrok-free.app
+ENV PROTOCOL=https
+# ПЕРЕМЕННЫЕ СОЗДАНИЯ ССЛЫКИ
+
 RUN npm run build:back
 
 # Production Stage

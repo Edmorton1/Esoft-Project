@@ -18,7 +18,6 @@ import StorePairs from "@app/client/pages/Pairs/widgets/stores/Store-Pairs";
 import { LoginErrorTypes } from "@app/types/gen/ErrorTypes";
 import { IS_GOOGLE_USER } from "@app/shared/HEADERS";
 import BroadCast from "@app/client/shared/stores/BroadCast";
-import { URL_CLIENT } from "@app/shared/URLS";
 
 // interface BroadcastChannelEmitter extends BroadcastChannel {
 // 	event: {
@@ -98,7 +97,7 @@ class StoreUser {
 			this.is_google_user = request.headers[IS_GOOGLE_USER] === "true";
 			this.loadModules();
 
-			if (window.location.href === URL_CLIENT + "/") window.location.href = `${paths.profile}/${this.user?.id}`;
+			if (window.location.href === _URL_CLIENT + "/") window.location.href = `${paths.profile}/${this.user?.id}`;
 
 			console.log("ИС ГУГЛ ЮЗЕР", this.is_google_user);
 		} catch (err) {

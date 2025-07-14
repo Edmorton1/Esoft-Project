@@ -1,14 +1,14 @@
-export const PORT = '5000'
-export const PORT_SERVER = '3000'
+// export const PORT = '5000'
+// export const PORT_SERVER = '3000'
 
 // export const HOST = '192.168.1.125'
-export const HOST = 'localhost'
+// export const HOST = 'localhost'
 
-export const URL_SERVER = `http://${HOST}:${PORT_SERVER}`
-export const URL_SERVER_WS = `ws://${HOST}:${PORT_SERVER}`
+// export const URL_SERVER = `http://${HOST}:${PORT_SERVER}`
+// export const URL_SERVER_WS = `ws://${HOST}:${PORT_SERVER}`
 
-export const URL_CLIENT = `http://${HOST}:${PORT}`
-export const URL_CLIENT_WS = `ws://${HOST}:${PORT}`
+// export const URL_CLIENT = `http://${HOST}:${PORT}`
+// export const URL_CLIENT_WS = `ws://${HOST}:${PORT}`
 
 // const isLocalNetwork = false
 

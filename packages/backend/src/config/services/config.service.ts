@@ -22,8 +22,20 @@ class ConfigService {
 	}
 
 	get<T extends keyof IEnv>(key: T): string {
+		// HOST PROTOCOL PORT
+		if (key === "URL_CLIENT" || key === "URL_SERVER") {
+			const separ = "://";
+			const protocol = process.env.PROTOCOL;
+			const host = process.env.HOST;
+
+			if (protocol && host) {
+				return protocol + separ + host;
+			}
+			return this.config[key];
+		}
+
 		return this.config[key];
 	}
 }
 
-export default ConfigService
+export default ConfigService;

@@ -8,6 +8,7 @@ import { useEffect } from "react";
 // console.log("GISKEY", _GISKEY)
 
 function Main() {
+  console.log("URLS из ENV", _URL_CLIENT, _URL_SERVER, _URL_SERVER_WS)
   const navigate = useNavigate()
 
   useEffect(() => {

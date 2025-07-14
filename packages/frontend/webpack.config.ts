@@ -9,18 +9,34 @@ import { buildMode } from "./config/types";
 
 interface envTypes {
 	mode?: buildMode;
-	port?: number;
 	analyzer?: boolean;
+
+	port?: number;
+	protocol?: "http" | "https";
+	host?: string;
 }
 
 export default (env: envTypes) => {
+	const separ = "://"
+	const all_params = !!env.protocol && !!env.host
+	const shared_host = env.protocol + separ + env.host
+
+	const URL_CLIENT = all_params ? shared_host : process.env.URL_CLIENT!
+	const URL_SERVER = all_params ? shared_host : process.env.URL_SERVER!
+	const URL_SERVER_WS = all_params ? (env.protocol === "http" ? "ws" : "wss") + separ + env.host : process.env.URL_SERVER_WS!
+
+	console.log("ПАРАМЕТРЫ В WEBPACK", env.protocol, env.host, env.port)
+	
 	const config: WebpackConfiguration = buildWebpack({
-		port: env.port || 5000,
+		port: env.port || Number(process.env.PORT!),
 		mode: env.mode || "development",
 
 		dotenv: {
 			GISKEY: process.env.GISKEY!,
-			GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID!,
+			
+			URL_CLIENT,
+			URL_SERVER,
+			URL_SERVER_WS,
 		},
 
 		paths: {

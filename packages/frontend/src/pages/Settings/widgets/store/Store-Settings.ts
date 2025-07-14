@@ -4,7 +4,6 @@ import StoreBaseModal from "@app/client/shared/ui/modals/BaseModal/Store-BaseMod
 import StoreUser from "@app/client/shared/stores/Store-User";
 import StoreFiles from "@app/client/shared/stores/StoreFiles";
 import {serverPaths} from "@app/shared/PATHS";
-import { URL_CLIENT } from "@app/shared/URLS";
 import {action, makeObservable} from "mobx";
 import {UseFormSetError} from "react-hook-form";
 import BroadCast from "@app/client/shared/stores/BroadCast";
@@ -25,7 +24,7 @@ class StoreSettings extends StoreBaseModal {
 		});
 
 		this.channel.register({
-			updateForm: () => window.location.replace(URL_CLIENT)
+			updateForm: () => window.location.replace(_URL_CLIENT)
 		})
 	}
 
@@ -50,7 +49,7 @@ class StoreSettings extends StoreBaseModal {
 
 		this.channel.startFunction("updateForm")
 
-		window.location.replace(URL_CLIENT)
+		window.location.replace(_URL_CLIENT)
 		console.log('ФОРМА ПОМЕНЯНА', request)
 	}
 

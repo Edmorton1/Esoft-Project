@@ -1,7 +1,7 @@
 import { createWebSocketServer } from "@app/server/infrastructure/helpers/WebSocket/socket";
 import express, { Express, json } from "express";
 // import https, { Server } from "https";
-import http, {Server} from "http"
+import http, { Server } from "http";
 import { inject, injectable } from "inversify";
 import cors from "cors";
 import cookieParser from "cookie-parser";
@@ -31,7 +31,7 @@ class ServerExpress {
 	) {
 		this.app = express();
 		// this.server = https.createServer({cert, key}, this.app);
-		this.server = http.createServer(this.app)
+		this.server = http.createServer(this.app);
 		createWebSocketServer(this.server);
 	}
 
@@ -46,11 +46,12 @@ class ServerExpress {
 					"http://127.0.0.1:5000",
 					"https://127.0.0.1:5000",
 					"http://0.0.0.0:5000",
-					"https://0.0.0.0:5000"
+					"https://0.0.0.0:5000",
 				],
 				credentials: true,
 			}),
 		);
+		this.app.set("trust proxy", 1);
 		this.app.use(cookieParser());
 		this.app.use(helmet());
 		this.app.use(json());
@@ -73,6 +74,7 @@ class ServerExpress {
 	init = async (port: number) => {
 		this.configureApp();
 
+		// this.server.listen(port, "0.0.0.0");
 		this.server.listen(port, "0.0.0.0");
 	};
 

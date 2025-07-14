@@ -1,4 +1,3 @@
-import {URL_SERVER} from "@app/shared/URLS";
 import axios, { AxiosError } from "axios";
 import {PREFIX} from "@app/shared/CONST";
 import StoreForm from "@app/client/shared/stores/Store-Form";
@@ -6,7 +5,7 @@ import { XLNGLAT } from "@app/shared/HEADERS";
 import StoreAlert from "@app/client/shared/ui/Toast/Store-Alert";
 
 const $api = axios.create({
-	baseURL: URL_SERVER + PREFIX,
+	baseURL: _URL_SERVER + PREFIX,
 	withCredentials: true,
 });
 
