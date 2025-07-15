@@ -1,7 +1,5 @@
 import { createWebSocketServer } from "@app/server/infrastructure/helpers/WebSocket/socket";
 import express, { Express, json } from "express";
-// import https, { Server } from "https";
-import https, { Server } from "https";
 import { inject, injectable } from "inversify";
 import cors from "cors";
 import cookieParser from "cookie-parser";
@@ -12,11 +10,13 @@ import ServerRoutes from "@app/server/server/express.routes";
 import helmet from "helmet";
 import { ILogger } from "@app/server/infrastructure/helpers/logger/logger.controller";
 import TYPES from "@app/server/config/containers/types";
-import fs from 'fs'
-import path from 'path';
+import http, { Server } from "http";
+// import https, { Server } from "https";
+// import fs from 'fs'
+// import path from 'path';
 
-const cert = fs.readFileSync(path.resolve(path.resolve(process.cwd(), "..", "..", "certs", "192.168.1.125.pem")))
-const key = fs.readFileSync(path.resolve(path.resolve(process.cwd(), "..", "..", "certs", "192.168.1.125-key.pem")))
+// const cert = fs.readFileSync(path.resolve(path.resolve(process.cwd(), "..", "..", "certs", "192.168.1.125.pem")))
+// const key = fs.readFileSync(path.resolve(path.resolve(process.cwd(), "..", "..", "certs", "192.168.1.125-key.pem")))
 
 @injectable()
 class ServerExpress {
@@ -30,8 +30,8 @@ class ServerExpress {
 		private readonly serverRoutes: ServerRoutes,
 	) {
 		this.app = express();
-		// this.server = https.createServer({cert, key}, this.app);
-		this.server = https.createServer({key, cert}, this.app);
+		this.server = http.createServer(this.app);
+		// this.server = https.createServer({key, cert}, this.app);
 		createWebSocketServer(this.server);
 	}
 

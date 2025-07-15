@@ -14,8 +14,8 @@ RUN npm install
 COPY . .
 
 # ПЕРЕМЕННЫЕ СОЗДАНИЯ ССЛЫКИ
-ENV HOST=6eee24668725.ngrok-free.app
-ENV PROTOCOL=https
+ENV HOST=192.168.1.125:5000
+ENV PROTOCOL=http
 # ПЕРЕМЕННЫЕ СОЗДАНИЯ ССЛЫКИ
 
 RUN npm run build:front
@@ -34,4 +34,5 @@ EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
 
 # docker build -f Dockerfile.front  -t znakomstva-front .
+# docker run --name znakomstva-front -p 5000:443 znakomstva-front
 # docker run --name znakomstva-front -p 5000:80 znakomstva-front
