@@ -57,11 +57,11 @@ export default (env: envTypes) => {
 		url: {
 			prefix: "/api",
 			// FIXME: ПОТОМ ПРИДУМАТЬ КАК СЮДА СЕРВЕР ПЕРЕДАТЬ
-			server: "http://192.168.1.125:3000",
+			server: "https://192.168.1.125:3000",
 		},
 		socket: {
 			prefix: "/socket",
-			server: "ws://192.168.1.125:3000"
+			server: "wss://192.168.1.125:3000"
 		},
 		analyzer: env.analyzer,
 	});

@@ -4,7 +4,7 @@
 	"main": "index.js",
 	"scripts": {
 		"build": "webpack --env mode=production --env protocol=$PROTOCOL --env host=$HOST",
-		"dev": "webpack serve --env mode=development protocol=http host=localhost:5000",
+		"dev": "webpack serve --env mode=development protocol=https host=localhost:5000",
 		"start": "webpack serve --env mode=production",
 		"test": "jest ./tests"
 	},

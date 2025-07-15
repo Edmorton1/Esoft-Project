@@ -1,5 +1,5 @@
 class MediaPermissions {
-	getDevices = async () => {
+	private getDevices = async () => {
 		const devices = await navigator.mediaDevices.enumerateDevices();
 
 		const hasVideoInput = devices.some(device => device.kind === "videoinput" && device.label);

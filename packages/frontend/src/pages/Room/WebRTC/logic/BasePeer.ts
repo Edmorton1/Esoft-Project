@@ -13,72 +13,67 @@ abstract class BasePeer {
 		readonly frid: number,
 		readonly toid: number,
 	) {
-		this.peerConnection = setupPeerConnection(this.peerConnection);
+    this.peerConnection = setupPeerConnection(this.peerConnection)
 	}
 
-	cleaning = () => {
-		console.log("ПОЛНАЯ ОЧИСТКА");
-		this.stream?.getTracks().forEach(track => track.stop());
-		this.stream = null;
+  cleaning = () => {
+    console.log('ПОЛНАЯ ОЧИСТКА')
+    this.stream?.getTracks().forEach(track => track.stop())
+    this.stream = null
 
-		this.peerConnection.getSenders().forEach(sender => this.peerConnection.removeTrack(sender));
-		this.peerConnection.close();
+    this.peerConnection.getSenders().forEach(sender => this.peerConnection.removeTrack(sender))
+    this.peerConnection.close();
 
-		[REMOTE_VIDEO, REMOTE_AUDIO, LOCAL_VIDEO, LOCAL_AUDIO].forEach(id => {
-			document.getElementById(id)?.remove();
-		});
+    [REMOTE_VIDEO, REMOTE_AUDIO, LOCAL_VIDEO, LOCAL_AUDIO].forEach(id => {
+      document.getElementById(id)?.remove()
+    })
 
-		this.peerConnection = setupPeerConnection(new RTCPeerConnection());
+    this.peerConnection = setupPeerConnection(new RTCPeerConnection())
 
-		this.dataChanel?.close();
-		this.dataChanel = null;
-	};
+    this.dataChanel?.close()
+    this.dataChanel = null
+  }
 
-	hangUp = () => {
-		console.log("HANG UP");
-		// this.dataChanel!.send(toJSON<dataChannelTypes>({type: 'hangUp'}))
-		this.dataChanel?.close();
+  hangUp = () => {
+    console.log("HANG UP")
+    // this.dataChanel!.send(toJSON<dataChannelTypes>({type: 'hangUp'}))
+    this.dataChanel?.close()
 
-		this.cleaning();
-	};
+    this.cleaning()
+  }
 
-	updateDataChannel = (dataChanel: RTCDataChannel) => {
-		this.dataChanel = dataChanel;
-	};
+  updateDataChannel = (dataChanel: RTCDataChannel) => {
+    this.dataChanel = dataChanel
+  }
 
 	SocketGetCandidate = async (candidate: RTCIceCandidate) => {
-		const callback = async () => {
-			if (this.peerConnection.remoteDescription) {
-				console.log("REMOTE EST");
-				this.peerConnection.addIceCandidate(candidate);
-			} else {
-				console.log("WAITING");
-				setTimeout(() => callback(), 50);
-			}
-		};
+    const callback = async () => {
+      if (this.peerConnection.remoteDescription) {
+        console.log("REMOTE EST")
+        this.peerConnection.addIceCandidate(candidate);
+      } else {
+        console.log("WAITING")
+        setTimeout(() => callback(), 50) 
+      }
+    }
 
-		callback();
+    callback()
 	};
 
 	sendMessageCaller = () => {
-		console.log("ASASDASDASD", this.dataChanel!.readyState);
-		this.dataChanel!.send("text");
+    console.log("ASASDASDASD", this.dataChanel!.readyState)
+		this.dataChanel!.send('text');
 	};
 
-	enableStreams = async () => {
-		const [stream, videoAllowed, audioAllowed] = await MediaPermissions.setMediaStream(
-			this.peerConnection,
-		);
-		console.log(
-			"[CHECK STREAM TRACKS]",
-			stream.getTracks().map(t => t.kind),
-		);
-		this.stream = stream;
+  enableStreams = async () => {
+    const [stream, videoAllowed, audioAllowed] = await MediaPermissions.setMediaStream(this.peerConnection)
+    console.log('[CHECK STREAM TRACKS]', stream.getTracks().map(t => t.kind))
+    this.stream = stream
 
-		if (videoAllowed) StoreRoom.enableVideo(true);
-		if (audioAllowed) StoreRoom.enableAudio();
-		console.log("[ENABLE STREAMS]: УСТАНОВЛЕН!!!");
-	};
+    if (videoAllowed) StoreRoom.enableVideo(true)
+    if (audioAllowed) StoreRoom.enableAudio()
+    console.log("[ENABLE STREAMS]: УСТАНОВЛЕН!!!")
+  }
 }
 
 export default BasePeer;
