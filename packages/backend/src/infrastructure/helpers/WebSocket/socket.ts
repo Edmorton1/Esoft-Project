@@ -13,7 +13,7 @@ export type clientsType = Map<number, WebSocket>
 const clients = new Map<number, WebSocket>()
 
 function createWebSocketServer(server: any) {
-  const wss = new WebSocket.Server({ server })
+  const wss = new WebSocket.Server({ server, path:"/socket" })
 
   wss.on('connection', (wsClient: WebSocketWidh) => {
     logger.info('WEB SOCKET WORK')
@@ -47,6 +47,10 @@ function createWebSocketServer(server: any) {
           break
         case "cancel":
           clients.get(data)?.send(toSOCl('cancel', undefined))
+          break
+        case "ping":
+          logger.info({_____________WEB_SOCKET______________: "PING"})
+          wsClient.send(toSOCl("ping", undefined))
       }
         
     })

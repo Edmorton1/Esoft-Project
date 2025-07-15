@@ -12,6 +12,7 @@ import ServerRoutes from "@app/server/server/express.routes";
 import helmet from "helmet";
 import { ILogger } from "@app/server/infrastructure/helpers/logger/logger.controller";
 import TYPES from "@app/server/config/containers/types";
+// import { createProxyMiddleware } from "http-proxy-middleware"
 // import fs from 'fs'
 // import path from 'path';
 
@@ -56,6 +57,13 @@ class ServerExpress {
 		this.app.use(helmet());
 		this.app.use(json());
 		this.app.use(expressSession);
+		// this.app.use("/socket", createProxyMiddleware({
+		// 	// FIXME
+		// 	// ХАРДКОД ПОТОМ УБРАТЬ !!!
+		// 	target: "ws://localhost:3000",
+		// 	changeOrigin: true,
+		// 	ws: true
+		// }))
 
 		return this;
 	};
