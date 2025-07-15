@@ -57,13 +57,6 @@ class ServerExpress {
 		this.app.use(helmet());
 		this.app.use(json());
 		this.app.use(expressSession);
-		// this.app.use("/socket", createProxyMiddleware({
-		// 	// FIXME
-		// 	// ХАРДКОД ПОТОМ УБРАТЬ !!!
-		// 	target: "ws://localhost:3000",
-		// 	changeOrigin: true,
-		// 	ws: true
-		// }))
 
 		return this;
 	};

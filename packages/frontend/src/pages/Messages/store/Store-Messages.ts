@@ -15,6 +15,8 @@ import { IS_MATCH } from "@app/shared/HEADERS";
 import { nullToUndefined } from "@app/types/shared/zodSnippets";
 import StoreMessagesLogic from "@app/client/pages/Messages/store/Store-Messages.logic";
 import BroadCast from "@app/client/shared/stores/BroadCast";
+import StoreUser from "@app/client/shared/stores/Store-User";
+import StoreMessagesManager from "@app/client/pages/Messages/store/Store-Messages-Manager";
 
 class StoreMessages {
 	messages: Message[] | null = null;
@@ -27,7 +29,8 @@ class StoreMessages {
 	constructor(readonly toid: number) {
 		makeAutoObservable(this);
 
-		this.logic = new StoreMessagesLogic(this);
+		console.log("АЙДИ ПРИ ИНИЦИАЛИЗАЦИИ", StoreUser.user?.id)
+		this.logic = new StoreMessagesLogic;
 		this.channel = new BroadCast(`store-messages-${this.toid}`);
 		this.channel.register({
 			socketGet: this.logic.socketGet,
@@ -83,11 +86,18 @@ class StoreMessages {
 		formdata.append("json", JSON.stringify(data));
 
 		console.log(formdata.get("files"), formdata.get("json"));
-		await $api.post(`${serverPaths.sendMessage}/${toid}`, formdata, {
-			headers: {
-				"Content-Type": "multipart/form-data",
-			},
-		});
+		const newMessage = (
+			await $api.post(`${serverPaths.sendMessage}/${toid}`, formdata, {
+				headers: {
+					"Content-Type": "multipart/form-data",
+				},
+			})
+		).data;
+
+		// FIXME ДУБЛИРОВАНИЕ ЛОГИКИ В LOGIC
+		const parsedMessage = MessageSchema.parse(newMessage);
+		this.messages?.push(parsedMessage);
+
 		// storeSocket.socket.send(JSON.stringify(data))
 	};
 
@@ -119,18 +129,31 @@ class StoreMessages {
 
 		console.log(data);
 
-		await $api.put(`${serverPaths.editMessage}/${data.id}`, fd, {
-			headers: { "Content-Type": "multipart/form-data" },
-		});
+		const newMessage = (
+			await $api.put(`${serverPaths.editMessage}/${data.id}`, fd, {
+				headers: { "Content-Type": "multipart/form-data" },
+			})
+		).data;
+		const parsedMessage = MessageSchema.parse(newMessage);
+
+		// FIXME ДУБЛИРОВАНИЕ ЛОГИКИ В LOGIC
+		this.messages = this.messages!.map(e =>
+			e.id === parsedMessage.id
+				? { ...e, text: parsedMessage.text, files: parsedMessage.files }
+				: e,
+		);
 	};
 
 	delete = async (id: number) => {
 		console.log(id);
 		await $api.delete(`${serverPaths.deleteMessage}/${id}`);
+		// FIXME ДУБЛИРОВАНИЕ ЛОГИКИ В LOGIC
+		this.messages = this.messages!.filter(e => e.id != id);
 	};
 
 	socketGet = (data: Message) => {
 		console.log("СОКЕТ ГЕТ");
+		console.log(toJS(StoreMessagesManager))
 
 		this.logic.socketGet(data);
 		this.channel.startFunction("socketGet", [data]);
@@ -147,9 +170,9 @@ class StoreMessages {
 		this.channel.startFunction("socketPut", [data]);
 	};
 
-	socketDelete = (id: number) => {
-		this.logic.socketDelete(id)
-    this.channel.startFunction("socketDelete", [id])
+	socketDelete = (id: number, fromid: number) => {
+		this.logic.socketDelete(id, fromid);
+		this.channel.startFunction("socketDelete", [id, fromid]);
 	};
 }
 

@@ -1,5 +1,5 @@
-import {Configuration} from "mini-css-extract-plugin";
-import {BuildOptions} from "./types";
+import { Configuration } from "mini-css-extract-plugin";
+import { BuildOptions } from "./types";
 // import certs from "../../../certs/certs";
 
 // console.log(path.resolve(process.cwd(), "..", "..", "certs", "192.168.1.125.pem"))
@@ -31,19 +31,33 @@ function buildDevServer(options: BuildOptions): Configuration["devServer"] {
 		// server: {
 		// 	type: "https",
 		// 	options: {
-    //  	  key: certs.key,
-    //   	cert: certs.cert,
+		//  	  key: certs.key,
+		//   	cert: certs.cert,
 		// 	}
 		// },
-		
+
 		proxy: [
 			{
 				context: [options.url.prefix],
 				target: options.url.server,
 				secure: false,
-				changeOrigin: true
+				changeOrigin: true,
+			},
+			// FIXME
+			// ХАРДКОД ПОТОМ УБРАТЬ
+			{
+				context: [options.socket.prefix],
+				target: options.socket.server,
+				ws: true,
+				logLevel: "debug"
 			}
-		]
+				
+				// "/socket": {
+				// 	target: "ws://localhost:3000",
+				// 	ws: true, // важно для WebSocket
+				// 	changeOrigin: true, // опционально, меняет заголовок Host
+				// },
+		],
 	};
 }
 

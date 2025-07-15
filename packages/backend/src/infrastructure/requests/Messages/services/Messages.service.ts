@@ -38,9 +38,9 @@ class MessagesService implements MessagesServiceRepo {
   ) {}
     private sendSocket = <T extends keyof MsgTypesServer>(fromid: number, toid: number, msg: MsgTypesServer[T], type: T) => {
       this.logger.info('socket', fromid, toid)
-      const clientFrom = this.clients.get(fromid)
+      // const clientFrom = this.clients.get(fromid)
       const clientTo = this.clients.get(toid)
-      clientFrom?.send(toSOSe(type, msg))
+      // clientFrom?.send(toSOSe(type, msg))
       clientTo?.send(toSOSe(type, msg))
     }
 
@@ -112,7 +112,7 @@ class MessagesService implements MessagesServiceRepo {
       await this.yandex.deleteFolder(id, "messages")
       this.logger.info({frid: data.fromid, toid: data.toid, id})
   
-      this.sendSocket(data.fromid, data.toid, {toid: data.toid, mesid: data.id}, "delete_message")
+      this.sendSocket(data.fromid, data.toid, {fromid: data.fromid, mesid: data.id}, "delete_message")
       return data
     }
 }

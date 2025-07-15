@@ -2,13 +2,12 @@ import { dataChannelTypes } from "@app/client/pages/Room/WebRTC/config/messageTy
 import PeerCaller from "@app/client/pages/Room/WebRTC/logic/PeerCaller";
 import PeerResponder from "@app/client/pages/Room/WebRTC/logic/PeerResponder";
 import VideoControl from "@app/client/pages/Room/WebRTC/controllers/VideoControl";
-import StoreSocket from "@app/client/shared/api/Store-Socket";
 import { LOCAL_VIDEO, REMOTE_VIDEO } from "@app/shared/CONST";
 import { makeAutoObservable } from "mobx";
 import StoreTalking from "@app/client/pages/Room/modules/ModalTalking/store/Store-Talking";
 import StoreCall from "@app/client/pages/Room/modules/ModalCall/store/Store-Call";
-import { SocketMessageServerInterface } from "@app/types/gen/socketTypes";
 import StoreAlert from "@app/client/shared/ui/Toast/Store-Alert";
+import { checkPermissions, sendCancel } from "@app/client/pages/Room/WebRTC/logic/functions/CallFunctions";
 
 class StoreRoom {
 	Peer: null | PeerCaller | PeerResponder = null;
@@ -25,10 +24,16 @@ class StoreRoom {
 		makeAutoObservable(this);
 	}
 
-	makeCall = (frid: number, toid: number) => {
-		if (!navigator.mediaDevices) return StoreAlert.errorInfo("Не подключено ни одно устройство");
-
+	makeCall = async (frid: number, toid: number) => {
 		this.Peer = new PeerCaller(frid, toid);
+
+		try {
+			await checkPermissions(frid)
+		} catch(err) {
+			console.error("ОШИБКА ПЕРМИШЕНС", err)
+			if (typeof err === "string") return StoreAlert.errorInfo(err)
+		}
+	
 		this.Peer.createOffer();
 
 		StoreTalking.openMount();
@@ -72,12 +77,7 @@ class StoreRoom {
 
 	cancel = () => {
 		StoreCall.closeModal();
-		StoreSocket.socket?.send(
-			JSON.stringify({
-				type: "cancel",
-				data: this.Peer!.frid!,
-			} satisfies SocketMessageServerInterface),
-		);
+		sendCancel(this.Peer!.frid)
 		this.cleaning();
 		StoreTalking.closeTimer();
 	};

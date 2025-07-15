@@ -13,6 +13,13 @@ class StoreMessagesManager {
     }
     return this.chats.get(toid)!
   }
+
+  getOrIgnore = (toid: number) => {
+    if (this.chats.has(toid)) {
+      return this.chats.get(toid)
+    }
+    return undefined
+  }
 }
 
 export default new StoreMessagesManager

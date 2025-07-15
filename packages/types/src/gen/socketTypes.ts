@@ -9,7 +9,7 @@ export type LikesDeleteSocketDTO = {userid: number, name: string}
 export interface MsgTypesServer {
   userid: number,
   message: Message,
-  delete_message: {toid: number, mesid: number},
+  delete_message: {fromid: number, mesid: number},
   edit_message: Message,
 
   like: Likes
@@ -22,6 +22,8 @@ export interface MsgTypesServer {
   
   cancel: number
   last_active: null
+
+  ping: undefined
 }
 
 export type OverdriveProperty<T, R> = Omit<T, keyof R> & R

@@ -23,7 +23,9 @@ export default (env: envTypes) => {
 
 	const URL_CLIENT = all_params ? shared_host : process.env.URL_CLIENT!
 	const URL_SERVER = all_params ? shared_host : process.env.URL_SERVER!
-	const URL_SERVER_WS = all_params ? (env.protocol === "http" ? "ws" : "wss") + separ + env.host : process.env.URL_SERVER_WS!
+	const URL_SERVER_WS = all_params ? (env.protocol === "http" ? "ws" : "wss") + separ + env.host + "/socket" : process.env.URL_SERVER_WS!
+	// const URL_SERVER_WS = process.env.URL_SERVER_WS!
+	// const URL_SERVER_WS = "ws://localhost:5000/socket"
 
 	console.log("ПАРАМЕТРЫ В WEBPACK", env.protocol, env.host, env.port)
 	
@@ -56,6 +58,10 @@ export default (env: envTypes) => {
 			prefix: "/api",
 			// FIXME: ПОТОМ ПРИДУМАТЬ КАК СЮДА СЕРВЕР ПЕРЕДАТЬ
 			server: "http://192.168.1.125:3000",
+		},
+		socket: {
+			prefix: "/socket",
+			server: "ws://192.168.1.125:3000"
 		},
 		analyzer: env.analyzer,
 	});
