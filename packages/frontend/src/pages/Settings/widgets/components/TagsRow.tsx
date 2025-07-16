@@ -11,12 +11,12 @@ function TagsRow() {
 
   // const tags = watch('tags') || []
   const tags: TagsDTO[] = useWatch({name: 'tags'})
-  console.log(tagsParse(StoreForm.form?.tags), tagsParse(tags))
+  // console.log(tagsParse(StoreForm.form?.tags), tagsParse(tags))
 
   const uslovie = tagsParse(StoreForm.form?.tags ?? []) === tagsParse(tags)
 
   const color = uslovie ? undefined : 'warning'
-  console.log(tagsParse(StoreForm.form?.tags), tagsParse(tags))
+  // console.log(tagsParse(StoreForm.form?.tags), tagsParse(tags))
   
   return <TagsChips tags={tags} input={input} setInput={setInput} setValue={setValue} color={color} />
 }

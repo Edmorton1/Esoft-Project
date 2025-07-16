@@ -119,8 +119,8 @@ class ExtendedSearchModule implements ExtendedSearchRepo{
       return query
   }
 
-  getByTags: ExtendedSearchRepo['getByTags'] = async ({tags, page, min_age, max_age, avatar, location, max_distance, name, params}) => {
-    const props = {tags, page, min_age, max_age, avatar, location, max_distance, name, params}
+  getByTags: ExtendedSearchRepo['getByTags'] = async ({tags, page, min_age, max_age, avatar, location, max_distance, name, params, order}) => {
+    const props = {tags, page, min_age, max_age, avatar, location, max_distance, name, params, order}
     this.logger.info("GET BY TAGS")
 
     const [distanceRaw, selectDistance] = this.buildLocation(location)
@@ -149,6 +149,7 @@ class ExtendedSearchModule implements ExtendedSearchRepo{
       .select(...baseSelect)
       .offset(offset === -1 ? 0 : offset)
       .limit(CARDS_ON_PAGE)
+      .orderBy(order ? order : "id")
 
     this.logger.info({TAGS_TAGS: tags})
         

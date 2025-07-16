@@ -1,16 +1,13 @@
 import useInfinitPaginationDoc from "@app/client/shared/hooks/usePagination/doc/useInfinitPaginationDoc";
 import { serverPaths } from "@app/shared/PATHS";
 import { observer } from "mobx-react-lite";
-import { useState } from "react";
 import * as style from "@app/client/shared/css/modules/CreatePost.module.scss"
 import usePostsStore from "@app/client/pages/Profile/widgets/Posts/hooks/usePostsStore";
 import CreatePost from "@app/client/pages/Profile/widgets/Posts/components/CreatePost";
-import Edit from "@app/client/pages/Profile/widgets/Posts/components/Edit";
-import Post from "@app/client/pages/Profile/widgets/Posts/components/Post";
 import StoreUser from "@app/client/shared/stores/Store-User";
+import Posts from "@app/client/pages/Profile/widgets/Posts/components/Posts";
 
 function PostsHead() {
-	const [edit, setEdit] = useState(0)
 	const store = usePostsStore()
 
 	// console.log("ПЕРЕД THEN CURSOR", StorePosts.cursor)
@@ -33,17 +30,7 @@ function PostsHead() {
 	return (
 		<section className={style.form}>
 			{StoreUser.user?.id === store.profileid && <CreatePost />}
-			{store.posts?.map(e => {
-        const handleDelete = () => store.delete(e.id)
-				const handleEdit = () => setEdit(e.id)
-				const EditToZero = () => setEdit(0)
-
-				if (edit === e.id) {
-					return <Edit post={e} key={e.id} EditToZero={EditToZero} />
-				}
-
-        return <Post post={e} handleEdit={handleEdit} handleDelete={handleDelete} key={e.id} />
-      })}
+			{store.posts?.map(e => <Posts e={e} key={e.id}/>)}
 		</section>
 	);
 }

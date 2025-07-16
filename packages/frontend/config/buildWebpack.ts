@@ -25,7 +25,7 @@ function buildWebpack(options: BuildOptions): WebpackConfiguration {
 		},
 		resolve: buildResolvers(options),
 		devtool: isDev ? 'eval-cheap-module-source-map' : false,
-		devServer: isDev ? buildDevServer(options) : undefined,
+		devServer: isProd ? buildDevServer(options) : undefined,
 		optimization: isProd
 			? {
 					splitChunks: {

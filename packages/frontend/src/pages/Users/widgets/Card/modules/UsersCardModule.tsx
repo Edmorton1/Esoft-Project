@@ -1,26 +1,17 @@
 import UsersCardInfo from "@app/client/shared/ui/components/UsersCardInfo";
-import { UsersContext } from "@app/client/pages/Users/widgets/Card/UsersCardWidget";
 import StoreForm from "@app/client/shared/stores/Store-Form";
-import StoreLikes from "@app/client/shared/stores/Likes/StoreLikes";
-import { useContext } from "react";
 import { observer } from "mobx-react-lite";
-import TimeoutButton from "@app/client/shared/ui/mui_components/TimeoutButton";
+import { Form } from "@app/types/gen/Users";
+import SendLikeButton from "@app/client/shared/ui/modules/SendLikeButton/SendLikeButton";
 
-function UsersCardModule() {
-	const context = useContext(UsersContext)!;
-	const liked = StoreLikes.likes?.sent.some(e => e.liked_userid === context!.id);
+function UsersCardModule({form}: {form: Form}) {
+	console.log("UsersCardModule RERENDER")
 
-	const handleLike = () =>
-		StoreLikes.likes?.sent.some(e => e.liked_userid === context!.id)
-			? StoreLikes.delete(context)
-			: StoreLikes.like(context);
 
 	return (
-		<UsersCardInfo form={context}>
-			{StoreForm.form && StoreForm.form?.id !== context.id && (
-				<TimeoutButton color={liked ? "error" : "success"} variant="contained" onClick={handleLike}>
-					{liked ? "Убрать лайк" : "Лайкнуть"}
-				</TimeoutButton>
+		<UsersCardInfo form={form}>
+			{StoreForm.form && StoreForm.form?.id !== form.id && (
+				<SendLikeButton userForm={form} />
 			)}
 		</UsersCardInfo>
 	);

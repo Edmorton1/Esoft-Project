@@ -17,6 +17,7 @@ function Profile() {
     return <Loading />
   }
 
+  console.log("PROFILE RERENDER")
   return <>
     <Title>{StoreProfile.profile.name}</Title>
     <UserInfo />

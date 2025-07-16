@@ -12,7 +12,7 @@ import MapWidget from "@app/client/shared/widgets/MapWidget/MapWidget"
 import TagsRow from "@app/client/pages/Settings/widgets/components/TagsRow"
 import Box from "@mui/material/Box"
 import DescriptionRow from "@app/client/pages/Settings/widgets/components/DescriptionRow"
-import StoreSettings from "@app/client/pages/Settings/widgets/store/Store-Settings"
+// import StoreSettings from "@app/client/pages/Settings/widgets/store/Store-Settings"
 import SharedRequests from "@app/client/shared/funcs/Shared-Requests"
 import AvatarRow from "@app/client/pages/Settings/widgets/components/AvatarRow"
 import { BG_ALT } from "@app/shared/COLORS"
@@ -33,7 +33,7 @@ function ProfileSettings() {
 
   const submit = (data: any) => {
     console.log(data)
-    StoreSettings.updateForm(data)
+    // StoreSettings.updateForm(data)
   }
 
   const handleLocation = async (data: Parameters<LocationCallback>[0]) => {
@@ -49,15 +49,19 @@ function ProfileSettings() {
   const p = 1.5
   const sx = {bgcolor: BG_ALT, p: 2}
 
+  const actualName = methods.watch("name")
+  const actualAge = methods.watch("age")
+  const actualCity = methods.watch("city")
+
   return <FormProvider {...methods}>
     <Paper component={"form"} className={style.container__form} onSubmit={methods.handleSubmit(data => submit(data))}>
       {/* <button onClick={() => console.log(methods.formState.errors)}>Errors</button> */}
       <AvatarRow sx={sx} />
       <Box bgcolor={BG_ALT} component={"div"} className={style['container__form--options']}>
         <Paper sx={{p: p}}>
-          <EditRow label="Имя" name="name" />
-          <EditRow label="Возраст" name="age" />
-          <EditRow label="Город" name="city" disabled={typeof StoreForm.form?.location !== "undefined"} />
+          <EditRow label="Имя" name="name" actual={actualName} />
+          <EditRow label="Возраст" name="age" actual={actualAge} />
+          <EditRow label="Город" name="city" actual={actualCity} disabled={typeof StoreForm.form?.location !== "undefined"} />
           {/* <EditRow label="Описание" value={StoreForm.form?.description} name="description" /> */}
           <DescriptionRow />
         </Paper>
@@ -73,7 +77,6 @@ function ProfileSettings() {
       <Button type="submit" variant="contained">Сохранить профиль</Button>
     </Paper>
   </FormProvider>
-
 }
 
 export default ProfileSettings

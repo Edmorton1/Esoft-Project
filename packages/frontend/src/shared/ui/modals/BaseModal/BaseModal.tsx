@@ -21,9 +21,7 @@ function BaseModal({Store, children}: propsInterface) {
 	return (
 		<Modal
 			open={Store.isOpen}
-			onClose={Store.closeModal}
-			aria-labelledby="modal-modal-title"
-			aria-describedby="modal-modal-description">
+			onClose={Store.closeModal}>
       <Fade in={Store.isOpen}>
         <Box sx={style}>
           {children}

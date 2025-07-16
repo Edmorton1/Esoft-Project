@@ -11,16 +11,19 @@ type requestType = {
 // {page: number, form: Form[]}
 
 class StoreUsers {
-  users = new Map<number, Form[]>()
+  users: Form[] = []
   pagesCount: number | null = null
   
   constructor() {
     makeAutoObservable(this)
   }
 
-  initial = (data: requestType, page: number) => {
+  initial = (data: requestType) => {
     console.log(data)
-    this.users.set(page, data.forms)
+    if (this.users.length) {
+      this.users.push(...data.forms)
+    }
+    this.users = data.forms
     this.pagesCount = data.count
 
     console.log("users", toJS(this.users))

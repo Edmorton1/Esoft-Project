@@ -22,7 +22,7 @@ interface propsInterface {
 function Post({ post, handleEdit, handleDelete }: propsInterface) {
 	const store = usePostsStore()
 	
-
+	console.log("POST RERENDER")
 	return (
 		// <div>sasddas</div>
 		<Card component={"article"}>

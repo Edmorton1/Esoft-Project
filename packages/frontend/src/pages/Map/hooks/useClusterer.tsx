@@ -17,7 +17,7 @@ function useClusterer(
 		if (!mapgl || !map) return;
 
 		const clusterer = new Clusterer(map, {
-			radius: 80,
+			radius: 50,
 		});
 
 		setClustererState(clusterer);

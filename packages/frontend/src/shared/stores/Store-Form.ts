@@ -7,7 +7,7 @@ import BroadCast from "@app/client/shared/stores/BroadCast";
 
 class FormStore {
   form: Form | null | undefined = undefined
-  channel: BroadCast<"setAvatar"> = new BroadCast("store-form")
+  private readonly channel: BroadCast<"setAvatar"> = new BroadCast("store-form")
 
   constructor() {
     makeAutoObservable(this)

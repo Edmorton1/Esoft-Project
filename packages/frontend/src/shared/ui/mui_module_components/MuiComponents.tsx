@@ -10,7 +10,7 @@ import RadioGroup from "@mui/material/RadioGroup";
 import Select from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
 import { TagsDTO } from "@app/types/gen/dtoObjects";
-import { ReactNode } from "react";
+import { memo, ReactNode, useCallback } from "react";
 import { Control, Controller, FieldError, FieldErrorsImpl, Merge, UseFormRegister, UseFormSetValue } from "react-hook-form";
 // import FormHelperText from "@mui/material/FormHelperText";
 
@@ -27,11 +27,10 @@ interface inputInterface<T> {
   type?: string,
   disabled?: boolean,
   variant?: "standard" | "outlined" | "filled",
-  color?: colorTypes
+  color?: colorTypes,
 }
 
 export function InputMui <T extends string>({text, id, error, register, children, disabled, type = 'text', variant = 'standard', color = 'primary'}: inputInterface<T>) {
-  
   return <FormControl error={!!error} color={color} >
     <TextField color={color} label={text} {...register(id, {valueAsNumber: type === 'number'})} type={type} id={id} disabled={disabled} variant={variant} error={!!error} slotProps={{inputLabel: disabled !== undefined ? {shrink: disabled !== undefined} : undefined}} />
     <FormError id={id} error={error} />
@@ -93,29 +92,32 @@ export function SelectMui({text, id, error, control, children, color = 'primary'
 }
 
 interface radioInterface {
-  text: string,
+  text?: string,
   id: string,
   error?: errorsType,
   // children: ReactElement<FormControlLabelProps>
   children: ReactNode
   control?: Control<any>
   onChange?: (...[args]: any) => void
-  color?: colorTypes
+  color?: colorTypes,
+  direction?: "column" | "row"
 }
 
-export function RadioGroupMui({error, text, id, children, control, onChange, color = 'primary'}: radioInterface) {
+export function RadioGroupMui({error, text, id, children, control, onChange, color = 'primary', direction = "row"}: radioInterface) {
+  const radioSX = {display: "flex", flexDirection: direction}
+
   return <FormControl color={color} sx={{display: "flex", justifyContent: "center", alignItems: "center"}} id={id} error={!!error}>
-    <FormLabel sx={{display: "flex", alignItems: "center", justifyContent: "center"}}>{text}</FormLabel>
+    {text && <FormLabel>{text}</FormLabel>}
     {control ? <Controller
       name={id}
       control={control}
       render={({field}) => (
-        <RadioGroup row {...field} onChange={onChange ?? field.onChange}>
+        <RadioGroup row {...field} onChange={onChange ?? field.onChange} sx={radioSX}>
           {children}
         </RadioGroup>
       )}
     /> : (
-      <RadioGroup row name={id}>
+      <RadioGroup row name={id} sx={radioSX}>
         {children}
       </RadioGroup>
     )}
@@ -148,25 +150,46 @@ interface tagsChipsInterface {
   setValue: UseFormSetValue<any>,
 }
 
+// const TagsArr = ({tags, color, handleDelete}: {tags: tagsChipsInterface['tags'], color: tagsChipsInterface['color'], handleDelete: () => void}) => (
+// <Box sx={{padding: "3px", gap: "4px", display: "flex", flexWrap: "wrap", backgroundColor:"background.paper"}}>
+//     {tags.map(e => <Chip
+//       key={e.tag} 
+//       label={e.tag} 
+//       variant="outlined" 
+//       color={color}
+//       onDelete={handleDelete} />)}
+//   </Box>
+// )
+
+type One<T extends readonly any[]> = T[number]
+const TagChip = ({tag, color, handleDelete}: {tag: string, color: tagsChipsInterface['color'], handleDelete: () => void}) => (
+  <Chip
+      key={tag} 
+      label={tag} 
+      variant="outlined" 
+      color={color}
+      onDelete={handleDelete} />
+)
+
+const Tags = memo(function Tags({setValue, tags, e, color}: {setValue: UseFormSetValue<any>, tags: tagsChipsInterface['tags'], e: One<tagsChipsInterface['tags']>, color: tagsChipsInterface['color']}) {
+  const handleDelete = useCallback(() => setValue('tags', tags.filter(tag => tag.tag !== e.tag)), [e.tag, tags])
+  return <TagChip tag={e.tag} color={color} handleDelete={handleDelete} key={e.tag} />
+})
+
 export function TagsChips({tags, color, input, setInput, setValue}: tagsChipsInterface) {
   return <FormControl fullWidth>
   <FormLabel>Тэги</FormLabel>
   <Box sx={{display: "flex", gap: 1}}>
     <TextField color={color} label="Напишите тег" variant="outlined" value={input} onChange={e => setInput(e.target.value)} sx={{ flex: 1 }} />
     <Button color={color} variant="contained" onClick={() => {
-    if (input.trim() !== '' && !tags.map(e => e.tag).includes(input)) {
-      setValue('tags', [...tags, {tag: input.trim()}]);
-      setInput('')
-    }
-  }}>Добавить</Button>
+      if (input.trim() !== '' && !tags.map(e => e.tag).includes(input)) {
+        setValue('tags', [...tags, {tag: input.trim()}]);
+        setInput('')
+      }
+    }}>Добавить</Button>
   </Box>
   {tags.length > 0 && <Box sx={{padding: "3px", gap: "4px", display: "flex", flexWrap: "wrap", backgroundColor:"background.paper"}}>
-    {tags.map(e => <Chip
-      key={e.tag} 
-      label={e.tag} 
-      variant="outlined" 
-      color={color}
-      onDelete={() => setValue('tags', tags.filter(tag => tag.tag !== e.tag))} />)}
+    {tags.map(e => <Tags setValue={setValue} color={color} e={e} tags={tags} key={e.tag} />)}
   </Box>}
   </FormControl>
 }

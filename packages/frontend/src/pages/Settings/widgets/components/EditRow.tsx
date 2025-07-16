@@ -1,21 +1,23 @@
 import Typography from '@mui/material/Typography';
 import * as style from "@app/client/shared/css/pages/Settings.module.scss"
-import { useFormContext, useWatch } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import { ProfileType } from '@app/client/pages/Settings/widgets/schema/Schemas';
 import { InputMui, InputNumberMui } from '@app/client/shared/ui/mui_module_components/MuiComponents';
 import StoreForm from '@app/client/shared/stores/Store-Form';
 import { memo } from 'react';
 
+// type asd<T> = {K in ProfileType}
 interface propsInterface {
   name: keyof ProfileType
   label: string
-  disabled?: boolean
+  disabled?: boolean,
+  actual: any
 }
 
-function EditRow({name, label, disabled}: propsInterface) {
+function EditRow({name, label, disabled, actual}: propsInterface) {
   const {register, formState: {errors}} = useFormContext<ProfileType>()
 
-  const actual = useWatch({name})
+  // const actual = useWatch({name})
   
   const color = errors[name] ? "error" : actual !== StoreForm.form?.[name] ? "warning" : undefined
 

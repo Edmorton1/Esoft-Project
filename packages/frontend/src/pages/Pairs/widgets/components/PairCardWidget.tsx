@@ -14,6 +14,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import StoreLikes from "@app/client/shared/stores/Likes/StoreLikes";
 import UnderTypo from "@app/client/shared/ui/mui_components/UnderTypo";
 import { Form } from "@app/types/gen/Users";
+import { memo } from "react";
 
 function PairCardWidget({ data }: { data: Form }) {
 	const handleClick = () => StoreRoom.makeCall(StoreUser.user!.id, data.id);
@@ -56,4 +57,4 @@ function PairCardWidget({ data }: { data: Form }) {
 	);
 }
 
-export default PairCardWidget;
+export default memo(PairCardWidget);

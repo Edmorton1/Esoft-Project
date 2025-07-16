@@ -27,7 +27,6 @@ interface contextInterface {
 export const MessageContext = createContext<contextInterface | null>(null);
 
 function MessageHead({ msg, editing, setEditMessage }: propsInterface) {
-	// console.log("MODULE RENDER", msg.id)
 	const StoreMessages = useContext(MessagesContext)!;
 	const [value, setValue] = useState("");
 	const [files, setFiles] = useState<{ new: FileList | null; old: string[] } | null>(null);

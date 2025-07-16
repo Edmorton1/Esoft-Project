@@ -11,8 +11,10 @@ import usePostsStore from "@app/client/pages/Profile/widgets/Posts/hooks/usePost
 import Avatar from "@mui/material/Avatar";
 import StoreUser from "@app/client/shared/stores/Store-User";
 import { observer } from "mobx-react-lite";
-import InfoField from "@app/client/pages/Profile/widgets/Profile/InfoField";
+import InfoField from "@app/client/shared/ui/components/InfoField";
 import { translateTarget } from "@app/client/shared/funcs/translatetTarget";
+import StoreModalFile from "@app/client/shared/ui/modals/Files/StoreModalFile";
+import SendLikeButton from "@app/client/shared/ui/modules/SendLikeButton/SendLikeButton";
 
 // ПОТОМ СДЕЛАТЬ С ИНФОРМАЦИЕЙ КАК МОДАЛКУ
 function UserInfo() {
@@ -26,9 +28,24 @@ function UserInfo() {
 
 	if (!profile) return null;
 
+	const openAvatar = () => {
+		if (profile.avatar) {
+			StoreModalFile.setFile(profile.avatar!);
+			StoreModalFile.openModal();
+		}
+	};
+
 	return (
 		<Paper component={"div"} className={style.info}>
-			<Avatar src={profile.avatar} sx={{ width: wh, height: wh }} />
+			<div>
+				<Avatar
+					component={"div"}
+					onClick={openAvatar}
+					src={profile.avatar}
+					sx={{ width: wh, height: wh }}
+				/>
+				{StoreUser.user?.id !== profile.id && <SendLikeButton sx={{width: "100%"}} userForm={profile} />}
+			</div>
 
 			<Box sx={{ flex: 1 }}>
 				<Stack spacing={1.5}>

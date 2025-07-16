@@ -26,11 +26,28 @@ class ExtendedSearchController extends BaseController {
     ])
   }
   getForms = async (ctx: HttpContext) => {
-    const {tags, page, min_age, max_age, avatar, location, max_distance, name, params} = ExtendedSearchValidation(ctx)
+    const {tags, page, min_age, max_age, avatar, location, max_distance, name, order, params} = ExtendedSearchValidation(ctx)
 
-    const tagsArr = tags ? await this.ExtendedSeacrhSQLhelper.getUserTags(tags) : []
+    let tagsArr = tags ? await this.ExtendedSeacrhSQLhelper.getUserTags(tags) : []
+    
+    if (!tagsArr.length && tags?.length) {
+      tagsArr = [{groups: "none", id: [0]}]
+    }
+    // console.log("ПОЛУЧЕНЫЕ ТЕГИ", tagsArr)
+    logger.info({ПОРЯДОК_В: order})
 
-    const zapisi = await this.ExtendedSearchModule.getByTags({tags: tagsArr, params, page, min_age, max_age, avatar, location, name, max_distance})
+// ПОЛУЧЕНЫЕ ТЕГИ [
+//   {
+//     groups: 'музыка',
+//     id: [
+//         2, 269, 264,
+//       262, 263, 265,
+//       356
+//     ]
+//   }
+// ]
+
+    const zapisi = await this.ExtendedSearchModule.getByTags({tags: tagsArr, params, page, min_age, max_age, avatar, location, name, max_distance, order})
     
     logger.info(tagsArr)
     logger.info(zapisi.forms.length)

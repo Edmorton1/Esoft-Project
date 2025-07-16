@@ -14,6 +14,8 @@ export const zParams = FormSchema
     city: z.coerce.string()
 }).partial()
 
+const orders = ["distance", "age"] as const
+
 export const zodParams = z.object({
   // tags: z.coerce.string().trim().nonempty().optional(),
   tags: z.preprocess(val => {
@@ -32,6 +34,11 @@ export const zodParams = z.object({
   avatar: queryBoolean,
   max_distance: z.coerce.number().optional(),
   name: z.coerce.string().optional(),
+  order: z.preprocess((val) => {
+    if (typeof val === "string" && (orders as unknown as string[]).includes(val)) {
+      return val
+    } return undefined
+  }, z.enum(orders).optional()),
 
   location: z.preprocess(val => {
     if (typeof val === "string") {
