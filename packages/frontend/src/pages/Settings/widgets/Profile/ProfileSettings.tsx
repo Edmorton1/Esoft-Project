@@ -30,9 +30,6 @@ function ProfileSettings() {
     description: StoreForm.form?.description,
     name: StoreForm.form?.name
   }})
-  // ОТСАЛОСЬ tags avatar
-  // ЗАВТРА УЛУЧШИТЬ ОТОБРАЖЕНИЕ КАРТЫ, ЗАБЛОКИРОВАТЬ СМЕНУ ГОРОДА, ДОДЕЛАТЬ ИТОГ ФОРМЫ, ДОБАВИТЬ СМЕНУ АВАТАРА, УЛУЧШИТЬ ОПТИМИЗАЦИЮ
-  // ЗАВТРА УЛУЧШИТЬ ОПТИМИЗАЦИЮ
 
   const submit = (data: any) => {
     console.log(data)

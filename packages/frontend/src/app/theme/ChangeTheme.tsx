@@ -9,7 +9,7 @@ export const ThemeContext = createContext<() => void>(() => {})
 
 function ChangeTheme({children}: {children: any}) {
   const [themeMode, setThemeMode] = useState<"light" | "dark">(() => {
-    return localStorage.getItem("theme") === "dark" ? "dark" : "light";
+    return localStorage.getItem("theme") === "light" ? "light" : "dark";
   });
 
   useEffect(() => {

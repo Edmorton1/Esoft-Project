@@ -1,4 +1,4 @@
-import AddFiles from "@app/client/pages/Messages/InsideMessage/widget/Main/modules/components/kit/AddFiles";
+import AddFiles from "@app/client/shared/ui/components/AddFiles";
 import StoreUser from "@app/client/shared/stores/Store-User";
 import { zodResolver } from "@hookform/resolvers/zod";
 import TextField from "@mui/material/TextField";
@@ -18,14 +18,15 @@ function CreatePost() {
 	const store = usePostsStore();
 
 	const onSubmit = handleSubmit(data => {
-		reset();
+		console.log(data.files, "in on submit")
 		store.post(data);
+		reset();
 	});
 
 	return (
 		<>
 			<Paper component={"form"} onSubmit={onSubmit} className={style.form__createPost}>
-				<AddFiles register={register("files")} />
+				<AddFiles register={register("files")} files_limit={3} />
 				<TextField {...register("text")} label={"Текст"} variant="outlined" sx={{ flex: 1 }} />
 				<TimeoutButton variant="contained" type="submit">
 					Готово

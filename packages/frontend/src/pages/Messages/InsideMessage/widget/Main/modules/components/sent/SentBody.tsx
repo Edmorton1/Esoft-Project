@@ -5,11 +5,12 @@ import MicIcon from '@mui/icons-material/Mic';
 import { sxStyle } from "@app/client/shared/ui/mui_components/CircleButton";
 import SendIcon from '@mui/icons-material/Send';
 import Paper from "@mui/material/Paper";
-import AddFiles from "@app/client/pages/Messages/InsideMessage/widget/Main/modules/components/kit/AddFiles";
+import AddFiles from "@app/client/shared/ui/components/AddFiles";
 import MinButton, { MinButtonStyle } from "@app/client/shared/ui/mui_components/MinButton";
 import VoiceMessage from "@app/client/pages/Messages/InsideMessage/widget/Main/modules/classes/VoiceMessage";
 import { useState } from "react";
 import TimeoutButton from "@app/client/shared/ui/mui_components/TimeoutButton";
+import { FILES_LIMIT_IN_MESSAGE } from "@app/shared/CONST";
 
 function SentBody({onSubmit, register, toid}: {onSubmit: SubmitHandler<any>, register: UseFormRegister<any>, toid: number}) {
   const [mediaInstance, setMediaInstance] = useState<VoiceMessage | null>(null)
@@ -31,7 +32,7 @@ function SentBody({onSubmit, register, toid}: {onSubmit: SubmitHandler<any>, reg
 
   return <Paper component="form" onSubmit={onSubmit} className={style.form}>
 
-    <AddFiles register={register("files")} />
+    <AddFiles files_limit={FILES_LIMIT_IN_MESSAGE} register={register("files")} />
     
     <TextField {...register('text')} label={"Сообщение"} variant="outlined" sx={{flex: 1}} />
 

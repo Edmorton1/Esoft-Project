@@ -1,11 +1,11 @@
-import {createTheme, Theme} from "@mui/material/styles";
+import { createTheme, Theme } from "@mui/material/styles";
 
 export const getMuiTheme = (mode: "light" | "dark"): Theme => {
 	let theme = createTheme({
 		palette: {
 			mode,
 			info: {
-				main: "#FF8E53"
+				main: "#FF8E53",
 			},
 			primary: {
 				// Основной цвет
@@ -13,8 +13,8 @@ export const getMuiTheme = (mode: "light" | "dark"): Theme => {
 			},
 			background: {
 				default: mode === "dark" ? "#242424" : "#e6e6e6",
-				third: mode === 'dark' ? "#2b2b2b" : "#f5f5f5",
-				alt: mode === 'dark' ? "#303030" : "#f2f2f2",
+				third: mode === "dark" ? "#2b2b2b" : "#f5f5f5",
+				alt: mode === "dark" ? "#303030" : "#f2f2f2",
 				// Цвет карточек визуально выделяющихся компмонентов
 				paper: mode === "dark" ? "#333333" : "#ffffff",
 			},
@@ -27,6 +27,17 @@ export const getMuiTheme = (mode: "light" | "dark"): Theme => {
 					main: "#ffffff",
 				},
 				name: "plombir",
+			}),
+		},
+	});
+
+	theme = createTheme(theme, {
+		palette: {
+			bright: theme.palette.augmentColor({
+				color: {
+					main: mode === "dark" ? "#797979" : "#ffffff",
+				},
+				name: "bright",
 			}),
 		},
 	});

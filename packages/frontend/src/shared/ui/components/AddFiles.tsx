@@ -3,17 +3,18 @@ import { sxStyle } from "@app/client/shared/ui/mui_components/CircleButton";
 import Button from "@mui/material/Button";
 import { useRef, useState } from 'react';
 import { UseFormRegisterReturn } from 'react-hook-form';
-import { FILES_LIMIT, FILES_LIMIT_MESSAGE } from '@app/shared/CONST';
+import { FILES_LIMIT_MESSAGE } from '@app/shared/CONST';
 
 const ICON_SIZE = "64px"
 const sxButton = {width: ICON_SIZE, height: ICON_SIZE, borderRadius: "50%"}
 
 interface propsInterface {
   onChangeAdd?: (e: any) => void
-  register?: UseFormRegisterReturn<any>
+  register?: UseFormRegisterReturn<any>,
+  files_limit: number
 }
 
-function AddFiles({register, onChangeAdd}: propsInterface) {
+function AddFiles({register, onChangeAdd, files_limit}: propsInterface) {
   const [selectedFiles, setSelectedFiles] = useState<FileList | null>(null)
   const fileRef = useRef<HTMLInputElement>(null)
   
@@ -21,8 +22,9 @@ function AddFiles({register, onChangeAdd}: propsInterface) {
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const target = e.target.files
-    if (target && target?.length > FILES_LIMIT) {
-      alert(FILES_LIMIT_MESSAGE)
+    console.log("target", target)
+    if (target && target?.length > files_limit) {
+      alert(FILES_LIMIT_MESSAGE(files_limit))
       return;
     }
   

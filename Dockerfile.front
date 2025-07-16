@@ -14,7 +14,7 @@ RUN npm install
 COPY . .
 
 # ПЕРЕМЕННЫЕ СОЗДАНИЯ ССЛЫКИ
-ENV HOST=192.168.1.125:5000
+ENV HOST=localhost:5000
 ENV PROTOCOL=http
 # ПЕРЕМЕННЫЕ СОЗДАНИЯ ССЛЫКИ
 

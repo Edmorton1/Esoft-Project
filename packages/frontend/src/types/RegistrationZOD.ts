@@ -1,10 +1,11 @@
 import { RegistrationDTOSchema } from "@app/types/gen/dtoObjects";
+import { remail } from "@app/types/gen/FormErrors";
 import { FormSchema, UserSchema } from "@app/types/gen/Users";
 import { checkEmptyString, toCapitalize, zstring } from "@app/types/shared/zodSnippets";
 import { z } from "zod";
 
 export const RegistrationDTOClientSchemaWithoutRefline = RegistrationDTOSchema.extend({
-  email: zstring.email(),
+  email: zstring.email(remail),
   confirmPassword: z.string().nullable(),
   
   name: z.string().trim().nonempty().min(2).transform(val => toCapitalize(val)),

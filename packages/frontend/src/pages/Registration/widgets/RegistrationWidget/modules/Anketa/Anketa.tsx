@@ -3,7 +3,6 @@ import { InputMui, InputNumberMui, RadioGroupMui, SelectMui, TagsChips, TextArea
 import MenuItem from "@mui/material/MenuItem";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Radio from "@mui/material/Radio";
-import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
@@ -12,6 +11,7 @@ import * as style from "@app/client/shared/css/pages/Registration.module.scss"
 import { useFormContext, useWatch } from "react-hook-form";
 import { useState } from "react";
 import { TagsDTO } from "@app/types/gen/dtoObjects";
+// import TextField from "@mui/material/TextField";
 
 
 function Anketa() {
@@ -47,10 +47,18 @@ function Anketa() {
 				error={errors.description}
 			/>
 
-			<TextField
+			{/* <input type="file" {...register("avatar")} /> */}
+			{/* <TextField
 				type="file"
 				label="Загрузить аватар"
-				slotProps={{ inputLabel: { shrink: true } }}></TextField>
+				slotProps={{ inputLabel: { shrink: true } }}
+			/> */}
+			<InputMui
+				register={register}
+				id="avatar"
+				type="file"
+				variant="outlined"
+			/>
 
 			{/* <InputMui id="city" text="Город" register={register} disabled={!!StoreRegistration.coords || !!StoreRegistration.defaultCoords} /> */}
 			<InputMui

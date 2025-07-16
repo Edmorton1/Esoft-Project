@@ -12,6 +12,7 @@ import TextField from "@mui/material/TextField";
 import { TagsDTO } from "@app/types/gen/dtoObjects";
 import { ReactNode } from "react";
 import { Control, Controller, FieldError, FieldErrorsImpl, Merge, UseFormRegister, UseFormSetValue } from "react-hook-form";
+// import FormHelperText from "@mui/material/FormHelperText";
 
 export type colorTypes = "error" | "primary" | "secondary" | "info" | "success" | "warning"
 
@@ -133,7 +134,7 @@ interface textareaInterface {
 
 export function TextAreaMui({label, error, id, register, children, color}: textareaInterface) {
   return <FormControl error={!!error}>
-    <TextField {...register(id)} label={label} error={!!error} multiline minRows={3} id={id} color={color} />
+    <TextField sx={{maxHeight: "103px", overflow: "auto"}} variant="filled" {...register(id)} label={label} error={!!error} multiline minRows={3} id={id} color={color} />
     <FormError id={id} error={error}></FormError>
     {children}
   </FormControl>

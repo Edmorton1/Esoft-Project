@@ -10,6 +10,8 @@ import Button from "@mui/material/Button"
 import Box from "@mui/material/Box"
 import { BG_PAPER } from "@app/shared/COLORS"
 import { RegisterNames } from "@app/client/types/types"
+import FormHelperText from "@mui/material/FormHelperText"
+import { passError } from "@app/types/gen/FormErrors"
 
 function PasswordModal() {
   const {register, handleSubmit, formState: {errors}, setError} = useForm({resolver: zodResolver(PasswordSchema)})
@@ -25,9 +27,13 @@ function PasswordModal() {
   return <BaseModal Store={StoreSettings}>
     <Box bgcolor={BG_PAPER} className={style.container} component={"form"} onSubmit={handleSubmit(data => onSubmit(data))}>
       <Typography variant="h4">Сменить пароль</Typography>
-      <InputMui<RegType> register={register} text="Старый пароль" id="pass" error={errors.pass} />
-      <InputMui<RegType> register={register} text="Новый пароль" id="new" error={errors.new} />
-      <InputMui<RegType> register={register} text="Повторите пароль" id="repeat" error={errors.repeat} />
+      <InputMui<RegType> register={register} text="Старый пароль" id="pass" type="password" error={errors.pass} />
+
+      <InputMui<RegType> register={register} text="Новый пароль" id="new" type="password" error={errors.new}>
+        <FormHelperText id="new">{passError}</FormHelperText>
+      </InputMui>
+
+      <InputMui<RegType> register={register} text="Повторите пароль" id="repeat" type="password" error={errors.repeat} />
       <Button variant="contained" type="submit">Готово</Button>
     </Box>
   </BaseModal>

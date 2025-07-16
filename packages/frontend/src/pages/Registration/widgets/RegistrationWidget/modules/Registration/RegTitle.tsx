@@ -3,6 +3,7 @@ import { InputMui} from "@app/client/shared/ui/mui_module_components/MuiComponen
 import Paper from "@mui/material/Paper";
 import * as style from "@app/client/shared/css/pages/Registration.module.scss"
 import { useFormContext } from "react-hook-form";
+import { passError } from "@app/types/gen/FormErrors";
 
 function RegTitle() {
   const { register, formState: {errors} } = useFormContext()
@@ -16,7 +17,7 @@ function RegTitle() {
 			id="password"
 			register={register}
 			text="Пароль">
-			<FormHelperText id="password">Пароль должен...</FormHelperText>
+			<FormHelperText id="password">{passError}</FormHelperText>
 		</InputMui>
 
 		<InputMui

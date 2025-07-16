@@ -13,6 +13,7 @@ import { BG_ALT } from "@app/shared/COLORS"
 import { paths } from "@app/shared/PATHS"
 import AvatarImg from "@app/client/shared/ui/mui_components/AvatarImg"
 import { Link } from "react-router-dom"
+import { translateTarget } from "@app/client/shared/funcs/translatetTarget"
 
 function UsersCardInfo({form, children}: {form: Form, children?: ReactNode}) {
   // console.log("TAGS", toJS(form.tags))
@@ -36,7 +37,7 @@ function UsersCardInfo({form, children}: {form: Form, children?: ReactNode}) {
       <Divider />
       <Typography><strong>Возраст: </strong>{form.age}</Typography>
       <Divider />
-      <Typography><strong>Цель: </strong>{form.target}</Typography>
+      <Typography><strong>Цель: </strong>{translateTarget(form.target)}</Typography>
       <Divider />
         {form.description && <>
         <Typography>

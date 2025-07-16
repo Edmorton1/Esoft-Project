@@ -18,10 +18,8 @@ COPY . .
 
 ENV NODE_ENV=production
 
-# ПЕРЕМЕННЫЕ СОЗДАНИЯ ССЛЫКИ
-ENV HOST=192.168.1.125:3000
-ENV PROTOCOL=https
-# ПЕРЕМЕННЫЕ СОЗДАНИЯ ССЛЫКИ
+ENV HOST=localhost:3000
+ENV PROTOCOL=http
 
 RUN npm run build:back
 

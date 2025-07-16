@@ -8,7 +8,7 @@ import {
 	MessagePutDTOClient,
 	MessagePutDTOClientSchema,
 } from "@app/client/types/DTOClient";
-import { FILES_LIMIT, FILES_LIMIT_MESSAGE } from "@app/shared/CONST";
+import { FILES_LIMIT_IN_MESSAGE, FILES_LIMIT_MESSAGE } from "@app/shared/CONST";
 import z from "zod";
 import { AxiosResponse } from "axios";
 import { IS_MATCH } from "@app/shared/HEADERS";
@@ -40,7 +40,7 @@ class StoreMessages {
 	}
 
 	checkFileLength = (count: any): boolean => {
-		if (typeof count === "number" && count > FILES_LIMIT) {
+		if (typeof count === "number" && count > FILES_LIMIT_IN_MESSAGE) {
 			alert(FILES_LIMIT_MESSAGE);
 			return true;
 		}

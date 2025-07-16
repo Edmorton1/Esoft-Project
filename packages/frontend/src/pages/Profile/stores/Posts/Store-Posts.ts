@@ -52,8 +52,10 @@ class StorePosts extends StoreBasePaginDoc {
 	post = async (dataRaw: PostsDTOClient) => {
 		const { files, ...dto } = dataRaw;
 
+		console.log("files", files)
 		const fd = toFormData(files);
 		fd.append("json", JSON.stringify(dto));
+		console.log(fd.get("files"), fd.get("json"), fd.getAll("files"))
 
 		const { data } = await $api.post(`${serverPaths.postsPost}`, fd);
 		console.log("NEW TOTAL", data);

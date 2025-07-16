@@ -3,32 +3,36 @@
 import type { PaletteOptions, Palette } from "@mui/material/styles";
 
 declare module "@mui/material/styles" {
-  interface Palette {
-    plombir: Palette["primary"];
-    third: Palette["primary"];
-    alt: Palette["primary"];
-  }
+	interface Palette {
+		plombir: Palette["primary"];
+		third: Palette["primary"];
+		alt: Palette["primary"];
+		bright: Palette["primary"];
+	}
 
-  interface PaletteOptions {
-    plombir?: PaletteOptions["primary"];
-    third?: PaletteOptions["primary"];
-    alt?: PaletteOptions["primary"];
-  }
+	interface PaletteOptions {
+		plombir?: PaletteOptions["primary"];
+		third?: PaletteOptions["primary"];
+		alt?: PaletteOptions["primary"];
+		bright?: PaletteOptions["primary"];
+	}
 
-  interface TypeBackground {
-    third: string;
-    alt: string;
-  }
+	interface TypeBackground {
+		third: string;
+		alt: string;
+	}
 }
 
 declare module "@mui/material/Button" {
-  interface ButtonPropsColorOverrides {
-    plombir: true;
-  }
+	interface ButtonPropsColorOverrides {
+		plombir: true;
+		bright: true;
+	}
 }
 
 declare module "@mui/material/SvgIcon" {
-  interface SvgIconPropsColorOverrides {
-    plombir: true;
-  }
+	interface SvgIconPropsColorOverrides {
+		plombir: true;
+		bright: true;
+	}
 }

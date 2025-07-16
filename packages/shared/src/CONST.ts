@@ -12,8 +12,8 @@ export const MODAL_TALKING = 'modal-talking'
 export const STANDART_ZOOM = 13
 export const MESSAGE_ON_PAGE = 10
 export const LIKES_ON_PAGE = 6
-export const FILES_LIMIT = 4
-export const FILES_LIMIT_MESSAGE = `Нельзя выбрать больше ${FILES_LIMIT} файлов`
+export const FILES_LIMIT_IN_MESSAGE = 4
+export const FILES_LIMIT_MESSAGE = (files_limit: number) => `Нельзя выбрать больше ${files_limit} файлов`
 
 export const SALT = 3
 export const TIMEZONE = 5

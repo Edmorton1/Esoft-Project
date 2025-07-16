@@ -1,6 +1,8 @@
 import SearchIcon from '@mui/icons-material/Search';
 import InputBase from '@mui/material/InputBase';;
 import * as style from "@app/client/shared/css/components/Search.module.scss"
+import Box from '@mui/material/Box';
+// import { BG_THIRD } from '@app/shared/COLORS';
 
 function SearchBase({onChange, value}: {onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void, value: string}) {
   // const [debounce, setDebounce] = useDebounce()
@@ -16,9 +18,10 @@ function SearchBase({onChange, value}: {onChange: (e: React.ChangeEvent<HTMLInpu
   // console.log(debounce)
 
   return (
-    <div className={style['search-container']}>
+    // <Box sx={{bgcolor: localStorage.getItem("theme") === "light" ? "#ffffff" : "#797979"}} className={style['search-container']}>
+    <Box sx={{bgcolor: (theme) => theme.palette.bright.main}} className={style['search-container']}>
       <div className={style['search-icon-wrapper']}>
-        <SearchIcon />
+        <SearchIcon color={"disabled"} />
       </div>
       <InputBase
         placeholder="Найти по имени..."
@@ -27,7 +30,7 @@ function SearchBase({onChange, value}: {onChange: (e: React.ChangeEvent<HTMLInpu
         value={value}
         onChange={onChange}
       />
-    </div>
+    </Box>
   )
 }
 

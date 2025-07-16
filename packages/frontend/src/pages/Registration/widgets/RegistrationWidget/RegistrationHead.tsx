@@ -51,7 +51,7 @@ function Registration() {
     const location: Omit<LocationDTO, 'city'> | undefined = StoreRegistration.coords ? {lng: StoreRegistration.coords.lng, lat: StoreRegistration.coords.lat} : undefined
     const form: RegistrationDTOClient = {...data, location}
     
-    console.log(form)
+    console.log("FORMA", form, data.avatar)
     await StoreUser.registration(form)
   }
 

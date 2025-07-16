@@ -1,3 +1,4 @@
+import { remail } from "@app/types/gen/FormErrors";
 import { nullToUndefined, zid, zstring } from "@app/types/shared/zodSnippets";
 import { z } from "zod";
 
@@ -15,7 +16,7 @@ export const PasswordZOD = z.string().nonempty().nullable();
 
 export const UserSchema = z.object({
 	id: zid,
-	email: zstring.email(),
+	email: zstring.email(remail),
 	// ВРЕМЕННАЯ МЕРА, В ПРОДЕ УБРАТЬ
 	// password: z.string().nonempty().min(6),
 	password: PasswordZOD,

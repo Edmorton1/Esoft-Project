@@ -1,4 +1,4 @@
-import AddFiles from "@app/client/pages/Messages/InsideMessage/widget/Main/modules/components/kit/AddFiles";
+import AddFiles from "@app/client/shared/ui/components/AddFiles";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -30,7 +30,7 @@ function Edit({ post, EditToZero: handleSuccess }: propsInterface) {
 	return <>
     <Paper component={"form"} onSubmit={onSubmit}>
       <div className={style.form__editPost}>
-				<AddFiles register={register("files")} />
+				<AddFiles files_limit={3} register={register("files")} />
 				<TextField {...register('text')} label={"Текст"} variant="outlined" sx={{flex: 1}} />
       </div>
       <div className={style.form__deleteFiles}>

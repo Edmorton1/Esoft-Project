@@ -3,15 +3,15 @@ import { useContext } from "react";
 import * as style from "@app/client/shared/css/modules/FormEdit.module.scss"
 import Paper from "@mui/material/Paper";
 import MicroFile from "@app/client/pages/Messages/InsideMessage/widget/Main/modules/components/edit/MicroFile";
-import AddFiles from "@app/client/pages/Messages/InsideMessage/widget/Main/modules/components/kit/AddFiles";
+import AddFiles from "@app/client/shared/ui/components/AddFiles";
 import TextField from "@mui/material/TextField";
 import MinButton from "@app/client/shared/ui/mui_components/MinButton";
 import DeleteIcon from '@mui/icons-material/Delete';
 import { sxStyle } from "@app/client/shared/ui/mui_components/CircleButton";
 import { createPortal } from "react-dom";
 import CheckIcon from '@mui/icons-material/Check';
-
 import * as section from "@app/client/shared/css/pages/MessagesInside.module.scss"
+import { FILES_LIMIT_IN_MESSAGE } from "@app/shared/CONST";
 
 function FormEdit() {
   const ctx = useContext(MessageContext)!
@@ -31,7 +31,7 @@ function FormEdit() {
 			<DeletingFiles />
 		</div>
 		<div className={style.main__redact}>
-			<AddFiles onChangeAdd={ctx.inputNewFile} />
+			<AddFiles files_limit={FILES_LIMIT_IN_MESSAGE} onChangeAdd={ctx.inputNewFile} />
 			<TextField type="text" onChange={ctx.textInput} defaultValue={ctx.value} sx={{flex: 1}} />
 			<MinButton variant="contained" color="error" onClick={ctx.deleteClick}><DeleteIcon sx={sxStyle} /></MinButton>
 			<MinButton onClick={ctx.submitClick} variant="contained" sx={{height: "100%"}}><CheckIcon sx={sxStyle} /></MinButton>
