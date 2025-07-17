@@ -11,7 +11,7 @@ export const emptyFlex = (uslovie: number | undefined) => {
 type Tinfo = "empty" | "no-authorize"
 // {infoType}: {infoType?: Tinfo}
 
-function EmptyText({infoType}: {infoType?: Tinfo}) {
+const EmptyText = ({infoType}: {infoType?: Tinfo}) => {
   let text = "Похоже, что здесь пока ничего нет"
   if (infoType === "no-authorize") {
     text = "Эта страница доступна только авторизованным пользователям"

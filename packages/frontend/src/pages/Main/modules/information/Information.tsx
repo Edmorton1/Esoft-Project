@@ -4,7 +4,7 @@ import cards from "@app/client/pages/Main/modules/information/components/Info";
 
 console.log(style);
 
-function Information() {
+const Information = () => {
 	return (
 		<section className={style.main}>
 			{cards.map(card => (

@@ -50,6 +50,7 @@ export default defineConfig([
 
 			// ПРАВИЛО НА REACT PROPS
 			"react-hooks/exhaustive-deps": "error",
+			"react/display-name": "off"
 
 			//react-hooks
 			// "react-hooks/rules-of-hooks": "error",

@@ -8,7 +8,7 @@ import Divider from "@mui/material/Divider";
 import Box from "@mui/material/Box";
 import { BG_ALT, BG_PAPER, BG_THIRD } from "@app/shared/COLORS";
 
-function InfoCard({card}: {card: ICard}) {
+const InfoCard = ({card}: {card: ICard}) => {
 	return (
 		<Card
 			sx={{

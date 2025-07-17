@@ -17,25 +17,27 @@ interface envTypes {
 }
 
 export default (env: envTypes) => {
-	const separ = "://"
-	const all_params = !!env.protocol && !!env.host
-	const shared_host = env.protocol + separ + env.host
+	const separ = "://";
+	const all_params = !!env.protocol && !!env.host;
+	const shared_host = env.protocol + separ + env.host;
 
-	const URL_CLIENT = all_params ? shared_host : process.env.URL_CLIENT!
-	const URL_SERVER = all_params ? shared_host : process.env.URL_SERVER!
-	const URL_SERVER_WS = all_params ? (env.protocol === "http" ? "ws" : "wss") + separ + env.host + "/socket" : process.env.URL_SERVER_WS!
+	const URL_CLIENT = all_params ? shared_host : process.env.URL_CLIENT!;
+	const URL_SERVER = all_params ? shared_host : process.env.URL_SERVER!;
+	const URL_SERVER_WS = all_params
+		? (env.protocol === "http" ? "ws" : "wss") + separ + env.host + "/socket"
+		: process.env.URL_SERVER_WS!;
 	// const URL_SERVER_WS = process.env.URL_SERVER_WS!
 	// const URL_SERVER_WS = "ws://localhost:5000/socket"
 
-	console.log("ПАРАМЕТРЫ В WEBPACK", env.protocol, env.host, env.port)
-	
+	console.log("ПАРАМЕТРЫ В WEBPACK", env.protocol, env.host, env.port);
+
 	const config: WebpackConfiguration = buildWebpack({
 		port: env.port || Number(process.env.PORT!),
 		mode: env.mode || "development",
 
 		dotenv: {
 			GISKEY: process.env.GISKEY!,
-			
+
 			URL_CLIENT,
 			URL_SERVER,
 			URL_SERVER_WS,
@@ -57,11 +59,11 @@ export default (env: envTypes) => {
 		url: {
 			prefix: "/api",
 			// FIXME: ПОТОМ ПРИДУМАТЬ КАК СЮДА СЕРВЕР ПЕРЕДАТЬ
-			server: "http://192.168.1.125:3000",
+			server: process.env.URL_LOCAL!,
 		},
 		socket: {
 			prefix: "/socket",
-			server: "ws://192.168.1.125:3000"
+			server: process.env.URL_LOCAL_WS!,
 		},
 		analyzer: env.analyzer,
 	});

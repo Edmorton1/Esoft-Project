@@ -8,7 +8,7 @@ import Title from "@app/client/shared/ui/mui_components/Ttile";
 import Typography from "@mui/material/Typography";
 import StoreUser from "@app/client/shared/stores/Store-User";
 
-function MapPage() {
+const MapPage = () => {
 	const containerRef = useRef<HTMLDivElement>(null);
 	const coords = useGeolocation();
 

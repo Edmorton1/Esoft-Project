@@ -10,9 +10,8 @@ import { Knex } from "knex"
 import { TablesPost } from "@app/server/types/types"
 import SQLForm from "@app/server/infrastructure/helpers/databases/postgres/SQLform"
 import Utils, { checkFirstType, getCheckWord, isLocationType } from "@app/server/infrastructure/helpers/databases/postgres/utils"
-import { cacheGet, cacheSet } from "@app/server/infrastructure/helpers/databases/redis/cache"
 
-const fieldsKey = (fields?: string) => `${fields ? '--fields: ' + fields : ''}`
+// const fieldsKey = (fields?: string) => `${fields ? '--fields: ' + fields : ''}`
 
 // ПРИНИМАЕТ ТОЛЬКО ID
 interface Ioptions {
@@ -70,7 +69,7 @@ class ORM implements IORM {
     this.logger.info("GET", 'fields', fields)
     this.logger.info("get", table, fields)
 
-    const key = `${table}${fieldsKey(fields)}`
+    // const key = `${table}${fieldsKey(fields)}`
     
     let query = this.db(table).select(this.utils.fieldsToArr(fields, table));
 
@@ -81,7 +80,7 @@ class ORM implements IORM {
 
     this.logger.info('fields in orm', fields)
 
-    const total = await cacheGet<Tables[T][]>(key, query)
+    const total = await query
     return checkFirstType(total, table, fields)
   }
   // getById = async <T extends tables>(id: number | string, table: T, fields?: string, options?: Ioptions): Promise<Tables[T][]> => {
@@ -89,7 +88,7 @@ class ORM implements IORM {
     this.logger.info('GET BY ID')
     this.logger.info({table, fields}, "getById")
 
-    const key = `${table}-id-${id}${fieldsKey(fields)}`
+    // const key = `${table}-id-${id}${fieldsKey(fields)}`
 
     let query = this.db(table).select(this.utils.fieldsToArr(fields, table)).where('id', '=', id);
     
@@ -101,8 +100,8 @@ class ORM implements IORM {
       this.logger.info("TO NATIVE", query.toSQL().toNative())
     }
 
-    this.logger.info('check type', await cacheGet(key, query), table)
-    const total = await cacheGet<Tables[T][]>(key, query)
+    this.logger.info('check type', query)
+    const total = await query
 
     return checkFirstType(total, table, fields)
   }
@@ -112,7 +111,7 @@ class ORM implements IORM {
     this.logger.info("GET BY PARAMS")
     this.logger.info("getByParams", params, table, fields)
 
-    const key = `${table}-${Object.entries(params).flat().join("-")}${fieldsKey(fields)}`
+    // const key = `${table}-${Object.entries(params).flat().join("-")}${fieldsKey(fields)}`
 
     this.logger.info(params, 'params')
 
@@ -131,7 +130,7 @@ class ORM implements IORM {
     }
     
     this.logger.info('fields in orm', fields)
-    const total = await cacheGet<Tables[T][]>(key, query)
+    const total = await query
 
     return checkFirstType(total, table, fields)
   }
@@ -166,7 +165,7 @@ class ORM implements IORM {
     
     // logger.info({request, parsedFields})
 
-    cacheSet(table, request, "edit")
+    // cacheSet(table, request, "edit")
     checkFirstType(request, table, fields)
 
     return request
@@ -182,7 +181,7 @@ class ORM implements IORM {
     const request = await this.db(table).insert(dto).onConflict(Object.keys(dto[0])).merge().returning("*")
     // ПОТОМ ПРОВЕРИТЬ КЭШИ
 
-    cacheSet(table, request, "edit")
+    // cacheSet(table, request, "edit")
 
     return request
   }
@@ -197,7 +196,7 @@ class ORM implements IORM {
     const request = await this.db(table).where("id", '=', id).andWhere(checkWord, "=", userid).update(dto).returning(parsedFields)
     this.logger.info({request})
 
-    cacheSet(table, request, "edit")
+    // cacheSet(table, request, "edit")
     checkFirstType(request, table, fields)
 
     return request
@@ -212,7 +211,7 @@ class ORM implements IORM {
     this.logger.info({DELETE_QUERY: query.toSQL().toNative()})
     const request = await query
     
-    cacheSet(table, request, 'delete')
+    // cacheSet(table, request, 'delete')
     return request
   }
 }

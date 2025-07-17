@@ -30,7 +30,7 @@ interface inputInterface<T> {
   color?: colorTypes,
 }
 
-export function InputMui <T extends string>({text, id, error, register, children, disabled, type = 'text', variant = 'standard', color = 'primary'}: inputInterface<T>) {
+export const InputMui = <T extends string>({text, id, error, register, children, disabled, type = 'text', variant = 'standard', color = 'primary'}: inputInterface<T>) => {
   return <FormControl error={!!error} color={color} >
     <TextField color={color} label={text} {...register(id, {valueAsNumber: type === 'number'})} type={type} id={id} disabled={disabled} variant={variant} error={!!error} slotProps={{inputLabel: disabled !== undefined ? {shrink: disabled !== undefined} : undefined}} />
     <FormError id={id} error={error} />
@@ -47,7 +47,7 @@ interface inputNumberInterface {
   color?: colorTypes
 }
 
-export function InputNumberMui({text, id, error, register, children, color}: inputNumberInterface) {
+export const InputNumberMui = ({text, id, error, register, children, color}: inputNumberInterface) => {
   
   return <FormControl error={!!error} color={color}>
     <TextField color={color} label={text} {...register(id, {valueAsNumber: true, min: 18, max: 122})} type={"number"} id={id} variant="standard" error={!!error} />
@@ -65,7 +65,7 @@ interface selectInterface {
   color?: colorTypes
 }
 
-export function Relations() {
+export const Relations = () => {
   return <>
     <MenuItem value="relation">Отношения</MenuItem>
     <MenuItem value="friend">Дружба</MenuItem>
@@ -74,7 +74,7 @@ export function Relations() {
   </>
 }
 
-export function SelectMui({text, id, error, control, children, color = 'primary'}: selectInterface) {
+export const SelectMui = ({text, id, error, control, children, color = 'primary'}: selectInterface) => {
   return <FormControl fullWidth error={!!error} color={color}>
       <InputLabel id={id}>{text}</InputLabel>
       <Controller
@@ -103,7 +103,7 @@ interface radioInterface {
   direction?: "column" | "row"
 }
 
-export function RadioGroupMui({error, text, id, children, control, onChange, color = 'primary', direction = "row"}: radioInterface) {
+export const RadioGroupMui = ({error, text, id, children, control, onChange, color = 'primary', direction = "row"}: radioInterface) => {
   const radioSX = {display: "flex", flexDirection: direction}
 
   return <FormControl color={color} sx={{display: "flex", justifyContent: "center", alignItems: "center"}} id={id} error={!!error}>
@@ -134,7 +134,7 @@ interface textareaInterface {
   color?: colorTypes
 }
 
-export function TextAreaMui({label, error, id, register, children, color}: textareaInterface) {
+export const TextAreaMui = ({label, error, id, register, children, color}: textareaInterface) => {
   return <FormControl error={!!error}>
     <TextField sx={{maxHeight: "103px", overflow: "auto"}} variant="filled" {...register(id)} label={label} error={!!error} multiline minRows={3} id={id} color={color} />
     <FormError id={id} error={error}></FormError>
@@ -171,12 +171,12 @@ const TagChip = ({tag, color, handleDelete}: {tag: string, color: tagsChipsInter
       onDelete={handleDelete} />
 )
 
-const Tags = memo(function Tags({setValue, tags, e, color}: {setValue: UseFormSetValue<any>, tags: tagsChipsInterface['tags'], e: One<tagsChipsInterface['tags']>, color: tagsChipsInterface['color']}) {
+const Tags = memo(({setValue, tags, e, color}: {setValue: UseFormSetValue<any>, tags: tagsChipsInterface['tags'], e: One<tagsChipsInterface['tags']>, color: tagsChipsInterface['color']}) => {
   const handleDelete = useCallback(() => setValue('tags', tags.filter(tag => tag.tag !== e.tag)), [e.tag, tags])
   return <TagChip tag={e.tag} color={color} handleDelete={handleDelete} key={e.tag} />
 })
 
-export function TagsChips({tags, color, input, setInput, setValue}: tagsChipsInterface) {
+export const TagsChips = ({tags, color, input, setInput, setValue}: tagsChipsInterface) => {
   return <FormControl fullWidth>
   <FormLabel>Тэги</FormLabel>
   <Box sx={{display: "flex", gap: 1}}>

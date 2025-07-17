@@ -18,15 +18,18 @@ class StoreUsers {
     makeAutoObservable(this)
   }
 
+  // ВОЗВРАЩАЕТ КОЛИЧЕСТВО СТРАНИЦ
   initial = (data: requestType) => {
     console.log(data)
     if (this.users.length) {
       this.users.push(...data.forms)
     }
     this.users = data.forms
+
     this.pagesCount = data.count
 
     console.log("users", toJS(this.users))
+    return data.count
   }
 }
 

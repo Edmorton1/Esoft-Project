@@ -7,7 +7,7 @@ import * as style from "@app/client/shared/css/pages/Users.module.scss";
 import z from "zod";
 
 function UsersCardWidget() {
-	const [params] = useUpdateParams();
+	const [params, setSearchParams] = useUpdateParams();
 
 	const rawPage = z.coerce.number().safeParse(params.page);
 	const page = rawPage.success ? (rawPage.data > 0 ? rawPage.data : 1) : 1;
@@ -27,7 +27,12 @@ function UsersCardWidget() {
 
 	useGetById(
 		`/extendedSearch?name=${name}&tags=${tags}&page=${page}&target=${target}&city=${city}&sex=${sex === "man" ? "true" : sex === "woman" ? "false" : ""}&min_age=${min_age}&max_age=${max_age}&avatar=${avatar}&max_distance=${max_distance}&order=${order}`,
-		{ callback: data => StoreUsers.initial(data) },
+		{ callback: data => {
+			const pagesCount = StoreUsers.initial(data)
+			if (pagesCount < page) {
+				setSearchParams("page", pagesCount)
+			}
+		}},
 	);
 
 	// console.log(
