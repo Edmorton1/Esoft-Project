@@ -86,7 +86,6 @@ export const getCheckWord = (table: tables) => {
     } else if (table === "likes" || table === "posts") {
       checkWord = "userid"
     } else if (table === "tags") {
-      // FIXME: С ТЕГАМИ ПОТОМ СДЕЛАТЬ ЧТО ИХ МОЖЕТ УДАЛЯТЬ ТОЛКЬО АДМИН
       checkWord = "id"
     }
 

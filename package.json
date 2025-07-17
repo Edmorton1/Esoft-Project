@@ -13,7 +13,7 @@
     "lint": "npx eslint .",
     "test:integra": "jest tests/integra --runInBand --detectOpenHandles",
     "test:front": "npm run test --workspace=@app/frontend",
-    "test:server": "npm run test --workspace=@app/backend"
+    "test:back": "npm run test --workspace=@app/backend"
   },
   "author": "",
   "license": "ISC",

@@ -45,7 +45,7 @@ class AuthService implements AuthServiceRepo{
 
 		// const location = parseWKB
 		const formTotal = {...form, tags: tagsTotal};
-		this.logger.info({formTotal})
+		// this.logger.info({formTotal})
 		//ТУТ ВЫДАЁТ ОШИБКУ
 		const formParse = FormSchema.parse(formTotal)
 		this.logger.info('formTotal', formParse)

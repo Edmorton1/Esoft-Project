@@ -15,6 +15,7 @@ import AvatarImg from "@app/client/shared/ui/mui_components/AvatarImg";
 import { Link } from "react-router-dom";
 import { translateTarget } from "@app/client/shared/funcs/translatetTarget";
 import InfoField from "@app/client/shared/ui/components/InfoField";
+import StoreUser from "@app/client/shared/stores/Store-User";
 
 function UsersCardInfo({ form, children }: { form: Form; children?: ReactNode }) {
 	// console.log("TAGS", toJS(form.tags))
@@ -64,7 +65,7 @@ function UsersCardInfo({ form, children }: { form: Form; children?: ReactNode })
 					</>
 				)}
 
-				{form.distance && (
+				{form.distance && form.id !== StoreUser.user?.id && (
 					<Typography>
 						<strong>Расстояние: </strong>
 						{form.distance} км

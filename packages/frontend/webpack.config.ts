@@ -58,7 +58,6 @@ export default (env: envTypes) => {
 		},
 		url: {
 			prefix: "/api",
-			// FIXME: ПОТОМ ПРИДУМАТЬ КАК СЮДА СЕРВЕР ПЕРЕДАТЬ
 			server: process.env.URL_LOCAL!,
 		},
 		socket: {

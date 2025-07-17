@@ -12,7 +12,7 @@ export const LocationSchema = z.object({
 	lat: z.number(),
 });
 
-export const PasswordZOD = z.string().nonempty().nullable();
+export const PasswordZOD = z.string().min(6).nonempty().nullable();
 
 export const UserSchema = z.object({
 	id: zid,

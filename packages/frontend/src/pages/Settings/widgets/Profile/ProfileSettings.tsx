@@ -12,7 +12,7 @@ import MapWidget from "@app/client/shared/widgets/MapWidget/MapWidget"
 import TagsRow from "@app/client/pages/Settings/widgets/components/TagsRow"
 import Box from "@mui/material/Box"
 import DescriptionRow from "@app/client/pages/Settings/widgets/components/DescriptionRow"
-// import StoreSettings from "@app/client/pages/Settings/widgets/store/Store-Settings"
+import StoreSettings from "@app/client/pages/Settings/widgets/store/Store-Settings"
 import SharedRequests from "@app/client/shared/funcs/Shared-Requests"
 import AvatarRow from "@app/client/pages/Settings/widgets/components/AvatarRow"
 import { BG_ALT } from "@app/shared/COLORS"
@@ -33,7 +33,7 @@ function ProfileSettings() {
 
   const submit = (data: any) => {
     console.log(data)
-    // StoreSettings.updateForm(data)
+    StoreSettings.updateForm(data)
   }
 
   const handleLocation = async (data: Parameters<LocationCallback>[0]) => {

@@ -59,6 +59,10 @@ const useUpdateParams = (): returTypes => {
 
 	const removeParams = (key: string) => {
 		// console.log("key", key)
+		if (key === "*") {
+			setSearchParams()
+			return;
+		}
 		const newParams = new URLSearchParams(searchParams);
 		newParams.delete(key)
 		

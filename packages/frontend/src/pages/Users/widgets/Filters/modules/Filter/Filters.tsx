@@ -38,7 +38,7 @@ function Filters() {
 
 			<Tags />
 
-			<Input label="Максимальное расстояние" keyName="max_distance" type="number" />
+			<Input label="Максимальное расстояние в км" keyName="max_distance" type="number" />
 		</>
 	);
 }

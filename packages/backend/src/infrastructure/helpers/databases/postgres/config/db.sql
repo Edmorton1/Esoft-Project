@@ -15,6 +15,7 @@ CREATE TABLE users (
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 
+ALTER TABLE users
 ADD CONSTRAINT auth_method_check
 CHECK ((google_id IS NOT NULL AND password IS NULL)
 OR (google_id IS NULL AND password IS NOT NULL));
@@ -95,3 +96,5 @@ CREATE INDEX idx_liked_userid ON likes(liked_userid);
 
 CREATE INDEX idx_user_tags_id ON user_tags(id);
 CREATE INDEX idx_user_tags_tagid ON user_tags(tagid);
+
+-- CREATE EXTENSION IF NOT EXISTS pg_trgm;

@@ -12,7 +12,7 @@ const db = knex({
 		password: "123",
 		host: PG_HOST,
 		port: Number(PG_PORT),
-		database: "Znakomstva",
+		database: "Znakomstva PROD",
 		// database: "Znakomstva TEST",
 	},
 });

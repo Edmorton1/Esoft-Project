@@ -15,23 +15,23 @@ const minute = 60 * 1000
 export const authPost = createBaseLimiter({
 	message: "AUTH POST",
 	windowMs: minute,
-	limit: 50,
+	limit: 500,
 });
 
 export const authGet = createBaseLimiter({
 	message: "AUTH GET",
 	windowMs: minute,
-	limit: 100,
+	limit: 1000,
 });
 
 export const noAuthGet = createBaseLimiter({
 	message: "NO AUTH GET",
 	windowMs: minute,
-	limit: 20,
+	limit: 200,
 });
 
 export const noAuthPost = createBaseLimiter({
 	message: "NO AUTH POST",
 	windowMs: minute,
-	limit: 3,
+	limit: 30,
 });

@@ -9,16 +9,16 @@ function Sotrting() {
 		<>
 			<Typography variant="h5">Сортировать по</Typography>
 			<RadioGroupMui id="users-sorting" direction="column">
+				<FormControlLabel
+					control={<CheckboxParams keyName="order" value="age" />}
+					label="Возрасту"
+				/>
 				{StoreForm.form?.location && (
 					<FormControlLabel
-						control={<CheckboxParams keyName="order" value="age" />}
-						label="Возрасту"
+						control={<CheckboxParams keyName="order" value="distance" />}
+						label="Дистанции"
 					/>
 				)}
-				<FormControlLabel
-					control={<CheckboxParams keyName="order" value="distance" />}
-					label="Дистанции"
-				/>
 			</RadioGroupMui>
 		</>
 	);

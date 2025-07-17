@@ -31,7 +31,7 @@ class AuthValidation {
     console.log("GOOGLE ID ID", parsedCookie?.google_id)
     const data = RegistrationDTOServerSchema.parse({...JSON.parse(ctx.body.json), avatar: ctx.file, google_id: parsedCookie?.google_id})
     // const asd = ctx.file
-    logger.info({До_Загрузки: data})
+    // logger.info({До_Загрузки: data})
     if (data.password !== null && data.google_id) throw new Error("Если Google id, то password должен быть null")
       
     const {email, password, google_id, tags, ...formDTO} = data

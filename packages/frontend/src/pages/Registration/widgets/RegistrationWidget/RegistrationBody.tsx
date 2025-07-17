@@ -1,4 +1,3 @@
-import { useFormContext } from "react-hook-form";
 import StoreRegistration from "@app/client/pages/Registration/widgets/stores/Store-Registration";
 import { observer } from "mobx-react-lite";
 import * as style from "@app/client/shared/css/pages/Registration.module.scss";
@@ -11,14 +10,11 @@ interface propsInterface {
 }
 
 function RegistrationBody({ onSubmit }: propsInterface) {
-	const {
-		formState: { errors },
-	} = useFormContext();
 	const disableGoogle = typeof StoreRegistration.cookie?.email === "string";
 
 	return (
 		<form onSubmit={onSubmit} className={style.form}>
-			<button onClick={() => console.log(errors)}>errors</button>
+			{/* <button onClick={() => console.log(errors)}>errors</button> */}
 			{!disableGoogle && (
 				<section>
 					<Title>Регистрация</Title>

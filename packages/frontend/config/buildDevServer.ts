@@ -43,8 +43,6 @@ function buildDevServer(options: BuildOptions): Configuration["devServer"] {
 				secure: false,
 				changeOrigin: true,
 			},
-			// FIXME
-			// ХАРДКОД ПОТОМ УБРАТЬ
 			{
 				context: [options.socket.prefix],
 				target: options.socket.server,

@@ -60,22 +60,7 @@ class GoogleController extends BaseController implements IGoogleController {
 				method: "get",
 				handle: this.getAuthUrl,
 			},
-			// ПОТОМ УБРАТЬ
-			{
-				path: "/encrypt",
-				method: "get",
-				handle: this.test
-			}
 		]);
-	}
-
-	// ПОТОМ УБРАТЬ
-	test = async (ctx: HttpContext) => {
-		const encrypt = this.cookieEncrypt.encrypt("super secret")
-		const decrypt = this.cookieEncrypt.decrypt(encrypt)
-		const random_32_bit = crypto.randomBytes(32).toString("hex")
-		this.logger.info({random_32_bit})
-		ctx.json({encrypt, decrypt, random_32_bit})
 	}
 
 	private getGoogleId = async (id_token: string) => {

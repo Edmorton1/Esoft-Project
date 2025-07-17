@@ -156,7 +156,6 @@ class ORM implements IORM {
       const {lng, lat} = dto.location
       const pointWKT = `POINT(${lng} ${lat})`;
       const parsedKnex = this.db.raw(`ST_GeomFromText(?, 4326)`, [pointWKT])
-      // FIXME: СЮДА ПОТОМ ДОБАВИТЬ LOCATION PARSER
       dto.location = parsedKnex
     }
     const parsedFields = this.utils.fieldsToArr(fields, table)

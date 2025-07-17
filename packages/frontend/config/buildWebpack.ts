@@ -25,8 +25,7 @@ function buildWebpack(options: BuildOptions): WebpackConfiguration {
 		},
 		resolve: buildResolvers(options),
 		devtool: isDev ? 'eval-cheap-module-source-map' : false,
-		// FIXME ПОТОМ СДЕЛАТЬ ТОЛЬКО ДЛЯ ДЕВА
-		devServer: buildDevServer(options),
+		devServer: isDev ? buildDevServer(options) : undefined,
 		optimization: isProd
 			? {
 					splitChunks: {

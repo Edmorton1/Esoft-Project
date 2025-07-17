@@ -94,7 +94,6 @@ class StoreMessages {
 			})
 		).data;
 
-		// FIXME ДУБЛИРОВАНИЕ ЛОГИКИ В LOGIC
 		const parsedMessage = MessageSchema.parse(newMessage);
 		this.messages?.push(parsedMessage);
 
@@ -136,7 +135,6 @@ class StoreMessages {
 		).data;
 		const parsedMessage = MessageSchema.parse(newMessage);
 
-		// FIXME ДУБЛИРОВАНИЕ ЛОГИКИ В LOGIC
 		this.messages = this.messages!.map(e =>
 			e.id === parsedMessage.id
 				? { ...e, text: parsedMessage.text, files: parsedMessage.files }
@@ -147,7 +145,6 @@ class StoreMessages {
 	delete = async (id: number) => {
 		console.log(id);
 		await $api.delete(`${serverPaths.deleteMessage}/${id}`);
-		// FIXME ДУБЛИРОВАНИЕ ЛОГИКИ В LOGIC
 		this.messages = this.messages!.filter(e => e.id != id);
 	};
 
