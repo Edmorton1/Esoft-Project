@@ -58,7 +58,7 @@ function UserInfo() {
 					{profile.description && (
 						<InfoField
 							row="Описание"
-							value={<ReadMore component={profile.description} len={110} />}
+							value={<ReadMore component={profile.description} len={60} />}
 						/>
 					)}
 

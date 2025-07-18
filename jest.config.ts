@@ -2,12 +2,11 @@ import type { Config } from "jest";
 
 const config: Config = {
 	transform: {
-		"^.+\\.tsx?$": ["babel-jest", { configFile: "./babel.config.js" }],
+		"^.+\\.[jt]sx?$": ["babel-jest", { configFile: "./babel.config.js" }],
+		"^.+\\.mjs$": "babel-jest",
 	},
-  transformIgnorePatterns: [
-    "/node_modules/(?!(file-type|easy-yandex-s3|@?some-other-esm-module)/)"
-  ],
-	moduleFileExtensions: ["ts", "tsx", "js", "jsx"],
+	transformIgnorePatterns: ["/node_modules/(?!easy-yandex-s3)"],
+	moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node", "mjs"],
 	testMatch: ["**/?(*.)+(spec|test).[tj]s?(x)"],
 	testEnvironment: "node",
 	collectCoverageFrom: ["**/*.{ts,tsx}", "!**/node_modules/**"],
@@ -18,15 +17,12 @@ const config: Config = {
 		"^@app/shared/(.*)$": "<rootDir>/packages/shared/src/$1",
 		"^@app/types/(.*)$": "<rootDir>/packages/types/src/$1",
 		"^@app/client/(.*)$": "<rootDir>/packages/frontend/src/$1",
-    "^file-type$": "<rootDir>/node_modules/file-type",
-    "^easy-yandex-s3$": "<rootDir>/node_modules/easy-yandex-s3"
+		"^file-type$": "<rootDir>/node_modules/file-type",
+		"^easy-yandex-s3$": "<rootDir>/node_modules/easy-yandex-s3",
 	},
 	// setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
 	// moduleDirectories: ["node_modules", "<rootDir>/node_modules", "../../node_modules"],
-	moduleDirectories: [
-    "node_modules",
-    "<rootDir>/packages/backend/node_modules",
-  ],
+	moduleDirectories: ["node_modules", "<rootDir>/packages/backend/node_modules"],
 	rootDir: ".",
 	// roots: ["<rootDir>/tests/"],
 };

@@ -9,6 +9,7 @@ import StoreTalking from "@app/client/pages/Room/modules/ModalTalking/store/Stor
 import StoreCall from "@app/client/pages/Room/modules/ModalCall/store/Store-Call";
 import { SocketMessageServerInterface } from "@app/types/gen/socketTypes";
 import StoreAlert from "@app/client/shared/ui/Toast/Store-Alert";
+import MediaPermissions from "@app/client/pages/Room/WebRTC/logic/MediaPermissions";
 
 class StoreRoom {
 	Peer: null | PeerCaller | PeerResponder = null;
@@ -27,13 +28,17 @@ class StoreRoom {
 
 	makeCall = (frid: number, toid: number) => {
 		if (!navigator.mediaDevices) return StoreAlert.errorInfo("Не подключено ни одно устройство");
+		MediaPermissions.checkPermissons().then(permission => {
+			if (permission.every(e => !e))
+				return StoreAlert.errorInfo("Вы не дали разрешение ни одному устройству");
+			console.log(permission);
 
-		this.Peer = new PeerCaller(frid, toid);
-		this.Peer.createOffer();
+			this.Peer = new PeerCaller(frid, toid);
+			this.Peer.createOffer();
 
-		StoreTalking.openMount();
-		StoreTalking.openModal();
-		return;
+			StoreTalking.openMount();
+			StoreTalking.openModal();
+		});
 	};
 
 	createPeers(frid: number, toid: number, isCaller: true): PeerCaller;
@@ -48,6 +53,7 @@ class StoreRoom {
 
 		return this.Peer;
 	}
+
 	getBackStates = () => {
 		StoreCall.clean();
 		StoreTalking.clean();

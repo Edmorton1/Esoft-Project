@@ -97,4 +97,5 @@ CREATE INDEX idx_liked_userid ON likes(liked_userid);
 CREATE INDEX idx_user_tags_id ON user_tags(id);
 CREATE INDEX idx_user_tags_tagid ON user_tags(tagid);
 
+-- CREATE EXTENSION IF NOT EXISTS postgis;
 -- CREATE EXTENSION IF NOT EXISTS pg_trgm;
