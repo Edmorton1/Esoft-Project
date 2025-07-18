@@ -1,7 +1,8 @@
-import mainCont from "@app/server/config/containers/container.di";
 import Utils from "@app/server/infrastructure/helpers/databases/postgres/utils";
+import ConsoleService from "@app/server/infrastructure/helpers/logger/console.service";
 import { assertKnex } from "@app/types/gen/TypeGuardsNode";
 import { tables } from "@app/types/gen/types";
+import testDB from "./testDB";
 
 type SqlIncludesType = { sqlincludes: string }
 type ResultType = string | SqlIncludesType
@@ -34,7 +35,7 @@ const cases: {name: string, input: [string, tables], includeTags: boolean, resul
 ]
 
 describe('[UNIT]: fieldsToArr', () => {
-  const utils = mainCont.get(Utils)
+  const utils = new Utils(new ConsoleService, testDB)
   test.each(cases)('$name', ({name, input, includeTags, result}) => {
     const total = utils.fieldsToArr(input[0], input[1], includeTags)
     console.log(total)

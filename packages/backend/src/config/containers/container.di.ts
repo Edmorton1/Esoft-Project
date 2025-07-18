@@ -4,10 +4,11 @@ import moduleBindings from "@app/server/config/containers/modules/modules.di";
 import serviceBindings from "@app/server/config/containers/modules/services.di";
 import appBindings from "@app/server/config/containers/modules/app.di";
 import controllerBindings from "@app/server/config/containers/modules/controllers.di";
-import { tables, tablesArr } from "@app/types/gen/types";
+import { tablesArr } from "@app/types/gen/types";
 import CRUDController from "@app/server/infrastructure/requests/CRUD/CRUDController";
 import TYPES from "@app/server/config/containers/types";
 import singleBindings from "@app/server/config/containers/modules/single.di";
+import ORM from "@app/server/infrastructure/helpers/databases/postgres/ORM";
 
 const mainCont = new Container();
 mainCont.load(utilityBindings);
@@ -19,10 +20,12 @@ mainCont.load(singleBindings)
 // БИНД КОНТРОЛЛЕРОВ
 mainCont.load(controllerBindings);
 
-const factory = mainCont.get<(table: tables) => CRUDController>(TYPES.CRUD.Factory);
 tablesArr.forEach(table => {
 	const sym = TYPES.CRUD.Controllers[table];
-	mainCont.bind<CRUDController>(sym).toConstantValue(factory(table));
+	mainCont.bind<CRUDController>(sym).toDynamicValue(context => {
+		const orm = context.get<ORM>(ORM);
+		return new CRUDController(table, orm);
+	}).inSingletonScope();
 });
 // БИНД КОНТРОЛЛЕРОВ
 

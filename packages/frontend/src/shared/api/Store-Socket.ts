@@ -8,8 +8,6 @@ import StoreTalking from "@app/client/pages/Room/modules/ModalTalking/store/Stor
 import StoreForm from "@app/client/shared/stores/Store-Form";
 import StoreMessagesManager from "@app/client/pages/Messages/store/Store-Messages-Manager";
 import { assertPeerCaller } from "@app/client/types/TypeGuards";
-import StoreAlert from "@app/client/shared/ui/Toast/Store-Alert";
-import MediaPermissions from "@app/client/pages/Room/WebRTC/logic/MediaPermissions";
 
 class SocketStore {
 	socket: WebSocket | null = null;
