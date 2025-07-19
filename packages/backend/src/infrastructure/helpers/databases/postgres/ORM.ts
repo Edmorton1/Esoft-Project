@@ -61,7 +61,7 @@ class ORM implements IORM {
     private readonly db: DBType,
     @inject(SQLForm)
     private readonly sqlForm: SQLForm,
-    @inject(Utils)
+    @inject(TYPES.Utils)
     private readonly utils: Utils
   ) {}
   // get = async <T extends tables>(table: T, fields?: string, options?: Ioptions): Promise<Tables[T][]> => {

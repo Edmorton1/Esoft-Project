@@ -1,7 +1,9 @@
+import "reflect-metadata"
 import Utils from "@app/server/infrastructure/helpers/databases/postgres/utils";
-import ConsoleService from "@app/server/infrastructure/helpers/logger/console.service";
 import { assertKnex } from "@app/types/gen/TypeGuardsNode";
 import { tables } from "@app/types/gen/types";
+import LoggerController from "@app/server/infrastructure/helpers/logger/logger.controller";
+import ConsoleService from "@app/server/infrastructure/helpers/logger/console.service";
 import testDB from "./testDB";
 
 type SqlIncludesType = { sqlincludes: string }
@@ -35,8 +37,8 @@ const cases: {name: string, input: [string, tables], includeTags: boolean, resul
 ]
 
 describe('[UNIT]: fieldsToArr', () => {
-  const utils = new Utils(new ConsoleService, testDB)
   test.each(cases)('$name', ({name, input, includeTags, result}) => {
+    const utils = new Utils(new LoggerController(new ConsoleService), testDB)
     const total = utils.fieldsToArr(input[0], input[1], includeTags)
     console.log(total)
 

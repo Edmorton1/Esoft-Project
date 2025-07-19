@@ -29,7 +29,7 @@ class LikesModule implements LikesModuleRepo {
 		private readonly db: DBType,
 		@inject(SQLForm)
 		private readonly sqlForm: SQLForm,
-		@inject(Utils)
+		@inject(TYPES.Utils)
 		private readonly utils: Utils
 	) {}
 	getLikedIds = (userid: number) => {

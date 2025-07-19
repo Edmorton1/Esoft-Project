@@ -14,7 +14,7 @@ import SQLForm from "@app/server/infrastructure/helpers/databases/postgres/SQLfo
 import CryptoService from "@app/server/infrastructure/requests/shared/services/Crypto.service";
 
 const utilityBindings = new ContainerModule(({ bind }) => {
-	bind<PinoService>(PinoService).toSelf();
+	bind<PinoService>(TYPES.PinoService).to(PinoService);
 	bind<ILogger>(TYPES.LoggerController).to(LoggerController);
 	bind<DBType>(TYPES.DataBase).toConstantValue(db);
 	bind<ORM>(ORM).toSelf();

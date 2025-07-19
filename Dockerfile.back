@@ -19,7 +19,7 @@ COPY . .
 ENV NODE_ENV=production
 
 ENV HOST=localhost:3000
-ENV PROTOCOL=https
+ENV PROTOCOL=http
 
 RUN npm run build:back
 

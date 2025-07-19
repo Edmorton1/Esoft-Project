@@ -4,6 +4,7 @@ const TYPES = {
 	PinoService: Symbol.for("services-pino"),
 	LoggerController: Symbol.for("controllers-logger"),
 	DataBase: Symbol.for("DataBase"),
+	Utils: Symbol.for("Utils"),
 
 	CRUD: {
 		Factory: Symbol.for("CRUDControllerFactory"),

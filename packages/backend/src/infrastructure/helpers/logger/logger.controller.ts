@@ -1,3 +1,4 @@
+import TYPES from "@app/server/config/containers/types"
 import PinoService from "@app/server/infrastructure/helpers/logger/pino.service"
 import { inject, injectable } from "inversify"
 
@@ -7,9 +8,9 @@ export interface ILogger {
 }
 
 @injectable()
-class LoggerController implements ILogger {
+class LoggerController implements PinoService {
   constructor (
-    @inject(PinoService)
+    @inject(TYPES.PinoService)
     private readonly loggerService: ILogger
   ) {}
 

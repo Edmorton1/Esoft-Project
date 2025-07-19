@@ -12,7 +12,7 @@ class SQLForm {
 	constructor(
 		@inject(TYPES.DataBase)
 		private readonly db: DBType,
-		@inject(Utils)
+		@inject(TYPES.Utils)
 		private readonly utils: Utils,
 	) {}
 	standartToForm = (fields?: string, lnglat?: lnglatType) => {

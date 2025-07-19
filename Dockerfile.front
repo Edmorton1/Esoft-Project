@@ -15,7 +15,7 @@ COPY . .
 
 # ПЕРЕМЕННЫЕ СОЗДАНИЯ ССЛЫКИ
 ENV HOST=localhost:5000
-ENV PROTOCOL=https
+ENV PROTOCOL=http
 # ПЕРЕМЕННЫЕ СОЗДАНИЯ ССЛЫКИ
 
 RUN npm run build:front
