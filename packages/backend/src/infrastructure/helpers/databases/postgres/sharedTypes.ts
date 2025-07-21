@@ -1,4 +1,4 @@
-import mainCont from "@app/server/config/containers/container.di"
+import appCont from "@app/server/config/containers/appCont.di"
 import TYPES from "@app/server/config/containers/types"
 import Utils from "@app/server/infrastructure/helpers/databases/postgres/utils"
 import logger from "@app/server/infrastructure/helpers/logger/logger"
@@ -32,7 +32,7 @@ type shemaFields<T extends keyof Tables> = Partial<{[K in keyof Tables[T]]: true
 // type TableKeys<T extends keyof Tables> = keyof Tables[T]
 
 export const getSchemaByTable = <T extends keyof typeof schemas>(table: T, fields?: string): typeof schemas[T] => {
-  const utils = mainCont.get<Utils>(TYPES.Utils)
+  const utils = appCont.get<Utils>(TYPES.Utils)
   // console.log(fields, 'fields')
   let parsedFields = utils.fieldsToArr(fields, table);
   if (table === 'forms') {

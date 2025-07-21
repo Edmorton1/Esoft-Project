@@ -14,11 +14,10 @@ jest.mock("easy-yandex-s3", () => {
 jest.mock("@app/server/infrastructure/helpers/databases/redis/redis", () => ({
 	redisClient: {
 		connect: jest.fn().mockResolvedValue(undefined),
-		on: jest.fn(),
 		quit: jest.fn(),
-		disconnect: jest.fn(),
 	},
-	redisStore: jest.fn(),
+	connectRedis: jest.fn(),
+	redisStore: jest.fn(() => ({})),
 }));
 
 jest.mock("@app/server/infrastructure/helpers/logger/logger", () => ({

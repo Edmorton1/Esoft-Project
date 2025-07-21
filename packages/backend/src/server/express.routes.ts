@@ -1,10 +1,8 @@
-import { injectable } from "inversify";
 import { Router } from "express";
 import TYPES from "@app/server/config/containers/types";
-import mainCont from "@app/server/config/containers/container.di";
 import BaseController from "@app/server/config/base/Base.controller";
+import appCont from "@app/server/config/containers/appCont.di";
 
-@injectable()
 class ServerRoutes {
 	router: Router;
 
@@ -16,7 +14,7 @@ class ServerRoutes {
     // console.log("ASDASASDDASASD", controllesSymbols)
 
     controllesSymbols.forEach(sym => {
-      const controller: BaseController = mainCont.get(sym)
+      const controller: BaseController = appCont.get(sym)
 			this.router.use(controller.router)
       // if (controller instanceof LikesController || controller instanceof CRUDController) {
         // this.router.use(controller.router)

@@ -1,4 +1,4 @@
-import mainCont from "@app/server/config/containers/container.di";
+import appCont from "@app/server/config/containers/appCont.di";
 import logger from "@app/server/infrastructure/helpers/logger/logger";
 import LastActiveFuncs from "@app/server/infrastructure/helpers/WebSocket/LastActiveFunc";
 import { frSOSe, toSOCl } from "@app/shared/JSONParsers";
@@ -17,14 +17,13 @@ function createWebSocketServer(server: any) {
 
   wss.on('connection', (wsClient: WebSocketWidh) => {
     logger.info('WEB SOCKET WORK')
-    const lastActiveFuncs = mainCont.get(LastActiveFuncs)
+    const lastActiveFuncs = appCont.get(LastActiveFuncs)
     // clients.set(-1, [wsClient])
 
     // ws.send('ПРИВЕТ С СЕРВЕРА')
     
     wsClient.on('message', msg => {
       const {data, type} = frSOSe(msg)
-      console.log("CONTAINTER", mainCont)
 
       switch (type) {
         case "userid":
